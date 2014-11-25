@@ -201,9 +201,14 @@ ul, ol, dl {
 }
 
 ul {
-  list-style-position: inside;
-  list-style: disc;
+  list-style-position: none
+  list-style: none
   padding-left: 20px;
+}
+
+li {
+    display: inline;
+    padding-left: 20px;
 }
 
 ol {
@@ -296,7 +301,7 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  padding: 50px 10px 5px 10px;
 }
 
 #project_title {
@@ -323,35 +328,6 @@ Full-Width Styles
   right: 0;
   height: 70px;
   background: url('../images/icon_download.png') no-repeat 0% 90%;
-}
-
-.zip_download_link {
-  display: block;
-  float: right;
-  width: 90px;
-  height:70px;
-  text-indent: -5000px;
-  overflow: hidden;
-  background: url(../images/sprite_download.png) no-repeat bottom left;
-}
-
-.tar_download_link {
-  display: block;
-  float: right;
-  width: 90px;
-  height:70px;
-  text-indent: -5000px;
-  overflow: hidden;
-  background: url(../images/sprite_download.png) no-repeat bottom right;
-  margin-left: 10px;
-}
-
-.zip_download_link:hover {
-  background: url(../images/sprite_download.png) no-repeat top left;
-}
-
-.tar_download_link:hover {
-  background: url(../images/sprite_download.png) no-repeat top right;
 }
 
 #main_content_wrap {

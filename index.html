@@ -5,7 +5,19 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="VisualExperiments : ">
-
+	<script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+</script>
+<script src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <title>VisualExperiments</title>
@@ -17,9 +29,13 @@
     <div id="header_wrap" class="outer">
         <header class="inner">
           <h1 id="project_title">VisualExperiments</h1>
-          <h2 id="project_tagline"></h2>
-
-            
+          <nav>
+          		<ul>
+          			<li><a href="/">Home</a></li>
+          			<li><a href="/recent-pages/">Recent</a></li>
+          			<li><a href="/page/calculate-gcd-javascript" title="Page: Calculate GCD (JavaScript)">Random</a></li>
+          		</ul>
+          </nav>
         </header>
     </div>
 
@@ -27,6 +43,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
        <p> Hello World <p>
+       <p> first variation $F_y - \frac{d}{dx}\left(F_{y'} \right )$<p>
        <a href = "Test.html"> My first Test </a>
       </section>
     </div>
