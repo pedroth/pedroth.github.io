@@ -1,28 +1,47 @@
-function LoadFile() {
+function LoadFile(file) {
    var xmlhttp;
-    if (window.XMLHttpRequest)
-    {// code for IE7+, Firefox, Chrome, Opera, Safari
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
          xmlhttp=new XMLHttpRequest();
     } else {// code for IE6, IE5
       xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
     }
-    if ( xmlhttp != null ) 
-    { 
-        xmlhttp.open("GET","Test.txt",false); // the false makes this synchronous!
+    if ( xmlhttp != null ) { 
+        xmlhttp.open("GET",file,false); // the false makes this synchronous!
         xmlhttp.send( );
         var text = xmlhttp.responseText;
-        // text contains the ENTIRE CONTENTS of the text file 
-        // you *could* just write those contents directly to the HTML output:
-        document.write( text );
-
-        // but you might want to process that one line at a time.  if so:
-        var lines = text.split( "\n" );
-        for ( var n = 0; n < lines.length; ++n )
-        {
-            var line = lines[n];
-            // and now you can do whatever is needed with that line
-        }
+        return text;
     }
 }
 
-LoadFile();
+/**
+* x,y position
+* w,h width and height
+*/
+function buildThumbnail(name,x,y,w,h) {
+  var mainSection = document.getElementById("main_content");
+  var link = document.createElement('a');
+  link.setAttribute('href',name + "/" + name + ".html");
+  var img = document.createElement('img');
+  img.setAttribute("src",name + "/" + name + ".png");
+  img.setAttribute("width",w);
+  img.setAttribute("height",h);
+  link.appendChild(img);
+  mainSection.appendChild(link);
+}
+
+function build() {
+  var text = LoadFile();//"BrownianMotion\n" + "CellularAutomaton\n" + "CubeChaos\n" + "GraphXY\n" + "ImplicitSurface\n" + "LinesSurfaces\n" + "PDE\n" + "RandomCurve\n" + "SimplePhysics\n" + "SimpleRobot\n" + "TetraZBuffer";
+  var appletsName = text.split("\n");
+  var n = appletsName.length;
+  var columns = 5;
+  var step = 200;
+  var rows = n / columns;
+  for (var i = 0; i < appletsName.length; i++) {
+    /*no need for x, and y*/
+    var x = step * (i % columns);
+    var y = step * (Math.floor(i / columns));
+    buildThumbnail(appletsName[i],x,y,step,step);
+  }
+}
+
+build();
