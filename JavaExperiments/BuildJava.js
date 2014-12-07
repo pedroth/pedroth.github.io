@@ -1,3 +1,3 @@
-$.get("22.txt", function(data) {
+$.get("Test.txt", function(data) {
     alert(data);
-}
+};
