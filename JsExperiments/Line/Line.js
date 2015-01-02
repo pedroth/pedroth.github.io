@@ -17,8 +17,8 @@ var start = {
 
 var startTime;
 var width, height;
-var points = [ [ 250, 250 ], [ 100, 260 ] ];
-var numOfPoints = 2;
+var samples = 100;
+var funcPoints = [];
 
 function clamp(x, xmin, xmax) {
 	return Math.max(xmin, Math.min(xmax, x));
@@ -106,7 +106,6 @@ var matrixProd = function(u, v, x) {
  * */
 
 function init() {
-	myI = [ 250, 250 ];
 	canvas.addEventListener("mousedown", mouseDown, false);
 	canvas.addEventListener("mouseup", mouseUp, false);
 	canvas.addEventListener("mousemove", mouseMove, false);
@@ -114,25 +113,24 @@ function init() {
 	startTime = new Date().getTime();
 	width = canvas.width;
 	height = canvas.height;
+	for(var i = 0; i < samples; i++) {
+		Math
+	}
 }
 
 init();
 
 function keyDown(e) {
 	if (e.keyCode == 87) {
-		myI[0] -= 1;
 	}
 
 	if (e.keyCode == 83) {
-		myI[0] += 1;
 	}
 
 	if (e.keyCode == 65) {
-		myI[1] -= 1;
 	}
 
 	if (e.keyCode == 68) {
-		myI[1] += 1;
 	}
 }
 
@@ -233,37 +231,8 @@ function draw() {
 	/**
 	 * drawing and animation
 	 **/
-	if (numOfPoints > 1) {
-		var max = -1;
-		var cost = [];
-		var normal = diff(myI, points[0]);
-		var temp = normal[0];
-		normal[0] = -normal[1];
-		normal[1] = temp;
-		
-		/*for ( var i = 0; i < width; i++) {
-			for ( var j = 0; j < height; j++) {
-				var index = j + height * i;
-				cost[index] = Math.abs(innerProd(diff([ i, j ], points[0]),normal)) +  Math.abs(i -points[1][0]) + Math.abs(j - points[1][1]);
-				if (max < cost[index]) {
-					max = cost[index];
-				}
-			}
-		}
-
-		for ( var i = 0; i < width; i++) {
-			for ( var j = 0; j < height; j++) {
-				var c = cost[height * i + j] / max;
-				var index = 4 * height * i + 4 * j;
-				var ccc = c * c * c;
-				var cc = c * c;
-				data[index] = Math.floor(255 * clamp((4 / 3) * ccc - 4 * cc + (11 / 3) * c, 0, 1));
-				data[index + 1] = Math.floor(255 * clamp((8 / 3) * ccc + 6 * cc - (7 / 3) * c, 0, 1));
-				data[index + 2] = Math.floor(255 * clamp((4 / 3) * ccc - 2 * cc + (2 / 3) * c, 0, 1));
-			}
-		}*/
-		drawLine(points[0], myI, 10, data, 255, 255, 255);
-	}
+	
+	
 	ctx.putImageData(image, 0, 0);
 	requestAnimationFrame(draw, canvas);
 }

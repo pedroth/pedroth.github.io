@@ -10,43 +10,45 @@ function Vec2(x,y) {
 this.zeros = function(){
 	this.v[0] = 0;
 	this.v[1] = 0;
-};	
+};
+	
+};
 
-this.add = function(u, v) {
+Vec2.add = function(u, v) {
 	var ans = new Vec2(0,0);
 	ans.v[0] = u.v[0] + v.v[0];
 	ans.v[1] = u.v[1] + v.v[1];
 	return ans;
 };
 
-this.diff = function(u, v) {
+Vec2.diff = function(u, v) {
 	var ans = new Vec2(0,0);
-	ans[0] = u.v[0] - v.v[0];
-	ans[1] = u.v[1] - v.v[1];
+	ans.v[0] = u.v[0] - v.v[0];
+	ans.v[1] = u.v[1] - v.v[1];
 	return ans;
 };
 
-this.scalarMult = function(s, v) {
+Vec2.scalarMult = function(s, v) {
 	var ans = [];
-	ans[0] = s * v[0];
-	ans[1] = s * v[1];
+	ans.v[0] = s * v[0];
+	ans.v[1] = s * v[1];
 	return ans;
 };
 
-this.innerProd = function(u, v) {
-	return u[0] * v[0] + u[1] * v[1];
+Vec2.innerProd = function(u, v) {
+	return u.v[0] * v.v[0] + u.v[1] * v.v[1];
 };
 
-this.squaredNorm = function(v) {
+Vec2.squaredNorm = function(v) {
 	return innerProd(v, v);
 };
 
-this.myNorm = function(v) {
+Vec2.myNorm = function(v) {
 	return Math.sqrt(squaredNorm(v));
 };
 
-this.normalize = function(v) {
-	if (v[0] !== 0.0 && v[1] !== 0.0) {
+Vec2.normalize = function(v) {
+	if (v.v[0] !== 0.0 && v.v[1] !== 0.0) {
 		return scalarMult(1 / myNorm(v), v);
 	} else {
 		return v;
@@ -57,16 +59,16 @@ this.normalize = function(v) {
  * project u on v
  * */
 
-this.proj = function(u, v) {
+Vec2.proj = function(u, v) {
 	var aux = normalize(v);
 	var dot = innerProd(u, v);
 	return scalarMult(dot, aux);
 };
 
-this.pointWiseMult = function(u, v) {
+Vec2.pointWiseMult = function(u, v) {
 	var ans = [];
-	ans[0] = u[0] * v[0];
-	ans[1] = u[1] * v[1];
+	ans.v[0] = u.v[0] * v.v[0];
+	ans.v[1] = u.v[1] * v.v[1];
 	return ans;
 };
 
@@ -74,11 +76,13 @@ this.pointWiseMult = function(u, v) {
  * return product between the matrix formed by (u,v) and x;
  * */
 
-this.matrixProd = function(u, v, x) {
+Vec2.matrixProd = function(u, v, x) {
 	return add(add(scalarMult(x[0], u), scalarMult(x[1], v)));
 };
 
 /**
  * end vectors
  * */
+
+
 };
