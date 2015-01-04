@@ -30,7 +30,7 @@ function buildThumbnail(name,x,y,w,h) {
 }
 
 function build() {
-  var text = LoadFile("AppletNames.txt");//"BrownianMotion\n" + "CellularAutomaton\n" + "CubeChaos\n" + "GraphXY\n" + "ImplicitSurface\n" + "LinesSurfaces\n" + "PDE\n" + "RandomCurve\n" + "SimplePhysics\n" + "SimpleRobot\n" + "TetraZBuffer";
+  var text = LoadFile("../tools/AppletNames.txt");//"BrownianMotion\n" + "CellularAutomaton\n" + "CubeChaos\n" + "GraphXY\n" + "ImplicitSurface\n" + "LinesSurfaces\n" + "PDE\n" + "RandomCurve\n" + "SimplePhysics\n" + "SimpleRobot\n" + "TetraZBuffer";
   var appletsName = text.split("\n");
   var n = appletsName.length;
   var columns = 5;
