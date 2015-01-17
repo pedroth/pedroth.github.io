@@ -22,10 +22,17 @@ function buildThumbnail(name,x,y,w,h) {
   var link = document.createElement('a');
   link.setAttribute('href',name + "/" + name + ".html");
   var img = document.createElement('img');
-  img.setAttribute("src",name + "/" + name + ".png");
+  if(name === "GraphXY" || name === "CubeChaos") {
+  	img.setAttribute("src",name + "/" + name + ".gif");
+  } else {
+  	img.setAttribute("src",name + "/" + name + ".png");	
+  }
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
+  var nameHead = document.createElement('h2');
+  nameHead.setAttribute('innerHtml',name);
+  link.appendChild(nameHead);
   mainSection.appendChild(link);
 }
 
