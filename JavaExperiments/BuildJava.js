@@ -27,17 +27,18 @@ function buildThumbnail(name,x,y,w,h) {
   } else {
   	img.setAttribute("src",name + "/" + name + ".png");	
   }
+  //img.setAttribute("src",name + "/" + name + ".png");	
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
-  var nameHead = document.createElement('h2');
-  nameHead.setAttribute('innerHtml',name);
-  link.appendChild(nameHead);
+  //var nameHead = document.createElement('h2');
+  //nameHead.setAttribute('innerHtml',name);
+  //link.appendChild(nameHead);
   mainSection.appendChild(link);
 }
 
 function build() {
-  var text = LoadFile("../tools/AppletNames.txt");//"BrownianMotion\n" + "CellularAutomaton\n" + "CubeChaos\n" + "GraphXY\n" + "ImplicitSurface\n" + "LinesSurfaces\n" + "PDE\n" + "RandomCurve\n" + "SimplePhysics\n" + "SimpleRobot\n" + "TetraZBuffer";
+  var text = /*LoadFile("../tools/AppletNames.txt");*/"BrownianMotion\n" + "CellularAutomaton\n" + "CubeChaos\n" + "GraphXY\n" + "ImplicitSurface\n" + "LinesSurfaces\n" + "PDE\n" + "RandomCurve\n" + "SimplePhysics\n" + "SimpleRobot\n" + "TetraZBuffer";
   var appletsName = text.split("\n");
   var n = appletsName.length;
   var columns = 5;
