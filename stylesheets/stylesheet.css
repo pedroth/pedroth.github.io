@@ -277,6 +277,13 @@ Full-Width Styles
 }
 
 .myDiv {
+  margin: 0;
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
 }
 
 #forkme_banner {

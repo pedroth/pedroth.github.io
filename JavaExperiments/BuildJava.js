@@ -37,7 +37,7 @@ function buildThumbnail(name,x,y,w,h) {
   img.setAttribute("height",h);
   link.appendChild(img);
   div.appendChild(link);
-  //div.appendChild(nameH);
+  div.appendChild(nameH);
   mainSection.appendChild(div);
 }
 
