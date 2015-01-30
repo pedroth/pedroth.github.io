@@ -18,7 +18,7 @@ function LoadFile(file) {
 * w,h width and height
 */
 function buildThumbnail(name,x,y,w,h) {
-  var mainSection = document.getElementById("main_content");
+  var megaDiv = document.getElementById("megaDiv");
   /* construction of box */
   var div = document.createElement('div');
   div.setAttribute('class', "myDiv");
@@ -38,7 +38,7 @@ function buildThumbnail(name,x,y,w,h) {
   link.appendChild(img);
   div.appendChild(link);
   div.appendChild(nameH);
-  mainSection.appendChild(div);
+  megaDiv.appendChild(div);
 }
 
 function build() {
@@ -48,6 +48,11 @@ function build() {
   var columns = 5;
   var step = 200;
   var rows = n / columns;
+  var megaDiv = document.createElement('div');
+  megaDiv.setAttribute("id","megaDiv");
+  megaDiv.setAttribute("class", "megaDiv");
+  var mainSection = document.getElementById("main_content");
+  mainSection.appendChild(megaDiv);
   for (var i = 0; i < appletsName.length; i++) {
     /*no need for x, and y*/
     var x = step * (i % columns);

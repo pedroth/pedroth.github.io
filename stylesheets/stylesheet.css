@@ -281,6 +281,10 @@ Full-Width Styles
   float: left;
 }
 
+.megaDiv {
+  margin: 0 auto;
+}
+
 #forkme_banner {
   display: block;
   position: absolute;
