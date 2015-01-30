@@ -266,7 +266,7 @@ Full-Width Styles
 *******************************************************************************/
 
 .outer {
-  width: 50%;
+  width: 100%;
 }
 
 .inner {
@@ -278,6 +278,7 @@ Full-Width Styles
 
 .myDiv {
   
+  margin: 0 auto;
 }
 
 #forkme_banner {
