@@ -272,8 +272,8 @@ Full-Width Styles
 .inner {
   position: relative;
   max-width: 640px;
-  padding: 20px 10px;
-  margin: 0;
+  padding: 0px 10px;
+  margin: 0 auto;
 }
 
 .myDiv {
