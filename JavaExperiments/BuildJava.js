@@ -19,6 +19,11 @@ function LoadFile(file) {
 */
 function buildThumbnail(name,x,y,w,h) {
   var mainSection = document.getElementById("main_content");
+  /* construction of box */
+  var div = document.createElement('div');
+  div.setAttribute('class', "myDiv");
+  var nameH = document.createElement('h3');
+  nameH.innerHTML = "" + name;
   var link = document.createElement('a');
   link.setAttribute('href',name + "/" + name + ".html");
   var img = document.createElement('img');
@@ -27,14 +32,12 @@ function buildThumbnail(name,x,y,w,h) {
   } else {
   	img.setAttribute("src",name + "/" + name + ".png");	
   }
-  //img.setAttribute("src",name + "/" + name + ".png");	
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
-  //var nameHead = document.createElement('h2');
-  //nameHead.setAttribute('innerHtml',name);
-  //link.appendChild(nameHead);
-  mainSection.appendChild(link);
+  div.appendChild(link);
+  div.appendChild(nameH);
+  mainSection.appendChild(div);
 }
 
 function build() {
