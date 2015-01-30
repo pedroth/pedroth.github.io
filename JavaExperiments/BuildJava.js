@@ -22,6 +22,7 @@ function buildThumbnail(name,x,y,w,h) {
   /* construction of box */
   var div = document.createElement('div');
   div.setAttribute('class', "myDiv");
+  div.setAttribute('style', "width:" + w + "px;height:" + (h + 50) + "px;");
   var nameH = document.createElement('h3');
   nameH.innerHTML = "" + name;
   var link = document.createElement('a');
