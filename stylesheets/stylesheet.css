@@ -277,11 +277,7 @@ Full-Width Styles
 }
 
 .myDiv {
-  margin-right: 0;
-  margin-left: 0;
-  margin-width: 0;
-  margin-height: 0;
-  border-collapse: collapse;
+  float: left;
 }
 
 #forkme_banner {
