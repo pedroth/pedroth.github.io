@@ -26,11 +26,7 @@ function buildThumbnail(name,x,y,w,h) {
   var link = document.createElement('a');
   link.setAttribute('href',name + "/" + name + ".html");
   var img = document.createElement('img');
-  if(name === "GraphXY" || name === "CubeChaos") {
-  	img.setAttribute("src",name + "/" + name + ".gif");
-  } else {
-  	img.setAttribute("src",name + "/" + name + ".png");	
-  }
+  img.setAttribute("src",name + "/" + name + ".gif");
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
