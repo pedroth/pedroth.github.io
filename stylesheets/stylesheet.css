@@ -293,15 +293,6 @@ ul.rig li {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   width: 30.83%;
-  height: 100%;
-}
-ul.rig li img {
-  max-width: 100%;
-  height: auto;
-  margin: 0 0 10px;
-}
-ul.rig li h3 {
-  margin: 0 0 5px;
 }
 
 #forkme_banner {
