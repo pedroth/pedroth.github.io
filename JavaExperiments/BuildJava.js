@@ -31,8 +31,8 @@ function buildThumbnail(name,x,y,w,h) {
   } else {
   	img.setAttribute("src",name + "/" + name + ".png");	
   }
-  img.setAttribute("width",w);
-  img.setAttribute("height",h);
+  //img.setAttribute("width",w);
+  //img.setAttribute("height",h);
   link.appendChild(img);
   div.appendChild(link);
   div.appendChild(nameH);
