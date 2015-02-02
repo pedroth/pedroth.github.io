@@ -49,5 +49,5 @@ function build(address) {
   }
 }
 
-var address = document.getElementById("input");
-build(address.value);
+var address = document.getElementById("input").value;
+build(address);
