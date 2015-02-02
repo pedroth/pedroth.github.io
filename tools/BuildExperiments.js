@@ -17,7 +17,7 @@ function LoadFile(file) {
 * x,y position
 * w,h width and height
 */
-function buildThumbnail(name,x,y,w,h) {
+function buildThumbnail(name,w,h) {
   var megaDiv = document.getElementById("megaDiv");
   /* construction of box */
   var div = document.createElement('li');
@@ -39,13 +39,14 @@ function build(address) {
   var text = LoadFile(address);
   var appsName = text.split("\n");
   var megaDiv = document.createElement('ul');
+  var step = 200;
   megaDiv.setAttribute("id","megaDiv");
   megaDiv.setAttribute("class", "rig");
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(megaDiv);
   for (var i = 0; i < appsName.length; i++) {
     var name = appsName[i].split(" ");
-    buildThumbnail(name[0],x,y,step,step);
+    buildThumbnail(name[0],step,step);
   }
 }
 
