@@ -34,8 +34,8 @@ function buildThumbnail(name,megaDiv,w,h) {
 }
 
 function build() {
-  var text1 = LoadFile("../tools/AppletNames.txt");
-  var text2 = LoadFile("../tools/AppJs.txt");
+  var text1 = LoadFile("tools/AppletNames.txt");
+  var text2 = LoadFile("tools/AppJs.txt");
 
   var appletsName = text1.split("\n");
   var appJsNames = text2.split("\n");
