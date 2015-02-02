@@ -282,6 +282,7 @@ ul.rig {
 }
 ul.rig li {
   display: inline-block;
+  border: 1px solid #ddd;
   padding: 0px;
   font-size: 16px;
   font-size: 1rem;
