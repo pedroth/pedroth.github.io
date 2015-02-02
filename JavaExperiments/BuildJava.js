@@ -51,7 +51,8 @@ function build() {
     /*no need for x, and y*/
     var x = step * (i % columns);
     var y = step * (Math.floor(i / columns));
-    buildThumbnail(appletsName[i],x,y,step,step);
+    var name = appletsName[i].split("\s");
+    buildThumbnail(name[0],x,y,step,step);
   }
 }
 
