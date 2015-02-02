@@ -49,4 +49,7 @@ function build(address) {
   }
 }
 
-build(document.getElementById("input").value);
+document.onload = function() {
+  build(document.getElementById("input").value); 
+};
+
