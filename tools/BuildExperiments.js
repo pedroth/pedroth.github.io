@@ -49,7 +49,6 @@ function build(address) {
   }
 }
 
-document.onload = function() {
-  build(document.getElementById("input").value); 
-};
-
+$(document).ready(function(){
+build(document.getElementById("input").value); 
+)};
