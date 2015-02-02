@@ -14,10 +14,9 @@ function LoadFile(file) {
 }
 
 /**
-* x,y position
 * w,h width and height
 */
-function buildThumbnail(name,,megaDiv,w,h) {
+function buildThumbnail(name,megaDiv,w,h) {
   /* construction of box */
   var div = document.createElement('div');
   var nameH = document.createElement('h3');
