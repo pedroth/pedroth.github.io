@@ -43,7 +43,7 @@ function build(address) {
   megaDiv.setAttribute("class", "rig");
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(megaDiv);
-  for (var i = 0; i < appsName; i++) {
+  for (var i = 0; i < appsName.length; i++) {
     var name = appsName[i].split(" ");
     buildThumbnail(name[0],x,y,step,step);
   }
