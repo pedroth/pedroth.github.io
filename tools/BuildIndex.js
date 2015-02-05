@@ -51,7 +51,7 @@ function build() {
   
   var recentDiv = document.createElement('div');
   var h2Latest = document.createElement('h2');
-  h2.innerHTML = "Recent Experiments";
+  h2Latest.innerHTML = "Recent Experiments";
   recentDiv.appendChild(h2);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(recentDiv);
