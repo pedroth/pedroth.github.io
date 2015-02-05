@@ -43,7 +43,7 @@ function build() {
   var apps = [];
   for (var i = 0; i < appletsName.length + appJsNames.length; i++) {
     if(i < appletsName.length) {
-      apps[i] = AppletNames[i].split(" ");
+      apps[i] = appletsName[i].split(" ");
     } else {
       apps[i] = appJsNames[i - appletsName.length].split(" ");
     }
@@ -61,8 +61,6 @@ function build() {
   h2Random.innerHTML = "Random Experiments";
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(randomDiv);
-
-
 }
 
 build();
