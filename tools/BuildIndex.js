@@ -117,7 +117,7 @@ function build() {
     apps[i][1] = acm;
   }
 
-  sort(apps, key);
+  //sort(apps, key);
 
   var recentDiv = document.createElement('div');
   var h2Latest = document.createElement('h2');
