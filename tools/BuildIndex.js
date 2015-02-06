@@ -146,7 +146,7 @@ function build() {
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(randomDiv);
   for (var i = 0; i < numOfApps; i++) {
-    var r = i + Math.floor((numOfApps - i) * Math.random());
+    var r = i + Math.floor((apps.length - i - 1) * Math.random());
     buildThumbnail(apps[r][0],randomDiv,imgW,imgW,apps[r][2]);
   }
 }
