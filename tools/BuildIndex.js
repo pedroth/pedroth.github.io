@@ -100,7 +100,9 @@ function build() {
 
   var appletsName = text1.split("\n");
   var appJsNames = text2.split("\n");
-
+  /**
+  * retrive apps from files
+  */
   var apps = [];
   for (var i = 0; i < appletsName.length + appJsNames.length; i++) {
     if(i < appletsName.length) {
@@ -111,7 +113,9 @@ function build() {
       apps[i][2] = "Js";
     }
   }
-  
+  /**
+  * process dates from the apps
+  */
   for (var i = 0; i < apps.length; i++) {
     var dateStrs = apps[i][1].split("/");
     var acm = 0; 
@@ -145,10 +149,15 @@ function build() {
   randomDiv.appendChild(h2Random);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(randomDiv);
+  
+  for (var i = 0; i < apps.length; i++) {
+    apps[i][1] = Math.floor(apps.length * Math.random());
+  };
+
+  sort(apps, key);
+  
   for (var i = 0; i < numOfApps; i++) {
-    var r = i + Math.floor((apps.length - i - 1) * Math.random());
-    console.log(r);
-    buildThumbnail(apps[r][0],randomDiv,imgW,imgW,apps[r][2]);
+    buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
   }
 }
 
