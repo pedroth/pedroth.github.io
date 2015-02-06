@@ -16,15 +16,15 @@ function LoadFile(file) {
 /**
 * w,h width and height
 */
-function buildThumbnail(name,megaDiv,w,h) {
+function buildThumbnail(name,megaDiv,w,h,language) {
   /* construction of box */
   var div = document.createElement('div');
   var nameH = document.createElement('h3');
   nameH.innerHTML = "" + name;
   var link = document.createElement('a');
-  link.setAttribute('href',name + "/" + name + ".html");
+  link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
   var img = document.createElement('img');
-  img.setAttribute("src",name + "/" + name + ".gif");
+  img.setAttribute("src",language + "Experiments/"name + "/" + name + ".gif");
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
@@ -105,8 +105,10 @@ function build() {
   for (var i = 0; i < appletsName.length + appJsNames.length; i++) {
     if(i < appletsName.length) {
       apps[i] = appletsName[i].split(" ");
+      apps[i][2] = "Java";
     } else {
       apps[i] = appJsNames[i - appletsName.length].split(" ");
+      apps[i][2] = "Js";
     }
   }
   
@@ -128,7 +130,7 @@ function build() {
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(recentDiv);
   for (var i = 0; i < numOfApps; i++) {
-    buildThumbnail(apps[i][0],recentDiv,imgW,imgW);
+    buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
   }
   var randomDiv = document.createElement('div');
   var h2Random = document.createElement("h2");
