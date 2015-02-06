@@ -24,7 +24,7 @@ function buildThumbnail(name,megaDiv,w,h,language) {
   var link = document.createElement('a');
   link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
   var img = document.createElement('img');
-  img.setAttribute("src",language + "Experiments/"name + "/" + name + ".gif");
+  img.setAttribute("src",language + "Experiments/" + name + "/" + name + ".gif");
   img.setAttribute("width",w);
   img.setAttribute("height",h);
   link.appendChild(img);
