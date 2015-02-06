@@ -88,6 +88,10 @@ function powInt(x,i) {
   }
 }
 
+function key(apps,i) {
+    return apps[i][1];
+};
+
 function build() {
   var text1 = LoadFile("tools/AppletNames.txt");
   var text2 = LoadFile("tools/AppJs.txt");
@@ -113,10 +117,7 @@ function build() {
     apps[i][1] = acm;
   }
 
-  sort(apps, function key(apps,i) {
-                apps[i][1];
-            }
-  );
+  sort(apps, key);
 
   var recentDiv = document.createElement('div');
   var h2Latest = document.createElement('h2');
