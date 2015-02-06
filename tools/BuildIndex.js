@@ -122,7 +122,9 @@ function build() {
   }
 
   sort(apps, key);
-
+  /**
+  * Recent
+  */
   var recentDiv = document.createElement('ul');
   recentDiv.setAttribute("class", "rig");
   var h2Latest = document.createElement('h2');
@@ -130,9 +132,12 @@ function build() {
   recentDiv.appendChild(h2Latest);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(recentDiv);
-  for (var i = 0; i < numOfApps; i++) {
+  for (var i = apps.length; i >= (apps.length - numOfApps); i--) {
     buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
   }
+  /**
+  * Random
+  **/
   var randomDiv = document.createElement('ul');
   randomDiv.setAttribute("class", "rig");
   var h2Random = document.createElement("h2");
@@ -140,6 +145,10 @@ function build() {
   randomDiv.appendChild(h2Random);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(randomDiv);
+  for (var i = 0; i < numOfApps; i++) {
+    var r = i + Math.floor((numOfApps - i) * Math.random());
+    buildThumbnail(apps[r][0],recentDiv,imgW,imgW,apps[r][2]);
+  }
 }
 
 build();
