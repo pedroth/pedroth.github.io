@@ -115,7 +115,7 @@ function build() {
 
   sort(apps, function key(apps,i) {
                 apps[i][1];
-            };
+            }
   );
 
   var recentDiv = document.createElement('div');
