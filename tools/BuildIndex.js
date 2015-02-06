@@ -93,6 +93,8 @@ function key(apps,i) {
 };
 
 function build() {
+  var numOfApps = 5;
+  var imgW = 200;
   var text1 = LoadFile("tools/AppletNames.txt");
   var text2 = LoadFile("tools/AppJs.txt");
 
@@ -125,10 +127,13 @@ function build() {
   recentDiv.appendChild(h2Latest);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(recentDiv);
-
+  for (var i = 0; i < numOfApps; i++) {
+    buildThumbnail(apps[i][0],recentDiv,imgW,imgW);
+  }
   var randomDiv = document.createElement('div');
   var h2Random = document.createElement("h2");
   h2Random.innerHTML = "Random Experiments";
+  randomDiv.appendChild(h2Random);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(randomDiv);
 }
