@@ -53,7 +53,7 @@ function sort(v,key) {
     * partition
     */
     if(low < high) {
-      var pivot = Math.floor(n * Math.random());
+      var pivot = low + Math.floor((high - low) * Math.random());
       var pvalue = key(v,pivot);
       swap(v,pivot,high);
       var j = 0;
