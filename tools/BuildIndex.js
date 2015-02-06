@@ -132,7 +132,7 @@ function build() {
   recentDiv.appendChild(h2Latest);
   var mainSection = document.getElementById("main_content");
   mainSection.appendChild(recentDiv);
-  for (var i = apps.length; i >= (apps.length - numOfApps); i--) {
+  for (var i = apps.length - 1; i >= (apps.length - numOfApps); i--) {
     buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
   }
   /**
