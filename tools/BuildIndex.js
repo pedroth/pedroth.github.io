@@ -157,7 +157,7 @@ function build() {
   sort(apps, key);
   
   for (var i = 0; i < numOfApps; i++) {
-    buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
+    buildThumbnail(apps[i][0],randomDiv,imgW,imgW,apps[i][2]);
   }
 }
 
