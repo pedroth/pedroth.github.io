@@ -18,9 +18,9 @@ function LoadFile(file) {
 */
 function buildThumbnail(name,megaDiv,w,h,language) {
   /* construction of box */
-  var div = document.createElement('div');
+  var div = document.createElement('li');
   var nameH = document.createElement('h3');
-  nameH.innerHTML = "" + name;
+  nameH.innerHTML = "<" + language + ">" + name;
   var link = document.createElement('a');
   link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
   var img = document.createElement('img');
@@ -123,7 +123,8 @@ function build() {
 
   sort(apps, key);
 
-  var recentDiv = document.createElement('div');
+  var recentDiv = document.createElement('ul');
+  recentDiv.setAttribute("class", "rig");
   var h2Latest = document.createElement('h2');
   h2Latest.innerHTML = "Recent Experiments";
   recentDiv.appendChild(h2Latest);
@@ -132,7 +133,8 @@ function build() {
   for (var i = 0; i < numOfApps; i++) {
     buildThumbnail(apps[i][0],recentDiv,imgW,imgW,apps[i][2]);
   }
-  var randomDiv = document.createElement('div');
+  var randomDiv = document.createElement('ul');
+  randomDiv.setAttribute("class", "rig");
   var h2Random = document.createElement("h2");
   h2Random.innerHTML = "Random Experiments";
   randomDiv.appendChild(h2Random);
