@@ -46,7 +46,7 @@ function sort(v,key) {
   var stack = [];
   stack.push(0);
   stack.push(n - 1);
-  while(stack.length > 0) {
+  while(stack.length > 0 ) {
     var high = stack.pop();
     var low = stack.pop();
     /*
@@ -57,17 +57,17 @@ function sort(v,key) {
       var pvalue = key(v,pivot);
       swap(v,pivot,high);
       var j = 0;
-      for (var i = 0; i < high-1; i++) {
+      for (var i = 0; i < high; i++) {
         if(key(v,i) <= pvalue) {
           swap(v,i,j);
           j++;
         }
-        swap(v,j,high);
-        stack.push(low);
-        stack.push(j-1);
-        stack.push(j+1);
-        stack.push(high);
       }
+      swap(v,j,high);
+      stack.push(low);
+      stack.push(j-1);
+      stack.push(j+1);
+      stack.push(high);
     }
   }
 }
