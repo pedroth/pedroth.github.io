@@ -119,8 +119,10 @@ function build() {
   for (var i = 0; i < apps.length; i++) {
     var dateStrs = apps[i][1].split("/");
     var acm = 0; 
+    var ide = 1;
     for (var j = 0; j < dateStrs.length; j++) {
-      acm += parseFloat(dateStrs[j]) * powInt(10, 2 * j);
+      acm += parseFloat(dateStrs[j]) * ide;
+      ide *= 100;
     }
     apps[i][1] = acm;
   }
