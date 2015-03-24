@@ -275,7 +275,7 @@ Full-Width Styles
 }
 
 .noBorder {
-  border:none;
+  border-collapse: collapse;
 }
 
 ul.rig {
