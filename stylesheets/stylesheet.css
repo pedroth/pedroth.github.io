@@ -274,6 +274,10 @@ Full-Width Styles
   margin: 0 auto;
 }
 
+.noBorder {
+  border:none;
+}
+
 ul.rig {
   list-style: none;
   font-size: 0px;

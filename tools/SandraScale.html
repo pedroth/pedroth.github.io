@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="VisualExperiments : ">
+	<script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+</script>
+<script src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://pedroth.github.io/visualExperiments/stylesheets/stylesheet.css">
+
+    <title>Sandra Scales</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <h1 id="project_title">Sandra Scales</h1>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+      <!--Special-->
+      <table class = "noBorder">
+      	<tr>
+      		<td><label> Scale in :</label></td>
+      		<td><input type = "number" id = "scaleIn" value = "100"\></td>
+      		<td><input type = "button" value = "<>" onclick = "swap()"\></td>
+      		<td><label>Scale out:</label></td>
+      		<td><input type = "number" id = "scaleOut" value = "200"\></td>
+      	</tr>
+      	<tr>
+		    <td><label>Measure :</label></td>
+      		<td><input type = "number" id = "measure" value = ""\ oninput="scale()"></td>	
+      	</tr>
+      </table>
+
+       <script type="text/javascript">
+       function swap() {
+       	var input = document.getElementById("scaleIn");
+       	var output = document.getElementById("scaleOut");
+       	var temp = input.value;
+       	input.value = output.value;
+       	output.value = temp;
+       }
+       </script>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+      </footer>
+    </div>
+  </body>
+</html>
