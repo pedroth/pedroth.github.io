@@ -38,18 +38,18 @@
       <!--Special-->
       <table class = "noBorder">
       	<tr>
-      		<td><label> Scale in :</label></td>
-      		<td><input type = "number" id = "scaleIn" value = "100"\></td>
-      		<td><input type = "button" value = "<>" onclick = "swap()"\></td>
-      		<td><label>Scale out:</label></td>
-      		<td><input type = "number" id = "scaleOut" value = "200"\></td>
+      		<td class = "noBorder"><label> Scale in :</label></td>
+      		<td class = "noBorder"><input type = "number" id = "scaleIn" value = "100"\></td>
+      		<td class = "noBorder"><input type = "button" value = "<>" onclick = "swap()"\></td>
+      		<td class = "noBorder"><label>Scale out:</label></td>
+      		<td class = "noBorder"><input type = "number" id = "scaleOut" value = "200"\></td>
       	</tr>
       	<tr>
-		    <td><label>Measure :</label></td>
-      		<td><input type = "number" id = "measure" value = ""\ oninput="scale()"></td>	
+		    <td class = "noBorder"><label>Measure :</label></td>
+      		<td class = "noBorder"><input type = "number" id = "measure" value = ""\ oninput="scale()"></td>
+      		<td class = "noBorder"><p  id = "output" ></p></td>
       	</tr>
       </table>
-
        <script type="text/javascript">
        function swap() {
        	var input = document.getElementById("scaleIn");
@@ -57,6 +57,15 @@
        	var temp = input.value;
        	input.value = output.value;
        	output.value = temp;
+       	scale();
+       }
+
+       function scale(){
+       	var input = document.getElementById("scaleIn").value;
+       	var output = document.getElementById("scaleOut").value;
+       	var measure = document.getElementById("measure").value;
+       	document.getElementById("output").innerHTML = "$" + measure * (input / output) + "$";
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("output")]);
        }
        </script>
 
