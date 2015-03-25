@@ -276,6 +276,7 @@ Full-Width Styles
 
 .noBorder {
   border: none;
+  margin-bottom: 20px;
   text-align: left;
 }
 
