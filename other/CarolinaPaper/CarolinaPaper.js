@@ -154,8 +154,9 @@ function keyDown(e) {
 }
 
 function mouseDown(e) {
-	mouse[0] = e.clientY - canvas.offsetTop;
-	mouse[1] = e.clientX - canvas.offsetLeft;
+	var rect = canvas.getBoundingClientRect();
+	mouse[0] = e.clientY - rect.top;
+	mouse[1] = e.clientX - rect.left;
 	down = true;
 }
 
@@ -164,14 +165,15 @@ function mouseUp() {
 }
 
 function mouseMove(e) {
-	var mx = (e.clientX - canvas.offsetLeft), my = (e.clientY - canvas.offsetTop);
+	var rect = canvas.getBoundingClientRect();
+	var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
 	if (!down || mx == mouse[0] && my == mouse[1])
 		return;
 	mouse[0] = my;
 	mouse[1] = mx;
 };
 
-function drawLine(x1, x2, data, r, g, b) {
+function drawLine(x1, x2, data, color) {
 	
 	x1 = floor(x1);
 	x2 = floor(x2);
@@ -190,9 +192,9 @@ function drawLine(x1, x2, data, r, g, b) {
 	var oldi = zeros();
 	var fmin = Number.MAX_VALUE;
 
-	data[4 * height * x[0] + 4 * x[1]] = r;//Math.floor(clamp(r * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 1] = g;//Math.floor(clamp(g * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 2] = b;//Math.floor(clamp(b * (1 - res),0,1));
+	data[4 * height * x[0] + 4 * x[1]] = color[0];
+	data[4 * height * x[0] + 4 * x[1] + 1] = color[1];
+	data[4 * height * x[0] + 4 * x[1] + 2] = color[2];
 
 	while (x[0] !== x2[0] || x[1] !== x2[1]) {
 		
@@ -223,9 +225,9 @@ function drawLine(x1, x2, data, r, g, b) {
 
 		x = add(x, imin);
 
-		data[4 * height * x[0] + 4 * x[1]    ] = r;
-		data[4 * height * x[0] + 4 * x[1] + 1] = g;
-		data[4 * height * x[0] + 4 * x[1] + 2] = b;
+		data[4 * height * x[0] + 4 * x[1]    ] = color[0];
+		data[4 * height * x[0] + 4 * x[1] + 1] = color[1];
+		data[4 * height * x[0] + 4 * x[1] + 2] = color[2];
 	}
 }
 
@@ -249,37 +251,51 @@ function updateGraph(dt) {
 	}
 }
 
-function drawGraph(data) {
+function drawGraph(ctx) {
+	var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	var data = image.data;
 	for(var i = 0; i < graphs.length; i++) {
 		for(var j = 0; j < graphs[i].length; j++) {
 			for(var k = 0; k < graphs[i][j].length; k++) {
-				drawLine(graphsPos[i][j], graphsPos[i][graphs[i][j][k]],data,255,255,255);
+				drawLine(graphsPos[i][j], graphsPos[i][graphs[i][j][k]],data,[255,255,255]);
 			}
 		}
 	}
-	drawLine([height/2,width], [height/2,width + 100],data, 255,0,0);
+	ctx.putImageData(image, 0, 0);
+}
+
+function drawText(ctx) {
+	for(var i = 0; i < graphs.length; i++) {
+		for(var j = 0; j < graphs[i].length; j++) {
+			for(var k = 0; k < graphs[i][j].length; k++) {
+				ctx.font = '30pt Calibri';
+     			ctx.textAlign = 'center';
+      			ctx.fillStyle = 'blue';
+				ctx.fillText('Hello World!', graphsPos[i][graphs[i][j][k]][1], graphsPos[i][graphs[i][j][k]][0]);
+			}
+		}
+	}
 }
 
 function draw() {
 	var dt = 1E-3 * (new Date().getTime() - startTime);
 	startTime = new Date().getTime();
-	var image, data;
 
 	ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-	image = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	data = image.data;
 	/**
 	 * drawing and animation
 	 **/
 	 updateGraph(dt);
-	 drawGraph(data);
+	 drawGraph(ctx);
+	 drawText(ctx);
 	/**
 	*
 	**/
-	ctx.putImageData(image, 0, 0);
+	ctx.fillStyle = "white";
+  	ctx.font = "bold 16px Arial";
+	ctx.fillText("x : " + mouse[0] +  " y: " + mouse[1], mouse[1], mouse[0]);
 	requestAnimationFrame(draw, canvas);
 }
 
