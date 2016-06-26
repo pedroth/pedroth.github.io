@@ -21,9 +21,11 @@ function getDataFromImage(img) {
 		canvasAux.width = img.width;
 		canvasAux.height = img.height;
 		var contextAux = canvasAux.getContext('2d');
-        ctx.clearRect(0, 0, img.width, img.height);
-        ctx.drawImage(img, 0 ,0);
-        return ctx.getImageData(0, 0, img.width, img.height);
+		contextAux.fillStyle = 'rgba(0, 0, 0, 0.0)';
+		contextAux.globalCompositeOperation = 'source-over';
+		contextAux.fillRect(0, 0, canvas.width, canvas.height);
+        contextAux.drawImage(img, 0 ,0);
+        return contextAux.getImageData(0, 0, img.width, img.height);
 }
 
 function loadImage(src) {
