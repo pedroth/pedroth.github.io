@@ -264,15 +264,15 @@ function drawLine(x1, x2, data, rgb) {
 * x is a vector
 * size is a vector where x-coord is width and y-coord is height
 */
-function drawImageData(dataIn, dataOut, x, size) {
+function drawImageData(dataIn, dataOut, x, sizeOut) {
 	var imin = Math.max(0,x[0]);
 	var jmin = Math.max(0,x[1]);
-	var imax = Math.min(height, x[0] + size[1]);
-	var jmax = Math.min(width , x[1] + size[0]);
+	var imax = Math.min(height, x[0] + sizeOut[1]);
+	var jmax = Math.min(width , x[1] + sizeOut[0]);
 	for (var i = imin; i <= imax; i++) {
 		for(var j = jmin; j <= jmax; j++) {
 			var point = [i,j];
-			drawPxl(point, dataIn, getPxlData(point, dataOut, size));
+			drawPxl(point, dataIn, getPxlData(point, dataOut, sizeOut));
 		}
 	}
 }
