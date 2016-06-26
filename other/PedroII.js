@@ -298,7 +298,7 @@ function draw() {
 	var animationFrame = animationImg[animationIndex];
 	console.log("t: " + t + "\t" + "index: " + animationIndex + "\t" + "isReady:" + animationFrame.isReady);
 	if(animationFrame.isReady) {
-		drawImageData(data, animationFrame.data, mouse, [animationFrame.width, animationFrame.height]);
+		//drawImageData(data, animationFrame.data, mouse, [animationFrame.width, animationFrame.height]);
 	}
 	/**
 	*
