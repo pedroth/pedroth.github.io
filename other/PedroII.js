@@ -280,7 +280,7 @@ function drawImageData(dataIn, dataOut, x, sizeOut) {
 	for (var i = imin; i <= imax; i++) {
 		for(var j = jmin; j <= jmax; j++) {
 			var point = [i,j];
-			drawPxlD(point, dataIn, getPxlData(point, dataOut, sizeOut));
+			drawPxl(point, dataIn, getPxlData(point, dataOut, sizeOut));
 		}
 	}
 }
