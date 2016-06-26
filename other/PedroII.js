@@ -23,7 +23,7 @@ function getDataFromImage(img) {
 		var contextAux = canvasAux.getContext('2d');
         ctx.clearRect(0, 0, img.width, img.height);
         ctx.drawImage(img, 0 ,0);
-        return ctx.getImageData(0, 0, img.width, img.height);
+        return ctx.getImageData(0, 0, img.width, img.height).data;
 }
 
 function loadImage(src) {
