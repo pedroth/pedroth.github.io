@@ -284,7 +284,7 @@ function draw() {
 
 	var image, data;
 
-	ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+	ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	image = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -292,7 +292,7 @@ function draw() {
 	/**
 	 * drawing and animation
 	 **/
-	drawLine([0,0], mouse, data, [255,0,0,1]);
+	drawLine([0,0], mouse, data, [255,0,0,0]);
 	var t = (time % (numOfFrames / fps));
 	var animationIndex = Math.floor(fps * t);
 	var animationFrame = animationImg[animationIndex];
