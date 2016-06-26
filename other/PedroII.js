@@ -292,7 +292,7 @@ function draw() {
 	/**
 	 * drawing and animation
 	 **/
-	drawLine([0,0], mouse, data, [255,0,0,0]);
+	drawLine([0,0], mouse, data, [255,0,0,1]);
 	var t = (time % (numOfFrames / fps));
 	var animationIndex = Math.floor(fps * t);
 	var animationFrame = animationImg[animationIndex];
