@@ -191,7 +191,7 @@ function mouseMove(e) {
 */
 function getPxlData(x, data, size) {
 	var rgba = [];
-	var index = 4 * (size[1] *  x[0] + x[1]);
+	var index = 4 * (size[1] *  x[1] + x[0]);
 	rgba[0] = data[index    ];
 	rgba[1] = data[index + 1];
 	rgba[2] = data[index + 2];
@@ -286,7 +286,7 @@ function draw() {
 
 	var image, data;
 
-	ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+	ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	image = ctx.getImageData(0, 0, canvas.width, canvas.height);
