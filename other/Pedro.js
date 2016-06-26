@@ -167,7 +167,15 @@ function mouseMove(e) {
 	mouse[1] = mx;
 };
 
-function drawLine(x1, x2, data, r, g, b) {
+function drawPxl(x, data, rgb) {
+	var index = 4 * (height *  x[0] + x[1]);
+	data[index    ] = rgb[0];
+	data[index + 1] = rgb[1];
+	data[index + 2] = rgb[2];
+	data[index + 3] = rgb[3];
+}
+
+function drawLine(x1, x2, data, rgb) {
 	
 	x1 = floor(x1);
 	x2 = floor(x2);
@@ -186,9 +194,7 @@ function drawLine(x1, x2, data, r, g, b) {
 	var oldi = zeros();
 	var fmin = Number.MAX_VALUE;
 
-	data[4 * height * x[0] + 4 * x[1]] = r;//Math.floor(clamp(r * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 1] = g;//Math.floor(clamp(g * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 2] = b;//Math.floor(clamp(b * (1 - res),0,1));
+	drawPxl(x,data,rgb)
 
 	while (x[0] !== x2[0] || x[1] !== x2[1]) {
 		
@@ -218,10 +224,7 @@ function drawLine(x1, x2, data, r, g, b) {
 		oldi[1] = -imin[1];
 
 		x = add(x, imin);
-
-		data[4 * height * x[0] + 4 * x[1]    ] = r;
-		data[4 * height * x[0] + 4 * x[1] + 1] = g;
-		data[4 * height * x[0] + 4 * x[1] + 2] = b;
+		drawPxl(x,data,rgb)
 	}
 }
 
@@ -249,11 +252,11 @@ function drawGraph(data) {
 	for(var i = 0; i < graphs.length; i++) {
 		for(var j = 0; j < graphs[i].length; j++) {
 			for(var k = 0; k < graphs[i][j].length; k++) {
-				drawLine(graphsPos[i][j], graphsPos[i][graphs[i][j][k]],data,255,255,255);
+				drawLine(graphsPos[i][j], graphsPos[i][graphs[i][j][k]],data,[255,255,255,255]);
 			}
 		}
 	}
-	drawLine([height/2,width], [height/2,width + 100],data, 255,0,0);
+	drawLine([height/2,width], [height/2,width + 100],data, [255,0,0,255]);
 }
 
 function draw() {
@@ -261,7 +264,7 @@ function draw() {
 	startTime = new Date().getTime();
 	var image, data;
 
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 

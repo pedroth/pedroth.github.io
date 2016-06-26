@@ -207,6 +207,14 @@ function drawPxl(x, data, rgb) {
 	data[index + 3] = rgb[3];
 }
 
+function drawPxlD(x,data,rgb) {
+	var index = 4 * (height *  x[0] + x[1]);
+	data[index    ] = Math.floor(255 * rgb[0]);
+	data[index + 1] = Math.floor(255 * rgb[1]);
+	data[index + 2] = Math.floor(255 * rgb[2]);
+	data[index + 3] = Math.floor(255 * rgb[3]);
+}
+
 function drawLine(x1, x2, data, rgb) {
 	
 	x1 = floor(x1);
@@ -272,7 +280,7 @@ function drawImageData(dataIn, dataOut, x, sizeOut) {
 	for (var i = imin; i <= imax; i++) {
 		for(var j = jmin; j <= jmax; j++) {
 			var point = [i,j];
-			drawPxl(point, dataIn, getPxlData(point, dataOut, sizeOut));
+			drawPxlD(point, dataIn, getPxlData(point, dataOut, sizeOut));
 		}
 	}
 }
@@ -292,13 +300,13 @@ function draw() {
 	/**
 	 * drawing and animation
 	 **/
-	drawLine([0,0], mouse, data, [255,0,0,1]);
+	drawLine([0,0], mouse, data, [255,0,0,255]);
 	var t = (time % (numOfFrames / fps));
 	var animationIndex = Math.floor(fps * t);
 	var animationFrame = animationImg[animationIndex];
 	console.log("t: " + t + "\t" + "index: " + animationIndex + "\t" + "isReady:" + animationFrame.isReady);
 	if(animationFrame.isReady) {
-		//drawImageData(data, animationFrame.data, mouse, [animationFrame.width, animationFrame.height]);
+		drawImageData(data, animationFrame.data, mouse, [animationFrame.width, animationFrame.height]);
 	}
 	/**
 	*
