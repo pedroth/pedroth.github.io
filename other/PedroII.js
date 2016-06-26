@@ -284,7 +284,7 @@ function draw() {
 
 	var image, data;
 
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	image = ctx.getImageData(0, 0, canvas.width, canvas.height);
