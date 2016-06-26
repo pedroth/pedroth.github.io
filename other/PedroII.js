@@ -5,19 +5,39 @@
 var canvas = document.getElementById('c');
 var ctx = canvas.getContext('2d');
 var down = false;
+var animationImg = [];
 
 var startTime;
 var width, height;
-var graphs = [];
-graphs[0] = [[1], [0,2,4], [1,3], [2,4], [1,3]];
-graphs[1] = [[1,2], [0], [0,3,4], [2], [2,5], [4]];
-graphs[2] = [[1,2], [0,2], [0,1]];
-graphs[3] = [[1], [0,2,3,4], [1], [1,4], [1,3]];
-graphs[4] = [[1,3], [0,2], [1,3], [2,0]];
-var graphsPos = [];
 var mouse;
+var fps = 18;
+var time = 0;
+var numOfFrames = 9;
 /**
-*
+*  Utils
+**/
+function getDataFromImage(img) {
+		var canvasAux = document.createElement('canvas');
+		var contextAux = canvasAux.getContext('2d');
+        contextAux.clearRect(0, 0, img.width, img.height);
+        contextAux.drawImage(img, 0 ,0);
+        return contextAux.getImageData(0, 0, img.width, img.height);
+}
+
+function loadImage(src) {
+        var img = new Image();
+        img.src = src;
+        img.isReady = false;
+        img.onload = function() {
+        	img.isReady = true;
+        	img.data = getDataFromImage(img);
+        };
+        return img;
+}
+
+
+/**
+* My math
 **/
 function clamp(x, xmin, xmax) {
 	return Math.max(xmin, Math.min(xmax, x));
@@ -116,18 +136,14 @@ function init() {
 	canvas.addEventListener("mouseup", mouseUp, false);
 	canvas.addEventListener("mousemove", mouseMove, false);
 	document.addEventListener("keydown", keyDown, false);
+	var address = "canvasTest/p";
+	for(var i = 0; i < numOfFrames; i++) {
+		var finalAddress = address+(i+1)+".png";
+		animationImg[i] = loadImage(finalAddress);
+	}
 	startTime = new Date().getTime();
 	width = canvas.width;
 	height = canvas.height;
-
-	for(var i = 0; i < graphs.length; i++) {
-		graphsPos[i] = [];
-		for(var j = 0; j < graphs[i].length; j++) {
-			graphsPos[i][j] = [];
-			graphsPos[i][j][0] =  Math.random() * width;
-			graphsPos[i][j][1] =  Math.random() * height;
-		}
-	}
 	mouse = zeros();
 }
 
@@ -167,7 +183,31 @@ function mouseMove(e) {
 	mouse[1] = mx;
 };
 
-function drawLine(x1, x2, data, r, g, b) {
+/**
+* x is a vector
+* size is a vector where x-coord is width and y-coord is height
+*/
+function getPxlData(x, data, size) {
+	var rgba = [];
+	var index = 4 * (size[1] *  x[0] + x[1]);
+	rgba[0] = data[index    ];
+	rgba[1] = data[index + 1];
+	rgba[2] = data[index + 2];
+	rgba[3] = data[index + 3];
+	return rgba;
+}
+
+function drawPxl(x, data, rgb) {
+	var index = 4 * (height *  x[0] + x[1]);
+	data[index    ] = rgb[0];
+	data[index + 1] = rgb[1];
+	data[index + 2] = rgb[2];
+	if(rgb[3]) {
+		data[index + 3] = rgb[3];
+	}
+}
+
+function drawLine(x1, x2, data, rgb) {
 	
 	x1 = floor(x1);
 	x2 = floor(x2);
@@ -186,9 +226,7 @@ function drawLine(x1, x2, data, r, g, b) {
 	var oldi = zeros();
 	var fmin = Number.MAX_VALUE;
 
-	data[4 * height * x[0] + 4 * x[1]] = r;//Math.floor(clamp(r * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 1] = g;//Math.floor(clamp(g * (1 - res),0,1));
-	data[4 * height * x[0] + 4 * x[1] + 2] = b;//Math.floor(clamp(b * (1 - res),0,1));
+	drawPxl(x,data,rgb)
 
 	while (x[0] !== x2[0] || x[1] !== x2[1]) {
 		
@@ -218,60 +256,50 @@ function drawLine(x1, x2, data, r, g, b) {
 		oldi[1] = -imin[1];
 
 		x = add(x, imin);
-
-		data[4 * height * x[0] + 4 * x[1]    ] = r;
-		data[4 * height * x[0] + 4 * x[1] + 1] = g;
-		data[4 * height * x[0] + 4 * x[1] + 2] = b;
+		drawPxl(x,data,rgb)
 	}
 }
 
-function updateGraph(dt) {
-	var l = 25;
-	for(var i = 0; i < graphs.length; i++) {
-		for(var j = 0; j < graphs[i].length; j++) {
-			var acm = zeros();
-			for(var k = 0; k < graphs[i][j].length; k++) {
-				var v = diff(graphsPos[i][j], graphsPos[i][graphs[i][j][k]]);
-				var vel = myNorm(v) - l;
-				v = scalarMult(-vel,normalize(v));
-				acm = add(acm, v);
-			}
-			var mouseForce = diff(graphsPos[i][j], mouse);
-			mouseForce = scalarMult(1000 / (squaredNorm(mouseForce) + 1) , mouseForce);
-			var logic = down ? 1:0;
-			acm = add(acm,scalarMult(logic,mouseForce));
-			graphsPos[i][j] = add(graphsPos[i][j],scalarMult(dt, acm));
+/**
+* x is a vector
+* size is a vector where x-coord is width and y-coord is height
+*/
+function drawImageData(dataIn, dataOut, x, size) {
+	var imin = Math.max(0,x[0]);
+	var jmin = Math.max(0,x[1]);
+	var imax = Math.min(height, x[0] + size[1]);
+	var jmax = Math.min(width , x[1] + size[0]);
+	for (var i = imin; i <= imax; i++) {
+		for(var j = jmin; j <= jmax; j++) {
+			var point = [i,j];
+			drawPxl(point, dataIn, getPxlData(point, dataOut, size));
 		}
 	}
-}
-
-function drawGraph(data) {
-	for(var i = 0; i < graphs.length; i++) {
-		for(var j = 0; j < graphs[i].length; j++) {
-			for(var k = 0; k < graphs[i][j].length; k++) {
-				drawLine(graphsPos[i][j], graphsPos[i][graphs[i][j][k]],data,255,255,255);
-			}
-		}
-	}
-	drawLine([height/2,width], [height/2,width + 100],data, 255,0,0);
 }
 
 function draw() {
 	var dt = 1E-3 * (new Date().getTime() - startTime);
 	startTime = new Date().getTime();
+	time += dt;
+
 	var image, data;
 
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+	ctx.fillStyle = 'rgba(0, 0, 0, 1)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
-
 	image = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	data = image.data;
 	/**
 	 * drawing and animation
 	 **/
-	 updateGraph(dt);
-	 drawGraph(data);
+	drawLine([0,0], mouse, data, [255,0,0]);
+	var t = (time % (numOfFrames / fps));
+	var animationIndex = Math.floor(fps * t);
+	var animationFrame = animationImg[animationIndex];
+	console.log("t: " + t + "\t" + "index: " + animationIndex + "\t" + "isReady:" + animationFrame.isReady);
+	if(animationFrame.isReady) {
+		drawImageData(data, animationFrame.data, mouse, [animationFrame.width, animationFrame.height]);
+	}
 	/**
 	*
 	**/
