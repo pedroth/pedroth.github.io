@@ -18,9 +18,11 @@ var numOfFrames = 9;
 **/
 function getDataFromImage(img) {
 		var canvasAux = document.createElement('canvas');
+		canvasAux.width = img.width;
+		canvasAux.height = img.height;
 		var contextAux = canvasAux.getContext('2d');
-        ctx.clearRect(0, 0, img.width, img.height);
-        ctx.drawImage(img, 0 ,0);
+        contextAux.clearRect(0, 0, img.width, img.height);
+        contextAux.drawImage(img, 0 ,0);
         return contextAux.getImageData(0, 0, img.width, img.height);
 }
 
