@@ -191,7 +191,7 @@ function mouseMove(e) {
 */
 function getPxlData(x, data, size) {
 	var rgba = [];
-	var index = 4 * (size[1] *  x[1] + x[0]);
+	var index = 4 * (size[1] *  x[0] + x[1]);
 	rgba[0] = data[index    ];
 	rgba[1] = data[index + 1];
 	rgba[2] = data[index + 2];
@@ -204,9 +204,7 @@ function drawPxl(x, data, rgb) {
 	data[index    ] = rgb[0];
 	data[index + 1] = rgb[1];
 	data[index + 2] = rgb[2];
-	if(rgb[3]) {
-		data[index + 3] = rgb[3];
-	}
+	data[index + 3] = rgb[3];
 }
 
 function drawLine(x1, x2, data, rgb) {
@@ -294,7 +292,7 @@ function draw() {
 	/**
 	 * drawing and animation
 	 **/
-	drawLine([0,0], mouse, data, [255,0,0]);
+	drawLine([0,0], mouse, data, [255,0,0,1]);
 	var t = (time % (numOfFrames / fps));
 	var animationIndex = Math.floor(fps * t);
 	var animationFrame = animationImg[animationIndex];
