@@ -167,8 +167,12 @@ function mouseMove(e) {
 	mouse[1] = mx;
 };
 
+function getImageIndex(x, size) {
+	return 4 * (size[0] *  x[0] + x[1]);
+}
+
 function drawPxl(x, data, rgb) {
-	var index = 4 * (height *  x[0] + x[1]);
+	var index = getImageIndex(x, [width, height]);
 	data[index    ] = rgb[0];
 	data[index + 1] = rgb[1];
 	data[index + 2] = rgb[2];
