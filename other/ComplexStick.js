@@ -336,6 +336,7 @@
         var t = (time % (numOfFrames / fps));
         var animationIndex = Math.floor(fps * t);
         var animationFrame = animationImg[animationIndex];
+        
         //console.log("t: " + t + "\t" + "index: " + animationIndex + "\t" + "isReady:" + animationFrame.isReady);
         if(animationFrame.isReady) {
             var imageSize = [animationFrame.width, animationFrame.height];
