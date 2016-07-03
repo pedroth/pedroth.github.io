@@ -22,7 +22,7 @@ function buildThumbnail(name,megaDiv,w,h,language) {
   var nameH = document.createElement('h3');
   nameH.innerHTML = "<" + language + ">" + name;
   var link = document.createElement('a');
-  link.setAttribute('href',"https://pedroth.github.io/visualExperiments/" + language + "Experiments/" + name + "/" + name + ".html");
+  link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
   var img = document.createElement('img');
   img.setAttribute("src",language + "Experiments/" + name + "/" + name + ".gif");
   img.setAttribute("width",w);
