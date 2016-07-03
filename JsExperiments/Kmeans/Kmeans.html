@@ -48,6 +48,14 @@
 
 
 <h1>Kmeans</h1>
+<script>
+var location = window.location.href;
+var https = "https";
+var index = location.search(https);
+if(index == -1) {
+    window.location = https + "://" + location;
+}
+</script>
 <video id="video" width="0" height="0" autoplay></video>
 <canvas id="canvasVideo" width="640" height="480"></canvas> 
 <canvas id="canvas" width="640" height="480"></canvas>
