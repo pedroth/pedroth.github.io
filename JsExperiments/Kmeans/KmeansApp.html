@@ -1,10 +1,12 @@
 <script>
 var myUrl = window.location.href;
 console.log("location:\t" + myUrl);
+    
 var https = "https";
 var index = myUrl.search(https);
 if(index == -1) {
-    var newUrl = https + "://" + myUrl;
+    var split = myUrl.split("http://");
+    var newUrl = https + "://" + split[1];
     console.log("new location:\t" + newUrl);
 //    window.location = newUrl;
 }
