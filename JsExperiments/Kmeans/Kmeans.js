@@ -24,14 +24,17 @@ var clusters = [];
 var numOfStates = 4;
 var clustersState = [];
 
-var alpha = parseInt(document.getElementById('alpha').value);
-var numOfSamples = Math.floor(canvas.width * canvas.height * (alpha / 100.0));
+var numOfSamples = Math.floor(canvas.width * canvas.height * ( parseInt(document.getElementById('alpha').value) / 100.0));
 
 var averageColor = [0,0,0];
 
 var time = 0;
 
 var isLearning = true;
+
+var memoryData = [];
+var maxDataFrames = 1;
+var memoryIndex = 0;
 
 /*
  * Utils
@@ -203,8 +206,8 @@ var matrixProd = function(u,v,w,x) {
  *  Init
  **/
 function initNumOfSamples() {
-    alpha = parseInt(document.getElementById('alpha').value);
-    alpha = alpha / 100.0;
+    var alpha = parseInt(document.getElementById('alpha').value);
+    var alpha = alpha / 100.0;
     numOfSamples = Math.floor(canvas.width * canvas.height * alpha);
     document.getElementById('alphaValue').innerHTML = "" + alpha;
 }
@@ -294,14 +297,14 @@ function mouseMove(e) {
 };
 
 function samplingData(data, numOfSamples) {
-    var ans =  [];
     var size = [data.width, data.height];
     for(var i = 0; i < numOfSamples; i++) {
         var x = [Math.floor(Math.random() * size[1]), Math.floor(Math.random() * size[0])];
         var rgba = getPxlData(x,data.data, size);
-        ans[i] = vec3(rgba[0], rgba[1], rgba[2]);
+        memoryData[memoryIndex++] = vec3(rgba[0], rgba[1], rgba[2]);
+        memoryIndex = memoryIndex % (numOfSamples * maxDataFrames);
     }
-    return ans;
+    return memoryData;
 }
 
 function classifyData(x) {
@@ -330,15 +333,17 @@ function classifyIntoClusters(sampleData, classifyFunction) {
     return clusterIndex;
 }
 
-function updateClusters(dataClusterIndex, sampleData) {
-    averageColor = vec3(0,0,0);
+function computeAverageColor(sampleData) {
+    var average = vec3(0,0,0);
     for(var i = 0; i < sampleData.length; i++) {
         var rgb = sampleData[i];
-        averageColor = add(averageColor, rgb);
+        average = add(average, rgb);
     }
-    
-    averageColor = scalarMult(1 / sampleData.length, averageColor);
-    
+    average = scalarMult(1 / sampleData.length, average);
+    return average;
+}
+
+function updateClusters(dataClusterIndex, sampleData) {
     for(var i = 0; i < numberOfCluster; i++) {
         clusterDataIndex = dataClusterIndex[i];
         var n = clusterDataIndex.length;
@@ -347,26 +352,18 @@ function updateClusters(dataClusterIndex, sampleData) {
             var rgb = sampleData[clusterDataIndex[j]];
             mu = add(mu, rgb);
         }
-        clusters[i] = n == 0 ? clusters[i] : scalarMult(1.0 / n, mu);
+        clusters[i] = n == 0 ? vec3(255 * Math.random(), 255 * Math.random(), 255 * Math.random()) : scalarMult(1.0 / n, mu);
     }
 }
 
 function updateClustersSigma(dataClusterIndex, sampleData) {
-    var sigma = 0;
-    averageColor = vec3(0,0,0);
-    for(var i = 0; i < sampleData.length; i++) {
-        var rgb = sampleData[i];
-        averageColor = add(averageColor, rgb);
-    }
-    averageColor = scalarMult(1 / sampleData.length, averageColor);
-    
-    for(var i = 0; i < sampleData.length; i++) {
-        var rgb = sampleData[i];
-        sigma += myNorm(diff(averageColor, rgb));
-    }
-    sigma = (1.0 / sampleData.length) * sigma;
-    sigma = sigma == 0 ? 1.0 : (1.0 / sigma);    
+    var alpha = 10;
 
+    var clustersSum = vec3(0,0,0);
+    for(var i = 0; i < numberOfCluster; i++) {
+     clustersSum = add(clustersSum, clusters[i]);   
+    }
+    
     for(var i = 0; i < numberOfCluster; i++) {
         clusterDataIndex = dataClusterIndex[i];
         var n = clusterDataIndex.length;
@@ -375,8 +372,26 @@ function updateClustersSigma(dataClusterIndex, sampleData) {
             var rgb = sampleData[clusterDataIndex[j]];
             mu = add(mu, rgb);
         }
-        clusters[i] = (n - sigma) == 0 ? clusters[i] : scalarMult(1.0 / (n - sigma), diff(mu, scalarMult(sigma, averageColor)));
+        if ((n - 2 * alpha * (numberOfCluster - 1)) == 0) {
+            clusters[i] = vec3(255 * Math.random(), 255 * Math.random());
+        } else {
+            var v = diff(mu, scalarMult(2 * alpha, diff(clustersSum, clusters[i])));
+            clusters[i] = scalarMult(1.0 / (n - 2 * alpha * (numberOfCluster - 1)), v);
+        }
     }
+//    numberOfCluster = 8;
+//    if(document.getElementById('numOfClusters').value !== "8") {
+//        initClusters();
+//        document.getElementById('numOfClusters').value = 8;
+//    }
+//    clusters[0] = vec3(0,0,0);
+//    clusters[1] = vec3(255,0,0);
+//    clusters[2] = vec3(0,255,0);
+//    clusters[3] = vec3(0,0,255);
+//    clusters[4] = vec3(255,255,0);
+//    clusters[5] = vec3(255,0,255);
+//    clusters[6] = vec3(0,255,255);
+//    clusters[7] = vec3(255,255,255);
 }
 
 function drawClusters(image, classifyFunction, stateMachine) {
@@ -395,6 +410,7 @@ function runKmeans(data, classifyFunction, clusterUpdateFunction, stateMachine) 
     if(isLearning) {
         var sampleData = samplingData(data, numOfSamples);
         var dataIntoClusters = classifyIntoClusters(sampleData, classifyFunction);
+        averageColor = computeAverageColor(sampleData);
         clusterUpdateFunction(dataIntoClusters, sampleData);   
     }
     drawClusters(data, classifyFunction, stateMachine);

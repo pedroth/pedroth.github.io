@@ -268,7 +268,7 @@ function draw() {
 	startTime = new Date().getTime();
 	var image, data;
 
-	ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+	ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
 	ctx.globalCompositeOperation = 'source-over';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 

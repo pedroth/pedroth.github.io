@@ -78,7 +78,7 @@ function draw() {
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
     time += dt;
-    ctx.fillStyle = 'rgba(0.1, 0.1, 0.1, 1.0)';
+    ctx.fillStyle = 'rgba(0.1, 0.1, 0.1, 0.6)';
     ctx.globalCompositeOperation = 'source-over';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     /**
@@ -88,7 +88,7 @@ function draw() {
     var animationIndex = Math.floor(fps * t);
     var animationFrame = animationImg[animationIndex];
     if(animationFrame.isReady) {
-        ctx.drawImage(animationFrame,mouse[1],mouse[0]);
+        ctx.drawImage(animationFrame, mouse[1], mouse[0]);
     }
     /**
     *
