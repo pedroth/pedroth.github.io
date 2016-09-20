@@ -14,8 +14,10 @@ var width, height;
 
 var mouse;
 
+//video vars
 var video = document.getElementById("video");
 var videoObj = { "video": true };
+var handleVideo = function handleVideo(stream) { video.src = window.URL.createObjectURL(stream);}
 var errBack = function(error) { console.log("Video capture error: ", error.code);};
 
 var numberOfCluster = document.getElementById('numOfClusters').value;
@@ -240,23 +242,11 @@ function init() {
 
     mouse = [0,0];
 
-
-    // Put video listeners into place
-    if(navigator.getUserMedia) { // Standard
-        navigator.getUserMedia(videoObj, function(stream) {
-            video.src = stream;
-            video.play();
-        }, errBack);
-    } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
-        navigator.webkitGetUserMedia(videoObj, function(stream){
-            video.src = window.webkitURL.createObjectURL(stream);
-            video.play();
-        }, errBack);
-    } else if(navigator.mozGetUserMedia) { // WebKit-prefixed
-        navigator.mozGetUserMedia(videoObj, function(stream){
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-        }, errBack);
+    // Video setup : Put video listeners into place
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+ 
+    if (navigator.getUserMedia) {       
+        navigator.getUserMedia({video: true}, handleVideo, errBack);
     }
 
     initClusters();
