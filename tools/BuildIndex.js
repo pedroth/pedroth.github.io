@@ -132,7 +132,7 @@ function build() {
   * Recent
   */
   var recentDiv = document.createElement('ul');
-  recentDiv.setAttribute("class", "rig");
+  recentDiv.setAttribute("class", "list-inline");
   var h2Latest = document.createElement('h2');
   h2Latest.innerHTML = "Recent Experiments";
   recentDiv.appendChild(h2Latest);
@@ -145,7 +145,7 @@ function build() {
   * Random
   **/
   var randomDiv = document.createElement('ul');
-  randomDiv.setAttribute("class", "rig");
+  randomDiv.setAttribute("class", "list-inline");
   var h2Random = document.createElement("h2");
   h2Random.innerHTML = "Random Experiments";
   randomDiv.appendChild(h2Random);

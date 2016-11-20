@@ -106,7 +106,7 @@ function build(address) {
     var megaDiv = document.createElement('ul');
     var step = 200;
     megaDiv.setAttribute("id", "megaDiv");
-    megaDiv.setAttribute("class", "rig");
+    megaDiv.setAttribute("class", "list-inline");
     var mainSection = document.getElementById("main_content");
     mainSection.appendChild(megaDiv);
 
