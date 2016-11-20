@@ -78,6 +78,35 @@
 </div>
 
 <div class="container" id="main_content">
+
+
+<h1>Kmeans</h1>
+<script>
+var myUrl = window.location.href;
+console.log("location:\t" + myUrl);
+    
+var https = "https";
+var index = myUrl.search(https);
+if(index == -1) {
+    var split = myUrl.split("http://");
+    var newUrl = https + "://" + split[1];
+    console.log("new location:\t" + newUrl);
+    window.location = newUrl;
+}
+</script>
+<video id="video" width="0" height="0" autoplay="true"></video>
+<canvas id="canvasVideo" width="640" height="480"></canvas> 
+<canvas id="canvas" width="640" height="480"></canvas>
+<select id="selectAlgorithm">
+<option>Kmeans</option>
+<option>KmeansSigma</option>
+</select>  
+NumberOfClusters: <input type="number" id="numOfClusters" min="2" onchange="updateNumberOfClusters()" value = '2'>
+<input type="button" id="stopLearningButton" onclick="stopLearning()" value="Stop Learning">
+<input type="button" onclick="initClusters()" value="reset">
+TrainingDataP:<q id="alphaValue">0.01</q><input type="range" min="1" max="100" step="1" id = "alpha" value="1" onchange="initNumOfSamples()">
+<table id="clusterTable" style="width:100%;white-space: nowrap;font-size:14px;"></table>
+<script src="Kmeans.js"></script>
 <!-- Disqus -->
 <div id="disqus_thread" style="width:500;"></div>
 <script type="text/javascript">
