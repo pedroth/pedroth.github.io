@@ -1,7 +1,7 @@
 function LoadFile(file) {
    $.ajax({
         method:"GET",
-        url:"file",
+        url:file,
         success: function(result) {
             return result;
         }
