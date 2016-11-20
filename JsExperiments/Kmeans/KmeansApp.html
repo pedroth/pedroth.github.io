@@ -11,6 +11,7 @@ if(index == -1) {
     window.location = newUrl;
 }
 </script>
+<div class="col-sm-8 text-left">
 <video id="video" width="0" height="0" autoplay="true"></video>
 <canvas id="canvasVideo" width="640" height="480"></canvas> 
 <canvas id="canvas" width="640" height="480"></canvas>
@@ -24,3 +25,4 @@ NumberOfClusters: <input type="number" id="numOfClusters" min="2" onchange="upda
 TrainingDataP:<q id="alphaValue">0.01</q><input type="range" min="1" max="100" step="1" id = "alpha" value="1" onchange="initNumOfSamples()">
 <table id="clusterTable" style="width:100%;white-space: nowrap;font-size:14px;"></table>
 <script src="Kmeans.js"></script>
+</div>
