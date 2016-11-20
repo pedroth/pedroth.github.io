@@ -1,11 +1,16 @@
 function LoadFile(file) {
-     $.ajax({
-        method:"GET",
-        url:"file",
-        success: function(result) {
-            return result;
-        }
-    });
+    var xmlhttp;
+    if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else { // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    if (xmlhttp != null) {
+        xmlhttp.open("GET", file, false); // the false makes this synchronous!
+        xmlhttp.send();
+        var text = xmlhttp.responseText;
+        return text;
+    }
 }
 
 /**
