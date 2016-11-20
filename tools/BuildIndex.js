@@ -90,11 +90,17 @@ function key(apps,i) {
 function build() {
   var numOfApps = 5;
   var imgW = 200;
-  var text1 = LoadFile("tools/AppletNames.txt");
-  var text2 = LoadFile("tools/AppJs.txt");
+  var text1; 
+  var text2;
+  while(!(typeof text1 === "string") || !(typeof text2 === "string")) {
+    text1 = LoadFile("tools/AppletNames.txt");
+    text2 = LoadFile("tools/AppJs.txt");
+  }
 
   var appletsName = text1.split("\n");
   var appJsNames = text2.split("\n");
+
+
   /**
   * retrive apps from files
   */
