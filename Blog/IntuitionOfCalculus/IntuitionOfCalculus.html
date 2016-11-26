@@ -1,0 +1,215 @@
+<html>
+<head>
+    <style>
+        #experimentsTab {
+        display: none
+        }
+
+        #projectTitle {
+        color : rgb(255,255,255)
+        }
+
+        #header{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        }
+
+        #footer{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        color: #fff;
+        padding: 50px 10px 5px 10px;
+        }
+
+        #main_content{
+            padding-right: 1px;
+            padding-left: 1px;
+        }
+
+        .tr-caption-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="VisualExperiments : ">
+    <script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+            type='text/javascript'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+</head>
+<body>
+
+<div id="header" class="jumbotron text-center">
+    <a href="http://pedroth.github.io/visualExperiments/"><h1 id="projectTitle">VisualExperiments</h1></a>
+    <ul class="list-inline">
+        <li>
+            <h3><a href="javascript:void(0)" id="experimentsName">Experiments</a></h3>
+        </li>
+        <li><h3><a href="https://kurvature.blogspot.com">Blog</a></h3></li>
+        <li><h3><a href="https://www.youtube.com/user/peterluigi/">Youtube</a></h3></li>
+        <li><h3><a href="https://www.khanacademy.org/profile/pedroth/programs">Khan Academy</a></h3></li>
+    </ul>
+    <div>
+        <ul class="list-inline" id="experimentsTab">
+            <li><h3><a href="http://pedroth.github.io/visualExperiments/JsExperiments/JsExperiments.html">
+                JsExperiments </a></h3></li>
+            <li><h3><a href="http://pedroth.github.io/visualExperiments/JavaExperiments/JavaExperiments.html">
+                JavaExperiments </a></h3></li>
+        </ul>
+    </div>
+    <script> $("#experimentsName").click( function() { $("#experimentsTab").slideToggle();})</script>
+</div>
+
+<div class="container">
+
+
+<h1>IntuitionOfCalculus</h1>
+<h2>
+My intuition on Calculus</h2>
+<div>
+<br /></div>
+<div>
+First of all before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an output. The input and output could be anything. Here I will only talk about one input functions or univariate functions. Every function has a domain which is the set of all possible input values and for every input value there should be an output. And one more thing for each input there will be only one output.<br />
+<br />
+We define functions as $f : \mathbb{R}\rightarrow \mathbb{R}$ and $y = f(x)$, here $x$ is the input and is a value of $\mathbb{R}$ and $y$ is the output. <br />
+An example: $$ y = f(x), y = 2x + 1$$ $$if \;\;x = 1\;\; then\;\;y = 3\;\; or \;\; y = f(1) \;\;where\; \;f(1) = 3$$<br />
+<br />
+A good visualization of a function is the graph of one.For more about functions check wikipedia.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" height="320" width="320" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+Graph of a function</div>
+<div class="separator" style="clear: both; text-align: center;">
+<br /></div>
+Now let me give you a problem, suppose you wanted to find a function $f: \mathbb{R} \rightarrow \mathbb{R}, f: x \rightarrow y$ such that for input $a$ we will get $f(a) =y1$ and for $b$ the output $f(b)=y2$.<br />
+What about the values between $x = a$ and $x = b$? Well, if we imagine a function as a graph then we already have two points on the graph $(a,f(a))$ and $(b,f(b))$ now we just need to trace a curve between those two points and voila. The problem with such method is that it isn't very precise, we need a better way an algorithmic one. To simplify I will draw a line between those points, then I need to find a way to describe a line for every $x$ , that passes through $(a,f(a))$ and $(b,f(b))$.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s1600/line.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="360" src="https://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s1600/line.png" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 2</div>
+By looking to figure 2 we see two triangles, triangle $t =&lt;(a,f(a)), (x,f(a)), (x,f(x))&gt;$ and triangle $T = &lt;(a,f(a)), (b,f(a)), (b,f(b))&gt;$. We can see that all angles of $t$ are equal to the angles of $T$, hence the triangles are similar (this means $T$ is scaled version of $t$), which mean that<br />
+<br />
+$$(x - a) k = (b - a)$$<br />
+$$(f(x) - f(a)) k = f(b) -f(a) \;\;\;\;\;\;\;(1)$$ .<br />
+<br />
+&nbsp; Therefore we get $k = \frac{b-a}{x-a}$ , then substituting $k$ on (1) we get<br />
+<br />
+$$ f(x) = f(a) + \frac{f(b)-f(a)}{b-a} (x - a)\;\;\;\;\;\;\;(2)$$<br />
+<br />
+Equation (2) is the equation of the line. Note that if $(x-a) = 1$ then $f(x)-f(a) = \frac{f(b)-f(a)}{b-a}$ which means $\frac{f(b)-f(a)}{b-a}$ is the rate of change(gradient) of this curve, this means that for a step $h $ in the domain $y(a + h) = f(a) + h \frac{f(b)-f(a)}{b-a}$.<br />
+<br />
+Now let me give you another problem, imagine that someone gave you a machine that computes a function $f$, where you introduce an $x$ and the machine&nbsp;spits out a $y$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then somebody ask you if the function at $x$ is raising ? A solution to this could be, create a line that <span style="font-family: &quot;times&quot; , &quot;times new roman&quot; , serif;"><span style="font-size: 11pt; line-height: 107%;">approximates
+</span></span>this function at $x$, to do that we &nbsp;take two points of the function close to each other, then compute the line between them and if the gradient &gt; 0 then the function is raising, else if gradient &lt; 0 decreasing , else the function is constant.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" height="324" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 3</div>
+Note that we will have a problem if $h$ is too big, because the curve could go down an up in the interval $[x,x+h]$, so in other to solve this we should find the tangent line to the function. To find a tangent to a curve we simply decrease $h$ to zero until the gradient of the line between $(x,f(x))$ and $(x + h, f(x + h))$ converges to a number.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" height="230" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 4</div>
+The tangent line to the function at $x = a$ will be $$g(x) = f(a) + f '(a) (x - a)\;\;\;\;\;\;\;(3)$$<br />
+<br />
+where $f'(a) = \lim_{h\rightarrow0} \; \frac{f(a+h) - f(a)}{h}$ and this means , decrease $h$ to zero until $\frac{f(a+h) - f(a)}{h}$ converges to a number, also $f'(x)$ is the derivative of $f$. Now we can solve our problem. Note also that the tangent line is a local approximation of the curve.<br />
+<br />
+<br />
+&nbsp; I have written about functions, tangent lines and derivatives what about integration, for that I will give you another problem. Suppose you wanted to find a function $y(t)$, and the only thing you know about that function is it derivative for all $t$(we have this $y'(t)$) and that $y(t_{0}) = y_{0}$. How would you solve this? Using the ideas above, with the derivative we can draw a tangent line, then we can compute the function a little step ahead , like $$y(t_{0} + h) = y(t_{0}) + y'(t_{0}) &nbsp;h\;\;\;\;\;\;\;(4)$$<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 5</div>
+<br />
+&nbsp; So if we wanted to find $y(t)$ we would get a approximate result like this:<br />
+First choose a $h &gt; 0$ close to zero, then we sum various steps of the tangent lines like figure 6.<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s1600/DF.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="211" src="https://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s1600/DF.png" width="400" /></a></div>
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 6</div>
+<br />
+&nbsp; This translates in the following equation:$$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h + ...\;\;\;\;\;\;\;(5)$$<br />
+<br />
+where $n= \left \lfloor \frac{t-t_{0}}{h} \right \rfloor$, note that as $h\rightarrow0$ the approximation gets better and $n \rightarrow \infty $. Also note that summations of the form $$ \lim_{\Delta x\rightarrow0} \; \sum_{i= 0}^{n}f(a+i\Delta x)\Delta x$$ corresponds to areas under the graph of the function $f$.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" height="258" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+figure 7</div>
+<br />
+<br />
+Hence we can solve our problem using (5) while $h \rightarrow 0$.<br />
+&nbsp;$$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(6)$$<br />
+<br />
+Now to simplify the notation we define integral as $$\lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx, n= \left \lfloor \frac{b-a}{h} \right \rfloor\;\;\;\;\;\;\;(7)$$<br />
+<br />
+With (6) and (7) we get &nbsp;$$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$.<br />
+<br />
+Hence $$&nbsp;\int_{t{0}}^{t} y'(\tau) d\tau = y(t) - y(t_{0})$$ which is the fundamental theorem of calculus<br />
+<br />
+Final remark<br />
+<br />
+To compute $\lim_{x\rightarrow a}f(x)$ just do the following iteration. Start $x(0) = x_{0}$ then iterate $x(i+1) = x(i) + (a - x(i)) \epsilon$ and stop the iteration when $|f(x(i)) - f(x(i-1))| &lt; \delta$ , &nbsp;$0&lt; \epsilon &lt; 1$, $\forall \delta &gt; 0$ which is the convergence condition. Then return $\lim_{x\rightarrow a}f(x) = f(x(i_{converge}))$</div>
+<!-- Disqus -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'visualexperiments'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+
+        </script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+    Disqus.</a></noscript>
+</div>
+
+
+<footer id="footer" class="container-fluid">
+    <p class="copyright">VisualExperiments maintained by <a href="https://github.com/pedroth">pedroth</a></p>
+    <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+</footer>
+</body>
+</html>
+
+
+</html>
