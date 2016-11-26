@@ -97,31 +97,25 @@ function key(apps,i) {
     return apps[i][1];
 };
 
-//code needs review, simplify, etc.
 function build() {
   var numOfApps = 5;
   var imgW = 200;
   var text1 = LoadFile("tools/AppletNames.txt");
   var text2 = LoadFile("tools/AppJs.txt");
-  var text3 = LoadFile("tools/AppBlog.txt");
 
   var appletsName = text1.split("\n");
   var appJsNames = text2.split("\n");
-  var appBlogNames = text3.split("\n");
   /**
   * retrive apps from files
   */
   var apps = [];
-  for (var i = 0; i < appletsName.length + appJsNames.length + appBlogNames.length; i++) {
+  for (var i = 0; i < appletsName.length + appJsNames.length; i++) {
     if(i < appletsName.length) {
       apps[i] = appletsName[i].split(",");
       apps[i][2] = "Java";
-    } else if (i > appletsName.length -1 && i < appJsNames.length + appletsName.length) {
+    } else {
       apps[i] = appJsNames[i - appletsName.length].split(",");
       apps[i][2] = "Js";
-    } else {
-      apps[i] = appBlogNames[i - appletsName.length - appJsNames.length].split(",");
-      apps[i][2] = "Blog";
     }
   }
   /**
