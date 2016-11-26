@@ -452,8 +452,9 @@ function draw() {
         runKmeans(videoImage, classifyData, updateClustersSigma, stateMachine);
     }
     ctx.putImageData(videoImage, 0, 0);
-
-    updateTable();
+    if (time % 1 < 1E-3) {
+        updateTable();
+    }
 
     requestAnimationFrame(draw);
 }
