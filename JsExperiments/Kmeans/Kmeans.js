@@ -77,7 +77,7 @@ function buildRow(name, rgb, clusterId) {
     colorCol.innerHTML = rgb;
     colorCol.style.background="rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
     colorCol.style.color="rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
-    colorCol.id = name + "col";
+    colorCol.id = "cluster"+clusterId;
     row.appendChild(colorCol);
     
     var layerCol = document.createElement('td');
@@ -108,9 +108,9 @@ function buildRowSoft(name, rgb) {
 }
 
 function updateTableSoft() {
-    buildRowSoft("average", averageColor);
+    buildRowSoft("cluster-1", averageColor);
     for (var i = 0; i < clusters.length; i++) {
-        buildRowSoft("cluster " + i, clusters[i]);
+        buildRowSoft("cluster" + i, clusters[i]);
     }
 }
 
@@ -266,6 +266,7 @@ function init() {
     }
 
     initClusters();
+    updateTable();
 }
 
 function keyDown(e) {
