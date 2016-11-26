@@ -1,0 +1,10 @@
+IntuitionOfCalculus, 31/05/2014
+TaylorPolynomial, 05/06/2014
+GradientDescend, 04/07/2014
+ProjectionDotProduct, 05/07/2014
+ProofGreenTheorem, 02/08/2014
+DiscreteCalculusP1, 25/10/2014
+DiscreteCalculusP2, 28/10/2014
+ODEMatrixExponential, 16/03/2015
+GradientJacobianHessian, 18/07/2015
+OptimizationI, 14/11/2015

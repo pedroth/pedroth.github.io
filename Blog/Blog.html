@@ -1,0 +1,102 @@
+<html>
+<head>
+    <style>
+        #experimentsTab {
+        display: none
+        }
+
+        #projectTitle {
+        color : rgb(255,255,255)
+        }
+
+        #header{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        }
+
+        #footer{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        color: #fff;
+        padding: 50px 10px 5px 10px;
+        }
+
+        #main_content{
+            padding-right: 1px;
+            padding-left: 1px;
+        }
+    </style>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="VisualExperiments : ">
+    <script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+
+    </script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+            type='text/javascript'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+</head>
+<body>
+
+<div id="header" class="jumbotron text-center">
+    <a href="http://pedroth.github.io/visualExperiments/"><h1 id="projectTitle">VisualExperiments</h1></a>
+    <ul class="list-inline">
+        <li>
+            <h3><a href="javascript:void(0)" id="experimentsName">Experiments</a></h3>
+        </li>
+        <li><h3><a href="https://kurvature.blogspot.com">Blog</a></h3></li>
+        <li><h3><a href="https://www.youtube.com/user/peterluigi/">Youtube</a></h3></li>
+        <li><h3><a href="https://www.khanacademy.org/profile/pedroth/programs">Khan Academy</a></h3></li>
+    </ul>
+    <div>
+        <ul class="list-inline" id="experimentsTab">
+            <li><h3><a href="http://pedroth.github.io/visualExperiments/JsExperiments/JsExperiments.html">
+                JsExperiments </a></h3></li>
+            <li><h3><a href="http://pedroth.github.io/visualExperiments/JavaExperiments/JavaExperiments.html">
+                JavaExperiments </a></h3></li>
+        </ul>
+    </div>
+    <script> $("#experimentsName").click( function() { $("#experimentsTab").slideToggle();})</script>
+</div>
+
+<div class="container">
+<div class="container-fluid">
+<div class="container-fluid" id="main_content" ></div>
+</div>
+<input type = "hidden" id="input" value="../tools/AppBlog.txt">
+<script src="../tools/BuildExperiments.js" type="text/javascript"></script>
+</div>
+
+
+<footer id="footer" class="container-fluid">
+    <p class="copyright">VisualExperiments maintained by <a href="https://github.com/pedroth">pedroth</a></p>
+    <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+</footer>
+</body>
+</html>
+
+
+</html>
