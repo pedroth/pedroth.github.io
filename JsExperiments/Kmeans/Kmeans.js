@@ -103,8 +103,8 @@ function buildRowSoft(name, rgb) {
     rgb[0] = Math.floor(rgb[0]);
     rgb[1] = Math.floor(rgb[1]);
     rgb[2] = Math.floor(rgb[2]);
-    $("#" + name + "col").css('background', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
-    $("#" + name + "col").css('color', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
+    $("#" + name).css('background', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
+    $("#" + name).css('color', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
 }
 
 function updateTableSoft() {
