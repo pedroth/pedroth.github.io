@@ -77,6 +77,7 @@ function buildRow(name, rgb, clusterId) {
     colorCol.innerHTML = rgb;
     colorCol.style.background="rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
     colorCol.style.color="rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+    colorCol.id = name + "col";
     row.appendChild(colorCol);
     
     var layerCol = document.createElement('td');
@@ -96,6 +97,21 @@ function buildRow(name, rgb, clusterId) {
     row.appendChild(layerCol);
     
     return row;
+}
+
+function buildRowSoft(name, rgb) {
+    rgb[0] = Math.floor(rgb[0]);
+    rgb[1] = Math.floor(rgb[1]);
+    rgb[2] = Math.floor(rgb[2]);
+    $("#" + name + "col").css('background', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
+    $("#" + name + "col").css('color', 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')');
+}
+
+function updateTableSoft() {
+    buildRowSoft("average", averageColor);
+    for (var i = 0; i < clusters.length; i++) {
+        buildRowSoft("cluster" + i, clusters[i]);
+    }
 }
 
 function updateTable() {
@@ -452,9 +468,8 @@ function draw() {
         runKmeans(videoImage, classifyData, updateClustersSigma, stateMachine);
     }
     ctx.putImageData(videoImage, 0, 0);
-    if (time % 1 < 0.1) {
-        updateTable();
-    }
+    
+    updateTableSoft();
 
     requestAnimationFrame(draw);
 }
