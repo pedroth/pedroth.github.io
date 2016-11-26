@@ -1,0 +1,137 @@
+<h2>
+Optimization I</h2>
+<div>
+Topic for today is optimization, for me this 
+could be one of the most fundamental/useful areas in mathematics, 
+because we are solving a problem with its description. There are all 
+kind of problems in optimization from many different areas, such as 
+physics(<a href="http://en.wikipedia.org/wiki/Lagrangian_mechanics">Lagrangian mechanics</a>) &nbsp;, computer science(eg. almost every algorithm of <a href="http://en.wikipedia.org/wiki/Machine_learning">machine learning</a>) , economics(<a href="http://en.wikipedia.org/wiki/Modern_portfolio_theory">Modern portfolio theory</a>) and even mathematics itself( many mathematical concepts can be derived from an optimization problem).<br />
+<br />
+I already written a little bit about optimization in the <a href="http://kurvature.blogspot.pt/2014/07/gradient-descend.html" target="_blank">gradient descent</a>&nbsp;post, but in this optimization series I will recall every concept.<br />
+<br />
+A
+ general optimization problem is described in the following way, let 
+$f:\mathbb{R}^n \rightarrow \mathbb{R}$, then we want to find a 
+$\mathbf{x}^\ast&nbsp;\in \mathbb{R}^n$ such that it maximizes/minimizes $f$ 
+(for &nbsp;visualization purposes we will use $n = 2$). We can describe every
+ optimization problem as a minimization problem, because we can 
+transform every maximization into a minimization problem (check (1)).<br />
+<br />
+$$\underset{\mathbf{x}}{\min} \; f(\mathbf{x}) = \underset{\mathbf{x}}{\max} \; -f(\mathbf{x}) \;\;\;(1)$$<br />
+This
+ is easy to prove, let $\mathbf{x}^\ast&nbsp;$ be minimizer of $f$, this 
+implies that $$f(\mathbf{x}^\ast) \leq f(\mathbf{x}) \; \forall 
+\mathbf{x}\in \mathbb{R}^n$$<br />
+$$\Leftrightarrow -f(\mathbf{x}^\ast) \geq &nbsp;-f(\mathbf{x}) \; \forall \mathbf{x}\in \mathbb{R}^n\;\;\;(2)$$<br />
+And (2) implies that $\mathbf{x}^\ast$ maximizes $-f$, thus concluding this proof.<br />
+<br />
+Here
+ we will just talk about functions that are at least two times 
+differentiable. Let $f:\mathbb{R}^n \rightarrow \mathbb{R}$ be a two 
+times <a href="https://en.wikipedia.org/wiki/Differentiable_function" target="_blank">differentiable function</a>, and we want to solve<br />
+$$\underset{\mathbf{x}}{\min} \; f(\mathbf{x})\;\;\;(3)$$<br />
+To
+ solve such problem we will use two approaches a symbolic and a numeric 
+approach. We will start with the symbolic/analytical&nbsp; approach.<br />
+<br />
+let
+ $\mathbf{g}(t):\mathbb{R} \rightarrow \mathbb{R}^n$ be $\mathbf{g}(t) =
+ \mathbf{x}^\ast + \mathbf{v}t\;\;\; ; \mathbf{x}^\ast, \mathbf{v} \in 
+\mathbb{R}^n$, where $\mathbf{x}^\ast$ is a local minimum of $f$. We 
+will derive in which conditions $\mathbf{x}^\ast$ is a local minimum, by
+ studying $f(\mathbf{g}(t))$ for every direction $\mathbf{v}$ when $t 
+\in [-\varepsilon,\varepsilon],\; \varepsilon &gt; 0$.<br />
+<br />
+The main intuition to solve this problem is to study $f$ using its linear approximation(tangent line in the graph)! The linear approximation tell us if the curve is increasing or decreasing. From the "<a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article and the "<a href="http://kurvature.blogspot.pt/2014/05/intuitions-of-calculus.html" target="_blank">Intuitions of Calculus</a>" article we know a lot about local linear approximations of functions.<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-MTukaqKFlo0/VhBKm_Vd4-I/AAAAAAAAAYM/_diDeLpYQ6Y/s1600/Numerozinhos_1.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://3.bp.blogspot.com/-MTukaqKFlo0/VhBKm_Vd4-I/AAAAAAAAAYM/_diDeLpYQ6Y/s640/Numerozinhos_1.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig1 Function near a minimum(above) and a maximum(below)<br />
+<br /></td></tr>
+</tbody></table>
+By
+ studying $f(\mathbf{g}(t))$ near the minimum ( which is in the interval
+ $t \in [-\varepsilon,\varepsilon],\; \varepsilon &gt; 0$, check fig.1),
+ we see that in the minimum $f(\mathbf{g}(t))$ must decrease until the 
+minimum then it must start to increase again. If we study $f_t(t) = 
+\frac{df}{dt}(t) = \frac{\partial f}{\partial t}(t)$ near a minimum ( 
+check fig.1) we see that when the function is decreasing $f_t(t)$ is 
+negative. When the function is increasing&nbsp; $f_t(t)$ is positive, since 
+$f_t(t)$ is continuous by the <a href="https://en.wikipedia.org/wiki/Intermediate_value_theorem" target="_blank">intermediate value theorem</a>
+ we know that $f_t(t)$ must have a zero in $t \in 
+[-\varepsilon,\varepsilon],\; \varepsilon &gt; 0$. When the derivative 
+is zero is exactly the critical point where the function stops 
+decreasing and start to increase or the opposite as we can see on fig.1.
+ Therefore in a minimum or maximum its derivative must be zero for every
+ $\left |&nbsp; \mathbf{v} \right | &gt; 0$. Note that the converse of this 
+statement is not true(eg. the costant function has zero derivative everywhere, and does not have a minimum). From the statements above we conclude that 
+$$f_t(0) = 0, \forall \left | \mathbf{v} \right | &gt; 0\Leftrightarrow 
+\left &lt; \nabla f(\mathbf{g}(0)), \dot{\mathbf{g}}(0) \right &gt; = 
+0\Leftrightarrow \left &lt; \nabla f(\mathbf{x}^\ast), \mathbf{v} \right
+ &gt; = 0, \forall \left |\mathbf{v}\right |&gt;0$$<br />
+Hence $$\nabla f(\mathbf{x}^\ast) = \textbf{0}$$<br />
+Note
+ that $\textbf{0}$ is a vector full of zeros. We still need another 
+condition to identify a minimum since we cannot identify a minimum with 
+just the gradient as seen from the argument above. The other condition is simple, if we check fig.1 we 
+see that derivative function is increasing hence its derivative must be 
+positive ( when $\nabla f(\mathbf{x}^\ast) = \textbf{0}$).&nbsp; Therefore we
+ conclude that<br />
+$$f_{tt}(0) =&nbsp;&nbsp;\frac{d^2f}{dt^2}(0)&nbsp;&gt; 0 $$<br />
+$$ \Leftrightarrow &nbsp;\mathbf{v}^T 
+\mathbf{H}_f(\mathbf{g}(0))\mathbf{v} &gt; 0, \forall \left | \mathbf{v} \right
+ | &gt; 0$$<br />
+&nbsp;Where&nbsp; $\mathbf{H}_f$ is the <a href="https://en.wikipedia.org/wiki/Hessian_matrix" target="_blank">hessian</a> of $f$, for more about the hessian matrix check <a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">this</a>
+ previous post. Now we have derived a symbolic method for optimization 
+problems like (3). First compute critical points, which are points where
+ $\nabla f(\mathbf{x}) = \textbf{0}$, then for each critical point 
+compute the Hessian matrix and check if this matrix is <a href="http://mathworld.wolfram.com/PositiveDefiniteMatrix.html" target="_blank">positive definite</a>
+ ( this means that $\forall \left | \mathbf{v} \right | &gt; 0,\; &nbsp;\mathbf{v}^T \mathbf{H}_f \mathbf{v} &gt; 0$). Whenever the hessian 
+matrix is positive definite and the gradient is the zero  vector at a point 
+then we are in the presence of a local minimum of a function. These 
+conditions solve the optimization problem if we know that there is just 
+one minimum ( because this local minimum is also the global minimum). For a recap on this symbolic/analytic method :<br />
+First compute critical points which is solving for $\mathbf{x}$:<br />
+$$\nabla f (\mathbf{x}) = \textbf{0}$$<br />
+For each critical point compute the hessian matrix. Verify for each hessian matrix computed if they are positive definite, if they do then you are at a presence of a local minimum. Finally look up for the lower local minimum and we solve the optimization problem.<br />
+<br />
+In
+ this post I am only concern in the theory of optimization, so I will 
+not focus on practical applications, these will come in future posts.<br />
+<br />
+Now we will solve the optimization problem using an algorithmic/numerical approach. I have already wrote about this method on the post called <a href="http://kurvature.blogspot.pt/2014/07/gradient-descend.html" target="_blank">gradient descend.&nbsp;</a><br />
+<br />
+The intuition is simple we chose a random point in the domain of $f$, then update this point by moving it to a lower value of the function.<br />
+<br />
+A simple algorithm that implements the ideia above is to start with a random point $\mathbf{x}_0 \in \mathbb{R}^n$ and then do the following iteration:<br />
+$$\mathbf{x_{i+1}} =\mathbf{x_i} + \alpha \mathbf{p_i},\;\alpha &gt; 0$$<br />
+such that $f(\mathbf{x_{i+1}}) \leq f(\mathbf{x_{i}})$ and $\mathbf{i}\rightarrow \infty \Rightarrow \mathbf{x_{i+1}} = \mathbf{x_{i}}$.<br />
+<br />
+It is easy to prove that this algortithm works, since for each iteration, the function value decreases hence getting to a minimum. But we are missing a few details such as how to choose $\mathbf{p_i}$ and $\alpha$.<br />
+<br />
+Well we could start with the following ideia, we start with a point $\mathbf{x}_0$, then we move this point by $$\mathbf{x}_1 = \mathbf{x}_0 + \alpha \mathbf{p}_0$$<br />
+Now evaluate the function<br />
+$$f(\mathbf{x}_1) = f(\mathbf{x}_0 + \alpha \mathbf{p}_0)$$<br />
+Using linear approximation,<br />
+$$f(\mathbf{x}_0 + \alpha \mathbf{p}_0) \simeq &nbsp;f(\mathbf{x}_0) + \alpha\left&lt;\nabla\mathbf{f}(\mathbf{x}_0) ,\mathbf{p}_0\right&gt;$$<br />
+So if we choose $\mathbf{p}_0 = - \nabla \mathbf{f}(\mathbf{x}_0)$, then<br />
+$$f(\mathbf{x}_1) \simeq &nbsp;f(\mathbf{x}_0) - \alpha |\nabla\mathbf{f}(\mathbf{x}_0)|^2 \leq f(\mathbf{x}_0)\;\;\; (4)$$<br />
+It is clear that if we chose $\mathbf{p_i} = - \nabla \mathbf{f(x_i)}$, then the movement of $\mathbf{x_i}$, will obey the properties of the algorithm described above. For more intuition on how we choose $\mathbf{p}_0$ check "<a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article.<br />
+<br />
+This method has a clear problem since it is based on a local approximation of the function. Condition (4) may not hold for large values of $\alpha$ (play around with alfa in this <a href="https://www.khanacademy.org/computer-programming/gradient-descend-convergence-study/6449568559005696" target="_blank">visualization tool</a>). More considerations about the best values for $\alpha$ will be done in future articles.<br />
+<br />
+Finally we have a method to find a minimum of a function. First choose $\mathbf{x}_0 \in \mathbb{R}^n$, then iterate until convergence using the folowing formula:<br />
+$$\mathbf{x_{i+1}} = \mathbf{x_{i}} - \alpha \nabla \mathbf{f}(\mathbf{x_i})\;\;(5)$$<br />
+Note that (5) is simple to implement on a computer, the difficult ( not that difficult ) part is to test convergence. This can be done as follow:<br />
+$$\varepsilon &gt; 0,\;\;|\mathbf{x_{i+1}}-\mathbf{x_{i+1}}|^2 &lt; \varepsilon\;\;(6)$$<br />
+Meaning that we want to test if the difference between iteration is close to zero. Sometimes an easier condition is $|\nabla \mathbf{f(x_i)}|^2&lt;\varepsilon$ but from (5) we know that this condition is equivalent to (6). &nbsp;$$|\mathbf{x_{i+1}}-\mathbf{x_{i+1}}|^2 &lt; \varepsilon \underset{\text{from (5)}} \Rightarrow \alpha^2\left |\nabla \mathbf{f(x_i)}\right|^2$$<br />
+This method I just described is the gradient descend method. As I already said above depending on the value of $\alpha$ the gradient descend method may or may not converge. In order to get around this problem and to see this method in a more general way we may see &nbsp;(5) as an Euler method of a differential equation ( check "<a href="http://kurvature.blogspot.pt/2015/03/differential-equations-and-matrix.html" target="_blank">Differential Equations</a>" article). &nbsp;If $\alpha$ is a time step of the Euler method, then the gradient descend can be seen as the solution of:<br />
+$$\dot{\mathbf{x}} = -\nabla \mathbf{f(x)}\;\;\;(7)$$<br />
+This tell us the same as (4) which is just the movement of a point in the inverse direction of the gradient, but in a continuous fashion. Basically is a point moving with the velocity parallel to the gradient of the function. Its integral curve $\mathbf {x}(t)$ as $t \rightarrow \infty$ tends to the local minimum. The problem of this method is that it finds local minima, there is no guarantee that it converges to the global minima,<br />
+<br />
+One final remark on the view of gradient descend as a differential equation(DE), that will be useful in future articles. Note that this approach also solves the optimization problem. If $\mathbf{x}(t)$ solves (7), then<br />
+$$\frac{d}{dt}f(\mathbf{x}) = \nabla \mathbf{f(x)}^\mathbf{T} \dot{\mathbf{x}} = -\nabla \mathbf{f(x)}^\mathbf{T}\nabla \mathbf{f(x)} = - |\nabla \mathbf{f(x)}|^2 &lt; 0$$<br />
+This last equation tell us that $f(\mathbf{x})$ is always decreasing, and hence tends to a minimum.<br />
+<br />
+Check this <a href="https://www.youtube.com/watch?v=cjhTs1DJ4-k" target="_blank">video </a>to visualize the gradient descend. General ideia of optimization is given a space of all possible solutions, and a function that given a possible solution measures how good this solution is, then we want to find a solution such that maximizes/minimizes that measure!<br />
+<br />
+Next article is OptimizationII : optimization in infinite dimensions.</div>
