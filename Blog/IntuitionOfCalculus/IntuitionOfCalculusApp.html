@@ -10,19 +10,18 @@ An example: $$ y = f(x), y = 2x + 1$$ $$if \;\;x = 1\;\; then\;\;y = 3\;\; or \;
 <br />
 A good visualization of a function is the graph of one.For more about functions check wikipedia.<br />
 <br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" src="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" height="400" width="400" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.1 Graph of a function</td></tr>
+</tbody></table>
 <div class="separator" style="clear: both; text-align: center;">
-<a href="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" height="320" width="320" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-Graph of a function</div>
-<div class="separator" style="clear: both; text-align: center;">
-<br /></div>
-Now let me give you a problem, suppose you wanted to find a function $f: \mathbb{R} \rightarrow \mathbb{R}, f: x \rightarrow y$ such that for input $a$ we will get $f(a) =y1$ and for $b$ the output $f(b)=y2$.<br />
+Now let me give you a problem, suppose you wanted to find a function $f: \mathbb{R} \rightarrow \mathbb{R}, f: x \rightarrow y$ such that for input $a$ we will get $f(a) =y1$ and for $b$ the output $f(b)=y2$.</div>
 What about the values between $x = a$ and $x = b$? Well, if we imagine a function as a graph then we already have two points on the graph $(a,f(a))$ and $(b,f(b))$ now we just need to trace a curve between those two points and voila. The problem with such method is that it isn't very precise, we need a better way an algorithmic one. To simplify I will draw a line between those points, then I need to find a way to describe a line for every $x$ , that passes through $(a,f(a))$ and $(b,f(b))$.<br />
 <br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s1600/line.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="360" src="https://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s1600/line.png" width="400" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 2</div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s1600/line.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="360" src="https://2.bp.blogspot.com/-AOz15UYfheE/U4n2SR-kWpI/AAAAAAAAAIE/YKaUAfDNaEw/s400/line.png" width="400" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.2 Linear function</td></tr>
+</tbody></table>
 By looking to figure 2 we see two triangles, triangle $t =&lt;(a,f(a)), (x,f(a)), (x,f(x))&gt;$ and triangle $T = &lt;(a,f(a)), (b,f(a)), (b,f(b))&gt;$. We can see that all angles of $t$ are equal to the angles of $T$, hence the triangles are similar (this means $T$ is scaled version of $t$), which mean that<br />
 <br />
 $$(x - a) k = (b - a)$$<br />
@@ -37,16 +36,16 @@ Equation (2) is the equation of the line. Note that if $(x-a) = 1$ then $f(x)-f(
 Now let me give you another problem, imagine that someone gave you a machine that computes a function $f$, where you introduce an $x$ and the machine&nbsp;spits out a $y$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then somebody ask you if the function at $x$ is raising ? A solution to this could be, create a line that <span style="font-family: &quot;times&quot; , &quot;times new roman&quot; , serif;"><span style="font-size: 11pt; line-height: 107%;">approximates
 </span></span>this function at $x$, to do that we &nbsp;take two points of the function close to each other, then compute the line between them and if the gradient &gt; 0 then the function is raising, else if gradient &lt; 0 decreasing , else the function is constant.<br />
 <br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" height="324" width="400" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 3</div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_1.gif" height="324" width="400" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.3 Secant approximation</td></tr>
+</tbody></table>
 Note that we will have a problem if $h$ is too big, because the curve could go down an up in the interval $[x,x+h]$, so in other to solve this we should find the tangent line to the function. To find a tangent to a curve we simply decrease $h$ to zero until the gradient of the line between $(x,f(x))$ and $(x + h, f(x + h))$ converges to a number.<br />
 <br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" height="230" width="400" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 4</div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" src="http://www.teacherschoice.com.au/images/derivative_secant_2.gif" height="230" width="400" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.4 Tagent approximation</td></tr>
+</tbody></table>
 The tangent line to the function at $x = a$ will be $$g(x) = f(a) + f '(a) (x - a)\;\;\;\;\;\;\;(3)$$<br />
 <br />
 where $f'(a) = \lim_{h\rightarrow0} \; \frac{f(a+h) - f(a)}{h}$ and this means , decrease $h$ to zero until $\frac{f(a+h) - f(a)}{h}$ converges to a number, also $f'(x)$ is the derivative of $f$. Now we can solve our problem. Note also that the tangent line is a local approximation of the curve.<br />
@@ -54,31 +53,25 @@ where $f'(a) = \lim_{h\rightarrow0} \; \frac{f(a+h) - f(a)}{h}$ and this means ,
 <br />
 &nbsp; I have written about functions, tangent lines and derivatives what about integration, for that I will give you another problem. Suppose you wanted to find a function $y(t)$, and the only thing you know about that function is it derivative for all $t$(we have this $y'(t)$) and that $y(t_{0}) = y_{0}$. How would you solve this? Using the ideas above, with the derivative we can draw a tangent line, then we can compute the function a little step ahead , like $$y(t_{0} + h) = y(t_{0}) + y'(t_{0}) &nbsp;h\;\;\;\;\;\;\;(4)$$<br />
 <br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 5</div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.5 Euler step</td></tr>
+</tbody></table>
 <br />
 &nbsp; So if we wanted to find $y(t)$ we would get a approximate result like this:<br />
 First choose a $h &gt; 0$ close to zero, then we sum various steps of the tangent lines like figure 6.<br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s1600/DF.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="211" src="https://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s1600/DF.png" width="400" /></a></div>
-<br />
-<div class="separator" style="clear: both; text-align: center;">
-</div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 6</div>
-<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s1600/DF.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="337" src="https://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s640/DF.png" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.6 Euler step II</td></tr>
+</tbody></table>
 &nbsp; This translates in the following equation:$$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h + ...\;\;\;\;\;\;\;(5)$$<br />
 <br />
 where $n= \left \lfloor \frac{t-t_{0}}{h} \right \rfloor$, note that as $h\rightarrow0$ the approximation gets better and $n \rightarrow \infty $. Also note that summations of the form $$ \lim_{\Delta x\rightarrow0} \; \sum_{i= 0}^{n}f(a+i\Delta x)\Delta x$$ corresponds to areas under the graph of the function $f$.<br />
 <br />
-<div class="separator" style="clear: both; text-align: center;">
-<a href="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" height="258" width="400" /></a></div>
-<div class="separator" style="clear: both; text-align: center;">
-figure 7</div>
-<br />
-<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg" height="412" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig.7 Integral definition</td></tr>
+</tbody></table>
 Hence we can solve our problem using (5) while $h \rightarrow 0$.<br />
 &nbsp;$$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(6)$$<br />
 <br />
