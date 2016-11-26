@@ -1,0 +1,244 @@
+<h2>
+Gradient, Jacobian and Hessian</h2>
+<span style="font-size: small;">One variable differential calculus is a essential tool to study non-linear functions. Why ? Because the differential framework provides a local linear approximation to the function (tangent line to the function graph), these approximations are important since linear functions are easy to understand. This framework enables us to study non-linear functions by studying local linear approximations. These linear approximations determines properties of the function locally, such as rates of growth of a function. Also because we can find closed form expressions of the first order derivatives, we can study non-linear function in the entire domain. We can also apply differential calculus to the derivative function, giving us better local approximations of the functions in terms of easy to understand functions like polynomials (check <a href="http://kurvature.blogspot.pt/2014/06/taylor-polynomial.html" target="_blank">Taylor series</a>). One variable differential calculus is essential to many areas such as differential equations and optimization theory (and these are super useful in science and engineering).</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">We would like to have the same framework for multiple variables. To simplify calculations and to get the intuition we will just write about 2 variables functions. A multivariate functions is just a map $\mathbf{f}: \mathbb{R}^n\rightarrow \mathbb{R}^m$, as we explained before we will just consider functions of $n=2$. Functions like function $\mathbf{f}$ can be seen as vector functions where each coordinate is just a function $f_i:\mathbb{R}^n\rightarrow\mathbb{R}$.&nbsp;</span><br />
+<span style="font-size: small;">$$\mathbf{f}(\mathbf{x}) = \begin{bmatrix}f_1(\mathbf{x})\\\dots\\f_m(\mathbf{x})\end{bmatrix}$$ </span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Let $f(x,y):\mathbb{R}^2\rightarrow\mathbb{R}$ be a multivariate function and $\mathbf{g}(t):\mathbb{R}\rightarrow\mathbb{R}^2$&nbsp; a curve in $\mathbb{R}^2$, then we can study $f$ using one variable calculus by constraining the domain of $f$ to $\mathbf{g}$ curve, using function composition $f\left ( g(t) \right )$. For simplification, let $\mathbf{g}(t) = \mathbf{a} + \mathbf{v}t$ be a line starting at $\mathbf{a}$ with $\mathbf{v}$ direction ($\mathbf{a,v}\in \mathbb{R}^2$). With $f(\mathbf{g}(t))$ we can take the usual one variable derivative.</span><br />
+<span style="font-size: small;">$$\frac{d}{dt}f(\mathbf{g}(0)) = \lim_{t\rightarrow0}\frac{f(\mathbf{g}(\mathbf{a+v}t))-f(\mathbf{g}(\mathbf{a}))}{t}\;\;\;\;(1)$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">The left hand side of (1) tells us that we can use all machinery of one dimensional calculus, while the right site tell us a much more numerical approach to compute the derivative, this provide us the visualization to pursue this subject further.(check fig 1)</span><br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-B3FxyI9q9Ho/VZUvI8CmDVI/AAAAAAAAAU8/bcIVRWLUBok/s1600/Numerozinhos_6.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://3.bp.blogspot.com/-B3FxyI9q9Ho/VZUvI8CmDVI/AAAAAAAAAU8/bcIVRWLUBok/s640/Numerozinhos_6.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small;">Fig 1</span></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td class="tr-caption" style="text-align: center;"></td></tr>
+</tbody></table>
+<span style="font-size: small;">Let us define $$\frac{\partial f}{\partial \mathbf{v}} = \lim_{t\rightarrow 0}
+\frac{f(\mathbf{a+v}t)-f(\mathbf{a})}{t}\;\;, \forall
+\,\mathbf{v}\in\mathbb{R}^2$$.</span><br />
+<span style="font-size: small;"><br /></span>
+<br />
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Example : let $f(x,y) = \sin(x+y)$ and
+$\mathbf{g}(t) = [1+t, 1+t]^T$ then $$\frac{d(f\circ g)(t)}{dt} =
+\frac{d(\sin(1+t+1+t))}{dt} = 2\cos(2+2t)$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Now we can study a multivariate function
+by watching its derivative at each direction. We want to find expression for
+$\frac{\partial f}{\partial \mathbf{v}}$ in terms of $x$ and $y$, for that we
+will use the same approach as one-dimensional calculus. We will find a linear
+function that best approximates function $f$ at $\mathbf{a}=[a,b]^T$. Let
+$p(x,y) = p_0 + m_x (x-a) + m_y(y-b)$ be &nbsp;a such function. We need to find
+a $p_0, m_x$ and $m_y$ such that $$p(x,y) + r(x-a,y-b) = f(x,y)\;\;\;(2)$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Where $\lim_{\mathbf{x}\rightarrow
+\mathbf{a}}r(\mathbf{x-a}) = 0$. We get $p_0$ by substituting $\mathbf{x} =
+\mathbf{a}$ on (2).<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">$$f(\mathbf{a}) = p_0 + m_x(a-a) +
+m_y(b-b) + r(0,0) = p_0$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Doing some simple algebra we get $m_x$ and
+$m_y$ in terms of $f$.<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span lang="PT" style="font-size: small;">$$f(a+h,b) - f(a,b) =
+m_x h + r(h,0)$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span lang="PT" style="font-size: small;">$$\frac{f(a+h,b)-f(a,b)}{h}
+= m_x +&nbsp;\frac{r(h,0)}{h}$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span lang="PT" style="font-size: small;">$$\lim_{h\rightarrow
+0}\frac{f(a+h,b)-f(a,b)}{h} = m_x + \lim_{h\rightarrow0}\frac{r(h,0)}{h}$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">$$\frac{\partial f}{\partial x}(a,b) =
+m_x$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Similarly $m_y =&nbsp;\frac{\partial
+f}{\partial y}(a,b)&nbsp;$. Note this is not a complete proof, here we just
+want to get an intuition. Now we can compute $\frac{d (f \circ
+\mathbf{g})}{dt}$ in terms of $\mathbf{x}$ as follow:<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">$$\frac{d (f \circ \mathbf{g})}{dt}(t) =
+\lim_{h \rightarrow 0}\frac{f(\mathbf{g}(t+h))-f(\mathbf{g}(t))}{h}&nbsp;$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Using linear approximation, first in $t$ then in $(x,y)$</span><br />
+<br /></div>
+<span style="font-size: small;">$$\Leftrightarrow \lim_{h \rightarrow 0}\frac{f\left ( \mathbf{g}(t) + \frac{d\mathbf{g}}{dt}(t) h \right)-f(\mathbf{g}(t))}{h} = \lim_{h\rightarrow 0}\frac{f(\mathbf{g}(t)) + f_x(\mathbf{g}(t)) \times (a + v_1h - a) + f_y(\mathbf{g}(t)) \times (b + v_2h -b) - f(\mathbf{g}(t))}{h}$$</span><br />
+<span style="font-size: small;"><br /></span>$$\Leftrightarrow \lim_{h \rightarrow 0}\frac{f\left ( \mathbf{g}(t) + \frac{d\mathbf{g}}{dt}(t) h \right)-f(\mathbf{g}(t))}{h} = \lim_{h\rightarrow 0}\frac{f_x(\mathbf{g}(t)) \times v_1h + f_y(\mathbf{g}(t)) \times v_2h}{h}$$<br />
+<br />
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Note that $\mathbf{g}(t) = \mathbf{a} +
+\mathbf{v}t$, where $\mathbf{v} = [v_1, v_2]^T$. Also $f_x = \frac{\partial
+f}{\partial x} = \frac{d f}{dx}$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Hence, $$\frac{d (f \circ \mathbf{g})}{dt}(t_0) = f_x(\mathbf{g}(t_0)) \times v_1 + f_y(\mathbf{g}(t_0)) \times v_2 = \nabla \mathbf{f}^T \left ( \mathbf{g}(t_0) \right )\mathbf{v}$$</span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<br />
+<span style="font-size: small;">Where $\nabla \mathbf{f}\left( \mathbf{g}(t_0)\right) = [f_x\left( \mathbf{g}(t_0)\right), f_y\left( \mathbf{g}(t_0)\right)]^T$ , is the gradient vector of $f$ at $\mathbf{g}(t_0)$.</span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Remark: In this context $\mathbf{u}^T
+\mathbf{v} = &lt;\mathbf{u} ,\mathbf{v}&gt; =\mathbf{u} \cdot \mathbf{v}$
+&nbsp;&nbsp;<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<br />
+<div style="margin: 0in 0in 0.0001pt;">
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://4.bp.blogspot.com/-ar38JL0uLuE/Vaqeeej6pQI/AAAAAAAAAWs/evVAz5VKUpw/s1600/Numerozinhos_08.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://4.bp.blogspot.com/-ar38JL0uLuE/Vaqeeej6pQI/AAAAAAAAAWs/evVAz5VKUpw/s640/Numerozinhos_08.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">Fig 2</td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody></tbody></table>
+</div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Now with this tool we can study nonlinear multivariable functions. For instance, let f $\mathbb{R}^n \rightarrow
+\mathbb{R}$ ,we wish to study in which directions of the domain we should go in
+order to increase/decrease $f$ or to stay at a constant value. To find such
+answers we just need to study the derivative of $f$ for various directions
+$\mathbf{v} \in \mathbb{R}^n \;\; , |\mathbf{v}| = 1&nbsp;$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">$$\frac{\partial f}{\partial
+\mathbf{v}}(\mathbf{a}) = \left &lt; \nabla \mathbf{f}(\mathbf{a}), \mathbf{v}
+\right&gt;\;\;\;(3)$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">We know from&nbsp;the<span class="apple-converted-space">&nbsp;</span><a href="http://kurvature.blogspot.pt/2014/07/projection-and-dot-product.html" target="_blank">dot product</a>&nbsp;that $\left |\mathbf{proj_v\nabla
+f}\right| = \left &lt;\mathbf{\nabla f}, \mathbf{v} \right&gt;$, then we know
+that &nbsp;when $\mathbf{v} $ is parallel &nbsp;to $\mathbf{\nabla f}$ with the
+same direction (3) is maximum, parallel with opposite direction (3) is minimum. When $\mathbf{v}$ is prependicular to $\mathbf{\nabla f}$ then (3)
+is equal to zero. These properties are easy to check with the next
+formula:&nbsp;<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">$$\left &lt;\mathbf{\nabla f}, \mathbf{v}
+\right&gt; = \left | &nbsp;\mathbf{\nabla f}\right | \left | \mathbf{v} \right
+| \cos \theta$$<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Where $\theta$ is the angle between
+$\mathbf{\nabla f}$ and $\mathbf{v}$.<o:p></o:p></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Since the gradient its defined everywhere(as long as the function is <a href="https://en.wikipedia.org/wiki/Differentiable_function" target="_blank">differentiable</a>), the gradient can be seen as a vector field on the domain of the function(check fig 3). This gradient vector field points to local maxima of a function (this is easy to check from the argument above). While a orthogonal vector field to the gradient, are tangent vectors to the function level sets(points in the function domain with the same value).</span></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;"><br /></span></div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><span style="font-size: small;"><a href="http://4.bp.blogspot.com/-Bp1kc0BbREg/VZ5KLUF22RI/AAAAAAAAAV4/f7wgJ8Dr4i0/s1600/Gradient_Visual.svg.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="480" src="https://4.bp.blogspot.com/-Bp1kc0BbREg/VZ5KLUF22RI/AAAAAAAAAV4/f7wgJ8Dr4i0/s640/Gradient_Visual.svg.png" width="640" /></a></span></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small;">Fig 3 - Gradient vector field (from <a href="https://en.wikipedia.org/wiki/Gradient" target="_blank">wikipedia</a>)</span></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody></tbody></table>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Other advantage of the gradient is that
+provide a local linear approximation of $f$ (we know that because the gradient
+was built for this purpose). Graphically this linear approximation is the
+tangent hyper-plane to the graph of the function(check fig 2).<o:p></o:p></span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Linear approximation of a function at $\mathbf{x}_0$</span><br />
+<span style="font-size: small;"><br /></span>
+$$f(\mathbf{x}) = f(\mathbf{x_0} + (\mathbf{x}-\mathbf{x}_0) ) = f(\mathbf{x_0}) + \nabla \mathbf{f}(\mathbf{x_0}) ^T (\mathbf{x} - \mathbf{x_0})$$<br />
+<br /></div>
+<div style="margin: 0in 0in 0.0001pt;">
+<span style="font-size: small;">Jacobian is easy to define with the
+gradient.<o:p></o:p></span></div>
+<span style="font-size: small;">&nbsp; Let $\mathbf{f}: \mathbb{R}^n \rightarrow \mathbb{R}^m$. $$\mathbf{f(x)} = \begin{bmatrix}<br /><br />f_1(\mathbf{x})\\<br /><br />\dots\\<br /><br />f_m(\mathbf{x})<br /><br />\end{bmatrix}$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Then the jacobian is the derivative of this function, this derivative becomes clear with the linear approximation of $\mathbf{f}$ around a point.</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Linear approximation of $\mathbf{f}$ around point $\mathbf{a}$ is just the linear approximation of each coordinate function $f_i\;\;i\in\{1,\dots,m\}$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$\mathbf{f(x)} \simeq&nbsp; \mathbf{f(a)} + \begin{bmatrix}<br /><br />\nabla \mathbf{f}_1(\mathbf{a})^T\\<br /><br />\dots<br /><br />\\<br /><br />\nabla \mathbf{f}_m(\mathbf{a})^T<br /><br />\end{bmatrix}(\mathbf{x-a}) \;\;\;(4)$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">The jacobian is the matrix at (4) with gradient vectors in its rows. With this definition, it is hard to get a good intuition of what is the jacobian. To provide such intuition I will give an example. Let $\mathbf{g}(u,v):\mathbb{R}^2\rightarrow \mathbb{R}^3$. $\mathbf{g}$ &nbsp;defines a surface in $\mathbb{R}^3$. Imagine that we want to find a tangent plane at $\mathbf{g}(u_0,v_0)$, to find this plane we need two non parallel tangent vector to the surface.Using two non intersecting curves on the surface, we can calculate a tagent vector to each curve, hence finding tangent vectors to the surface. We obtain these tangent vector as follows:</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$\lim_{h\rightarrow0} \frac{1}{h} \left[ \mathbf{g}(u_0+h,v_0)-\mathbf{g}(u_0,v_0)\right ] = \frac{\partial \mathbf{g}}{\partial u}(u_0,v_0)\\$$</span>
+<span style="font-size: small;">and</span>
+<span style="font-size: small;">$$ \lim_{h\rightarrow0} \frac{1}{h} \left[ \mathbf{g}(u_0,v_0 + h)-\mathbf{g}(u_0,v_0)\right ] = \frac{\partial \mathbf{g}}{\partial v}(u_0,v_0) $$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Now a tangent plane on $\mathbf{g}(u_0,v_0)$ is just a linear combination of the tangent vectors(check fig 4)&nbsp;</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$\mathbf{p}(u,v) = \mathbf{g}(u_0,v_0) + \frac{\partial \mathbf{g}}{\partial u}(u_0,v_0) (u-u_0) + \frac{\partial \mathbf{g}}{\partial v}(u_0,v_0) (v-v_0)$$</span>
+<span style="font-size: small;">On matrix form</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;"><br /></span>
+$$\mathbf{p}(u,v) = \mathbf{g}(u_0,v_0) + \begin{bmatrix}\frac{\partial \mathbf{g}(u_0,v_0)}{\partial u} &amp; \frac{\partial \mathbf{g}(u_0,v_0)}{\partial v}<br />
+\end{bmatrix}\begin{bmatrix}<br />
+u-u_0\\<br />
+v-v_0<br />
+\end{bmatrix}\;\;\; (5)$$<br />
+<br />
+$$\mathbf{p}(u,v) = \mathbf{g}(u_0,v_0) +<br />
+\begin{bmatrix}<br />
+\nabla\mathbf{g_1}(u_0,v_0)^T \\ \nabla\mathbf{g_2}(u_0,v_0)^T<br />
+\end{bmatrix}<br />
+\begin{bmatrix}<br />
+u-u_0\\<br />
+v-v_0<br />
+\end{bmatrix}\;\;\;(5.5)$$<br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">The &nbsp;matrix on (5) is the jacobian of &nbsp;$\mathbf{g}$. It is the same matrix as in (4), but in (5) we see the columns instead of the rows. In (5.5) we see the rows of the matrix. The jacobian of $\mathbf{g}$ may be written as $\mathbf{J_g}(u,v) = D\mathbf{g}(u,v)$.</span><br />
+<span style="font-size: small;"><br /></span>
+<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><span style="font-size: small;"><a href="http://4.bp.blogspot.com/-dCHTIxv4zes/VaqeercFaCI/AAAAAAAAAWw/xRg3NkgEYto/s1600/Numerozinhos_09.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://4.bp.blogspot.com/-dCHTIxv4zes/VaqeercFaCI/AAAAAAAAAWw/xRg3NkgEYto/s640/Numerozinhos_09.jpg" width="640" /></a></span></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small;">Fig 4</span></td></tr>
+</tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"></table>
+<span style="font-size: small;">The Hessian is just the jacobian of the gradient function, e.g. $\mathbf{p(x)} = \mathbf{\nabla f(x)}$, then the Hessian is $\mathbf{J_p(x)}$. Here I don´t want to describe the Hessian, I want to give the intuition of the hessian and show why it is interesting. The hessian is interesting because it provides a second order approximation to functions (towards a Taylor polynomial in the multivariable case), and I will show how to do it.</span><span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Let $f(\mathbf{x}):\mathbb{R}^n \rightarrow \mathbb{R}$, then we know form one dimensional calculus that:</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$f(\mathbf{a + v}t) = f(\mathbf{a}) + \int_0^t \frac{df}{dt}(\tau) \;d\tau$$</span><br />
+<span style="font-size: small;">$$\Leftrightarrow f(\mathbf{a + v}t) = f(\mathbf{a}) +\int_0^t \left&lt;\nabla \mathbf{f(a+v}\tau),\mathbf{v}\right&gt; d\tau\;\;\;(6)$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$\left&lt;\nabla \mathbf{f(a+v}t),\mathbf{v}\right&gt; = \left&lt;\nabla \mathbf{f(a)},\mathbf{v}\right&gt; + \int_0^t \frac{d(\left&lt;\nabla \mathbf{f(a+v}\tau),\mathbf{v}\right&gt;)}{dt}\,d\tau$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$\Leftrightarrow \left&lt;\nabla \mathbf{f(a+v}t),\mathbf{v}\right&gt; = \left&lt;\nabla \mathbf{f(a)},\mathbf{v}\right&gt; &nbsp;+ \int_0^t \frac{d}{dt}\left( \frac{\partial f}{\partial x_1} v_1 + \dots + \frac{\partial f}{\partial x_n} v_n\right ) \;d\tau$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$ \Leftrightarrow \left&lt;\nabla \mathbf{f(a+v}t),\mathbf{v}\right&gt; = \left&lt;\nabla \mathbf{f(a)},\mathbf{v}\right&gt; &nbsp;+ \int_0^t \left &lt; \nabla\frac{\partial f}{\partial x_1},\mathbf{v}\right&gt; v_1 + \dots + \left &lt; \nabla\frac{\partial f}{\partial x_n},\mathbf{v} \right&gt; v_n \;d\tau $$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">With a little practice</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$ \Leftrightarrow \left&lt;\nabla \mathbf{f(a+v}t),\mathbf{v}\right&gt; = \left&lt;\nabla \mathbf{f(a)},\mathbf{v}\right&gt;&nbsp; + \int_0^t \mathbf{v}^T \begin{bmatrix}<br /><br />\nabla\frac{\partial f}{\partial x_1}^T \\<br /><br />\dots \\<br /><br />\nabla\frac{\partial f}{\partial x_n} ^T<br /><br />\end{bmatrix} \mathbf{v} \; d \tau \;\;\;(7) $$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">substituting (7) in (6) we get (note that this procedure is similar to the one we did on <a href="http://kurvature.blogspot.pt/2014/06/taylor-polynomial.html" target="_blank">Taylor polynomial</a>)</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$f(\mathbf{a+v}t) = f(\mathbf{a}) + \int_0^t \left &lt; \nabla \mathbf{f}, \mathbf{v} \right &gt;\; d\tau + \int_0^t\int_0^\tau \left&lt; \mathbf{v}, \begin{bmatrix}<br /><br />\nabla \frac{\partial f}{\partial x_1}^T\\<br /><br />\dots\\<br /><br />\nabla \frac{\partial f}{\partial x_n}^T\\<br /><br />\end{bmatrix} \mathbf{v}\right&gt; \;d\tau_2\;d\tau$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">If we assume &nbsp;$\nabla \frac{\partial f(\mathbf{a + v}t)}{\partial x_i} = \nabla \frac{\partial f(\mathbf{a})} {\partial x_i} \;\; i \in \{1, \dots, n\}$ we get a local approximation of $f$.</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$f(\mathbf{a+v}t) \simeq f(\mathbf{a}) + \left &lt; \nabla \mathbf{f}, \mathbf{v} \right &gt;t + \left&lt; \mathbf{v}, \begin{bmatrix}<br /><br />\nabla \frac{\partial f}{\partial x_1}^T\\<br /><br />\dots\\<br /><br />\nabla \frac{\partial f}{\partial x_n}^T\\<br /><br />\end{bmatrix} \mathbf{v}\right&gt;\frac{t^2}{2} \;\;\; (8)$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">If $t = 1$ and $\mathbf{x = a + v}$ &nbsp;then (8) becomes</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">$$f(\mathbf{x}) \simeq f(\mathbf{a}) + \left &lt; \nabla \mathbf{f}, \mathbf{x-a} \right &gt; + \frac{1}{2}\left&lt; \mathbf{x-a}, \begin{bmatrix}<br /><br />\nabla \frac{\partial f}{\partial x_1}^T\\<br /><br />\dots\\<br /><br />\nabla \frac{\partial f}{\partial x_n}^T\\<br /><br />\end{bmatrix} \mathbf{x-a}\right&gt;\;\;\;(9)$$</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">The matrix in (8) and (9) is the hessian&nbsp; $\mathbf{H}_f$. The hessian provide a second order approximation, a quadratic polynomial approximation near $\mathbf{a}$. This second order approximation is very important, when the first order approximation doesn't tell us the information we need. It is also very important in optimization as we will see in a future post.</span><br />
+<span style="font-size: small;"><br /></span>
+<span style="font-size: small;">Now with this basic tools we can conquer new areas such as differential geometry, optimization and dynamical systems.</span><br />
+<br />
