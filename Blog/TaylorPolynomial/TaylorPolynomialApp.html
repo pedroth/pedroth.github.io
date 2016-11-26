@@ -1,0 +1,40 @@
+<h2>
+Taylor polynomial</h2>
+<div>
+<br /></div>
+<div>
+Last time we saw the fundamental theorem of calculus, let have a function $f:x\rightarrow y$ where $x \in \mathbb{R}$ and $y \in \mathbb{R}$, then &nbsp;$\int_{a}^{b} f'(x) dx = f(b) - f(a)$. This is nice because I can get a function from its derivative like this: $$f(x) = f(x_{0}) + \int_{x_{0}}^{x} f'(\tau) d\tau \;\;\;\;\;\;\;\;(1)$$</div>
+<div>
+<br /></div>
+<div>
+But if you recall &nbsp;$$lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx, n= \left \lfloor \frac{b-a}{h} \right \rfloor$$<br />
+<br />
+an this is a really difficult to compute, well actually is not that difficult ,but maybe there is a simpler method.<br />
+&nbsp; Imagine that you have all the derivatives of a function at every point, you have got $ f'(x) ,\; f''(x), \; f^{(3)}(x), \; ...$. So we could also do $$f'(x) = f'(x_{0}) + \int_{x_{0}}^{x} f''(\tau) d\tau\;\;\;\;\;\;\;\;(2)$$<br />
+<br />
+From (1) and (2) we get:$$f(x) = f(x_{0}) + \int_{x_{0}}^{x}\left [ f'(x_{0}) + \int_{x_0}^{\tau}f''(u)du \right ]d\tau$$<br />
+<br />
+$$\Leftrightarrow f(x) = f(x_{0}) + \int_{x_{0}}^{x} f'(x_{0}) + \int_{x_{0}}^{x}\int_{x_0}^{\tau}f''(u)du d\tau $$<br />
+<br />
+Note that $&nbsp;\int_{x_{0}}^{x} f'(x_{0})$ is the area of a constant function, hence<br />
+<br />
+$$\Leftrightarrow f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +&nbsp;\int_{x_{0}}^{x}\int_{x_0}^{\tau}f''(u)du d\tau&nbsp;&nbsp;$$<br />
+<br />
+&nbsp; We can also expand $f''(x) = f''(x_{0}) + \int_{x_{0}}^{x}f^{(3)}(\tau)$ and get:<br />
+$$&nbsp;f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +&nbsp;\int_{x_{0}}^{x}\int_{x_0}^{\tau}f''(x_{0})du d\tau + \int_{x_{0}}^{x}\int_{x_0}^{\tau}\int_{x_{0}}^{u} f^{(3)}(v) dvdud\tau$$<br />
+<br />
+We can simplify $\int_{x_{0}}^{x}\int_{x_0}^{\tau}f''(x_{0})du d\tau = \int_{x_{0}}^{x}f''(x_{0})(\tau - x_{0}) d\tau = \frac{f''(x_{0})(x-x_{0})^{2}}{2}$ and we get<br />
+<br />
+$$&nbsp;f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +\frac{f''(x_{0})(x-x_{0})^{2}}{2}&nbsp;+ \int_{x_{0}}^{x}\int_{x_0}^{\tau}\int_{x_{0}}^{u} f^{(3)}(v) dvdud\tau$$<br />
+<br />
+If we repeat the same procedure for all derivatives(infinite) we will get the taylor expansion:<br />
+<br />
+$$&nbsp;f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +\frac{f''(x_{0})(x-x_{0})^{2}}{2}&nbsp;+ &nbsp;\frac{f^{(3)}(x_{0})(x-x_{0})^{3}}{3!} + ...$$<br />
+<br />
+$$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(x_{0})}{n!}(x-x_{0})^{n} \;\;\;\;\;\;\;\;(3)$$<br />
+<br />
+And finally an application, lets say we wanted to find a function $y$ such that $y' = y$ and $y(0) =1$. If you think a little we will find that $y^{(i)} = y , i &gt; 0$, then by using &nbsp;(3) and the fact $y(0) =1$ we know $y^{(i)}(0)= 1, i \geq 0$, therefore:<br />
+<br />
+$$y(x) = \sum_{n=0}^{\infty}\frac{1}{n!}(x-0)^{n} $$<br />
+<br />
+This function is the well known $y = e^{x}$</div>
