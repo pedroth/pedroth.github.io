@@ -29,9 +29,14 @@ function buildThumbnail(name, w, h) {
     img.setAttribute("src", name + "/" + name + ".gif");
     img.setAttribute("width", w);
     img.setAttribute("height", h);
+
+    var link2 = document.createElement('a')
+    link2.setAttribute('href', name + "/" + name + ".html")
+
+    link2.appendChild(nameH)
     link.appendChild(img);
     div.appendChild(link);
-    div.appendChild(nameH);
+    div.appendChild(link2);
     megaDiv.appendChild(div);
 }
 

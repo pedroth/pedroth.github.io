@@ -20,7 +20,7 @@ function buildThumbnail(name,megaDiv,w,h,language) {
   /* construction of box */
   var div = document.createElement('li');
   var nameH = document.createElement('h3');
-  nameH.innerHTML = "<" + language + ">" + name;
+  nameH.innerHTML = "[" + language + "]" + name;
   var link = document.createElement('a');
   link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
   var img = document.createElement('img');
@@ -29,7 +29,12 @@ function buildThumbnail(name,megaDiv,w,h,language) {
   img.setAttribute("height",h);
   link.appendChild(img);
   div.appendChild(link);
-  div.appendChild(nameH);
+
+  var link2 = document.createElement('a');
+  link2.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");
+  link2.appendChild(nameH);
+  div.appendChild(link2);
+  
   megaDiv.appendChild(div);
 }
 
