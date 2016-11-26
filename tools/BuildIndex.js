@@ -114,7 +114,7 @@ function build() {
       apps[i] = appletsName[i].split(",");
       apps[i][2] = "Java";
     } else {
-      apps[i] = appJsNames[i - appletsName.length].split(" ");
+      apps[i] = appJsNames[i - appletsName.length].split(",");
       apps[i][2] = "Js";
     }
   }
