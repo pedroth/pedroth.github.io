@@ -111,7 +111,7 @@ function build() {
   var apps = [];
   for (var i = 0; i < appletsName.length + appJsNames.length; i++) {
     if(i < appletsName.length) {
-      apps[i] = appletsName[i].split(" ");
+      apps[i] = appletsName[i].split(",");
       apps[i][2] = "Java";
     } else {
       apps[i] = appJsNames[i - appletsName.length].split(" ");

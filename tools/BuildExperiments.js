@@ -95,7 +95,7 @@ function build(address) {
     var appsName = text.split("\n");
     var apps = [];
     for (var i = 0; i < appsName.length; i++) {
-        apps[i] = appsName[i].split(" ");
+        apps[i] = appsName[i].split(",");
         var dateStrs = apps[i][1].split("/");
         var acm = 0;
         var ide = 1;
