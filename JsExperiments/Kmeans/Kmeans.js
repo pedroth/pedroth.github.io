@@ -452,7 +452,7 @@ function draw() {
         runKmeans(videoImage, classifyData, updateClustersSigma, stateMachine);
     }
     ctx.putImageData(videoImage, 0, 0);
-    if (time % 1 < 1E-3) {
+    if (time % 1 < 0.1) {
         updateTable();
     }
 
