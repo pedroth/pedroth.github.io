@@ -100,7 +100,7 @@ because we are solving a problem with its description. There are all
 kind of problems in optimization from many different areas, such as 
 physics(<a href="http://en.wikipedia.org/wiki/Lagrangian_mechanics">Lagrangian mechanics</a>) &nbsp;, computer science(eg. almost every algorithm of <a href="http://en.wikipedia.org/wiki/Machine_learning">machine learning</a>) , economics(<a href="http://en.wikipedia.org/wiki/Modern_portfolio_theory">Modern portfolio theory</a>) and even mathematics itself( many mathematical concepts can be derived from an optimization problem).<br />
 <br />
-I already written a little bit about optimization in the <a href="http://kurvature.blogspot.pt/2014/07/gradient-descend.html" target="_blank">gradient descent</a>&nbsp;post, but in this optimization series I will recall every concept.<br />
+I already written a little bit about optimization in the <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html" target="_blank">gradient descent</a>&nbsp;post, but in this optimization series I will recall every concept.<br />
 <br />
 A
  general optimization problem is described in the following way, let 
@@ -135,7 +135,7 @@ will derive in which conditions $\mathbf{x}^\ast$ is a local minimum, by
  studying $f(\mathbf{g}(t))$ for every direction $\mathbf{v}$ when $t 
 \in [-\varepsilon,\varepsilon],\; \varepsilon &gt; 0$.<br />
 <br />
-The main intuition to solve this problem is to study $f$ using its linear approximation(tangent line in the graph)! The linear approximation tell us if the curve is increasing or decreasing. From the "<a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article and the "<a href="http://kurvature.blogspot.pt/2014/05/intuitions-of-calculus.html" target="_blank">Intuitions of Calculus</a>" article we know a lot about local linear approximations of functions.<br />
+The main intuition to solve this problem is to study $f$ using its linear approximation(tangent line in the graph)! The linear approximation tell us if the curve is increasing or decreasing. From the "<a href="http://pedroth.github.io/visualExperiments/Blog/GradientJacobianHessian/GradientJacobianHessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article and the "<a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuitions of Calculus</a>" article we know a lot about local linear approximations of functions.<br />
 <table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
 <tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-MTukaqKFlo0/VhBKm_Vd4-I/AAAAAAAAAYM/_diDeLpYQ6Y/s1600/Numerozinhos_1.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://3.bp.blogspot.com/-MTukaqKFlo0/VhBKm_Vd4-I/AAAAAAAAAYM/_diDeLpYQ6Y/s640/Numerozinhos_1.jpg" width="640" /></a></td></tr>
 <tr><td class="tr-caption" style="text-align: center;">fig1 Function near a minimum(above) and a maximum(below)<br />
@@ -173,7 +173,7 @@ $$f_{tt}(0) =&nbsp;&nbsp;\frac{d^2f}{dt^2}(0)&nbsp;&gt; 0 $$<br />
 $$ \Leftrightarrow &nbsp;\mathbf{v}^T 
 \mathbf{H}_f(\mathbf{g}(0))\mathbf{v} &gt; 0, \forall \left | \mathbf{v} \right
  | &gt; 0$$<br />
-&nbsp;Where&nbsp; $\mathbf{H}_f$ is the <a href="https://en.wikipedia.org/wiki/Hessian_matrix" target="_blank">hessian</a> of $f$, for more about the hessian matrix check <a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">this</a>
+&nbsp;Where&nbsp; $\mathbf{H}_f$ is the <a href="https://en.wikipedia.org/wiki/Hessian_matrix" target="_blank">hessian</a> of $f$, for more about the hessian matrix check <a href="http://pedroth.github.io/visualExperiments/Blog/GradientJacobianHessian/GradientJacobianHessian.html" target="_blank">this</a>
  previous post. Now we have derived a symbolic method for optimization 
 problems like (3). First compute critical points, which are points where
  $\nabla f(\mathbf{x}) = \textbf{0}$, then for each critical point 
@@ -191,7 +191,7 @@ In
  this post I am only concern in the theory of optimization, so I will 
 not focus on practical applications, these will come in future posts.<br />
 <br />
-Now we will solve the optimization problem using an algorithmic/numerical approach. I have already wrote about this method on the post called <a href="http://kurvature.blogspot.pt/2014/07/gradient-descend.html" target="_blank">gradient descend.&nbsp;</a><br />
+Now we will solve the optimization problem using an algorithmic/numerical approach. I have already wrote about this method on the post called <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html" target="_blank">gradient descend.&nbsp;</a><br />
 <br />
 The intuition is simple we chose a random point in the domain of $f$, then update this point by moving it to a lower value of the function.<br />
 <br />
@@ -208,7 +208,7 @@ Using linear approximation,<br />
 $$f(\mathbf{x}_0 + \alpha \mathbf{p}_0) \simeq &nbsp;f(\mathbf{x}_0) + \alpha\left&lt;\nabla\mathbf{f}(\mathbf{x}_0) ,\mathbf{p}_0\right&gt;$$<br />
 So if we choose $\mathbf{p}_0 = - \nabla \mathbf{f}(\mathbf{x}_0)$, then<br />
 $$f(\mathbf{x}_1) \simeq &nbsp;f(\mathbf{x}_0) - \alpha |\nabla\mathbf{f}(\mathbf{x}_0)|^2 \leq f(\mathbf{x}_0)\;\;\; (4)$$<br />
-It is clear that if we chose $\mathbf{p_i} = - \nabla \mathbf{f(x_i)}$, then the movement of $\mathbf{x_i}$, will obey the properties of the algorithm described above. For more intuition on how we choose $\mathbf{p}_0$ check "<a href="http://kurvature.blogspot.pt/2015/07/gradient-jacobian-and-hessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article.<br />
+It is clear that if we chose $\mathbf{p_i} = - \nabla \mathbf{f(x_i)}$, then the movement of $\mathbf{x_i}$, will obey the properties of the algorithm described above. For more intuition on how we choose $\mathbf{p}_0$ check "<a href="http://pedroth.github.io/visualExperiments/Blog/GradientJacobianHessian/GradientJacobianHessian.html" target="_blank">Gradient,Jacobian and Hessian</a>" article.<br />
 <br />
 This method has a clear problem since it is based on a local approximation of the function. Condition (4) may not hold for large values of $\alpha$ (play around with alfa in this <a href="https://www.khanacademy.org/computer-programming/gradient-descend-convergence-study/6449568559005696" target="_blank">visualization tool</a>). More considerations about the best values for $\alpha$ will be done in future articles.<br />
 <br />
@@ -217,7 +217,7 @@ $$\mathbf{x_{i+1}} = \mathbf{x_{i}} - \alpha \nabla \mathbf{f}(\mathbf{x_i})\;\;
 Note that (5) is simple to implement on a computer, the difficult ( not that difficult ) part is to test convergence. This can be done as follow:<br />
 $$\varepsilon &gt; 0,\;\;|\mathbf{x_{i+1}}-\mathbf{x_{i+1}}|^2 &lt; \varepsilon\;\;(6)$$<br />
 Meaning that we want to test if the difference between iteration is close to zero. Sometimes an easier condition is $|\nabla \mathbf{f(x_i)}|^2&lt;\varepsilon$ but from (5) we know that this condition is equivalent to (6). &nbsp;$$|\mathbf{x_{i+1}}-\mathbf{x_{i+1}}|^2 &lt; \varepsilon \underset{\text{from (5)}} \Rightarrow \alpha^2\left |\nabla \mathbf{f(x_i)}\right|^2$$<br />
-This method I just described is the gradient descend method. As I already said above depending on the value of $\alpha$ the gradient descend method may or may not converge. In order to get around this problem and to see this method in a more general way we may see &nbsp;(5) as an Euler method of a differential equation ( check "<a href="http://kurvature.blogspot.pt/2015/03/differential-equations-and-matrix.html" target="_blank">Differential Equations</a>" article). &nbsp;If $\alpha$ is a time step of the Euler method, then the gradient descend can be seen as the solution of:<br />
+This method I just described is the gradient descend method. As I already said above depending on the value of $\alpha$ the gradient descend method may or may not converge. In order to get around this problem and to see this method in a more general way we may see &nbsp;(5) as an Euler method of a differential equation ( check "<a href="http://pedroth.github.io/visualExperiments/Blog/ODEMatrixExponential/ODEMatrixExponential.html" target="_blank">Differential Equations</a>" article). &nbsp;If $\alpha$ is a time step of the Euler method, then the gradient descend can be seen as the solution of:<br />
 $$\dot{\mathbf{x}} = -\nabla \mathbf{f(x)}\;\;\;(7)$$<br />
 This tell us the same as (4) which is just the movement of a point in the inverse direction of the gradient, but in a continuous fashion. Basically is a point moving with the velocity parallel to the gradient of the function. Its integral curve $\mathbf {x}(t)$ as $t \rightarrow \infty$ tends to the local minimum. The problem of this method is that it finds local minima, there is no guarantee that it converges to the global minima,<br />
 <br />
