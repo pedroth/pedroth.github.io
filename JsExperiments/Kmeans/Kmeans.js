@@ -110,7 +110,7 @@ function buildRowSoft(name, rgb) {
 function updateTableSoft() {
     buildRowSoft("average", averageColor);
     for (var i = 0; i < clusters.length; i++) {
-        buildRowSoft("cluster" + i, clusters[i]);
+        buildRowSoft("cluster " + i, clusters[i]);
     }
 }
 
