@@ -19,7 +19,7 @@ function LoadFile(file) {
 function buildThumbnail(name,megaDiv,w,h,language) {
   /* construction of box */
   var div = document.createElement('li');
-  var nameH = document.createElement('h3');
+  var nameH = document.createElement('h4');
   nameH.innerHTML = "[" + language + "]" + name;
   var link = document.createElement('a');
   link.setAttribute('href',language + "Experiments/" + name + "/" + name + ".html");

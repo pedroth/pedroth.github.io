@@ -21,7 +21,7 @@ function buildThumbnail(name, w, h) {
     var megaDiv = document.getElementById("megaDiv");
     /* construction of box */
     var div = document.createElement('li');
-    var nameH = document.createElement('h3');
+    var nameH = document.createElement('h4');
     nameH.innerHTML = "" + name;
     var link = document.createElement('a');
     link.setAttribute('href', name + "/" + name + ".html");
