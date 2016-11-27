@@ -466,7 +466,7 @@ function classifyIntoClustersGMM(sampleData, classifyFunction) {
     for(var i = 0; i < numberOfCluster; i++) {
         clusterIndex[i] = [];    
     }
-    for(var i = 0; i < sampleData.length; i++) {
+    for(var i = 0; i < sampleData.length/10; i++) {
         var weights = classifyFunction(sampleData[i]);
         for (var j = 0; j < weights.length; j++) {
             clusterIndex[j][i] = weights[j];
