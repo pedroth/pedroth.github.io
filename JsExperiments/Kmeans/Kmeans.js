@@ -45,6 +45,18 @@ var memoryIndex = 0;
  * Utils
  */
 
+function max(v) {
+    var maximum = Number.MIN_VALUE;
+    var maxIndex = -1;
+    for (var i = 0; i < v.length; i++) {
+        if(maximum < v[i]) {
+            maximum = v[i];
+            maxIndex = i;
+        }
+    }
+    return [maximum, maxIndex];
+}
+
 function powInt(x,i) {
   if(i === 0) {
     return 1;
@@ -320,7 +332,6 @@ function samplingData(data, numOfSamples) {
 }
 
 // KMeans
-
 function classifyData(x) {
     var kIndex = -1;
     var minDistance = Number.MAX_VALUE;
@@ -391,16 +402,90 @@ function runKmeans(data, classifyFunction, clusterUpdateFunction, drawFunction, 
     }
     drawFunction(data, classifyFunction, stateMachine);
 }
-
 //End Kmeans
 
 //GMM
+function gaussian(x, mu, sigma) {
+    var dist = myNorm( diff( x, clusters[i]));
+    return (1.0 / Math.sqrt(powInt(2 * Math.PI * sigma,3))) * Math.exp(-((dist * dist) / (2 * sigma * sigma)));
+}
 
-function classifyDataGMM(){}
-function updateClustersGMM() {}
-function drawClustersGMM() {}
+function classifyDataGMM(x){
+    var w = [];
+    var acc = 0;
+    for (var i = 0; i < clusters.length; i++) {
+        w[i] = gaussian(x, clusters[i], sigmas[i]) * phi[i];
+        acc += w[i];
+    }
+    for (var i = 0; i < clusters.length; i++) {
+        w[i] = w[i] / acc;
+    }
+    return w;
+}
 
+function updateClustersGMM(weights, sampleData) {
+    for(var i = 0; i < numberOfCluster; i++) {
+        w = weights[i];
+        var n = w.length;
+        var mu = vec3(0,0,0);
+        var acc = 0;
+        for(var j = 0; j < n; j++) {
+            var rgb = sampleData[j];
+            mu = add(mu, scalarMult(w[j],rgb));
+            acc += w[j];
+        }
+        clusters[i] = scalarMult(1/acc, mu);
+        sigma = 0;
+        for(var j = 0; j < n; j++) {
+            var rgb = sampleData[j];
+            sigma += w[j] * squaredNorm(diff(rgb, clusters[i]));
+        }
+        sigmas[i] = Math.sqrt((2 / (3 * acc)) * sigma);
+        phi[i] = (1 / n) * acc;
+    }
+}
+
+
+function drawClustersGMM(image, classifyFunction, stateMachine) {
+    var data = image.data;
+    for(var i = 0; i < data.length; i += 4) {
+        var rgb = vec3(data[i], data[i+1], data[i+2]);
+        var w = classifyFunction(rgb);
+        var newColor = vec3(0,0,0);
+        for(var j = 0; j < numOfClusters; j++) {
+            newColor = add(newColor, scalarMult(w[j], stateMachine(rgb, j)));
+        }
+        data[i  ] = newColor[0];
+        data[i+1] = newColor[1];
+        data[i+2] = newColor[2];
+    }
+}
+
+function classifyIntoClustersGMM(sampleData, classifyFunction) {
+    var clusterIndex = []
+    for(var i = 0; i < numberOfCluster; i++) {
+        clusterIndex[i] = [];    
+    }
+    for(var i = 0; i < sampleData.length; i++) {
+        var weights = classifyFunction(sampleData[i]);
+        for (var j = 0; j < weights.length; j++) {
+            clusterIndex[j][i] = weights[j];
+        }
+    }
+    return clusterIndex;
+}
+
+function runGMM(data, classifyFunction, clusterUpdateFunction, drawFunction, stateMachine) {
+    if(isLearning) {
+        var sampleData = samplingData(data, numOfSamples);
+        var weights = classifyIntoClustersGMM(sampleData, classifyFunction);
+        averageColor = computeAverageColor(sampleData);
+        clusterUpdateFunction(weights, sampleData);   
+    }
+    drawFunction(data, classifyFunction, stateMachine);
+}
 //End GMM
+
 function stopLearning() {
     isLearning = !isLearning;
     var button = document.getElementById('stopLearningButton');
@@ -425,8 +510,7 @@ function myStateMachine(rgb, clusterIndex) {
             return [255, 255, 255];
         default:
             return rgb;
-    }
-    
+    }  
 }
 
 function draw() {
@@ -442,7 +526,7 @@ function draw() {
     
     var yourSelect = document.getElementById( "selectAlgorithm" );
     if(yourSelect.options[yourSelect.selectedIndex].value == "Kmeans") {
-        runKmeans(videoImage, classifyData, updateClusters, drawClusters ,stateMachine);
+        runKmeans(videoImage, classifyData, updateClusters, drawClusters , stateMachine);
     } else {
         runKmeans(videoImage, classifyDataGMM, updateClustersGMM, drawClustersGMM , stateMachine);
     }
