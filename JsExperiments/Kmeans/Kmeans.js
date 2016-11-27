@@ -406,7 +406,7 @@ function runKmeans(data, classifyFunction, clusterUpdateFunction, drawFunction, 
 
 //GMM
 function gaussian(x, mu, sigma) {
-    var dist = myNorm( diff( x, clusters[i]));
+    var dist = myNorm( diff( x, sigma));
     return (1.0 / Math.sqrt(powInt(2 * Math.PI * sigma,3))) * Math.exp(-((dist * dist) / (2 * sigma * sigma)));
 }
 
