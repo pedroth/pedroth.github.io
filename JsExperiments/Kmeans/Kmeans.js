@@ -452,7 +452,7 @@ function drawClustersGMM(image, classifyFunction, stateMachine) {
         var rgb = vec3(data[i], data[i+1], data[i+2]);
         var w = classifyFunction(rgb);
         var newColor = vec3(0,0,0);
-        for(var j = 0; j < numOfClusters; j++) {
+        for(var j = 0; j < numberOfCluster; j++) {
             newColor = add(newColor, scalarMult(w[j], stateMachine(rgb, j)));
         }
         data[i  ] = newColor[0];
