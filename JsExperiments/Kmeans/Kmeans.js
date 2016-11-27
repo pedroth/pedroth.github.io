@@ -23,6 +23,9 @@ var errBack = function(error) { console.log("Video capture error: ", error.code)
 var numberOfCluster = document.getElementById('numOfClusters').value;
 
 var clusters = [];
+var phi = [];
+var sigmas = [];
+
 var numOfStates = 4;
 var clustersState = [];
 
@@ -235,6 +238,8 @@ function initClusters() {
     for(var i = 0; i < numberOfCluster; i++) {
         clusters[i] = vec3(255 * Math.random(), 255 * Math.random(), 255 * Math.random());
         clustersState[i] = 1;
+        sigmas[i] = 255 * Math.random();
+        phi[i] = (1.0 / numOfClusters);
     }
 }
 
@@ -314,6 +319,8 @@ function samplingData(data, numOfSamples) {
     return memoryData;
 }
 
+// KMeans
+
 function classifyData(x) {
     var kIndex = -1;
     var minDistance = Number.MAX_VALUE;
@@ -363,44 +370,6 @@ function updateClusters(dataClusterIndex, sampleData) {
     }
 }
 
-function updateClustersSigma(dataClusterIndex, sampleData) {
-    var alpha = 10;
-
-    var clustersSum = vec3(0,0,0);
-    for(var i = 0; i < numberOfCluster; i++) {
-     clustersSum = add(clustersSum, clusters[i]);   
-    }
-    
-    for(var i = 0; i < numberOfCluster; i++) {
-        clusterDataIndex = dataClusterIndex[i];
-        var n = clusterDataIndex.length;
-        var mu = vec3(0,0,0);
-        for(var j = 0; j < n; j++) {
-            var rgb = sampleData[clusterDataIndex[j]];
-            mu = add(mu, rgb);
-        }
-        if ((n - 2 * alpha * (numberOfCluster - 1)) == 0) {
-            clusters[i] = vec3(255 * Math.random(), 255 * Math.random());
-        } else {
-            var v = diff(mu, scalarMult(2 * alpha, diff(clustersSum, clusters[i])));
-            clusters[i] = scalarMult(1.0 / (n - 2 * alpha * (numberOfCluster - 1)), v);
-        }
-    }
-//    numberOfCluster = 8;
-//    if(document.getElementById('numOfClusters').value !== "8") {
-//        initClusters();
-//        document.getElementById('numOfClusters').value = 8;
-//    }
-//    clusters[0] = vec3(0,0,0);
-//    clusters[1] = vec3(255,0,0);
-//    clusters[2] = vec3(0,255,0);
-//    clusters[3] = vec3(0,0,255);
-//    clusters[4] = vec3(255,255,0);
-//    clusters[5] = vec3(255,0,255);
-//    clusters[6] = vec3(0,255,255);
-//    clusters[7] = vec3(255,255,255);
-}
-
 function drawClusters(image, classifyFunction, stateMachine) {
     var data = image.data;
     for(var i = 0; i < data.length; i += 4) {
@@ -413,16 +382,25 @@ function drawClusters(image, classifyFunction, stateMachine) {
     }
 }
 
-function runKmeans(data, classifyFunction, clusterUpdateFunction, stateMachine) {
+function runKmeans(data, classifyFunction, clusterUpdateFunction, drawFunction, stateMachine) {
     if(isLearning) {
         var sampleData = samplingData(data, numOfSamples);
         var dataIntoClusters = classifyIntoClusters(sampleData, classifyFunction);
         averageColor = computeAverageColor(sampleData);
         clusterUpdateFunction(dataIntoClusters, sampleData);   
     }
-    drawClusters(data, classifyFunction, stateMachine);
+    drawFunction(data, classifyFunction, stateMachine);
 }
 
+//End Kmeans
+
+//GMM
+
+function classifyDataGMM(){}
+function updateClustersGMM() {}
+function drawClustersGMM() {}
+
+//End GMM
 function stopLearning() {
     isLearning = !isLearning;
     var button = document.getElementById('stopLearningButton');
@@ -464,9 +442,9 @@ function draw() {
     
     var yourSelect = document.getElementById( "selectAlgorithm" );
     if(yourSelect.options[yourSelect.selectedIndex].value == "Kmeans") {
-        runKmeans(videoImage, classifyData, updateClusters, stateMachine);
+        runKmeans(videoImage, classifyData, updateClusters, drawClusters ,stateMachine);
     } else {
-        runKmeans(videoImage, classifyData, updateClustersSigma, stateMachine);
+        runKmeans(videoImage, classifyDataGMM, updateClustersGMM, drawClustersGMM , stateMachine);
     }
     ctx.putImageData(videoImage, 0, 0);
     
