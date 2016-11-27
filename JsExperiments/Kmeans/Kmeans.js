@@ -528,7 +528,7 @@ function draw() {
     if(yourSelect.options[yourSelect.selectedIndex].value == "Kmeans") {
         runKmeans(videoImage, classifyData, updateClusters, drawClusters , stateMachine);
     } else {
-        runKmeans(videoImage, classifyDataGMM, updateClustersGMM, drawClustersGMM , stateMachine);
+        runGMM(videoImage, classifyDataGMM, updateClustersGMM, drawClustersGMM , stateMachine);
     }
     ctx.putImageData(videoImage, 0, 0);
     
