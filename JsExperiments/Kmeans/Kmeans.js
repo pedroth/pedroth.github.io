@@ -251,7 +251,7 @@ function initClusters() {
         clusters[i] = vec3(255 * Math.random(), 255 * Math.random(), 255 * Math.random());
         clustersState[i] = 1;
         sigmas[i] = 255 * Math.random();
-        phi[i] = (1.0 / numOfClusters);
+        phi[i] = (1.0 / numberOfCluster);
     }
 }
 
