@@ -96,12 +96,14 @@ My intuitive proof of green theorem</h2>
 <div>
 <br /></div>
 <div>
-&nbsp; Let $F=[P(x,y),Q(x,y)]^T:\mathbb{R}^2\rightarrow\mathbb{R}^2$ be a function that describes a vector field and $g:[a,b]\rightarrow\mathbb{R}^2$ be a <a href="http://mathworld.wolfram.com/SimpleCurve.html" target="_blank">simple</a> closed curve. Imagine that you have the following problem: Measure how much the vector field $F$ is tangent to the curve $g$.<br> 
+&nbsp;Let $F=[P(x,y),Q(x,y)]^T:\mathbb{R}^2\rightarrow\mathbb{R}^2$ be a function that describes a vector field and $g:[a,b]\rightarrow\mathbb{R}^2$ be a <a href="http://mathworld.wolfram.com/SimpleCurve.html" target="_blank">simple</a> closed curve. Imagine that you have the following problem: 
 
-It seems easy to make such calculation. All you do is for each point in the curve compute the vector given by the vector field, then compute the tangent vector of that curve. Now calculate the projection of the first with the second vector, then add all those numbers for each point in the curve. Simple right?<br>
+<p>Measure how much the vector field $F$ is tangent to the curve $g$.<p><br> 
+
+It seems easy to make such calculation. All you need to do is to compute the projection of the vector given by the field with the tangent  vector of a curve in every point of the curve. Then add up all of those numbers. Simple right?<br>
 Well this is could be useful for a lot of different applications, like <a href="https://en.wikipedia.org/wiki/Circulation_(fluid_dynamics)" target="_blank">fluid dynamics</a>, geometry , <a href="https://en.wikipedia.org/wiki/Work_(physics)" target="_blank">physics</a>, etc.<br />
 
-Mathematicians formalize this question in a neat way and we will see how. Later we will develop a method to compute the answer. While answering this problem, we will be proving using Green's Theorem, which is our main goal. Note that this article is just a sketch of the proof of the Green's Theorem. Let's start:<br />
+Mathematicians formalize this question in a great way, in this article will formalize this question and develop a method to compute the answer. This method will be a sketch of the proof of Green's Theorem. Let's start : <br />
 <br />
 The sum of the projections of a vector field with the tagent of a curve is given by : $$\oint_{a}^{b}F\cdot \hat{T}dl \; \; \; \;(1)$$<br />
 &nbsp; Where &nbsp;$\hat {T}$ is the unit tangent vector to curve $g$, and $dl = |\dot g(t)| dt$, which is a small arc length of the curve. So (1) becomes<br />
