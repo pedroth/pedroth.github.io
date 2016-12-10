@@ -16,9 +16,9 @@ var mouse;
 
 //video vars
 var video = document.getElementById("video");
-//var videoObj = { "video": true };
-//var handleVideo = function handleVideo(stream) { video.src = window.URL.createObjectURL(stream);}
-//var errBack = function(error) { console.log("Video capture error: ", error.code);};
+var videoObj = { "video": true };
+var handleVideo = function handleVideo(stream) { video.src = window.URL.createObjectURL(stream);}
+var errBack = function(error) { console.log("Video capture error: ", error.code);};
 
 var numberOfCluster = document.getElementById('numOfClusters').value;
 
@@ -276,11 +276,11 @@ function init() {
     mouse = [0,0];
 
     // Video setup : Put video listeners into place
-//    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
  
-//    if (navigator.getUserMedia) {       
-//        navigator.getUserMedia({video: true}, handleVideo, errBack);
-//    }
+    if (navigator.getUserMedia) {       
+        navigator.getUserMedia({video: true}, handleVideo, errBack);
+    }
 
     initClusters();
     updateTable();
