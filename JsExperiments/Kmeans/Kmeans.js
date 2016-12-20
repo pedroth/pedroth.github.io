@@ -1,10 +1,13 @@
 /*
  *  Setup
  */
+var isVideo = true; 
 var canvas = document.getElementById('canvas');
 var canvasVideo = document.getElementById('canvasVideo');
 var ctx = canvas.getContext('2d');
 var ctxVideo = canvasVideo.getContext('2d');
+var imageLoader = document.getElementById('imageLoader');
+var auxImage;
 
 var down = false;
 
@@ -44,7 +47,6 @@ var memoryIndex = 0;
 /*
  * Utils
  */
-
 function max(v) {
     var maximum = Number.MIN_VALUE;
     var maxIndex = -1;
@@ -262,6 +264,25 @@ function updateNumberOfClusters() {
     updateTable();
 }
 
+
+function handleImage(e) {
+    var reader = new FileReader();
+    reader.onload = function(event){
+        auxImage = new Image();
+        auxImage.onload = function(){
+            isVideo = false;
+            canvas.width = auxImage.width;
+            canvas.height = auxImage.height;
+            canvasVideo.width = auxImage.width;
+            canvasVideo.height = auxImage.height;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctxVideo.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        auxImage.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+
 function init() {    
     canvas.addEventListener("mousedown", mouseDown, false);
     canvas.addEventListener("mouseup", mouseUp, false);
@@ -284,6 +305,8 @@ function init() {
 
     initClusters();
     updateTable();
+
+    imageLoader.addEventListener('change', handleImage, false);
 }
 
 function keyDown(e) {
@@ -513,12 +536,20 @@ function myStateMachine(rgb, clusterIndex) {
     }  
 }
 
+function getInput() {
+    if(isVideo) {
+        return video;
+    }
+    return auxImage;
+}
+
 function draw() {
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
     time += dt;
     
-    ctxVideo.drawImage(video, 0, 0, width,height);
+    var input = getInput();
+    ctxVideo.drawImage(input, 0, 0, width,height);
 
     var videoImage = ctxVideo.getImageData(0, 0, canvasVideo.width, canvasVideo.height);
     
