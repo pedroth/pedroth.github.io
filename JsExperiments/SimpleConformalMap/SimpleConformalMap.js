@@ -1,7 +1,19 @@
+/*
+Canvas coordinates
+0            W
++-------------> y
+|      
+|      
+|       *
+|
+|
+v x
+*/
+
+
 /**
  * Setup
  */
-
 var canvas = document.getElementById('c');
 var ctx = canvas.getContext('2d');
 var down = false;
@@ -98,7 +110,7 @@ var pointWise = function(u, v) {
  * */
 
 var matrixProd = function(u, v, x) {
-    return add(add(scalarMult(x[0], u), scalarMult(x[1], v)));
+    return add(scalarMult(x[0], u), scalarMult(x[1], v));
 };
 
 var floor = function(v) {
@@ -182,11 +194,17 @@ function getImageIndex(x, size) {
     return 4 * (size[0] *  x[0] + x[1]);
 }
 
-function canvasTransform(x, xmin, xmax) {
-    var ans = [height , 0];
-    var v = diff(x,xmin);
-    var diff = (xmax, xmin);
-    return add(ans, matrixProd([0, width / diff[0]], [-height / diff[1], 0], v));
+function canvasTransformInt(x, xmin, xmax) {
+    var ans = [xmin[0] , xmax[1]];
+    var v = diff(x, ans);
+    var dx = diff(xmax, xmin);
+    return matrixProd([0, width / dx[0]], [-height / dx[1], 0], v);
+}
+
+function canvasTransform(xInt, xmin, xmax) {
+    var aux = [xmin[0], xmax[1]];
+    var dx = diff(xmax, xmin);
+    return add(aux, matrixProd([0, -dx[1] / height], [dx[0] / width, 0], xInt));
 }
 
 /**
@@ -266,8 +284,8 @@ function drawLineInt(x1, x2, rgb, data) {
 }
 
 function drawLine(x1, x2, rgb, data) {
-    var x1Int = canvasTransform(x1, xmin, xmax);
-    var x2Int = canvasTransform(x2, xmin, xmax);
+    var x1Int = canvasTransformInt(x1, xmin, xmax);
+    var x2Int = canvasTransformInt(x2, xmin, xmax);
     drawLineInt(x1Int, x2Int, rgb, data)
 }
 
