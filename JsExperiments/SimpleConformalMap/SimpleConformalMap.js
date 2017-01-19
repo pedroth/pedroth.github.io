@@ -142,16 +142,40 @@ var div = function(u,v) {
  * end vectors
  * */
 
+function preventScroolingMobile() {
+    document.body.addEventListener("touchstart", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+    document.body.addEventListener("touchend", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+    document.body.addEventListener("touchmove", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+}
+
 function init() {
+    canvas.addEventListener("touchstart", touchStart, false);
+    canvas.addEventListener("touchend", touchEnd, false);
+    canvas.addEventListener("touchmove", touchMove, false);
+
     canvas.addEventListener("mousedown", mouseDown, false);
     canvas.addEventListener("mouseup", mouseUp, false);
     canvas.addEventListener("mousemove", mouseMove, false);
+    
     document.addEventListener("keydown", keyDown, false);
     
     startTime = new Date().getTime();
     width = canvas.width;
     height = canvas.height;
     mouse = zeros();
+    preventScroolingMobile();
 }
 
 init();
@@ -168,6 +192,26 @@ function keyDown(e) {
 
     if (e.keyCode == 68) {
     }
+}
+
+function touchStart(e) {
+    var rect = canvas.getBoundingClientRect();
+    mouse[0] = e.touches[0].clientY - rect.top;
+    mouse[1] = e.touches[0].clientX - rect.left;
+    down = true;
+}
+
+function touchEnd() {
+    down = false;
+}
+
+function touchMove(e) {
+    var rect = canvas.getBoundingClientRect();
+    var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+    if (!down || mx == mouse[0] && my == mouse[1])
+        return;
+    mouse[0] = my;
+    mouse[1] = mx;
 }
 
 function mouseDown(e) {
@@ -188,7 +232,7 @@ function mouseMove(e) {
         return;
     mouse[0] = my;
     mouse[1] = mx;
-};
+}
 
 function getImageIndex(x, size) {
     return 4 * (size[0] *  x[0] + x[1]);
@@ -315,5 +359,7 @@ function draw() {
     ctx.fillText("x : " + tMouse[0] +  " y: " + tMouse[1], mouse[1], mouse[0]);
     requestAnimationFrame(draw);
 }
+
+
 
 requestAnimationFrame(draw);
