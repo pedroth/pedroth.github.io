@@ -25,7 +25,7 @@ var time = 0;
 
 var xmin = [-1, -1];
 var xmax = [1, 1];
-var curve = [];
+var curves = [];
 
 /**
 *  Utils
@@ -108,7 +108,6 @@ var pointWise = function(u, v) {
 /**
  * return product between the matrix formed by (u,v) and x;
  * */
-
 var matrixProd = function(u, v, x) {
     return add(scalarMult(x[0], u), scalarMult(x[1], v));
 };
@@ -333,6 +332,12 @@ function drawLine(x1, x2, rgb, data) {
     drawLineInt(x1Int, x2Int, rgb, data)
 }
 
+function drawCurve(data, rgba) {
+    for (var i = 0; i < curve.length; i++) {
+        drawLine(curve[i], curve[(i + 1) % curve.length], rgba, data); 
+    }
+}
+
 
 function draw() {
     var dt = 1E-3 * (new Date().getTime() - startTime);
@@ -350,12 +355,15 @@ function draw() {
     /**
      * drawing and animation
      **/
-    drawLineInt([0,0], mouse, [255,0,0,255], data);
+    var tMouse = canvasTransform(mouse, xmin, xmax);
+    if(down) {
+        curve.push(tMouse);
+    }
+    drawCurve(data, [0,255,0,255])
     ctx.putImageData(image, 0, 0);
     
     ctx.fillStyle = 'white';
     ctx.font = "bold 16px Arial";
-    var tMouse = canvasTransform(mouse, xmin, xmax);
     ctx.fillText("x : " + tMouse[0] +  " y: " + tMouse[1], mouse[1], mouse[0]);
     requestAnimationFrame(draw);
 }
