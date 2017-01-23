@@ -25,11 +25,35 @@ var time = 0;
 
 var xmin = [-1, -1];
 var xmax = [1, 1];
-var curves = [];
+var curve = [];
+var constructionState = true;
 
 /**
 *  Utils
 **/
+
+function updateScreen() {
+	if(width - window.innerWidth != 0 || height - window.innerHeight != 0) {
+		width=window.innerWidth;
+		height=window.innerHeight;
+		canvas.width = width;
+		canvas.height = height;
+	}
+}
+
+function fullscreen(){
+	width=window.innerWidth;
+	height=window.innerHeight;
+	canvas.width = width;
+	canvas.height = height;
+	if(canvas.webkitRequestFullScreen) {
+		canvas.webkitRequestFullScreen();
+	} else {
+		canvas.mozRequestFullScreen();
+	}            
+}
+
+
 /**
 * My math
 **/
@@ -167,6 +191,8 @@ function init() {
     canvas.addEventListener("mousedown", mouseDown, false);
     canvas.addEventListener("mouseup", mouseUp, false);
     canvas.addEventListener("mousemove", mouseMove, false);
+
+    canvas.addEventListener("click", fullscreen);
     
     document.addEventListener("keydown", keyDown, false);
     
@@ -340,6 +366,7 @@ function drawCurve(data, rgba) {
 
 
 function draw() {
+	updateScreen();
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
     time += dt;
