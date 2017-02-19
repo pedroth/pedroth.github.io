@@ -200,6 +200,9 @@ function init() {
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
 			acc = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
+			document.getElementById("accelerationX").innerHTML = e.acceleration.x;
+			document.getElementById("accelerationY").innerHTML = e.acceleration.y;
+			document.getElementById("accelerationZ").innerHTML = e.acceleration.z;
 		};
 	}
     preventScroolingMobile();
@@ -270,9 +273,6 @@ function mouseMove(e) {
     var dy = my - mouse[0];
     cam.param[1] = cam.param[1] - 2 * Math.PI * (dx / canvas.width);
     cam.param[2] = cam.param[2] + 2 * Math.PI * (dy / canvas.height);
-
-    //console.log("newMouse : " + [mx , my] + " mouse : " + mouse);
-    //console.log(dx + " "+ dy);
 
     mouse[0] = my;
     mouse[1] = mx;
