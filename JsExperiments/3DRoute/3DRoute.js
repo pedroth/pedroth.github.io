@@ -426,9 +426,9 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(squaredNorm(acceleration) < 0.0001) {
-		acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-	}
+	//if(squaredNorm(acceleration) < 0.0001) {
+		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
+	//}
 
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
