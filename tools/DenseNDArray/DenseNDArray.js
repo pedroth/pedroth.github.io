@@ -74,8 +74,8 @@ DenseNDArray.prototype.getIntervalFromStr = function(x) {
                     intervals[i] = [integer, integer];
                     break;
                 case 2:
-                    var xmin = Math.max(0, Math.min(dim[i]-1, parseInt(intervalBounds[0])));
-                    var xmax = Math.max(0, Math.min(dim[i]-1, parseInt(intervalBounds[1])));
+                    var xmin = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[0])));
+                    var xmax = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[1])));
                     var myInterval = [xmin, xmax];
                     if (xmax - xmin === 0) {
                         throw "empty interval xmax : " + xmax + " < xmin : " + xmin;

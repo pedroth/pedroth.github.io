@@ -1,7 +1,7 @@
 /*
 Canvas coordinates
 
-0            W
+0                  W
 +-------------> y
 |        
 |        
@@ -10,6 +10,7 @@ Canvas coordinates
 |
 v x
 
+H
 */
 
 function add(u, v) {
@@ -70,64 +71,55 @@ MyCanvas.prototype.drawPxl =function(x, rgb) {
     this.imageData[index + 3] = rgb[3];
 }
 
-/* x1     :   2-dim array
+/* 
+ * x1     :   2-dim array
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawLine = function(x1, x2, shader) {
+	x1 = floor(x1);
+	x2 = floor(x2);
 
-    x1 = floor(x1);
-    x2 = floor(x2);
+	var index = [-1, 0, 1];
 
-    var size = 1;
-    var x = [];
-    x[0] = x1[0];
-    x[1] = x1[1];
+	var n  = index.length;
+	var nn = n * n; 
 
-    var normal = diff(x2, x1);
-    var temp = normal[0];
-    normal[0] = -normal[1];
-    normal[1] = temp;
+	var x = [];
+	x[0] = x1[0];
+	x[1] = x1[1];
 
-    var imin = [0, 0];
-    var oldi = [0, 0];
-    var fmin = Number.MAX_VALUE;
+	var tangent = diff(x2, x1);
+	var normal = [];
+	normal[0] = -tangent[1];
+	normal[1] =  tangent[0];
 
-    this.drawPxl(x, shader(x));
+	this.drawPxl(x, shader(x));
 
-    while (x[0] !== x2[0] || x[1] !== x2[1]) {
+	while (x[0] !== x2[0] || x[1] !== x2[1]) {
+		var fmin = Number.MAX_VALUE;
+	    var minDir = [];
+	    for (var k = 0; k < nn; k++) {
+	    	var i = index[k % n];
+	    	var j = index[Math.floor(k % nn / n)];
+	        
+	        var nextX = add(x, [i, j]);
+	        
+	        var v = diff(nextX, x1);
+	        var f = Math.abs(innerProd(v, normal)) - innerProd(v, tangent);
+	        if(fmin > f) {
+	        	fmin = f;
+	        	minDir = [i, j];
+	        }
+	    }
 
-        var maxShade = -1;
-
-        for ( var i = -size; i < size + 1; i++) {
-            for ( var j = -size; j < size + 1; j++) {
-
-                var nextX = add(x, [ i, j ]);
-                var shadePow = Math.abs(innerProd(diff(nextX, x1), normal)); 
-                var res = shadePow + Math.abs(nextX[0] - x2[0]) + Math.abs(nextX[1] - x2[1]);
-
-                if ((i === 0 && j === 0) || (i === oldi[0] && j === oldi[1]) || (Math.abs(i) > 1 || Math.abs(j) > 1)) {
-                    // nothing here
-                } else {
-                    if (fmin > res) {
-                        fmin = res;
-                        imin = [ i, j ];
-                    }
-                }
-            }
-        }
-
-        fmin = Number.MAX_VALUE;
-
-        oldi[0] = -imin[0];
-        oldi[1] = -imin[1];
-
-        x = add(x, imin);
-        this.drawPxl(x, shader(x));
-    }
+	    x = add(x, minDir);
+	    this.drawPxl(x, shader(x));
+	}
 }
 
-/* x1     :   2-dim array
+/* 
+ * x1     :   2-dim array
  * x2     :   2-dim array
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array

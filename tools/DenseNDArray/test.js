@@ -75,8 +75,8 @@ DenseNDArray.prototype.getIntervalFromStr = function(x) {
                     intervals[i] = [integer, integer];
                     break;
                 case 2:
-                    var xmin = Math.max(0, Math.min(dim[i]-1, parseInt(intervalBounds[0])));
-                    var xmax = Math.max(0, Math.min(dim[i]-1, parseInt(intervalBounds[1])));
+                    var xmin = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[0])));
+                    var xmax = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[1])));
                     var myInterval = [xmin, xmax];
                     if (xmax - xmin === 0) {
                         throw "empty interval xmax : " + xmax + " < xmin : " + xmin;
@@ -165,14 +165,19 @@ function denseTest() {
         console.log(table.get("1,:,:").get([1, 1]) === 13);
         console.log(table.get("1,:,:").get([2, 2]) === 25);
 
-        var secondTable = new DenseNDArray([3, 3]);
+        var secondTable = table.get("0:1,1:2,:");
+        console.log(secondTable.get([1,1,0]) === 7);
+        console.log(secondTable.get([1,1,1]) === 16);
+        console.log(secondTable.get([1,1,2]) === 25);
+
+        var thirdTable = new DenseNDArray([3, 3]);
         for (var j = 0; j < 3; j++) {
             for (var i = 0; i < 3; i++) {
-                secondTable.set([i, j], 100);
+                thirdTable.set([i, j], 100);
             }
         }
 
-        table.set("1,:,:", secondTable);
+        table.set("1,:,:", thirdTable);
 
         console.log(table.get( [0, 0, 0 ]) === 0);
         console.log(table.get( [1, 1, 1 ]) === 100 && table.get([1, 2, 1]) === 100);
