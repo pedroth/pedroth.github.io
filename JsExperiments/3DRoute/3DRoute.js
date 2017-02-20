@@ -29,6 +29,8 @@ var xmin, xmax;
 
 var acceleration = [0, 0, 0];
 var curve = [];
+var minCurve = [-3, -3, -3];
+var maxCurve = [ 3,  3,  3];
 var cam;
 var myDevice;
 
@@ -51,22 +53,22 @@ var Camera = function() {
 	this.orbit = function () {
 		this.basis = [];
 		var cosP = Math.cos(this.param[2]);
-        var cosT = Math.cos(this.param[1]);
-        var sinP = Math.sin(this.param[2]);
-        var sinT = Math.sin(this.param[1]);
+	    var cosT = Math.cos(this.param[1]);
+	    var sinP = Math.sin(this.param[2]);
+	    var sinT = Math.sin(this.param[1]);
 
-        // z - axis
-        this.basis[2] = [-cosP * cosT, -cosP * sinT, -sinP];
-        // y - axis
-        this.basis[1] = [-sinP * cosT, -sinP * sinT,  cosP];
-        // x -axis
-        this.basis[0] = [-sinT, cosT, 0];
+	    // z - axis
+	    this.basis[2] = [-cosP * cosT, -cosP * sinT, -sinP];
+	    // y - axis
+	    this.basis[1] = [-sinP * cosT, -sinP * sinT,  cosP];
+	    // x -axis
+	    this.basis[0] = [-sinT, cosT, 0];
 
-        this.invBasis[0] = [this.basis[0][0], this.basis[1][0], this.basis[2][0]];
-        this.invBasis[1] = [this.basis[0][1], this.basis[1][1], this.basis[2][1]];
-        this.invBasis[2] = [this.basis[0][2], this.basis[1][2], this.basis[2][2]];
+	    this.invBasis[0] = [this.basis[0][0], this.basis[1][0], this.basis[2][0]];
+	    this.invBasis[1] = [this.basis[0][1], this.basis[1][1], this.basis[2][1]];
+	    this.invBasis[2] = [this.basis[0][2], this.basis[1][2], this.basis[2][2]];
 
-        this.eye = [this.param[0] * cosP * cosT + this.focalPoint[0], this.param[0] * cosP * sinT + this.focalPoint[1], this.param[0] * sinP + this.focalPoint[2]];
+	    this.eye = [this.param[0] * cosP * cosT + this.focalPoint[0], this.param[0] * cosP * sinT + this.focalPoint[1], this.param[0] * sinP + this.focalPoint[2]];
 	}
 };
 
@@ -405,6 +407,7 @@ function draw3DLine(line, rgb, data) {
     //project
     for (var i = 0; i < cameraLine.length; i++) {
         cameraLine[i][0] = cameraLine[i][0] * distanceToPlane / cameraLine[i][2];
+        cameraLine[i][1] = cameraLine[i][1] * distanceToPlane / cameraLine[i][2];
     }
     drawLine([cameraLine[0][0], cameraLine[0][1]], [cameraLine[1][0], cameraLine[1][1]], rgb, data);
 }
@@ -422,6 +425,7 @@ function drawAxis(data) {
 }
 
 function updateCurve(dt) {
+	var isPointAdded = false;
 	if(curve.length == 0) {
 		curve[0] = [0, 0, 0];
 	}
@@ -430,7 +434,29 @@ function updateCurve(dt) {
 		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
 		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+		minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
+		maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
+		isPointAdded = true;
 	}
+
+	if(acceleration[0] == null) {
+		acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
+		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
+		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
+		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+		minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
+		maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
+		isPointAdded = true;
+		acceleration = [null, null, null];
+	}
+
+	if(isPointAdded) {
+		var center = add(minCurve, maxCurve);
+		center = scalarMult(0.5, center);
+		var radius = myNorm(diff(maxCurve, center));
+		cam.param[0] = radius;
+	}
+
 }
 
 function draw() {
