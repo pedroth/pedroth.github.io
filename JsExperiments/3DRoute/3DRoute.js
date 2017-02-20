@@ -425,30 +425,27 @@ function drawAxis(data) {
 }
 
 function updateCurve(dt) {
-	var isPointAdded = false;
 	if(curve.length == 0) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(squaredNorm(acceleration) > 1.5 || squaredNorm (myDevice.vel) > 0.5) {
-		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
-		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
-		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
-		minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
-		maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
-		isPointAdded = true;
-	}
+	acceleration = diff(acceleration, myDevice.vel);
+	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
+	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
+	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
+	maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
 
-	if(acceleration[0] == null) {
-		acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
-		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
-		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
-		minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
-		maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
-		isPointAdded = true;
-		acceleration = [null, null, null];
-	}
+	// if(acceleration[0] == null) {
+	// 	acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
+	// 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
+	// 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
+	// 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+	// 	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
+	// 	maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
+	// 	isPointAdded = true;
+	// 	acceleration = [null, null, null];
+	// }
 
 	if(isPointAdded) {
 		var center = add(minCurve, maxCurve);
