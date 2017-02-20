@@ -199,10 +199,10 @@ function init() {
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
-			acceleration = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
-			document.getElementById("accelerationX").innerHTML = e.acceleration.x;
-			document.getElementById("accelerationY").innerHTML = e.acceleration.y;
-			document.getElementById("accelerationZ").innerHTML = e.acceleration.z;
+			acceleration = [Math.floor(e.acceleration.x), Math.floor(e.acceleration.y), Math.floor(e.acceleration.z)];
+			document.getElementById("accelerationX").innerHTML = acceleration[0];
+			document.getElementById("accelerationY").innerHTML = acceleration[1];
+			document.getElementById("accelerationZ").innerHTML = acceleration[2];
 		};
 	}
     preventScroolingMobile();
