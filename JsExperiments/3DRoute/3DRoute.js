@@ -199,7 +199,7 @@ function init() {
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
-			acceleration = [Math.floor(e.acceleration.x), Math.floor(e.acceleration.y), Math.floor(e.acceleration.z)];
+			acceleration = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
 			document.getElementById("accelerationX").innerHTML = acceleration[0];
 			document.getElementById("accelerationY").innerHTML = acceleration[1];
 			document.getElementById("accelerationZ").innerHTML = acceleration[2];
@@ -426,15 +426,11 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	//if(squaredNorm(acceleration) < 0.0001) {
-		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-	//}
-
-	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
-	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
-
-	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
-	acceleration = [0, 0, 0];
+	if(squaredNorm(acceleration) > 1.5) {
+		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
+		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
+		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+	}
 }
 
 function draw() {
