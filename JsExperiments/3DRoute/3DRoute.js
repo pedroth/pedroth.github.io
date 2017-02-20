@@ -430,7 +430,7 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(squaredNorm(acceleration) > 1.5) {
+	if(squaredNorm(acceleration) > 1.5 || squaredNorm (myDevice.vel) > 0.5) {
 		myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 		myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
 		curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
