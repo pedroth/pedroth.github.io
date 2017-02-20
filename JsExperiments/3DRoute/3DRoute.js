@@ -429,7 +429,7 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(acceleration == null || acceleration[0] == null) {
+	if(acceleration == null || acceleration[0] == null || myNorm(acceleration) < 1) {
 		acceleration = [0, 0, 0];
 	}
 
