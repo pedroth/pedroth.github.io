@@ -429,10 +429,16 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
+	if(acceleration == null || acceleration[0] == null) {
+		acceleration = [0, 0, 0];
+	}
+
 	acceleration = diff(acceleration, myDevice.vel);
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
+
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
+	
 	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
 	maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
 
@@ -446,13 +452,10 @@ function updateCurve(dt) {
 	// 	isPointAdded = true;
 	// 	acceleration = [null, null, null];
 	// }
-
-	if(isPointAdded) {
-		var center = add(minCurve, maxCurve);
-		center = scalarMult(0.5, center);
-		var radius = myNorm(diff(maxCurve, center));
-		cam.param[0] = radius;
-	}
+	var center = add(minCurve, maxCurve);
+	center = scalarMult(0.5, center);
+	var radius = myNorm(diff(maxCurve, center));
+	cam.param[0] = radius;
 
 }
 
