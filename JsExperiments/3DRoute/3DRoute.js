@@ -479,9 +479,12 @@ function drawDeviceAxis(data) {
 	var sb = Math.sin(beta);
 	var cg = Math.cos(gamma);
 	var sg = Math.sin(gamma);
-	draw3DLine([myDevice.pos, add(myDevice.pos, [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca])],[255, 0, 0, 255], data);
-	draw3DLine([myDevice.pos, add(myDevice.pos, [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca])],[0, 255, 0, 255], data);
-	draw3DLine([myDevice.pos, add(myDevice.pos, [sg*cb, -sb, cg * cb])],[0, 0, 255, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca])],[255, 0, 0, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca])],[0, 255, 0, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, [sg*cb, -sb, cg * cb])],[0, 0, 255, 255], data);
+	draw3DLine([[0,0,0], [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca]],[255, 0, 0, 255], data);
+	draw3DLine([[0,0,0], [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca]],[0, 255, 0, 255], data);
+	draw3DLine([[0,0,0], [sg*cb, -sb, cg * cb]],[0, 0, 255, 255], data);
 }
 
 function draw() {
