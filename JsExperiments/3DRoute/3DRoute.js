@@ -207,9 +207,9 @@ function init() {
 			document.getElementById("accelerationX").innerHTML = acceleration[0];
 			document.getElementById("accelerationY").innerHTML = acceleration[1];
 			document.getElementById("accelerationZ").innerHTML = acceleration[2];
-			document.getElementById("accelerationX").innerHTML = acceleration[0];
-			document.getElementById("accelerationY").innerHTML = acceleration[1];
-			document.getElementById("accelerationZ").innerHTML = acceleration[2];
+			document.getElementById("alpha").innerHTML = eulerAngles[0];
+			document.getElementById("beta").innerHTML =  eulerAngles[1];
+			document.getElementById("gamma").innerHTML = eulerAngles[2];
 		};
 	}
     preventScroolingMobile();
