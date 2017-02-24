@@ -78,6 +78,21 @@ var Device = function() {
 	this.pos   = [0, 0, 0];
 	this.vel   = [0, 0, 0];
 	this.euler = [0, 0, 0];
+	this.basis = [];
+	this.computeBasisFromEuler = function() {
+		var alpha = this.euler[0];
+		var beta  = this.euler[1];
+		var gamma = this.euler[2];
+		var ca = Math.cos(alpha);
+		var sa = Math.sin(alpha);
+		var cb = Math.cos(beta);
+		var sb = Math.sin(beta);
+		var cg = Math.cos(gamma);
+		var sg = Math.sin(gamma);
+		this.basis[0] = [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca];
+		this.basis[1] = [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca];
+		this.basis[2] = [sg*cb, -sb, cg * cb];
+	}
 }
 /**
 * My math
@@ -440,7 +455,9 @@ function updateCurve(dt) {
 		acceleration = [0, 0, 0];
 	}
 
-	acceleration = diff(acceleration, myDevice.vel);
+
+	myDevice.computeBasisFromEuler();
+	acceleration = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], diff(acceleration, myDevice.vel));
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
 
@@ -470,21 +487,12 @@ function updateCurve(dt) {
 }
 
 function drawDeviceAxis(data) {
-	var alpha = myDevice.euler[0];
-	var beta  = myDevice.euler[1];
-	var gamma = myDevice.euler[2];
-	var ca = Math.cos(alpha);
-	var sa = Math.sin(alpha);
-	var cb = Math.cos(beta);
-	var sb = Math.sin(beta);
-	var cg = Math.cos(gamma);
-	var sg = Math.sin(gamma);
-	//draw3DLine([myDevice.pos, add(myDevice.pos, [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca])],[255, 0, 0, 255], data);
-	//draw3DLine([myDevice.pos, add(myDevice.pos, [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca])],[0, 255, 0, 255], data);
-	//draw3DLine([myDevice.pos, add(myDevice.pos, [sg*cb, -sb, cg * cb])],[0, 0, 255, 255], data);
-	draw3DLine([[0,0,0], [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca]],[255, 0, 0, 255], data);
-	draw3DLine([[0,0,0], [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca]],[0, 255, 0, 255], data);
-	draw3DLine([[0,0,0], [sg*cb, -sb, cg * cb]],[0, 0, 255, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[0])], [255, 0, 0, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[1])], [0, 255, 0, 255], data);
+	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[2])], [0, 0, 255, 255], data);
+	draw3DLine([[0,0,0], myDevice.basis[0]], [255, 0, 0, 255], data);
+	draw3DLine([[0,0,0], myDevice.basis[1]], [0, 255, 0, 255], data);
+	draw3DLine([[0,0,0], myDevice.basis[2]], [0, 0, 255, 255], data);
 }
 
 function draw() {
