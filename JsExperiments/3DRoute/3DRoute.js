@@ -28,6 +28,7 @@ var distanceToPlane = 1;
 var xmin, xmax; 
 
 var acceleration = [0, 0, 0];
+var eulerAngles = [0, 0, 0];
 var curve = [];
 var minCurve = [-3, -3, -3];
 var maxCurve = [ 3,  3,  3];
@@ -202,6 +203,10 @@ function init() {
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
 			acceleration = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
+			eulerAngles = [e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma];
+			document.getElementById("accelerationX").innerHTML = acceleration[0];
+			document.getElementById("accelerationY").innerHTML = acceleration[1];
+			document.getElementById("accelerationZ").innerHTML = acceleration[2];
 			document.getElementById("accelerationX").innerHTML = acceleration[0];
 			document.getElementById("accelerationY").innerHTML = acceleration[1];
 			document.getElementById("accelerationZ").innerHTML = acceleration[2];
