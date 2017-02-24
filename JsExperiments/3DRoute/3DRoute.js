@@ -28,7 +28,8 @@ var distanceToPlane = 1;
 var xmin, xmax; 
 
 var acceleration = [0, 0, 0];
-var eulerAngles = [0, 0, 0];
+
+var eulerSpeed = [0, 0, 0];
 var curve = [];
 var minCurve = [-3, -3, -3];
 var maxCurve = [ 3,  3,  3];
@@ -74,8 +75,9 @@ var Camera = function() {
 };
 
 var Device = function() {
-	this.pos = [0, 0, 0];
-	this.vel = [0, 0, 0];
+	this.pos   = [0, 0, 0];
+	this.vel   = [0, 0, 0];
+	this.euler = [0, 0, 0];
 }
 /**
 * My math
@@ -203,13 +205,13 @@ function init() {
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
 			acceleration = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
-			eulerAngles = [e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma];
+			eulerSpeed = [e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma];
 			document.getElementById("accelerationX").innerHTML = acceleration[0];
 			document.getElementById("accelerationY").innerHTML = acceleration[1];
 			document.getElementById("accelerationZ").innerHTML = acceleration[2];
-			document.getElementById("alpha").innerHTML = eulerAngles[0];
-			document.getElementById("beta").innerHTML =  eulerAngles[1];
-			document.getElementById("gamma").innerHTML = eulerAngles[2];
+			document.getElementById("alpha").innerHTML = eulerSpeed[0];
+			document.getElementById("beta").innerHTML  = eulerSpeed[1];
+			document.getElementById("gamma").innerHTML = eulerSpeed[2];
 		};
 	}
     preventScroolingMobile();
@@ -442,6 +444,9 @@ function updateCurve(dt) {
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
 
+	var eulerSpeedRad = scalarMult(Math.PI / 180, eulerSpeed);
+	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
+
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
 	
 	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
@@ -464,6 +469,21 @@ function updateCurve(dt) {
 
 }
 
+function drawDeviceAxis(data) {
+	var alpha = myDevice.euler[0];
+	var beta  = myDevice.euler[1];
+	var gamma = myDevice.euler[2];
+	var ca = Math.cos(alpha);
+	var sa = Math.sin(alpha);
+	var cb = Math.cos(beta);
+	var sb = Math.sin(beta);
+	var cg = Math.cos(gamma);
+	var sg = Math.sin(gamma);
+	draw3DLine([myDevice.pos, add(myDevice.pos, [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca])],[255, 0, 0, 255], data);
+	draw3DLine([myDevice.pos, add(myDevice.pos, [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca])],[0, 255, 0, 255], data);
+	draw3DLine([myDevice.pos, add(myDevice.pos, [sg*cb, -sb, cg * cb])],[0, 0, 255, 255], data);
+}
+
 function draw() {
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
@@ -481,6 +501,7 @@ function draw() {
      **/
     cam.orbit();
     updateCurve(dt);
+    drawDeviceAxis(data);
     drawAxis(data);
     drawCurve(data, [0, 255, 0, 255]);
     
