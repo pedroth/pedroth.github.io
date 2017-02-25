@@ -224,9 +224,9 @@ function init() {
 			document.getElementById("accelerationX").innerHTML = acceleration[0];
 			document.getElementById("accelerationY").innerHTML = acceleration[1];
 			document.getElementById("accelerationZ").innerHTML = acceleration[2];
-			document.getElementById("alpha").innerHTML = eulerSpeed[0];
-			document.getElementById("beta").innerHTML  = eulerSpeed[1];
-			document.getElementById("gamma").innerHTML = eulerSpeed[2];
+			document.getElementById("alpha").innerHTML = Number.decimal(eulerSpeed[0], 2);
+			document.getElementById("beta").innerHTML  = Number.decimal(eulerSpeed[1], 2);
+			document.getElementById("gamma").innerHTML = Number.decimal(eulerSpeed[2], 2);
 		};
 	}
     preventScroolingMobile();
