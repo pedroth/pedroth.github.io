@@ -450,6 +450,20 @@ function drawAxis(data) {
     draw3DLine([[0, 0, 0], [0, 0, 1]],[255, 255, 255, 255], data);
 }
 
+function sendData2PublicChat(acceleration, eulerSpeed) {
+	var text = acceleration + " : " + eulerSpeed;
+    //send request to server
+    $.ajax({
+            method:"POST",
+            url:"http://pedroth.duckdns.org:8080/putText",
+            data: {
+               id : 1,
+               log : text
+            },
+            success: function(result) {}
+        });
+}
+
 function updateCurve(dt) {
 	if(curve.length == 0) {
 		curve[0] = [0, 0, 0];
@@ -463,6 +477,8 @@ function updateCurve(dt) {
 	}
 
 
+	sendData2PublicChat(acceleration, eulerSpeed);
+
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
 	accelerationSpace = diff(accelerationSpace, myDevice.vel);
@@ -471,7 +487,6 @@ function updateCurve(dt) {
 
 	var eulerSpeedRad = scalarMult(Math.PI / 180, eulerSpeed);
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
-	console.log(myDevice.vel);
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
 	
