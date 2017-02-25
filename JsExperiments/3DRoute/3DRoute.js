@@ -469,7 +469,7 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(acceleration == null || acceleration[0] == null || myNorm(acceleration) < 1) {
+	if(acceleration == null || acceleration[0] == null) {
 		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
 		//eulerSpeed = [-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()];
 		acceleration = [0, 0, 0];
