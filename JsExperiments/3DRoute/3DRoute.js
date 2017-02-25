@@ -28,8 +28,8 @@ var distanceToPlane = 1;
 var xmin, xmax; 
 
 var acceleration = [0, 0, 0];
-
 var eulerSpeed = [0, 0, 0];
+
 var curve = [];
 var minCurve = [-3, -3, -3];
 var maxCurve = [ 3,  3,  3];
@@ -455,7 +455,7 @@ function sendData2PublicChat(acceleration, eulerSpeed) {
     //send request to server
     $.ajax({
             method:"POST",
-            url:"http://pedroth.duckdns.org:8080/putText",
+            url:"http://localhost:8080/putText",
             data: {
                id : 1,
                log : text
