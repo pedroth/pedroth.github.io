@@ -453,20 +453,21 @@ function updateCurve(dt) {
 
 	if(acceleration == null || acceleration[0] == null || myNorm(acceleration) < 1) {
 		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
+		//eulerSpeed = [-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()];
 		acceleration = [0, 0, 0];
 		eulerSpeed   = [0, 0, 0];
 	}
 
 
 	myDevice.computeBasisFromEuler();
-	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
+	accelerationSpace = acceleration;//matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
 	accelerationSpace = diff(accelerationSpace, myDevice.vel);
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
 	var eulerSpeedRad = scalarMult(Math.PI / 180, eulerSpeed);
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
+	console.log(myDevice.vel);
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
 	
