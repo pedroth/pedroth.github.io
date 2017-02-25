@@ -93,9 +93,9 @@ var Device = function() {
 		//this.basis[0] = [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca];
 		//this.basis[1] = [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca];
 		//this.basis[2] = [sg*cb, -sb, cg * cb];
-		this.basis[0] = [cg     , -sg    ,  0 ];
-		this.basis[1] = [ca * sg, ca * cg, -sa];
-		this.basis[2] = [sa * sg, sa * cg,  ca];
+		this.basis[0] = [cb * cg + sb * sa * sg, sa * cg * sb - sg * cb,  sb * ca];
+		this.basis[1] = [ca * sg               , ca * cg               , -sa     ];
+		this.basis[2] = [cb * sa * sg - sb * cg, sg * sb + cb * sa * cg,  cb * ca];
 	}
 }
 /**
