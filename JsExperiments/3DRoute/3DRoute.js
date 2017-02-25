@@ -464,7 +464,7 @@ function updateCurve(dt) {
 
 
 	myDevice.computeBasisFromEuler();
-	accelerationSpace = acceleration;//matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
+	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
 	accelerationSpace = diff(accelerationSpace, myDevice.vel);
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
