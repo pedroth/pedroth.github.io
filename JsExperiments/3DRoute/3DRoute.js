@@ -27,8 +27,9 @@ var distanceToPlane = 1;
 
 var xmin, xmax; 
 
-var acceleration = [0, 0, 0];
-var eulerSpeed = [0, 0, 0];
+var accelerationFifo;
+var eulerSpeedFifo;
+var samples = 10;
 
 var curve = [];
 var minCurve = [-3, -3, -3];
@@ -96,6 +97,19 @@ var Device = function() {
 		this.basis[0] = [cb * cg + sb * sa * sg, sa * cg * sb - sg * cb,  sb * ca];
 		this.basis[1] = [ca * sg               , ca * cg               , -sa     ];
 		this.basis[2] = [cb * sa * sg - sb * cg, sg * sb + cb * sa * cg,  cb * ca];
+	}
+}
+
+var Fifo = function(n) {
+	this.index = 0;
+	this.size = 0;
+	this.maxSize = n;
+	this.buffer = [];
+
+	this.push = function(x) {
+		this.buffer[this.index] = x;
+		this.index = (this.index + 1) % this.maxSize;
+		this.size = Math.min(this.size + 1, this.maxSize);
 	}
 }
 /**
@@ -220,17 +234,20 @@ function init() {
 
     myDevice = new Device();
 
+    acceleration = new Fifo(samples);
+    eulerSpeed = new Fifo(samples);
+
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined) {
 		window.ondevicemotion = function(e) {
-			acceleration = [e.acceleration.x, e.acceleration.y, e.acceleration.z];
-			eulerSpeed = [e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma];
-			document.getElementById("accelerationX").innerHTML = acceleration[0];
-			document.getElementById("accelerationY").innerHTML = acceleration[1];
-			document.getElementById("accelerationZ").innerHTML = acceleration[2];
-			document.getElementById("alpha").innerHTML = eulerSpeed[0].toFixed(2);
-			document.getElementById("beta").innerHTML  = eulerSpeed[1].toFixed(2);
-			document.getElementById("gamma").innerHTML = eulerSpeed[2].toFixed(2);
+			acceleration.push([e.acceleration.x, e.acceleration.y, e.acceleration.z]);
+			eulerSpeed.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
+			document.getElementById("accelerationX").innerHTML = acceleration.buffer[acceleration.index][0];
+			document.getElementById("accelerationY").innerHTML = acceleration.buffer[acceleration.index][1];
+			document.getElementById("accelerationZ").innerHTML = acceleration.buffer[acceleration.index][2];
+			document.getElementById("alpha").innerHTML = eulerSpeed.buffer[eulerSpeed.index][0].toFixed(2);
+			document.getElementById("beta").innerHTML  = eulerSpeed.buffer[eulerSpeed.index][1].toFixed(2);
+			document.getElementById("gamma").innerHTML = eulerSpeed.buffer[eulerSpeed.index][2].toFixed(2);
 		};
 	}
     preventScroolingMobile();
@@ -455,7 +472,7 @@ function sendData2PublicChat(acceleration, eulerSpeed) {
     //send request to server
     $.ajax({
             method:"POST",
-            url:"http://localhost:8080/putText",
+            url:"http://pedroth.duckdns.org:8080/putText",
             data: {
                id : 1,
                log : text
@@ -464,28 +481,38 @@ function sendData2PublicChat(acceleration, eulerSpeed) {
         });
 }
 
+function averageVectorFifo(x) {
+	var acc = [0,0,0];
+	for(var i = 0; i < x.size; i++) {
+		acc = add(acc, x.buffer[i]);
+	}
+	return scalarMult(1.0 / x.size, acc);
+}
+
 function updateCurve(dt) {
 	if(curve.length == 0) {
 		curve[0] = [0, 0, 0];
 	}
 
 	if(acceleration == null || acceleration[0] == null) {
-		//acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-		//eulerSpeed = [-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()];
-		acceleration = [0, 0, 0];
-		eulerSpeed   = [0, 0, 0];
+		acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		//acceleration = [0, 0, 0];
+		//eulerSpeed   = [0, 0, 0];
 	}
 
+	var averageAcceleration = averageVectorFifo(acceleration);
+	var averageEulerSpeed = averageVectorFifo(eulerSpeed);
 
-	sendData2PublicChat(acceleration, eulerSpeed);
+	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 
 	myDevice.computeBasisFromEuler();
-	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], acceleration);
+	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
 	accelerationSpace = diff(accelerationSpace, myDevice.vel);
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
-	var eulerSpeedRad = scalarMult(Math.PI / 180, eulerSpeed);
+	var eulerSpeedRad = scalarMult(Math.PI / 180, averageEulerSpeed);
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
