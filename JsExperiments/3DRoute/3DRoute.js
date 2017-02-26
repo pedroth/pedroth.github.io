@@ -495,10 +495,10 @@ function updateCurve(dt) {
 	}
 
 	if(acceleration == null || acceleration[0] == null) {
-		acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
-		eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
-		//acceleration = [0, 0, 0];
-		//eulerSpeed   = [0, 0, 0];
+		//acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		//eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		acceleration.push([0, 0, 0]);
+		eulerSpeed.push([0, 0, 0]);
 	}
 
 	var averageAcceleration = averageVectorFifo(acceleration);
