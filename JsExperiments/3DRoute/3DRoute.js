@@ -505,7 +505,7 @@ function averageVectorFifo(x) {
 	for(var i = 0; i < x.buffer.length; i++) {
 		acc = add(acc, x.buffer[i]);
 	}
-	return scalarMult(1.0 / x.buffer.length, acc);
+	return x.buffer.length === 0 ? acc : scalarMult(1.0 / x.buffer.length, acc);
 }
 
 function updateCurve(dt) {
@@ -606,7 +606,7 @@ function draw() {
      * drawing and animation
      **/
     
-    if(isCalibrating && isMobile) {
+    if(isCalibrating) {
     	calibration(dt, data);
     } else {
 	    cam.orbit();
@@ -619,7 +619,7 @@ function draw() {
     ctx.putImageData(image, 0, 0);
     
     // rapid fix for text
-    if(isCalibrating && isMobile) {
+    if(isCalibrating) {
     	ctx.font = '15px serif';
     	ctx.fillStyle = 'rgba(255, 255, 255, 255)';	
     	ctx.fillText('Get your device in a stationary position for calibration', calibrationLoadingUI.pos[0], calibrationLoadingUI.pos[1] - 10);	
