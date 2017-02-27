@@ -37,6 +37,7 @@ var maxCurve = [ 3,  3,  3];
 var cam;
 var myDevice;
 
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 /**
 *  Utils
@@ -102,14 +103,12 @@ var Device = function() {
 
 var Fifo = function(n) {
 	this.index = 0;
-	this.size = 0;
 	this.maxSize = n;
 	this.buffer = [];
 
 	this.push = function(x) {
 		this.buffer[this.index] = x;
 		this.index = (this.index + 1) % this.maxSize;
-		this.size = Math.min(this.size + 1, this.maxSize);
 	}
 }
 /**
@@ -483,10 +482,10 @@ function sendData2PublicChat(acceleration, eulerSpeed) {
 
 function averageVectorFifo(x) {
 	var acc = [0,0,0];
-	for(var i = 0; i < x.size; i++) {
+	for(var i = 0; i < x.buffer.length; i++) {
 		acc = add(acc, x.buffer[i]);
 	}
-	return scalarMult(1.0 / x.size, acc);
+	return scalarMult(1.0 / x.buffer.length, acc);
 }
 
 function updateCurve(dt) {
@@ -494,17 +493,17 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(acceleration == null || acceleration[0] == null) {
-		//acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
-		//eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
-		acceleration.push([0, 0, 0]);
-		eulerSpeed.push([0, 0, 0]);
+	if(!isMobile) {
+		acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		//acceleration.push([0, 0, 0]);
+		//eulerSpeed.push([0, 0, 0]);
 	}
 
 	var averageAcceleration = averageVectorFifo(acceleration);
 	var averageEulerSpeed = averageVectorFifo(eulerSpeed);
 
-	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
