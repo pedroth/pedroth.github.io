@@ -34,6 +34,7 @@ var samples = 20;
 // calibration variables
 var accelerationCalibration = [0, 0, 0];
 var eulerSpeedCalibration = [0, 0, 0];
+var calibrationIte = 1;
 var isCalibrating = true;
 var maxCalibrationTimeInSeconds = 3;
 var calibrationLoadingUI;
@@ -175,6 +176,8 @@ var Device = function() {
 		//this.basis[0] = [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca];
 		//this.basis[1] = [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca];
 		//this.basis[2] = [sg*cb, -sb, cg * cb];
+
+		// Ry(beta)* Rx(alpha) * Rz(gamma), where Rx is the x-axis rotation matrix
 		this.basis[0] = [cb * cg + sb * sa * sg, sa * cg * sb - sg * cb,  sb * ca];
 		this.basis[1] = [ca * sg               , ca * cg               , -sa     ];
 		this.basis[2] = [cb * sa * sg - sb * cg, sg * sb + cb * sa * cg,  cb * ca];
@@ -554,6 +557,9 @@ function calibration(dt, data) {
 	// calibration 
 	var averageAcceleration = averageVectorFifo(accelerationFifo);
 	var averageEulerSpeed = averageVectorFifo(eulerSpeedFifo);
+	accelerationCalibration = add(accelerationCalibration, scalarMult(1.0 / calibrationIte, diff(averageAcceleration, accelerationCalibration)));
+	eulerSpeedCalibration = add(eulerSpeedCalibration, scalarMult(1.0 / calibrationIte, diff(averageEulerSpeed, eulerSpeedCalibration)));
+	calibrationIte++;
 	
 	// UI stuff
 	var color = [255,255,255,255];
@@ -580,8 +586,6 @@ function calibration(dt, data) {
 	if(calibrationLoadingUI.percentFill > 1) {
 		calibrationLoadingUI.percentFill = 0;
 		isCalibrating = false;
-		accelerationCalibration = averageAcceleration;
-		eulerSpeedCalibration = averageEulerSpeed;
 	}
 }
 
