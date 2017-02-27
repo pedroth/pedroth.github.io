@@ -29,7 +29,7 @@ var xmin, xmax;
 
 var accelerationFifo;
 var eulerSpeedFifo;
-var samples = 10;
+var samples = 20;
 
 var curve = [];
 var minCurve = [-3, -3, -3];
@@ -503,7 +503,7 @@ function updateCurve(dt) {
 	var averageAcceleration = averageVectorFifo(acceleration);
 	var averageEulerSpeed = averageVectorFifo(eulerSpeed);
 
-	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
