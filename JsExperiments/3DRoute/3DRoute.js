@@ -31,6 +31,13 @@ var accelerationFifo;
 var eulerSpeedFifo;
 var samples = 20;
 
+// calibration variables
+var accelerationCalibration = [0, 0, 0];
+var eulerSpeedCalibration = [0, 0, 0];
+var isCalibrating = true;
+var maxCalibrationTimeInSeconds = 3;
+var calibrationLoadingUI;
+
 var curve = [];
 var minCurve = [-3, -3, -3];
 var maxCurve = [ 3,  3,  3];
@@ -38,6 +45,79 @@ var cam;
 var myDevice;
 
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+/**
+* My math
+**/
+function clamp(x, xmin, xmax) {
+    return Math.max(xmin, Math.min(xmax, x));
+}
+
+function floor(x) {
+    x[0] = Math.floor(x[0]);
+    x[1] = Math.floor(x[1]);
+    return x;
+}
+/*
+ * 3D vectors
+ */
+function vec3(x,y,z) {
+    var ans = [];
+    ans[0] = x;
+    ans[1] = y;
+    ans[2] = z;
+    return ans;
+}
+
+var add = function(u,v) {
+ var ans = [];
+ ans[0] = u[0] + v[0];
+ ans[1] = u[1] + v[1];
+ ans[2] = u[2] + v[2];
+ return ans;
+};
+
+var diff = function(u,v) {
+ var ans = [];
+ ans[0] = u[0] - v[0];
+ ans[1] = u[1] - v[1];
+ ans[2] = u[2] - v[2];
+ return ans;
+};
+
+var scalarMult = function(s,v) {
+ var ans = [];
+ ans[0] = s * v[0];
+ ans[1] = s * v[1];
+ ans[2] = s * v[2];
+ return ans;
+};
+
+var squaredNorm = function(v) {
+ return v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
+};
+
+var myNorm = function(v) {
+ return Math.sqrt(squaredNorm(v));
+};
+
+var normalize = function(v) {
+ if(v[0] !== 0.0 && v[1] !== 0.0 && v[2] !== 0.0){
+   return scalarMult(1 / myNorm(v), v);  
+ } else {
+    return v; 
+ }
+};
+
+var innerProd = function(u,v) {
+ return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
+};
+/**
+* return product between the matrix formed by (u,v,w) and x;
+* */
+var matrixProd = function(u,v,w,x) {
+ return add(add(scalarMult(x[0],u),scalarMult(x[1],v)),scalarMult(x[2],w));
+}; 
 
 /**
 *  Utils
@@ -111,215 +191,11 @@ var Fifo = function(n) {
 		this.index = (this.index + 1) % this.maxSize;
 	}
 }
-/**
-* My math
-**/
-function clamp(x, xmin, xmax) {
-    return Math.max(xmin, Math.min(xmax, x));
-}
 
-function floor(x) {
-    x[0] = Math.floor(x[0]);
-    x[1] = Math.floor(x[1]);
-    return x;
-}
-/*
- * 3D vectors
- */
-function vec3(x,y,z) {
-    var ans = [];
-    ans[0] = x;
-    ans[1] = y;
-    ans[2] = z;
-    return ans;
-}
-
-var add = function(u,v) {
- var ans = [];
- ans[0] = u[0] + v[0];
- ans[1] = u[1] + v[1];
- ans[2] = u[2] + v[2];
- return ans;
-};
-
-var diff = function(u,v) {
- var ans = [];
- ans[0] = u[0] - v[0];
- ans[1] = u[1] - v[1];
- ans[2] = u[2] - v[2];
- return ans;
-};
-
-var scalarMult = function(s,v) {
- var ans = [];
- ans[0] = s * v[0];
- ans[1] = s * v[1];
- ans[2] = s * v[2];
- return ans;
-};
-
-var squaredNorm = function(v) {
- return v[0]*v[0] + v[1]*v[1] + v[2]*v[2];
-};
-
-var myNorm = function(v) {
- return Math.sqrt(squaredNorm(v));
-};
-
-var normalize = function(v) {
- if(v[0] !== 0.0 && v[1] !== 0.0 && v[2] !== 0.0){
-   return scalarMult(1 / myNorm(v), v);  
- } else {
-    return v; 
- }
-};
-
-var innerProd = function(u,v) {
- return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
-};
-/**
-* return product between the matrix formed by (u,v,w) and x;
-* */
-var matrixProd = function(u,v,w,x) {
- return add(add(scalarMult(x[0],u),scalarMult(x[1],v)),scalarMult(x[2],w));
-}; 
-/*
-* end math
-*/
-
-function preventScroolingMobile() {
-    document.body.addEventListener("touchstart", function (e) {
-      if (e.target == canvas) {
-        e.preventDefault();
-      }
-    }, false);
-    document.body.addEventListener("touchend", function (e) {
-      if (e.target == canvas) {
-        e.preventDefault();
-      }
-    }, false);
-    document.body.addEventListener("touchmove", function (e) {
-      if (e.target == canvas) {
-        e.preventDefault();
-      }
-    }, false);
-}
-
-function init() {
-    canvas.addEventListener("touchstart", touchStart, false);
-    canvas.addEventListener("touchend", touchEnd, false);
-    canvas.addEventListener("touchmove", touchMove, false);
-
-    canvas.addEventListener("mousedown", mouseDown, false);
-    canvas.addEventListener("mouseup", mouseUp, false);
-    canvas.addEventListener("mousemove", mouseMove, false);
-
-    document.addEventListener("keydown", keyDown, false);
-    
-    startTime = new Date().getTime();
-    width = canvas.width;
-    height = canvas.height;
-
-    var size = distanceToPlane * Math.tan(alpha);
-    xmin = [-size, -size];
-    xmax = [ size,  size];
-
-    mouse = [0,0];
-
-    cam = new Camera();
-    cam.param  = [3, 0, 0];
-    cam.focalPoint = [0, 0, 0];
-    cam.eye = [3, 0, 0];
-
-    myDevice = new Device();
-
-    acceleration = new Fifo(samples);
-    eulerSpeed = new Fifo(samples);
-
-    //add device accelerometer  callback ?
-    if (window.DeviceMotionEvent != undefined) {
-		window.ondevicemotion = function(e) {
-			acceleration.push([e.acceleration.x, e.acceleration.y, e.acceleration.z]);
-			eulerSpeed.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
-			document.getElementById("accelerationX").innerHTML = acceleration.buffer[acceleration.index][0];
-			document.getElementById("accelerationY").innerHTML = acceleration.buffer[acceleration.index][1];
-			document.getElementById("accelerationZ").innerHTML = acceleration.buffer[acceleration.index][2];
-			document.getElementById("alpha").innerHTML = eulerSpeed.buffer[eulerSpeed.index][0].toFixed(2);
-			document.getElementById("beta").innerHTML  = eulerSpeed.buffer[eulerSpeed.index][1].toFixed(2);
-			document.getElementById("gamma").innerHTML = eulerSpeed.buffer[eulerSpeed.index][2].toFixed(2);
-		};
-	}
-    preventScroolingMobile();
-}
-
-
-function keyDown(e) {
-    if (e.keyCode == 87) {
-    }
-
-    if (e.keyCode == 83) {
-    }
-
-    if (e.keyCode == 65) {
-    }
-
-    if (e.keyCode == 68) {
-    }
-}
-
-function touchStart(e) {
-    var rect = canvas.getBoundingClientRect();
-    mouse[0] = e.touches[0].clientY - rect.top;
-    mouse[1] = e.touches[0].clientX - rect.left;
-    down = true;
-}
-
-function touchEnd() {
-    down = false;
-}
-
-function touchMove(e) {
-    var rect = canvas.getBoundingClientRect();
-    var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
-    
-    if (!down || mx == mouse[0] && my == mouse[1]) {
-        return;
-    }
-
-    var dx = mx - mouse[1];
-    var dy = my - mouse[0];
-    cam.param[1] = cam.param[1] - 2 * Math.PI * (dx / canvas.width);
-    cam.param[2] = cam.param[2] + 2 * Math.PI * (dy / canvas.height);
-
-    mouse[0] = my;
-    mouse[1] = mx;
-}
-
-function mouseDown(e) {
-    var rect = canvas.getBoundingClientRect();
-    mouse[0] = e.clientY - rect.top;
-    mouse[1] = e.clientX - rect.left;
-    down = true;
-}
-
-function mouseUp() {
-    down = false;
-}
-
-function mouseMove(e) {
-    var rect = canvas.getBoundingClientRect();
-    var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
-    if (!down || mx == mouse[0] && my == mouse[1]) {
-        return;
-    }
-    
-    var dx = mx - mouse[1];
-    var dy = my - mouse[0];
-    cam.param[1] = cam.param[1] - 2 * Math.PI * (dx / canvas.width);
-    cam.param[2] = cam.param[2] + 2 * Math.PI * (dy / canvas.height);
-
-    mouse[0] = my;
-    mouse[1] = mx;
+var LoadingBar = function(pos, size) {
+	this.pos = pos;
+	this.size = size;
+	this.percentFill = 0;
 }
 
 function getImageIndex(x, size) {
@@ -454,6 +330,147 @@ function draw3DLine(line, rgb, data) {
     drawLine([cameraLine[0][0], cameraLine[0][1]], [cameraLine[1][0], cameraLine[1][1]], rgb, data);
 }
 
+/**
+ * Main program
+ */
+
+function preventScroolingMobile() {
+    document.body.addEventListener("touchstart", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+    document.body.addEventListener("touchend", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+    document.body.addEventListener("touchmove", function (e) {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    }, false);
+}
+
+function init() {
+    canvas.addEventListener("touchstart", touchStart, false);
+    canvas.addEventListener("touchend", touchEnd, false);
+    canvas.addEventListener("touchmove", touchMove, false);
+
+    canvas.addEventListener("mousedown", mouseDown, false);
+    canvas.addEventListener("mouseup", mouseUp, false);
+    canvas.addEventListener("mousemove", mouseMove, false);
+
+    document.addEventListener("keydown", keyDown, false);
+    
+    startTime = new Date().getTime();
+    width = canvas.width;
+    height = canvas.height;
+
+    var size = distanceToPlane * Math.tan(alpha);
+    xmin = [-size, -size];
+    xmax = [ size,  size];
+
+    mouse = [0,0];
+
+    cam = new Camera();
+    cam.param  = [3, 0, 0];
+    cam.focalPoint = [0, 0, 0];
+    cam.eye = [3, 0, 0];
+
+    myDevice = new Device();
+
+    accelerationFifo = new Fifo(samples);
+    eulerSpeedFifo = new Fifo(samples);
+
+    calibrationLoadingUI = new LoadingBar([canvas.width / 4, canvas.height / 3], [canvas.width / 2, 25]);
+
+    //add device accelerometer  callback ?
+    if (window.DeviceMotionEvent != undefined && isMobile) {
+		window.ondevicemotion = function(e) {
+			accelerationFifo.push([e.acceleration.x, e.acceleration.y, e.acceleration.z]);
+			eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
+			document.getElementById("accelerationX").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][0];
+			document.getElementById("accelerationY").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][1];
+			document.getElementById("accelerationZ").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][2];
+			document.getElementById("alpha").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][0].toFixed(2);
+			document.getElementById("beta").innerHTML  = eulerSpeedFifo.buffer[eulerSpeedFifo.index][1].toFixed(2);
+			document.getElementById("gamma").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][2].toFixed(2);
+		};
+	}
+    preventScroolingMobile();
+}
+
+
+function keyDown(e) {
+    if (e.keyCode == 87) {
+    }
+
+    if (e.keyCode == 83) {
+    }
+
+    if (e.keyCode == 65) {
+    }
+
+    if (e.keyCode == 68) {
+    }
+}
+
+function touchStart(e) {
+    var rect = canvas.getBoundingClientRect();
+    mouse[0] = e.touches[0].clientY - rect.top;
+    mouse[1] = e.touches[0].clientX - rect.left;
+    down = true;
+}
+
+function touchEnd() {
+    down = false;
+}
+
+function touchMove(e) {
+    var rect = canvas.getBoundingClientRect();
+    var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+    
+    if (!down || mx == mouse[0] && my == mouse[1]) {
+        return;
+    }
+
+    var dx = mx - mouse[1];
+    var dy = my - mouse[0];
+    cam.param[1] = cam.param[1] - 2 * Math.PI * (dx / canvas.width);
+    cam.param[2] = cam.param[2] + 2 * Math.PI * (dy / canvas.height);
+
+    mouse[0] = my;
+    mouse[1] = mx;
+}
+
+function mouseDown(e) {
+    var rect = canvas.getBoundingClientRect();
+    mouse[0] = e.clientY - rect.top;
+    mouse[1] = e.clientX - rect.left;
+    down = true;
+}
+
+function mouseUp() {
+    down = false;
+}
+
+function mouseMove(e) {
+    var rect = canvas.getBoundingClientRect();
+    var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
+    if (!down || mx == mouse[0] && my == mouse[1]) {
+        return;
+    }
+    
+    var dx = mx - mouse[1];
+    var dy = my - mouse[0];
+    cam.param[1] = cam.param[1] - 2 * Math.PI * (dx / canvas.width);
+    cam.param[2] = cam.param[2] + 2 * Math.PI * (dy / canvas.height);
+
+    mouse[0] = my;
+    mouse[1] = mx;
+}
+
 function drawCurve(data, rgb) {
 	for(var i = 0; i < curve.length-1; i++) {
 		draw3DLine([curve[i], curve[i+1]], rgb, data);
@@ -466,8 +483,8 @@ function drawAxis(data) {
     draw3DLine([[0, 0, 0], [0, 0, 1]],[255, 255, 255, 255], data);
 }
 
-function sendData2PublicChat(acceleration, eulerSpeed) {
-	var text = acceleration + " : " + eulerSpeed;
+function sendData2PublicChat(accelerationFifo, eulerSpeedFifo) {
+	var text = accelerationFifo + " : " + eulerSpeedFifo;
     //send request to server
     $.ajax({
             method:"POST",
@@ -494,16 +511,14 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		acceleration.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
-		eulerSpeed.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
-		//acceleration.push([0, 0, 0]);
-		//eulerSpeed.push([0, 0, 0]);
+		accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
 	}
 
-	var averageAcceleration = averageVectorFifo(acceleration);
-	var averageEulerSpeed = averageVectorFifo(eulerSpeed);
+	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
+	var averageEulerSpeed = diff(averageVectorFifo(eulerSpeedFifo), eulerSpeedCalibration);
 
-	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
@@ -519,16 +534,6 @@ function updateCurve(dt) {
 	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
 	maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
 
-	// if(acceleration[0] == null) {
-	// 	acceleration = [-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()];
-	// 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, acceleration)));
-	// 	myDevice.vel = add(myDevice.vel, scalarMult(dt, acceleration));
-	// 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
-	// 	minCurve = [Math.min(minCurve[0], myDevice.pos[0]), Math.min(minCurve[1], myDevice.pos[1]), Math.min(minCurve[2], myDevice.pos[2])];
-	// 	maxCurve = [Math.max(maxCurve[0], myDevice.pos[0]), Math.max(maxCurve[1], myDevice.pos[1]), Math.max(maxCurve[2], myDevice.pos[2])];
-	// 	isPointAdded = true;
-	// 	acceleration = [null, null, null];
-	// }
 	var center = add(minCurve, maxCurve);
 	center = scalarMult(0.5, center);
 	var radius = myNorm(diff(maxCurve, center));
@@ -545,6 +550,41 @@ function drawDeviceAxis(data) {
 	draw3DLine([[0,0,0], myDevice.basis[2]], [0, 0, 255, 255], data);
 }
 
+function calibration(dt, data) {
+	// calibration 
+	var averageAcceleration = averageVectorFifo(accelerationFifo);
+	var averageEulerSpeed = averageVectorFifo(eulerSpeedFifo);
+	
+	// UI stuff
+	var color = [255,255,255,255];
+	calibrationLoadingUI.percentFill = calibrationLoadingUI.percentFill + dt / maxCalibrationTimeInSeconds;
+	var maxIndex = Math.floor(calibrationLoadingUI.percentFill * calibrationLoadingUI.size[0]);	
+	
+	var endPoint = calibrationLoadingUI.pos;
+	var endPointW = add(calibrationLoadingUI.pos, [calibrationLoadingUI.size[0], 0]);
+	var endPointH = add(calibrationLoadingUI.pos, [0, calibrationLoadingUI.size[1]]);
+	var endPointWH = add(calibrationLoadingUI.pos, calibrationLoadingUI.size);
+
+	// revert x with y
+	drawLineInt([endPoint[1], endPoint[0]], [endPointW[1], endPointW[0]], color, data);
+	drawLineInt([endPointW[1], endPointW[0]], [endPointWH[1], endPointWH[0]], color, data);
+	drawLineInt([endPointWH[1], endPointWH[0]], [endPointH[1], endPointH[0]], color, data);
+	drawLineInt([endPointH[1], endPointH[0]], [endPoint[1], endPoint[0]], color, data);
+
+	for (var i = 0; i < maxIndex; i++) {
+		var x1 = add(endPoint, [i, 0]);
+		var x2 = add(endPointH, [i, 0]);
+		drawLineInt([x1[1], x1[0]], [x2[1], x2[0]], color, data);
+	}
+
+	if(calibrationLoadingUI.percentFill > 1) {
+		calibrationLoadingUI.percentFill = 0;
+		isCalibrating = false;
+		accelerationCalibration = averageAcceleration;
+		eulerSpeedCalibration = averageEulerSpeed;
+	}
+}
+
 function draw() {
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
@@ -557,16 +597,30 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     image = ctx.getImageData(0, 0, canvas.width, canvas.height);
     data = image.data;
+
     /**
      * drawing and animation
      **/
-    cam.orbit();
-    updateCurve(dt);
-    drawDeviceAxis(data);
-    drawAxis(data);
-    drawCurve(data, [0, 255, 0, 255]);
     
+    if(isCalibrating && isMobile) {
+    	calibration(dt, data);
+    } else {
+	    cam.orbit();
+	    updateCurve(dt);
+	    drawDeviceAxis(data);
+	    drawAxis(data);
+	    drawCurve(data, [0, 255, 0, 255]);	
+    }
+
     ctx.putImageData(image, 0, 0);
+    
+    // rapid fix for text
+    if(isCalibrating && isMobile) {
+    	ctx.font = '15px serif';
+    	ctx.fillStyle = 'rgba(255, 255, 255, 255)';	
+    	ctx.fillText('Get your device in a stationary position for calibration', calibrationLoadingUI.pos[0], calibrationLoadingUI.pos[1] - 10);	
+    }
+    
     requestAnimationFrame(draw);
 }
 
