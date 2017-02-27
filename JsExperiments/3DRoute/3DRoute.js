@@ -377,7 +377,7 @@ function init() {
     mouse = [0,0];
 
     cam = new Camera();
-    cam.param  = [3, 0, 0];
+    cam.param  = [3, Math.PI + Math.PI/3, Math.PI/3];
     cam.focalPoint = [0, 0, 0];
     cam.eye = [3, 0, 0];
 
@@ -514,8 +514,10 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
-		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		//accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		//eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		accelerationFifo.push([0, 0, 0]);
+		eulerSpeedFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
@@ -606,7 +608,7 @@ function draw() {
      * drawing and animation
      **/
     
-    if(isCalibrating) {
+    if(isCalibrating && isMobile) {
     	calibration(dt, data);
     } else {
 	    cam.orbit();
@@ -619,7 +621,7 @@ function draw() {
     ctx.putImageData(image, 0, 0);
     
     // rapid fix for text
-    if(isCalibrating) {
+    if(isCalibrating && isMobile) {
     	ctx.font = '15px serif';
     	ctx.fillStyle = 'rgba(255, 255, 255, 255)';	
     	ctx.fillText('Get your device in a stationary position for calibration', calibrationLoadingUI.pos[0], calibrationLoadingUI.pos[1] - 10);	
