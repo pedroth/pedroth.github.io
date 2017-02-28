@@ -13,6 +13,7 @@ v x
 /**
  * Setup
  */
+ //drawing variables
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var down = false;
@@ -27,6 +28,7 @@ var distanceToPlane = 1;
 
 var xmin, xmax; 
 
+//error correcting variables
 var accelerationFifo;
 var eulerSpeedFifo;
 var samples = 20;
@@ -36,9 +38,10 @@ var accelerationCalibration = [0, 0, 0];
 var eulerSpeedCalibration = [0, 0, 0];
 var calibrationIte = 1;
 var isCalibrating = true;
-var maxCalibrationTimeInSeconds = 3;
+var maxCalibrationTimeInSeconds = 10;
 var calibrationLoadingUI;
 
+//curve variables
 var curve = [];
 var minCurve = [-3, -3, -3];
 var maxCurve = [ 3,  3,  3];
@@ -562,6 +565,8 @@ function calibration(dt, data) {
 	accelerationCalibration = add(accelerationCalibration, scalarMult(1.0 / calibrationIte, diff(averageAcceleration, accelerationCalibration)));
 	eulerSpeedCalibration = add(eulerSpeedCalibration, scalarMult(1.0 / calibrationIte, diff(averageEulerSpeed, eulerSpeedCalibration)));
 	calibrationIte++;
+
+	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 	
 	// UI stuff
 	var color = [255,255,255,255];
