@@ -391,7 +391,7 @@ function init() {
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined && isMobile) {
 		window.ondevicemotion = function(e) {
-			accelerationFifo.push([e.acceleration.x, e.acceleration.y, e.acceleration.z]);
+			accelerationFifo.push([e.acceleration.y, e.acceleration.x, e.acceleration.z]);
 			eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
 			document.getElementById("accelerationX").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][0];
 			document.getElementById("accelerationY").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][1];
