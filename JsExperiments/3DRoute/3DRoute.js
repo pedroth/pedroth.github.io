@@ -163,9 +163,9 @@ var Device = function() {
 	this.euler = [0, 0, 0];
 	this.basis = [];
 	this.computeBasisFromEuler = function() {
-		var alpha = this.euler[1];
-		var beta  = -this.euler[0];
-		var gamma = -this.euler[2];
+		var alpha = this.euler[0];
+		var beta  = this.euler[1];
+		var gamma = this.euler[2];
 		var ca = Math.cos(alpha);
 		var sa = Math.sin(alpha);
 		var cb = Math.cos(beta);
@@ -177,10 +177,10 @@ var Device = function() {
 		//this.basis[1] = [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca];
 		//this.basis[2] = [sg*cb, -sb, cg * cb];
 
-		// Ry(beta)* Rx(alpha) * Rz(gamma), where Rx is the x-axis rotation matrix
-		this.basis[0] = [cb * cg + sb * sa * sg, sa * cg * sb - sg * cb,  sb * ca];
-		this.basis[1] = [ca * sg               , ca * cg               , -sa     ];
-		this.basis[2] = [cb * sa * sg - sb * cg, sg * sb + cb * sa * cg,  cb * ca];
+		// Ry(alpha)* Rx(beta) * Rz(gamma), where Rx is the x-axis rotation matrix
+		this.basis[0] = [ca * cg + sa * sb * sg, sa * sb * cg - ca * sg,  sa * cb];
+		this.basis[1] = [cb * sg               , cb * cg               , -sb     ];
+		this.basis[2] = [ca * sb * sg - sa * cg, sa * sg + ca * sb * cg,  ca * cb];
 	}
 }
 
