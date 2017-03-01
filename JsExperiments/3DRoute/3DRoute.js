@@ -181,9 +181,14 @@ var Device = function() {
 		//this.basis[2] = [sg*cb, -sb, cg * cb];
 
 		// Ry(alpha)* Rx(beta) * Rz(gamma), where Rx is the x-axis rotation matrix
-		this.basis[0] = [ca * cg + sa * sb * sg, sa * sb * cg - ca * sg,  sa * cb];
-		this.basis[1] = [cb * sg               , cb * cg               , -sb     ];
-		this.basis[2] = [ca * sb * sg - sa * cg, sa * sg + ca * sb * cg,  ca * cb];
+		//this.basis[0] = [ca * cg + sa * sb * sg, sa * sb * cg - ca * sg,  sa * cb];
+		//this.basis[1] = [cb * sg               , cb * cg               , -sb     ];
+		//this.basis[2] = [ca * sb * sg - sa * cg, sa * sg + ca * sb * cg,  ca * cb];
+		this.basis[0] = [ca * cg + sa * sb * sg,cb * sg, ca * sb * sg - sa * cg];
+		this.basis[1] = [sa * sb * cg - ca * sg,cb * cg, sa * sg + ca * sb * cg];
+		this.basis[2] = [sa * cb               ,-sb    , ca * cb               ];
+
+
 	}
 }
 
@@ -517,10 +522,10 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		//accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
-		//eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
-		accelerationFifo.push([0, 0, 0]);
-		eulerSpeedFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		//accelerationFifo.push([0, 0, 0]);
+		//eulerSpeedFifo.push([0, 0, 0]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
