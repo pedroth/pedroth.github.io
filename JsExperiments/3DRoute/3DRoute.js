@@ -8,6 +8,8 @@ Canvas coordinates
 |
 |
 v x
+
+H
 */
 
 /**
@@ -124,6 +126,25 @@ var matrixProd = function(u,v,w,x) {
 }; 
 
 /**
+* return solution to : [ u_0 , h] x = z_0
+*
+*					   [ u_1,  0] y = z_1
+*/
+function solve2by2UpperTriMatrix(u, h, z) {
+	var aux = z[1] / u[1];
+	return [aux, (-u[0] * aux + z[0]) / h];
+}
+/**
+* return solution to : [ u_0 , 0] x = z_0
+*
+*					   [ u_1,  w] y = z_1
+*/
+function solve2by2LowerTriMatrix(u, w, z) {
+	var aux = z[0] / u[0];
+	return [aux, (-u[1] * aux + z[1]) / w];
+}
+
+/**
 *  Utils
 **/
 var Camera = function() {
@@ -176,17 +197,10 @@ var Device = function() {
 		var cg = Math.cos(gamma);
 		var sg = Math.sin(gamma);
 
-		//this.basis[0] = [cg * ca + sg * sb * sa, cb * sa, cg * sb * sa - sg * ca];
-		//this.basis[1] = [sg * sb * ca - cg * sa, cb * ca, sg * sa + cg * sb * ca];
-		//this.basis[2] = [sg*cb, -sb, cg * cb];
-
 		// Ry(alpha)* Rx(beta) * Rz(gamma), where Rx is the x-axis rotation matrix
-		//this.basis[0] = [ca * cg + sa * sb * sg, sa * sb * cg - ca * sg,  sa * cb];
-		//this.basis[1] = [cb * sg               , cb * cg               , -sb     ];
-		//this.basis[2] = [ca * sb * sg - sa * cg, sa * sg + ca * sb * cg,  ca * cb];
-		this.basis[0] = [ca * cg + sa * sb * sg,cb * sg, ca * sb * sg - sa * cg];
-		this.basis[1] = [sa * sb * cg - ca * sg,cb * cg, sa * sg + ca * sb * cg];
-		this.basis[2] = [sa * cb               ,-sb    , ca * cb               ];
+		this.basis[0] = [ca * cg + sa * sb * sg, cb * sg, ca * sb * sg - sa * cg];
+		this.basis[1] = [sa * sb * cg - ca * sg, cb * cg, sa * sg + ca * sb * cg];
+		this.basis[2] = [sa * cb               , -sb    , ca * cb               ];
 
 
 	}
@@ -248,8 +262,7 @@ function drawPxl(x, data, rgb) {
     data[index + 3] = rgb[3];
 }
 
-function drawLineInt(x1, x2, rgb, data) {
-
+function drawLineIntClipped(x1, x2, rgb, data) {
     x1 = floor(x1);
     x2 = floor(x2);
 
@@ -288,7 +301,60 @@ function drawLineInt(x1, x2, rgb, data) {
 
         x = [x[0] + minDir[0], x[1] + minDir[1]];
         drawPxl(x, data, rgb);
-    }
+    }	
+}
+
+function drawLineInt(x1, x2, rgb, data) {
+	// do clipping
+	var stack = [];
+	stack.push(x1);
+	stack.push(x2);
+	var inStack  = [];
+	var outStack = [];
+	for(var i = 0; i < stack.length; i++) {
+		var x = stack[i];
+		if( (0 <= x[0]) && (x[0] <= canvas.height) && (0 <= x[1]) && (x[1] <= canvas.width)) {
+			inStack.push(x);
+		} else {
+			outStack.push(x);
+		}
+	}
+	// both points are inside canvas
+	if(inStack.length == 2) {
+		drawLineIntClipped(inStack[0], inStack[1], rgb, data);
+		return;
+	}
+	//intersecting line with canvas
+	var intersectionSolutions = [];
+	var v = [x2[0] - x1[0] , x2[1] - x1[1]];
+	// Let s \in [0,1]
+	// line intersection with [0, 0]^T + [H, 0]^T s
+	intersectionSolutions.push(solve2by2UpperTriMatrix(v, -canvas.height, [-x1[0]               , -x1[1]]));
+	// line intersection with [H, 0]^T + [0, W]^T s
+	intersectionSolutions.push(solve2by2LowerTriMatrix(v, -canvas.width , [canvas.height - x1[0], -x1[1]]));
+	// line intersection with [H, W]^T + [-H, 0]^T s
+	intersectionSolutions.push(solve2by2UpperTriMatrix(v,  canvas.height, [canvas.height - x1[0],  canvas.width - x1[1]]));
+	// line intersection with [0, W]^T + [0, -W]^T s
+	intersectionSolutions.push(solve2by2LowerTriMatrix(v,  canvas.width , [-x1[0]               ,  canvas.width - x1[1]]));
+	
+	var validIntersection = [];
+	for(var i = 0; i < intersectionSolutions.length; i++) {
+		var x = intersectionSolutions[i];
+		if((0 <= x[0]) && (x[0] <= 1) && (0 <= x[1]) && (x[1] <= 1)) {
+			validIntersection.push(x);
+		}
+		if(validIntersection.length == 2) {
+			var p1 = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+			var p2 = [x1[0] + validIntersection[1][0] * v[0], x1[1] + validIntersection[1][0] * v[1]];
+			return drawLineIntClipped(p1, p2, rgb, data);
+		}
+	}
+	if(validIntersection.length == 0) {
+		return
+	}
+	//it can be shown that at this point there is only one valid intersection
+	var p = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+	drawLineIntClipped(inStack.pop(), p, rgb, data);
 }
 
 function drawLine(x1, x2, rgb, data) {
@@ -522,7 +588,7 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		accelerationFifo.push([-1 + 2 * Math.random(), -1 + 2 * Math.random(), -1 + 2 * Math.random()]);
+		accelerationFifo.push([10, 0, 0]);
 		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
 		//accelerationFifo.push([0, 0, 0]);
 		//eulerSpeedFifo.push([0, 0, 0]);
@@ -555,12 +621,12 @@ function updateCurve(dt) {
 }
 
 function drawDeviceAxis(data) {
-	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[0])], [255, 0, 0, 255], data);
-	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[1])], [0, 255, 0, 255], data);
-	//draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[2])], [0, 0, 255, 255], data);
-	draw3DLine([[0,0,0], myDevice.basis[0]], [255, 0, 0, 255], data);
-	draw3DLine([[0,0,0], myDevice.basis[1]], [0, 255, 0, 255], data);
-	draw3DLine([[0,0,0], myDevice.basis[2]], [0, 0, 255, 255], data);
+	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[0])], [255, 0, 0, 255], data);
+	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[1])], [0, 255, 0, 255], data);
+	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[2])], [0, 0, 255, 255], data);
+	//draw3DLine([[0,0,0], myDevice.basis[0]], [255, 0, 0, 255], data);
+	//draw3DLine([[0,0,0], myDevice.basis[1]], [0, 255, 0, 255], data);
+	//draw3DLine([[0,0,0], myDevice.basis[2]], [0, 0, 255, 255], data);
 }
 
 function calibration(dt, data) {
@@ -625,7 +691,7 @@ function draw() {
 	    updateCurve(dt);
 	    drawDeviceAxis(data);
 	    drawAxis(data);
-	    drawCurve(data, [0, 255, 0, 255]);	
+	    drawCurve(data, [0, 255, 0, 255]);
     }
 
     ctx.putImageData(image, 0, 0);
