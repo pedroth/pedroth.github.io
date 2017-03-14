@@ -289,7 +289,7 @@ function drawLineIntClipped(x1, x2, rgb, data) {
             var i = index[k % n];
             var j = index[Math.floor(k % nn / n)];
             
-            var nextX = add(x, [i, j]);
+            var nextX = [x[0] + i, x[1] + j];
             
             var v = [nextX[0] - x1[0], nextX[1] - x1[1]];
             var f = Math.abs(v[0] * normal[0] + v[1] * normal[1]) - (v[0] * tangent[0] + v[1] * tangent[1]);
