@@ -705,6 +705,10 @@ function draw() {
     	ctx.font = '15px serif';
     	ctx.fillStyle = 'rgba(255, 255, 255, 255)';	
     	ctx.fillText('Get your device in a stationary position for calibration', calibrationLoadingUI.pos[0], calibrationLoadingUI.pos[1] - 10);	
+    } else if(!isMobile) {
+    	ctx.font = '15px serif';
+    	ctx.fillStyle = 'rgba(255, 255, 255, 255)';	
+    	ctx.fillText('This App uses a smart phone', 10, 10);
     }
     
     requestAnimationFrame(draw);
