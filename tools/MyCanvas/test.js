@@ -94,6 +94,25 @@ function innerProd(u, v) {
     return u[0] * v[0] + u[1] * v[1];
 }
 
+/**
+* return solution to : [ u_0 , h] x = z_0
+*
+*					   [ u_1,  0] y = z_1
+*/
+function solve2by2UpperTriMatrix(u, h, z) {
+	var aux = z[1] / u[1];
+	return [aux, (-u[0] * aux + z[0]) / h];
+}
+/**
+* return solution to : [ u_0 , 0] x = z_0
+*
+*					   [ u_1,  w] y = z_1
+*/
+function solve2by2LowerTriMatrix(u, w, z) {
+	var aux = z[0] / u[0];
+	return [aux, (-u[1] * aux + z[1]) / w];
+}
+
 
 var MyCanvas = function(canvas) {
 	this.canvas = canvas;
@@ -133,6 +152,59 @@ MyCanvas.prototype.drawPxl =function(x, rgb) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawLine = function(x1, x2, shader) {
+	// do clipping
+	var stack = [];
+	stack.push(x1);
+	stack.push(x2);
+	var inStack  = [];
+	var outStack = [];
+	for(var i = 0; i < stack.length; i++) {
+		var x = stack[i];
+		if( (0 <= x[0]) && (x[0] <= canvas.height) && (0 <= x[1]) && (x[1] <= canvas.width)) {
+			inStack.push(x);
+		} else {
+			outStack.push(x);
+		}
+	}
+	// both points are inside canvas
+	if(inStack.length == 2) {
+		this.drawLineInt(inStack[0], inStack[1], shader);
+		return;
+	}
+	//intersecting line with canvas
+	var intersectionSolutions = [];
+	var v = [x2[0] - x1[0] , x2[1] - x1[1]];
+	// Let s \in [0,1]
+	// line intersection with [0, 0]^T + [H, 0]^T s
+	intersectionSolutions.push(solve2by2UpperTriMatrix(v, -canvas.height, [-x1[0]               , -x1[1]]));
+	// line intersection with [H, 0]^T + [0, W]^T s
+	intersectionSolutions.push(solve2by2LowerTriMatrix(v, -canvas.width , [canvas.height - x1[0], -x1[1]]));
+	// line intersection with [H, W]^T + [-H, 0]^T s
+	intersectionSolutions.push(solve2by2UpperTriMatrix(v,  canvas.height, [canvas.height - x1[0],  canvas.width - x1[1]]));
+	// line intersection with [0, W]^T + [0, -W]^T s
+	intersectionSolutions.push(solve2by2LowerTriMatrix(v,  canvas.width , [-x1[0]               ,  canvas.width - x1[1]]));
+	
+	var validIntersection = [];
+	for(var i = 0; i < intersectionSolutions.length; i++) {
+		var x = intersectionSolutions[i];
+		if((0 <= x[0]) && (x[0] <= 1) && (0 <= x[1]) && (x[1] <= 1)) {
+			validIntersection.push(x);
+		}
+		if(validIntersection.length == 2) {
+			var p1 = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+			var p2 = [x1[0] + validIntersection[1][0] * v[0], x1[1] + validIntersection[1][0] * v[1]];
+			return this.drawLineInt(p1, p2, shader);
+		}
+	}
+	if(validIntersection.length == 0) {
+		return
+	}
+	//it can be shown that at this point there is only one valid intersection
+	var p = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+	this.drawLineInt(inStack.pop(), p, shader);
+}
+
+MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
 	x1 = floor(x1);
 	x2 = floor(x2);
 
@@ -190,12 +262,18 @@ var CanvasSpace = require('./CanvasSpace.js');
 var canvasDOM = document.getElementById("canvas");
 var canvas = new CanvasSpace(canvasDOM, [[-1, 1], [-1, 1]]);
 var f = function(x) {return [0, 255, 0, 255]};
+var g = function(x) {return [0, 0, 255, 255]};
 var samples = 100;
 for (var i = 0; i < samples; i++) {
 	var first = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
 	var second = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
 	canvas.drawLine(first, second, f);
 }
-canvas.drawLine([0,0], [1,1], function(x) {return [255,0,0,255]});
+for (var i = 0; i < samples; i++) {
+	var first = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
+	var second = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
+	canvas.drawLine(first, second, g);
+}
+canvas.drawLine([0,0], [1,1], function(x) {return [255, 0 , 0, 255]});
 canvas.paintImage();
 },{"./CanvasSpace.js":1}]},{},[3]);

@@ -588,10 +588,14 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		accelerationFifo.push([10, 0, 0]);
+		var coin = Math.random();
+		coin = coin > 0.75 ? 0 : 1;
+		var p1   = Math.random();
+		var p2   = Math.random() * (1 - p1);
+		var p3   = 1 - p1 - p2;
+		
+		accelerationFifo.push([1, 1, 1]);
 		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
-		//accelerationFifo.push([0, 0, 0]);
-		//eulerSpeedFifo.push([0, 0, 0]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);

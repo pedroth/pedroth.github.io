@@ -192,7 +192,7 @@ function init() {
     canvas.addEventListener("mouseup", mouseUp, false);
     canvas.addEventListener("mousemove", mouseMove, false);
 
-    canvas.addEventListener("click", fullscreen);
+    //canvas.addEventListener("click", fullscreen);
     
     document.addEventListener("keydown", keyDown, false);
     
@@ -366,7 +366,7 @@ function drawCurve(data, rgba) {
 
 
 function draw() {
-	updateScreen();
+	//updateScreen();
     var dt = 1E-3 * (new Date().getTime() - startTime);
     startTime = new Date().getTime();
     time += dt;
