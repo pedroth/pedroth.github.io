@@ -88,18 +88,27 @@
 </div>
 
 <div class="container">
-<div class="col-sm-15 text-left"> 
+
 
 <h1>PDE</h1>
-<object type="application/x-java-applet" height="100" width="250">
-<param name="code" value="apps.FrameApplet.class" />
-<param name="archive" value="PDEApplet.jar" />
-Applet failed to run.  No Java plug-in was found.
- </object>
- <p>input : </p><p>&lt; h &gt; : help button.</p>
-<p><a href='PDE.zip'> download application and play it faster</a>
+<div>
+<p>
+PDE is a simple application that let you run Partial Differential Equations of the form $u_t(t,x,y) = f(t,x,y,u,u_x,u_y, u_{xx},u_{xy}, u_{yy})$ or the form $u_{tt}(t,x,y) = f(t,x,y,u,u_x,u_y, u_{xx},u_{xy}, u_{yy}, u_t)$, where $u_{xy} = \frac{\partial u}{\partial x\partial y}$. 
+</br>
+Famous Equations are :
+</br>
+Heat Equation : $u_t = \Delta u = \text{div}(\nabla u) = u_{xx} + u_{yy}$
+</br>
+Wave Equation : $u_{tt} = \Delta u$
+</br>
+</br>
+Press "h" for help. Feel free to download the program below.
+</p>
 </div>
-<!-- Disqus -->
+<center>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/xjDF8uDfTYs" frameborder="0" allowfullscreen></iframe>
+</center>
+</br></br></br><p>Download app here :<a href='PDE.zip'>PDE.zip</a></p><!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
