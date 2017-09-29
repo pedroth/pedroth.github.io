@@ -17,13 +17,14 @@ function gradientDescend(dt) {
     var f = parseFloat($("#f").val());
     var l = parseFloat($("#l").val());
     var g = parseFloat($("#g").val());
-    var H = $("#H").val() == "" ? (g * l * l) / (8 * f) : parseFloat($("#H").val());
+    var H = $("#H").val() == "" || ($("#C").val() == "" || parseFloat($("#C").val()) > 1) ? (g * l * l) / (8 * f) : parseFloat($("#H").val());
+    var ite = 0;
     do {
         grad = computeGrad(H, f, l, g);
         H = H - dt * grad;
         $("#C").val(cost(H, f, l, g));
         $("#H").val(H);
-    }while(Math.abs(grad) > epsilon)
+    }while(Math.abs(grad) > epsilon && ite++ < 10000)
 }
 
 $("#play").click(function() { gradientDescend(0.5); });
