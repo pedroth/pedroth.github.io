@@ -68,13 +68,19 @@ $$\Leftrightarrow &nbsp;l(\mathbf{v}) = f(\mathbf{x_{0}}) + \mathbf{\nabla} f (\
 <div>
 &nbsp; The other problem was when to stop, when do I know that I am in a local max/min? This is simple, in a max/min the tangent plane is parallel to the x,y hence $\mathbf{\nabla }f = \begin{pmatrix}0\\0 \end{pmatrix}$. Now we have a &nbsp;vector that points to decreasing values of &nbsp;$f$ and &nbsp;turns $\mathbf{0}$ at a minimum, and that vector is $\mathbf{\nabla }f$.<br />
 <br />
-We are ready to create an algorithm, and that algorithm is:<br />
-$$\begin{matrix}<br />
-\mathbf{x}\leftarrow randomPointOnDomain(\Omega)\\<br />
-\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{while} (|\mathbf{\nabla }f|^{2} &gt; \epsilon ) \; \textbf{do}\\<br />
-\!\!\!\!\!\!\!\!\mathbf{x} \leftarrow \mathbf{x} - \alpha \mathbf{\nabla }f(\mathbf{x})\\<br />
-\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{return} \; \mathbf{x}<br />
-\end{matrix}$$</div>
+<!--
+copy this to https://www.codecogs.com/latex/eqneditor.php
+$$\begin{matrix}
+\mathbf{x}\leftarrow randomPointOnDomain(\Omega)\\
+\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{while} (|\mathbf{\nabla }f|^{2} >  \epsilon ) \; \textbf{do}:\\
+\!\!\!\!\!\!\!\!\mathbf{x} \leftarrow \mathbf{x} - \alpha \mathbf{\nabla }f(\mathbf{x})\\
+\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{return} \; \mathbf{x}
+\end{matrix}$$
+-->
+<center>
+	<img src="pseudoCode.png" width="300" height="100">
+</center>
+</div>
 <div>
 <br /></div>
 <div>
@@ -93,6 +99,11 @@ Final remark:<br />
 Video describing gradient descend:</div>
 <div>
 <br /></div>
+<center>
 <div>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cjhTs1DJ4-k" frameborder="0" allowfullscreen></iframe>
 </div>
+</center>
+<br>
+<br>
+<br>

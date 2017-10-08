@@ -1,5 +1,12 @@
 <html>
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NQKJHP3');</script>
+<!-- End Google Tag Manager -->
     <style>
         #experimentsTab {
         display: none
@@ -55,7 +62,7 @@
 	  });
 
     </script>
-    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
             type='text/javascript'></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -65,7 +72,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 </head>
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NQKJHP3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="header" class="jumbotron text-center">
     <a href="http://pedroth.github.io/visualExperiments/"><h1 id="projectTitle">VisualExperiments</h1></a>
     <ul class="list-inline">
@@ -161,13 +171,19 @@ $$\Leftrightarrow &nbsp;l(\mathbf{v}) = f(\mathbf{x_{0}}) + \mathbf{\nabla} f (\
 <div>
 &nbsp; The other problem was when to stop, when do I know that I am in a local max/min? This is simple, in a max/min the tangent plane is parallel to the x,y hence $\mathbf{\nabla }f = \begin{pmatrix}0\\0 \end{pmatrix}$. Now we have a &nbsp;vector that points to decreasing values of &nbsp;$f$ and &nbsp;turns $\mathbf{0}$ at a minimum, and that vector is $\mathbf{\nabla }f$.<br />
 <br />
-We are ready to create an algorithm, and that algorithm is:<br />
-$$\begin{matrix}<br />
-\mathbf{x}\leftarrow randomPointOnDomain(\Omega)\\<br />
-\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{while} (|\mathbf{\nabla }f|^{2} &gt; \epsilon ) \; \textbf{do}\\<br />
-\!\!\!\!\!\!\!\!\mathbf{x} \leftarrow \mathbf{x} - \alpha \mathbf{\nabla }f(\mathbf{x})\\<br />
-\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{return} \; \mathbf{x}<br />
-\end{matrix}$$</div>
+<!--
+copy this to https://www.codecogs.com/latex/eqneditor.php
+$$\begin{matrix}
+\mathbf{x}\leftarrow randomPointOnDomain(\Omega)\\
+\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{while} (|\mathbf{\nabla }f|^{2} >  \epsilon ) \; \textbf{do}:\\
+\!\!\!\!\!\!\!\!\mathbf{x} \leftarrow \mathbf{x} - \alpha \mathbf{\nabla }f(\mathbf{x})\\
+\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\textbf{return} \; \mathbf{x}
+\end{matrix}$$
+-->
+<center>
+	<img src="pseudoCode.png" width="300" height="100">
+</center>
+</div>
 <div>
 <br /></div>
 <div>
@@ -186,9 +202,14 @@ Final remark:<br />
 Video describing gradient descend:</div>
 <div>
 <br /></div>
+<center>
 <div>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cjhTs1DJ4-k" frameborder="0" allowfullscreen></iframe>
 </div>
+</center>
+<br>
+<br>
+<br>
 <!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">

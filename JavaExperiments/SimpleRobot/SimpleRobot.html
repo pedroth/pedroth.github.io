@@ -1,5 +1,12 @@
 <html>
 <head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NQKJHP3');</script>
+<!-- End Google Tag Manager -->
     <style>
         #experimentsTab {
         display: none
@@ -55,7 +62,7 @@
 	  });
 
     </script>
-    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
             type='text/javascript'></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet"
@@ -65,7 +72,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 </head>
 <body>
-
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NQKJHP3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="header" class="jumbotron text-center">
     <a href="http://pedroth.github.io/visualExperiments/"><h1 id="projectTitle">VisualExperiments</h1></a>
     <ul class="list-inline">
@@ -88,18 +98,28 @@
 </div>
 
 <div class="container">
-<div class="col-sm-15 text-left"> 
+
 
 <h1>SimpleRobot</h1>
-<object type="application/x-java-applet" height="100" width="250">
-<param name="code" value="apps.FrameApplet.class" />
-<param name="archive" value="SimpleRobotApplet.jar" />
-Applet failed to run.  No Java plug-in was found.
- </object>
- <p>input : </p><p>&lt; h &gt; : help button.</p>
-<p><a href='SimpleRobot.zip'> download application and play it faster</a>
+<div>
+<p>
+Simple Robot is a simple application that let you see a robotic arm following a ball. It works by doing a <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html">gradient descend</a> (check also <a href="http://pedroth.github.io/visualExperiments/Blog/OptimizationI/OptimizationI.html">) on a cost function. This cost function is defined as following :
+</br>
+ Let $mathbf{x} \in \mathbb{R^3}$ be the position of the ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives as input the degrees of freedom of the robot and outputs $\mathbf{y}$ which is the end position of the Robot (Usually this function is called the <a href="https://en.wikipedia.org/wiki/Forward_kinematics">direct kinematics</a> function). Then the cost function is :
+ $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
+ $$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
+</br>
+Where $C_i$ are functions that constraint the degrees of freedom such as $\theta_1 > 0 \wedge \theta_1 < 2 \pi$. 
+</br>
+Press "h" for help. Feel free to download the program below.
+</p>
 </div>
-<!-- Disqus -->
+<p>
+<center>
+    <iframe width="560" height="315" src="https://www.youtube.com/watch?v=rb4BLRtzkJ8" frameborder="0" allowfullscreen></iframe>
+</center>
+</p>
+</br></br></br><p>Download app here :<a href='SimpleRobot.zip'>SimpleRobot.zip</a></p><!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
