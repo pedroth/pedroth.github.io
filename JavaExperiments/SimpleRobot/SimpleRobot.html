@@ -105,7 +105,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>
 Simple Robot is a simple application that let you see a robotic arm following a ball. It works by doing a <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html">gradient descend</a> (check also <a href="http://pedroth.github.io/visualExperiments/Blog/OptimizationI/OptimizationI.html">OptimizationI</a>) on a cost function. This cost function is defined as following :
 </br>
- Let $mathbf{x} \in \mathbb{R^3}$ be the position of the ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives as input the degrees of freedom of the robot and outputs $\mathbf{y}$ which is the end position of the Robot (Usually this function is called the <a href="https://en.wikipedia.org/wiki/Forward_kinematics">direct kinematics</a> function). Then the cost function is :
+ Let $\mathbf{x} \in \mathbb{R^3}$ be the position of the ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives as input the degrees of freedom of the robot and outputs $\mathbf{y}$ which is the end position of the Robot (Usually this function is called the <a href="https://en.wikipedia.org/wiki/Forward_kinematics">direct kinematics</a> function). Then the cost function is :
  $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
  $$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
 </br>
