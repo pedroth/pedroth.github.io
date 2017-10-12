@@ -91,9 +91,9 @@ MyCanvas.prototype.drawPxl =function(x, rgb) {
 }
 
 /* 
- * x1     :   2-dim array
+ * x1     :   2-dim array 
  * x2     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ * shader :   is a function that receives a 2-dim array and a line (array with 2 points) and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawLine = function(x1, x2, shader) {
 	// do clipping
@@ -166,7 +166,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
 	normal[0] = -tangent[1];
 	normal[1] =  tangent[0];
 
-	this.drawPxl(x, shader(x));
+	this.drawPxl(x, shader(x, [x1, x2]));
 
 	while (x[0] !== x2[0] || x[1] !== x2[1]) {
 		var fmin = Number.MAX_VALUE;
@@ -186,7 +186,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
 	    }
 
 	    x = add(x, minDir);
-	    this.drawPxl(x, shader(x));
+	    this.drawPxl(x, shader(x, [x1, x2]));
 	}
 }
 
@@ -194,7 +194,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
  * x1     :   2-dim array
  * x2     :   2-dim array
  * x3     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawTriangle = function(x1, x2, x3, shader) {
 

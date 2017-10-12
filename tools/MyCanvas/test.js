@@ -147,9 +147,9 @@ MyCanvas.prototype.drawPxl =function(x, rgb) {
 }
 
 /* 
- * x1     :   2-dim array
+ * x1     :   2-dim array 
  * x2     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ * shader :   is a function that receives a 2-dim array and a line (array with 2 points) and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawLine = function(x1, x2, shader) {
 	// do clipping
@@ -222,7 +222,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
 	normal[0] = -tangent[1];
 	normal[1] =  tangent[0];
 
-	this.drawPxl(x, shader(x));
+	this.drawPxl(x, shader(x, [x1, x2]));
 
 	while (x[0] !== x2[0] || x[1] !== x2[1]) {
 		var fmin = Number.MAX_VALUE;
@@ -242,7 +242,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
 	    }
 
 	    x = add(x, minDir);
-	    this.drawPxl(x, shader(x));
+	    this.drawPxl(x, shader(x, [x1, x2]));
 	}
 }
 
@@ -250,7 +250,7 @@ MyCanvas.prototype.drawLineInt = function(x1, x2, shader) {
  * x1     :   2-dim array
  * x2     :   2-dim array
  * x3     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawTriangle = function(x1, x2, x3, shader) {
 
@@ -263,7 +263,16 @@ var canvasDOM = document.getElementById("canvas");
 var canvas = new CanvasSpace(canvasDOM, [[-1, 1], [-1, 1]]);
 var f = function(x) {return [0, 255, 0, 255]};
 var g = function(x) {return [0, 0, 255, 255]};
-var samples = 100;
+var interpolativeShader = function(x, line) {
+	black = [0, 0, 0, 255];
+	white = [255, 255, 255, 255];
+	gradient = [255, 255, 255, 0];
+	v = [line[1][0] - line[0][0], line[1][1] - line[0][0]];
+	z = [x[0] - line[0][0], x[1] - line[0][1]];
+	t = v[0] == 0.0 ? z[1] / v[1] : z[0] / v[0];
+	return [black[0] + gradient[0] * t, black[1] + gradient[1] * t, black[2] + gradient[2] * t, black[3] + gradient[3] * t];
+};
+var samples = 10;
 for (var i = 0; i < samples; i++) {
 	var first = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
 	var second = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
@@ -275,5 +284,6 @@ for (var i = 0; i < samples; i++) {
 	canvas.drawLine(first, second, g);
 }
 canvas.drawLine([0,0], [1,1], function(x) {return [255, 0 , 0, 255]});
+canvas.drawLine([0,0], [-1,-1], interpolativeShader);
 canvas.paintImage();
 },{"./CanvasSpace.js":1}]},{},[3]);
