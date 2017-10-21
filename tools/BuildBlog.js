@@ -57,7 +57,7 @@ function buildList(app, w, h) {
     
     // create image link
     var linkImage = $('<a class="col-sm-4" href="' + app[0] + '/' + app[0] + '.html"></a>');
-    var img = $('<img src=' + app[0] + '/' + app[0] + '.gif"></a>');
+    var img = $('<img src="' + app[0] + '/' + app[0] + '.gif"></img>');
     img.attr("width", w);
     img.attr("height", h);
     linkImage.append(img);
