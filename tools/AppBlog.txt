@@ -1,10 +1,10 @@
-IntuitionOfCalculus, 31/05/2014
-TaylorPolynomial, 05/06/2014
-GradientDescend, 04/07/2014
-ProjectionDotProduct, 05/07/2014
-ProofGreenTheorem, 02/08/2014
-DiscreteCalculusP1, 25/10/2014
-DiscreteCalculusP2, 28/10/2014
-ODEMatrixExponential, 16/03/2015
-GradientJacobianHessian, 18/07/2015
-OptimizationI, 14/11/2015
+IntuitionOfCalculus; 31/05/2014; Intuition Of Calculus; A post explaining the basics of differential and integral calculus from the perspective of someone trying to solve problems.
+TaylorPolynomial; 05/06/2014; Taylor Polynomial; A fundamental concept in calculus is the Taylor polynomial, which solves many questions in Optimization, Analysis and Differential Equations. In this post I will sketch how someone could find it using simple calculus.
+GradientDescend; 04/07/2014; Gradient Descend; Gradient Descend is an excellent vanilla algorithm to solve any optimization problem (and it is in the basis of much of the optimization algorithms out there). In this post I will explain the basics of it.
+ProjectionDotProduct; 05/07/2014; Projection and Dot product; In this post we will study a fundamental operation on vectors(and functions cough cough!), using a geometric and variational approach.
+ProofGreenTheorem; 02/08/2014; My Proof of Green's Theorem; Never liked proofs given to me about Green's Theorem, in a sentence this theorem computes global things about a domain using just information of its boundary. Such theorem has infinite applications in physics, optimization, differential geometry, complex analysis, etc. In this post I sketch a satisfying proof(at least for me) of this significant theorem.
+DiscreteCalculusP1; 25/10/2014; Discrete Calculus I; As a computer scientist I work always with the discrete domains, hence I decided to study sequence of numbers using a differential approach.
+DiscreteCalculusP2; 28/10/2014; Discrete Calculus II; As a continuation of the previous post where we try to find a discrete calculus.
+ODEMatrixExponential; 16/03/2015; Matrix Exponential; Ordinary differential equations(ODEs) are an amazing field, where we explore a way of solving linear ODEs.
+GradientJacobianHessian; 18/07/2015; Gradient,Jacobian and Hessian; In an earlier post we talked about the intuition of calculus in one dimension, where we will expand this intuition by adding functions with multiple variables. This will be surprisingly interesting since most of the problems have multiple variables. It will open the path to amazing connections between analysis and geometry!!!
+OptimizationI; 14/11/2015; Optimization I; An amazing topic to talk about since many problems can described in this language. Also this area of optimization theory have found many interesting algorithms and formulas to solve such problems. Imagine someday where you can describe a problem(optimization one) to a computer and a computer already knows how to solve it. We will start this optimization series with the basics of optimization.
