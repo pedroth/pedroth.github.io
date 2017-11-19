@@ -1,3 +1,5 @@
+## Dense N-dim Array
+
 Compile steps: 
 	install browserify
 	open command line
