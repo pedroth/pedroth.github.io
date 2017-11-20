@@ -53,7 +53,35 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 }
 
 module.exports = CanvasSpace;
-},{"./MyCanvas.js":2}],2:[function(require,module,exports){
+},{"./MyCanvas.js":3}],2:[function(require,module,exports){
+var ImageIO = function() {
+    // empty constructor
+};
+
+ImageIO.getDataFromImage = function(img) {
+    var canvasAux = document.createElement('canvas');
+    canvasAux.width = img.width;
+    canvasAux.height = img.height;
+    var contextAux = canvasAux.getContext('2d');
+    contextAux.fillStyle = 'rgba(0, 0, 0, 0)';
+    contextAux.globalCompositeOperation = 'source-over';
+    contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
+    contextAux.drawImage(img, 0 ,0);
+    return contextAux.getImageData(0, 0, img.width, img.height);
+};
+
+ImageIO.loadImage= function(src) {
+    var img = new Image();
+    img.src = src;
+    img.isReady = false;
+    img.onload = function() {
+        img.isReady = true;
+    };
+    return img;
+};
+
+module.exports = ImageIO;
+},{}],3:[function(require,module,exports){
 /*
  Canvas coordinates
 
@@ -122,29 +150,40 @@ var MyCanvas = function (canvas) {
     this.imageData = this.image.data;
 };
 
+/**
+ * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ */
+MyCanvas.prototype.getSize = function () {
+    return [canvas.canvas.width, canvas.canvas.height];
+};
+
+/**
+ *  Draw update image on canvas.
+ */
 MyCanvas.prototype.paintImage = function () {
     this.ctx.putImageData(this.image, 0, 0);
 };
 
+/**
+ * Clear Image with @rgba color.
+ *
+ * @param rgba
+ */
 MyCanvas.prototype.clearImage = function (rgba) {
     var rgbaNormalized = [];
     for (var i = 0; i < rgba.length; i++) {
         rgbaNormalized[i] = rgba[i] / 255;
     }
-    //this.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
-    //this.ctx.globalCompositeOperation = 'source-over';
-    //this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    //this.image = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-    //this.imageData = this.image.data;
     this.useCanvasCtx(function (canvas) {
+        var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvas.ctx.fillRect(0, 0, size[0], size[1]);
     }, true);
 };
 
 MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
-    if(isClearImage == null || !isClearImage) {
+    if (isClearImage == null || !isClearImage) {
         this.ctx.putImageData(this.image, 0, 0);
     }
     lambda(this);
@@ -285,7 +324,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
 MyCanvas.prototype.drawImage = function (img, x, shader) {
     if (shader == null) {
         this.useCanvasCtx(function (canvas) {
-            canvas.ctx.putImageData(img, 0, 0);
+            canvas.ctx.drawImage(img, x[1], x[0]);
         });
     }
 };
@@ -297,9 +336,10 @@ MyCanvas.simpleShader = function (color) {
 };
 
 module.exports = MyCanvas;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
 var CanvasSpace = require('./CanvasSpace.js');
+var ImageIO = require('./ImageIO.js');
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
 var canvasPoints = new CanvasSpace(document.getElementById("canvasTriangles"), [[-1, 1], [-1, 1]]);
@@ -336,6 +376,8 @@ canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
 canvasLines.paintImage();
 
+var img = ImageIO.loadImage("R.png");
+
 var i = 0;
 var j = 0;
 var t = 0;
@@ -346,6 +388,9 @@ function draw() {
     canvasPoints.drawPxl([i - 1, j], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j - 1], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j + 1], [255, 0, 0, 255]);
+    if (img.isReady) {
+        canvasPoints.drawImage(img, [i + 10, j]);
+    }
     canvasPoints.paintImage();
     t++;
     i = t % 500;
@@ -356,4 +401,4 @@ function draw() {
 requestAnimationFrame(draw);
 
 
-},{"./CanvasSpace.js":1,"./MyCanvas.js":2}]},{},[3]);
+},{"./CanvasSpace.js":1,"./ImageIO.js":2,"./MyCanvas.js":3}]},{},[4]);

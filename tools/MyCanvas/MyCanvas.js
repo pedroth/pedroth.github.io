@@ -66,29 +66,40 @@ var MyCanvas = function (canvas) {
     this.imageData = this.image.data;
 };
 
+/**
+ * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ */
+MyCanvas.prototype.getSize = function () {
+    return [canvas.canvas.width, canvas.canvas.height];
+};
+
+/**
+ *  Draw update image on canvas.
+ */
 MyCanvas.prototype.paintImage = function () {
     this.ctx.putImageData(this.image, 0, 0);
 };
 
+/**
+ * Clear Image with @rgba color.
+ *
+ * @param rgba
+ */
 MyCanvas.prototype.clearImage = function (rgba) {
     var rgbaNormalized = [];
     for (var i = 0; i < rgba.length; i++) {
         rgbaNormalized[i] = rgba[i] / 255;
     }
-    //this.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
-    //this.ctx.globalCompositeOperation = 'source-over';
-    //this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    //this.image = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-    //this.imageData = this.image.data;
     this.useCanvasCtx(function (canvas) {
+        var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvas.ctx.fillRect(0, 0, size[0], size[1]);
     }, true);
 };
 
 MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
-    if(isClearImage == null || !isClearImage) {
+    if (isClearImage == null || !isClearImage) {
         this.ctx.putImageData(this.image, 0, 0);
     }
     lambda(this);
@@ -229,7 +240,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
 MyCanvas.prototype.drawImage = function (img, x, shader) {
     if (shader == null) {
         this.useCanvasCtx(function (canvas) {
-            canvas.ctx.putImageData(img, 0, 0);
+            canvas.ctx.drawImage(img, x[1], x[0]);
         });
     }
 };

@@ -1,5 +1,6 @@
 var MyCanvas = require('./MyCanvas.js');
 var CanvasSpace = require('./CanvasSpace.js');
+var ImageIO = require('./ImageIO.js');
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
 var canvasPoints = new CanvasSpace(document.getElementById("canvasTriangles"), [[-1, 1], [-1, 1]]);
@@ -36,6 +37,8 @@ canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
 canvasLines.paintImage();
 
+var img = ImageIO.loadImage("R.png");
+
 var i = 0;
 var j = 0;
 var t = 0;
@@ -46,6 +49,9 @@ function draw() {
     canvasPoints.drawPxl([i - 1, j], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j - 1], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j + 1], [255, 0, 0, 255]);
+    if (img.isReady) {
+        canvasPoints.drawImage(img, [i + 10, j]);
+    }
     canvasPoints.paintImage();
     t++;
     i = t % 500;
