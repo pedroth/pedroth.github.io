@@ -56,7 +56,7 @@ function buildList(app, w, h) {
     var divBelow = $('<div class="form-group row"></div>')
     
     // create image link
-    var linkImage = $('<a class="col-sm-4" href="' + app[0] + '/' + app[0] + '.html"></a>');
+    var linkImage = $('<a class="col-sm-3" href="' + app[0] + '/' + app[0] + '.html"></a>');
     var img = $('<img src="' + app[0] + '/' + app[0] + '.gif"></img>');
     img.attr("width", w);
     img.attr("height", h);
@@ -64,7 +64,7 @@ function buildList(app, w, h) {
     divBelow.append(linkImage);
     
     // create description
-    var description = $('<h4 class="col-sm-25"></h4>');
+    var description = $('<h4 class="col-sm-auto"></h4>');
     description.html(app[3]);
     divBelow.append(description);
 
@@ -128,8 +128,8 @@ function date2int(date) {
     return acm;
 }
 
-function build(address, buildMethod, buildMegaDiv) {
-    var imgW = 200;
+function build(address, buildMethod, buildMegaDiv, imageSize) {
+    var imgW = imageSize;
 
     var mainSection = $("#main_content");
     mainSection.empty();
@@ -155,7 +155,7 @@ function build(address, buildMethod, buildMegaDiv) {
 }
 
 function listMegaDiv() {
-    return $('<div class="container"><div class="row"><div class="col-lg-8 col-md-10 mx-auto" id="megaDiv"></div></div></div>');
+    return $('<div class="container"><div class="row"><div class="col-lg-auto col-md-auto mx-auto" id="megaDiv"></div></div></div>');
 }
 
 function gridMegaDiv() {
@@ -166,13 +166,13 @@ function gridMegaDiv() {
 }
 
 
-build(document.getElementById("input").value, buildList, listMegaDiv);
+build(document.getElementById("input").value, buildList, listMegaDiv, 250);
 function gridListSwitch() {
     if($("#listGridIcon").attr("class") == "glyphicon glyphicon-th") {
         $("#listGridIcon").attr("class", "glyphicon glyphicon-th-list");
-        build($("#input").val(), buildThumbnail, gridMegaDiv)
+        build($("#input").val(), buildThumbnail, gridMegaDiv, 200)
     } else {
         $("#listGridIcon").attr("class", "glyphicon glyphicon-th");
-        build($("#input").val(), buildList, listMegaDiv);
+        build($("#input").val(), buildList, listMegaDiv, 250);
     }
 }

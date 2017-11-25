@@ -9,3 +9,4 @@ RandomCurve learning.jar apps.RandomCurve
 SimplePhysics learning.jar apps.SimplePhysics
 SimpleRobot learning.jar apps.Robot
 TetraZBuffer learning.jar apps.Tetra
+EigenSimulation pedroEngine.jar apps.src.EigenSimulation
