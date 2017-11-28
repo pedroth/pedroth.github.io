@@ -15,8 +15,8 @@ CanvasSpace.prototype = Object.create(MyCanvas.prototype);
  * returns : 2-dim array in integer coordinates
 */
 CanvasSpace.prototype.integerTransform = function(x) {
-	var xint = -this.canvas.height / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
-	var yint =  this.canvas.width  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
+	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
+	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
 	return [xint, yint];
 }
 
@@ -24,8 +24,8 @@ CanvasSpace.prototype.integerTransform = function(x) {
  * returns : 2-dim array in camera space coordinates
 */
 CanvasSpace.prototype.inverseTransform = function(x) {
-	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / this.canvas.width  * x[1];
-	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / this.canvas.height * x[0];
+	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
+	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
 	return [xt, yt];
 }
 

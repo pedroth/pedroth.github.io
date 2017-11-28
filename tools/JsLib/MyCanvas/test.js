@@ -16,8 +16,8 @@ CanvasSpace.prototype = Object.create(MyCanvas.prototype);
  * returns : 2-dim array in integer coordinates
 */
 CanvasSpace.prototype.integerTransform = function(x) {
-	var xint = -this.canvas.height / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
-	var yint =  this.canvas.width  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
+	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
+	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
 	return [xint, yint];
 }
 
@@ -25,8 +25,8 @@ CanvasSpace.prototype.integerTransform = function(x) {
  * returns : 2-dim array in camera space coordinates
 */
 CanvasSpace.prototype.inverseTransform = function(x) {
-	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / this.canvas.width  * x[1];
-	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / this.canvas.height * x[0];
+	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
+	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
 	return [xt, yt];
 }
 
@@ -97,6 +97,21 @@ module.exports = ImageIO;
  H
  */
 
+/*
+
+The canvas data is an array of length colors(C) * width(W) * height(H). Is a 3D-array.
+The index is a number in [0, C * W * H - 1].
+Having (x, y, z) where z is the color axis, the formula to index the array is :
+
+f(x, y, z) = C * W * x + C * y + z.
+
+Where x in [0, H - 1], y in [0, W - 1] and z in [0, C - 1].
+
+Note that f(H - 1, W - 1, C - 1) = C * W * H - 1.
+
+*/
+
+
 function add(u, v) {
     var ans = [];
     ans[0] = u[0] + v[0];
@@ -151,10 +166,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
 MyCanvas.prototype.getSize = function () {
-    return [canvas.canvas.width, canvas.canvas.height];
+    return [this.canvas.height, this.canvas.width];
 };
 
 /**
@@ -191,10 +206,6 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     this.imageData = this.image.data;
 };
 
-MyCanvas.prototype.getSize = function () {
-    return [this.canvas.width, this.canvas.height];
-};
-
 MyCanvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
@@ -221,7 +232,7 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     var outStack = [];
     for (var i = 0; i < stack.length; i++) {
         var x = stack[i];
-        if ((0 <= x[0]) && (x[0] <= this.canvas.height) && (0 <= x[1]) && (x[1] <= this.canvas.width)) {
+        if ((0 <= x[0]) && (x[0] < this.canvas.height) && (0 <= x[1]) && (x[1] < this.canvas.width)) {
             inStack.push(x);
         } else {
             outStack.push(x);
@@ -237,13 +248,13 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     var v = [x2[0] - x1[0], x2[1] - x1[1]];
     // Let s \in [0,1]
     // line intersection with [0, 0]^T + [H, 0]^T s
-    intersectionSolutions.push(solve2by2UpperTriMatrix(v, -this.canvas.height, [-x1[0], -x1[1]]));
+    intersectionSolutions.push(solve2by2UpperTriMatrix(v, -(this.canvas.height - 1), [-x1[0], -x1[1]]));
     // line intersection with [H, 0]^T + [0, W]^T s
-    intersectionSolutions.push(solve2by2LowerTriMatrix(v, -this.canvas.width, [this.canvas.height - x1[0], -x1[1]]));
+    intersectionSolutions.push(solve2by2LowerTriMatrix(v, -(this.canvas.width - 1), [(this.canvas.height - 1) - x1[0], -x1[1]]));
     // line intersection with [H, W]^T + [-H, 0]^T s
-    intersectionSolutions.push(solve2by2UpperTriMatrix(v, this.canvas.height, [this.canvas.height - x1[0], this.canvas.width - x1[1]]));
+    intersectionSolutions.push(solve2by2UpperTriMatrix(v, (this.canvas.height - 1), [(this.canvas.height - 1) - x1[0], (this.canvas.width - 1) - x1[1]]));
     // line intersection with [0, W]^T + [0, -W]^T s
-    intersectionSolutions.push(solve2by2LowerTriMatrix(v, this.canvas.width, [-x1[0], this.canvas.width - x1[1]]));
+    intersectionSolutions.push(solve2by2LowerTriMatrix(v, (this.canvas.width - 1), [-x1[0], (this.canvas.width - 1) - x1[1]]));
 
     var validIntersection = [];
     for (var i = 0; i < intersectionSolutions.length; i++) {
@@ -342,8 +353,8 @@ var CanvasSpace = require('./CanvasSpace.js');
 var ImageIO = require('./ImageIO.js');
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-var canvasPoints = new CanvasSpace(document.getElementById("canvasTriangles"), [[-1, 1], [-1, 1]]);
-var canvasTriangles = new MyCanvas(document.getElementById("canvasPoints"));
+var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
+var canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 var f = MyCanvas.simpleShader([0, 255, 0, 255]);
 var g = MyCanvas.simpleShader([0, 0, 255, 255]);
 var r = MyCanvas.simpleShader([255, 0, 0, 255])
@@ -367,14 +378,20 @@ for (var i = 0; i < samples; i++) {
 }
 
 for (var i = 0; i < samples; i++) {
-    var first = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
-    var second = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
+    var first = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
+    var second = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
     canvasLines.drawLine(first, second, g);
 }
 
 canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
 canvasLines.paintImage();
+
+var size = canvasTriangles.getSize();
+canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
+canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
+canvasTriangles.drawLine([0, 0], [size[1]-1, size[0]-1], f);
+canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
 

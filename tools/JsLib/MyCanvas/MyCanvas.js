@@ -13,6 +13,21 @@
  H
  */
 
+/*
+
+The canvas data is an array of length colors(C) * width(W) * height(H). Is a 3D-array.
+The index is a number in [0, C * W * H - 1].
+Having (x, y, z) where z is the color axis, the formula to index the array is :
+
+f(x, y, z) = C * W * x + C * y + z.
+
+Where x in [0, H - 1], y in [0, W - 1] and z in [0, C - 1].
+
+Note that f(H - 1, W - 1, C - 1) = C * W * H - 1.
+
+*/
+
+
 function add(u, v) {
     var ans = [];
     ans[0] = u[0] + v[0];
@@ -67,10 +82,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
 MyCanvas.prototype.getSize = function () {
-    return [canvas.canvas.width, canvas.canvas.height];
+    return [this.canvas.height, this.canvas.width];
 };
 
 /**
@@ -107,10 +122,6 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     this.imageData = this.image.data;
 };
 
-MyCanvas.prototype.getSize = function () {
-    return [this.canvas.width, this.canvas.height];
-};
-
 MyCanvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
@@ -137,7 +148,7 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     var outStack = [];
     for (var i = 0; i < stack.length; i++) {
         var x = stack[i];
-        if ((0 <= x[0]) && (x[0] <= this.canvas.height) && (0 <= x[1]) && (x[1] <= this.canvas.width)) {
+        if ((0 <= x[0]) && (x[0] < this.canvas.height) && (0 <= x[1]) && (x[1] < this.canvas.width)) {
             inStack.push(x);
         } else {
             outStack.push(x);
@@ -153,13 +164,13 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     var v = [x2[0] - x1[0], x2[1] - x1[1]];
     // Let s \in [0,1]
     // line intersection with [0, 0]^T + [H, 0]^T s
-    intersectionSolutions.push(solve2by2UpperTriMatrix(v, -this.canvas.height, [-x1[0], -x1[1]]));
+    intersectionSolutions.push(solve2by2UpperTriMatrix(v, -(this.canvas.height - 1), [-x1[0], -x1[1]]));
     // line intersection with [H, 0]^T + [0, W]^T s
-    intersectionSolutions.push(solve2by2LowerTriMatrix(v, -this.canvas.width, [this.canvas.height - x1[0], -x1[1]]));
+    intersectionSolutions.push(solve2by2LowerTriMatrix(v, -(this.canvas.width - 1), [(this.canvas.height - 1) - x1[0], -x1[1]]));
     // line intersection with [H, W]^T + [-H, 0]^T s
-    intersectionSolutions.push(solve2by2UpperTriMatrix(v, this.canvas.height, [this.canvas.height - x1[0], this.canvas.width - x1[1]]));
+    intersectionSolutions.push(solve2by2UpperTriMatrix(v, (this.canvas.height - 1), [(this.canvas.height - 1) - x1[0], (this.canvas.width - 1) - x1[1]]));
     // line intersection with [0, W]^T + [0, -W]^T s
-    intersectionSolutions.push(solve2by2LowerTriMatrix(v, this.canvas.width, [-x1[0], this.canvas.width - x1[1]]));
+    intersectionSolutions.push(solve2by2LowerTriMatrix(v, (this.canvas.width - 1), [-x1[0], (this.canvas.width - 1) - x1[1]]));
 
     var validIntersection = [];
     for (var i = 0; i < intersectionSolutions.length; i++) {

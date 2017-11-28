@@ -3,8 +3,8 @@ var CanvasSpace = require('./CanvasSpace.js');
 var ImageIO = require('./ImageIO.js');
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-var canvasPoints = new CanvasSpace(document.getElementById("canvasTriangles"), [[-1, 1], [-1, 1]]);
-var canvasTriangles = new MyCanvas(document.getElementById("canvasPoints"));
+var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
+var canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 var f = MyCanvas.simpleShader([0, 255, 0, 255]);
 var g = MyCanvas.simpleShader([0, 0, 255, 255]);
 var r = MyCanvas.simpleShader([255, 0, 0, 255])
@@ -28,14 +28,20 @@ for (var i = 0; i < samples; i++) {
 }
 
 for (var i = 0; i < samples; i++) {
-    var first = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
-    var second = [-2 + 4 * Math.random(), -2 + 4 * Math.random()];
+    var first = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
+    var second = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
     canvasLines.drawLine(first, second, g);
 }
 
 canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
 canvasLines.paintImage();
+
+var size = canvasTriangles.getSize();
+canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
+canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
+canvasTriangles.drawLine([0, 0], [size[1]-1, size[0]-1], f);
+canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
 
