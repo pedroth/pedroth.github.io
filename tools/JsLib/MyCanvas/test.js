@@ -224,6 +224,9 @@ MyCanvas.prototype.drawPxl = function (x, rgb) {
  * shader :   is a function that receives a 2-dim array and a line (array with 2 points) and returns a rgba 4-dim array
  */
 MyCanvas.prototype.drawLine = function (x1, x2, shader) {
+    // add points before clip
+    shader.points = [x1, x2];
+
     // do clipping
     var stack = [];
     stack.push(x1);
@@ -247,13 +250,13 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     var intersectionSolutions = [];
     var v = [x2[0] - x1[0], x2[1] - x1[1]];
     // Let s \in [0,1]
-    // line intersection with [0, 0]^T + [H, 0]^T s
+    // line intersection with [0, 0]^T + [H - 1, 0]^T s
     intersectionSolutions.push(solve2by2UpperTriMatrix(v, -(this.canvas.height - 1), [-x1[0], -x1[1]]));
-    // line intersection with [H, 0]^T + [0, W]^T s
+    // line intersection with [H - 1, 0]^T + [0, W - 1]^T s
     intersectionSolutions.push(solve2by2LowerTriMatrix(v, -(this.canvas.width - 1), [(this.canvas.height - 1) - x1[0], -x1[1]]));
-    // line intersection with [H, W]^T + [-H, 0]^T s
+    // line intersection with [H - 1, W - 1]^T + [-(H - 1), 0]^T s
     intersectionSolutions.push(solve2by2UpperTriMatrix(v, (this.canvas.height - 1), [(this.canvas.height - 1) - x1[0], (this.canvas.width - 1) - x1[1]]));
-    // line intersection with [0, W]^T + [0, -W]^T s
+    // line intersection with [0, W - 1]^T + [0, -(W - 1)]^T s
     intersectionSolutions.push(solve2by2LowerTriMatrix(v, (this.canvas.width - 1), [-x1[0], (this.canvas.width - 1) - x1[1]]));
 
     var validIntersection = [];
@@ -262,18 +265,27 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
         if ((0 <= x[0]) && (x[0] <= 1) && (0 <= x[1]) && (x[1] <= 1)) {
             validIntersection.push(x);
         }
-        if (validIntersection.length == 2 && inStack.length == 0) {
-            var p1 = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
-            var p2 = [x1[0] + validIntersection[1][0] * v[0], x1[1] + validIntersection[1][0] * v[1]];
-            return this.drawLineInt(p1, p2, shader);
-        }
     }
     if (validIntersection.length == 0) {
-        return
+        return;
     }
-    //it can be shown that at this point there is only one valid intersection
-    var p = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
-    this.drawLineInt(inStack.pop(), p, shader);
+    //it can be shown that at this point there is at least one valid intersection.
+    if(inStack.length > 0) {
+        var p = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+        this.drawLineInt(inStack.pop(), p, shader);
+        return;
+    }
+
+    var p0 = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
+    for(var i = 1; i < validIntersection.length; i++) {
+        var p = [x1[0] + validIntersection[i][0] * v[0], x1[1] + validIntersection[i][0] * v[1]];
+        var v = diff(p, p0);
+        if(dot(v, v) > 1E-3) {
+            this.drawLineInt(p0, p, shader);
+            return;
+        }
+    }
+    this.drawLineInt(p0, p0, shader);
 };
 
 MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
@@ -294,8 +306,7 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
     normal[0] = -tangent[1];
     normal[1] = tangent[0];
 
-    //this.drawPxl(x, shader(x, [x1, x2]));
-    shader(x, [x1, x2], this);
+    shader(x, shader.points, this);
 
     while (x[0] !== x2[0] || x[1] !== x2[1]) {
         var fmin = Number.MAX_VALUE;
@@ -315,10 +326,9 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
         }
 
         x = add(x, minDir);
-        //this.drawPxl(x, shader(x, [x1, x2]));
-        shader(x, [x1, x2], this);
+        shader(x, shader.points, this);
     }
-    shader(x, [x1, x2], this);
+    shader(x, shader.points, this);
 
 };
 
@@ -360,14 +370,26 @@ var g = MyCanvas.simpleShader([0, 0, 255, 255]);
 var r = MyCanvas.simpleShader([255, 0, 0, 255])
 
 var interpolativeShader = function (x, line, canvas) {
-    black = [0, 0, 0, 255];
-    white = [255, 255, 255, 255];
-    gradient = [255, 255, 255, 0];
-    v = [line[1][0] - line[0][0], line[1][1] - line[0][0]];
-    z = [x[0] - line[0][0], x[1] - line[0][1]];
-    t = v[0] == 0.0 ? z[1] / v[1] : z[0] / v[0];
+    var black = [0, 0, 0, 255];
+    var white = [255, 255, 255, 255];
+    var gradient = [255, 255, 255, 0];
+    var v = [line[1][0] - line[0][0], line[1][1] - line[0][0]];
+    var z = [x[0] - line[0][0], x[1] - line[0][1]];
+    var vnorm = v[0] * v[0] + v[1] * v[1];
+    if(vnorm == 0) {
+        return black;
+    }
+    var dot = z[0] * v[0] + z[1] * v[1];
+    var t = dot / vnorm;
     canvas.drawPxl(x, [black[0] + gradient[0] * t, black[1] + gradient[1] * t, black[2] + gradient[2] * t, black[3] + gradient[3] * t]);
 };
+
+var giveMeLine = function(a, u) {
+    var points = [];
+    points.push([a[0] + u[0], a[1] + u[1]]);
+    points.push([a[0] - u[0], a[1] - u[1]]);
+    return points;
+}
 
 var samples = 10;
 
@@ -385,12 +407,13 @@ for (var i = 0; i < samples; i++) {
 
 canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
+
 canvasLines.paintImage();
 
 var size = canvasTriangles.getSize();
 canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
 canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
-canvasTriangles.drawLine([0, 0], [size[1]-1, size[0]-1], f);
+canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
 canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
@@ -398,7 +421,19 @@ var img = ImageIO.loadImage("R.png");
 var i = 0;
 var j = 0;
 var t = 0;
+var a = [-1, 1];
+var v = [0.1, 0.1];
+var n = [1, -1];
+var speed = 0.01;
+var points = giveMeLine(a, v);
 function draw() {
+    canvasLines.drawLine(points[0], points[1], interpolativeShader);
+
+    points[0] = [points[0][0] + speed * n[0], points[0][1] + speed * n[1]];
+    points[1] = [points[1][0] + speed * n[0], points[1][1] + speed * n[1]];
+
+    canvasLines.paintImage();
+
     canvasPoints.clearImage([0, 0, 0, 255]);
     canvasPoints.drawPxl([i, j], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i + 1, j], [255, 0, 0, 255]);

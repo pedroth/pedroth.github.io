@@ -10,14 +10,26 @@ var g = MyCanvas.simpleShader([0, 0, 255, 255]);
 var r = MyCanvas.simpleShader([255, 0, 0, 255])
 
 var interpolativeShader = function (x, line, canvas) {
-    black = [0, 0, 0, 255];
-    white = [255, 255, 255, 255];
-    gradient = [255, 255, 255, 0];
-    v = [line[1][0] - line[0][0], line[1][1] - line[0][0]];
-    z = [x[0] - line[0][0], x[1] - line[0][1]];
-    t = v[0] == 0.0 ? z[1] / v[1] : z[0] / v[0];
+    var black = [0, 0, 0, 255];
+    var white = [255, 255, 255, 255];
+    var gradient = [255, 255, 255, 0];
+    var v = [line[1][0] - line[0][0], line[1][1] - line[0][0]];
+    var z = [x[0] - line[0][0], x[1] - line[0][1]];
+    var vnorm = v[0] * v[0] + v[1] * v[1];
+    if(vnorm == 0) {
+        return black;
+    }
+    var dot = z[0] * v[0] + z[1] * v[1];
+    var t = dot / vnorm;
     canvas.drawPxl(x, [black[0] + gradient[0] * t, black[1] + gradient[1] * t, black[2] + gradient[2] * t, black[3] + gradient[3] * t]);
 };
+
+var giveMeLine = function(a, u) {
+    var points = [];
+    points.push([a[0] + u[0], a[1] + u[1]]);
+    points.push([a[0] - u[0], a[1] - u[1]]);
+    return points;
+}
 
 var samples = 10;
 
@@ -35,12 +47,13 @@ for (var i = 0; i < samples; i++) {
 
 canvasLines.drawLine([0, 0], [2, 2], r);
 canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
+
 canvasLines.paintImage();
 
 var size = canvasTriangles.getSize();
 canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
 canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
-canvasTriangles.drawLine([0, 0], [size[1]-1, size[0]-1], f);
+canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
 canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
@@ -48,7 +61,19 @@ var img = ImageIO.loadImage("R.png");
 var i = 0;
 var j = 0;
 var t = 0;
+var a = [-1, 1];
+var v = [0.1, 0.1];
+var n = [1, -1];
+var speed = 0.01;
+var points = giveMeLine(a, v);
 function draw() {
+    canvasLines.drawLine(points[0], points[1], interpolativeShader);
+
+    points[0] = [points[0][0] + speed * n[0], points[0][1] + speed * n[1]];
+    points[1] = [points[1][0] + speed * n[0], points[1][1] + speed * n[1]];
+
+    canvasLines.paintImage();
+
     canvasPoints.clearImage([0, 0, 0, 255]);
     canvasPoints.drawPxl([i, j], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i + 1, j], [255, 0, 0, 255]);
