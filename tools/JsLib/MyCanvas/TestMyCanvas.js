@@ -2,6 +2,11 @@ var MyCanvas = require('./MyCanvas.js');
 var CanvasSpace = require('./CanvasSpace.js');
 var ImageIO = require('./ImageIO.js');
 
+
+function randomVector(a, b) {
+    return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
+}
+
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
 var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
 var canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
@@ -31,17 +36,17 @@ var giveMeLine = function(a, u) {
     return points;
 }
 
-var samples = 10;
+var samples = 100;
 
 for (var i = 0; i < samples; i++) {
-    var first = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
-    var second = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
+    var first = randomVector(-1, 1);
+    var second = randomVector(-1, 1);
     canvasLines.drawLine(first, second, f);
 }
 
 for (var i = 0; i < samples; i++) {
-    var first = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
-    var second = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
+    var first = randomVector(-3, 3);
+    var second = randomVector(-3, 3);
     canvasLines.drawLine(first, second, g);
 }
 
@@ -54,6 +59,18 @@ var size = canvasTriangles.getSize();
 canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
 canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
 canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
+
+var avgTime = 0;
+for(var i = 0; i < samples; i++) {
+    var first = randomVector(0, size[0]);
+    var second = randomVector(0, size[0]);
+    var third = randomVector(0, size[0]);
+    var time = new Date().getTime();
+    canvasTriangles.drawTriangle(first, second, third, g);
+    avgTime += (new Date().getTime() - time) / 1000;
+}
+console.log(avgTime / samples);
+
 canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
@@ -85,8 +102,9 @@ function draw() {
     }
     canvasPoints.paintImage();
     t++;
-    i = t % 500;
-    j = Math.floor(t / 500);
+    var sizePoints = canvasPoints.getSize();
+    i = t % sizePoints[0];
+    j = Math.floor(t / sizePoints[0]);
     requestAnimationFrame(draw);
 }
 

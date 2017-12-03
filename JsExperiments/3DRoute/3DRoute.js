@@ -641,7 +641,7 @@ function calibration(dt, data) {
 	eulerSpeedCalibration = add(eulerSpeedCalibration, scalarMult(1.0 / calibrationIte, diff(averageEulerSpeed, eulerSpeedCalibration)));
 	calibrationIte++;
 
-	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 	
 	// UI stuff
 	var color = [255,255,255,255];

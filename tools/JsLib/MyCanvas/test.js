@@ -85,7 +85,7 @@ module.exports = ImageIO;
 /*
  Canvas coordinates
 
- 0                  W
+ 0                  W-1
  +-------------> y
  |
  |
@@ -94,7 +94,7 @@ module.exports = ImageIO;
  |
  v x
 
- H
+ H-1
  */
 
 /*
@@ -135,6 +135,24 @@ function diff(u, v) {
 
 function dot(u, v) {
     return u[0] * v[0] + u[1] * v[1];
+}
+
+function norm(x) {
+    return Math.sqrt(dot(x, x));
+}
+
+function min(u, v) {
+    var ans = [];
+    ans[0] = Math.min(u[0], v[0]);
+    ans[1] = Math.min(u[1], v[1]);
+    return ans;
+}
+
+function max(u, v) {
+    var ans = [];
+    ans[0] = Math.max(u[0], v[0]);
+    ans[1] = Math.max(u[1], v[1]);
+    return ans;
 }
 
 /**
@@ -339,8 +357,49 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
  * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
+    var array = [x1, x2, x3];
+    var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
+    for(var i = 0; i < array.length; i++) {
+        upperBox[0] = min(array[i], upperBox[0]);
+        upperBox[1] = max(array[i], upperBox[1]);
+    }
+    var size = this.getSize();
+    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
 
+    for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
+        for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
+            var x = [i, j];
+            if(this.insideTriangle(x, array)) {
+                shader(x, array, this);
+            }
+        }
+    }
 };
+
+//MyCanvas.prototype.insideTriangle = function(x, array) {
+//    var v = [];
+//    var theta = 0;
+//    var length = array.length;
+//    for(var i = 0; i < length; i++) {
+//        v[0] = diff(array[(i + 1) % length], x);
+//        v[1] = diff(array[i], x);
+//        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
+//    }
+//    return Math.abs(theta -  2 * Math.PI) < 1E-3;
+//}
+
+MyCanvas.prototype.insideTriangle = function(x, array) {
+    var isInside = true;
+    var length = array.length;
+    for(var i = 0; i < length; i++) {
+        var v = diff(array[( i + 1 ) % length], array[i]);
+        var n = [-v[1], v[0]];
+        var r = diff(x, array[i]);
+        isInside &= dot(r, n) >= 0;
+    }
+    return isInside;
+}
 
 MyCanvas.prototype.drawImage = function (img, x, shader) {
     if (shader == null) {
@@ -361,6 +420,11 @@ module.exports = MyCanvas;
 var MyCanvas = require('./MyCanvas.js');
 var CanvasSpace = require('./CanvasSpace.js');
 var ImageIO = require('./ImageIO.js');
+
+
+function randomVector(a, b) {
+    return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
+}
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
 var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
@@ -391,17 +455,17 @@ var giveMeLine = function(a, u) {
     return points;
 }
 
-var samples = 10;
+var samples = 100;
 
 for (var i = 0; i < samples; i++) {
-    var first = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
-    var second = [-1 + 2 * Math.random(), -1 + 2 * Math.random()];
+    var first = randomVector(-1, 1);
+    var second = randomVector(-1, 1);
     canvasLines.drawLine(first, second, f);
 }
 
 for (var i = 0; i < samples; i++) {
-    var first = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
-    var second = [-3 + 6 * Math.random(), -3 + 6 * Math.random()];
+    var first = randomVector(-3, 3);
+    var second = randomVector(-3, 3);
     canvasLines.drawLine(first, second, g);
 }
 
@@ -414,6 +478,18 @@ var size = canvasTriangles.getSize();
 canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
 canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
 canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
+
+var avgTime = 0;
+for(var i = 0; i < samples; i++) {
+    var first = randomVector(0, size[0]);
+    var second = randomVector(0, size[0]);
+    var third = randomVector(0, size[0]);
+    var time = new Date().getTime();
+    canvasTriangles.drawTriangle(first, second, third, g);
+    avgTime += (new Date().getTime() - time) / 1000;
+}
+console.log(avgTime / samples);
+
 canvasTriangles.paintImage();
 
 var img = ImageIO.loadImage("R.png");
@@ -445,8 +521,9 @@ function draw() {
     }
     canvasPoints.paintImage();
     t++;
-    i = t % 500;
-    j = Math.floor(t / 500);
+    var sizePoints = canvasPoints.getSize();
+    i = t % sizePoints[0];
+    j = Math.floor(t / sizePoints[0]);
     requestAnimationFrame(draw);
 }
 
