@@ -103,12 +103,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h1>EigenSimulation</h1>
 <div>
 <p>
-Cube Chaos is small application where you can see several particles being driven by force and velocity vector fields. It is called "chaos" because one of the vector field is the <a href="https://en.wikipedia.org/wiki/Lorenz_system">Lorenz attractor</a> from chaos theory. Press "h" for help. Feel free to download the program below.
+Eigen Simulation App is a application that visualize three algorithms of finding eigenvectors. For starters eigenvectors are vectors that have the following property: <br>
+    let $A \in \mathbbb{R}^{n \times n}$ and $\mathbf{v} \in \mathbb{R}^n$ then $\mathbf{v}$ is a not trivial solution ( that means $\mathbf{v} \neq \mathbf{0}$) of :
+
+    $$A\mathbf{v} = \lambda \mathbf{v}\;\;\;(1)$$
+
+    These eigenvectors and eigenvalues (the $\lambda$ 's in (1)) are very useful for different applications like Physics, Optimization, Machine Learning, etc.
+    Here I explore methods to find eigenvectors. I tried three methods, the first is the <a href="https://en.wikipedia.org/wiki/Power_iteration">power method</a> and the other two are based in the next constraint optimization problem :
+    A small detail I forgot to tell is that the matrix $A$ is <a href="https://en.wikipedia.org/wiki/Symmetric_matrix">symmetric</a> (this is important because it gives guarantees about the existence of real eigenvectors and eigenvalues).
+    $$\min_{\mathbf{x}\in \mathbb{R}^n} \left < \mathbf{x}, A \mathbf{x}\right >$$
+    $$\text{s.t  } \;\;|\mathbf{x}|^2 = 1 \;\;\; (2)$$
+
+    Press "h" for help. Feel free to download the program below.
 </p>
 </div>
-<center>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/fY2K_D7GUtQ" frameborder="0" allowfullscreen></iframe>
-</center>
+<div style="text-align: center;">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/0QV7QjFa0k8" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+</div>
 </br></br></br><p>Download app here :<a href='EigenSimulation.zip'>EigenSimulation.zip</a></p><!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
