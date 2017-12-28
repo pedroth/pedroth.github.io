@@ -379,7 +379,7 @@ function draw3DLine(line, rgb, data) {
 	cameraLine[0] = matrixProd(cam.invBasis[0], cam.invBasis[1], cam.invBasis[2], diff(line[0], cam.eye));
 	cameraLine[1] = matrixProd(cam.invBasis[0], cam.invBasis[1], cam.invBasis[2], diff(line[1], cam.eye));
 
-	//fustrum clip
+	//frustum culling
 	var inFrustum =  [];
 	var outFrustum = [];
 	for (var i = 0; i < cameraLine.length; i++) {
