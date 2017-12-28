@@ -81,22 +81,23 @@ function Sim1() {
             requestAnimationFrame(this.draw);
         }
     }
+
+    this.start = function() {
+        ("#sim1").slideToggle();
+        this.draw();
+    }
 }
 
 var simulations = [
     new Sim1()
 ];
 
-function runSimulation() {
-    for(var i = 0; i < simulations.length; i++) {
-        if(simulations[i].checkIfCanDraw()) {
-            simulations[i].draw();
-        }
-    }
+function runSimulation(index) {
     console.log("Hello");
-    requestAnimationFrame(runSimulation);
+    simulations[index].start();
 }
 
-requestAnimationFrame(runSimulation);
 
+IntuitionOfCalculus.js
+IntuitionOfCalculus.js
 
