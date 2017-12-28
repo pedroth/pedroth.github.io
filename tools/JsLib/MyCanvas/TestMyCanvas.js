@@ -8,7 +8,7 @@ function randomVector(a, b) {
 }
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
+var canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
 var canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 var f = MyCanvas.simpleShader([0, 255, 0, 255]);
 var g = MyCanvas.simpleShader([0, 0, 255, 255]);
@@ -83,6 +83,28 @@ var v = [0.1, 0.1];
 var n = [1, -1];
 var speed = 0.01;
 var points = giveMeLine(a, v);
+
+var animeTriangle = [randomVector(0, size[0]), randomVector(0, size[0]), randomVector(0, size[0])]
+var average = [0, 0]
+var diff = []
+for (var k = 0; k < animeTriangle.length; k++) {
+    average[0] += animeTriangle[k][0];
+    average[1] += animeTriangle[k][1];
+}
+average[0] /= 3;
+average[1] /= 3;
+for(var k = 0; k < animeTriangle.length; k++) {
+    diff[k] = [animeTriangle[k][0] - average[0], animeTriangle[k][1] - average[1]]
+}
+var animeCircle = randomVector(0, size[0]);
+
+function invertVector(init, v, t) {
+    var ans = [];
+    ans[0] = init[0] + v[0] * (1 - t) + v[0] * t;
+    ans[1] = init[1] + v[1] * (1 - t) - v[1] * t;
+    return ans;
+}
+
 function draw() {
     canvasLines.drawLine(points[0], points[1], interpolativeShader);
 
@@ -97,10 +119,20 @@ function draw() {
     canvasPoints.drawPxl([i - 1, j], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j - 1], [255, 0, 0, 255]);
     canvasPoints.drawPxl([i, j + 1], [255, 0, 0, 255]);
-    if (img.isReady) {
-        canvasPoints.drawImage(img, [i + 10, j]);
-    }
+
+    canvasPoints.drawImage(img, [i + 10, j]);
+
     canvasPoints.paintImage();
+
+    canvasTriangles.clearImage([250, 250, 250, 255]);
+    var sin = Math.sin(t / (2 * Math.PI * 10))
+    var sinsin = sin * sin;
+    canvasTriangles.drawTriangle(invertVector(average, diff[0], sinsin), invertVector(average, diff[1], sinsin), invertVector(average, diff[2], sinsin), r)
+
+    canvasTriangles.drawCircle(animeCircle, sinsin * size[0] * 0.25, g)
+
+    canvasTriangles.paintImage();
+
     t++;
     var sizePoints = canvasPoints.getSize();
     i = t % sizePoints[0];

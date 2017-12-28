@@ -10,6 +10,7 @@ var CanvasSpace = function(canvas, cameraSpace) {
 }
 
 CanvasSpace.prototype = Object.create(MyCanvas.prototype);
+CanvasSpace.prototype.constructor = CanvasSpace;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
@@ -50,5 +51,17 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y3 = this.integerTransform(x3);
 	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
 }
+
+CanvasSpace.prototype.drawCircle = function(x, r, shader) {
+    // it assumes squared canvas, for now ...
+    y = this.integerTransform(x);
+    z = this.integerTransform([r, 0])[1] - this.integerTransform([0, 0])[1];
+    MyCanvas.prototype.drawCircle.call(this, y, z, shader);
+}
+
+CanvasSpace.prototype.drawImage = function (img, x, shader) {
+    MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+}
+
 
 module.exports = CanvasSpace;

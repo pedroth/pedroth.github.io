@@ -1,3 +1,4 @@
+<script src="IntuitionOfCalculus.js"></script>
 <header>
     <div class="container">
         <div class="row">
@@ -88,14 +89,23 @@
                 $$ f(x) = f(a) + \frac{f(b)-f(a)}{b-a} (x - a)\;\;\;\;\;\;\;(2)$$
 
                 Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem. There is still other way to get to the
-                line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
+                line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.<br><br>
 
+                <a onclick='$("#sim1").slideToggle();'><h4> Simulation 1</h4></a>
+                <div id="sim1" style="display:none">
+                    <canvas id="linearFunctionGraph" width="500" height="500"></canvas>
+                    <canvas id="linearFunctionTransformation" width="500" height="500"></canvas>
+                    <div style="text-align: center;">
+                        <p>Simulation.1 Linear function graph vs Linear function transformation.</p>
+                    </div>
+                </div>
+                <br><br>
 
                 Note that if $(x-a) = 1$ then $f(x)-f(a) = \frac{f(b)-f(a)}{b-a}$ which means $\frac{f(b)-f(a)}{b-a}$ is the rate of
                 change(gradient) of this curve, this means that for a step $h $ in the domain $y(a + h) = f(a) + h \frac{f(b)-f(a)}{b-a}$.<br/>
                 <br/>
 
-                <h2> Differentials </h2>
+                <h2> Derivatives </h2>
 
                 Now let me give you another problem, imagine that someone gave you a machine that computes a function $f$, where you introduce an $x$ and the machine&nbsp;spits out
                 a $y$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then somebody ask you if the
@@ -209,3 +219,4 @@
         </div>
     </div>
 </article>
+<script src="IntuitionOfCalculus.js"></script>

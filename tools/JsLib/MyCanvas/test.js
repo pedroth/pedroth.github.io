@@ -11,6 +11,7 @@ var CanvasSpace = function(canvas, cameraSpace) {
 }
 
 CanvasSpace.prototype = Object.create(MyCanvas.prototype);
+CanvasSpace.prototype.constructor = CanvasSpace;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
@@ -51,6 +52,18 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y3 = this.integerTransform(x3);
 	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
 }
+
+CanvasSpace.prototype.drawCircle = function(x, r, shader) {
+    // it assumes squared canvas, for now ...
+    y = this.integerTransform(x)
+    z = this.integerTransform([r, 0])
+    MyCanvas.prototype.drawTriangle.call(this, y, z, shader);
+}
+
+CanvasSpace.prototype.drawImage = function (img, x, shader) {
+    MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+}
+
 
 module.exports = CanvasSpace;
 },{"./MyCanvas.js":3}],2:[function(require,module,exports){
@@ -110,7 +123,12 @@ Where x in [0, H - 1], y in [0, W - 1] and z in [0, C - 1].
 Note that f(H - 1, W - 1, C - 1) = C * W * H - 1.
 
 */
-
+function scale(u, r) {
+    var ans = [];
+    ans[0] = u[0] * r;
+    ans[1] = u[1] * r;
+    return ans;
+}
 
 function add(u, v) {
     var ans = [];
@@ -135,6 +153,10 @@ function diff(u, v) {
 
 function dot(u, v) {
     return u[0] * v[0] + u[1] * v[1];
+}
+
+function squareNorm(x) {
+    return dot(x, x);
 }
 
 function norm(x) {
@@ -203,15 +225,11 @@ MyCanvas.prototype.paintImage = function () {
  * @param rgba
  */
 MyCanvas.prototype.clearImage = function (rgba) {
-    var rgbaNormalized = [];
-    for (var i = 0; i < rgba.length; i++) {
-        rgbaNormalized[i] = rgba[i] / 255;
-    }
     this.useCanvasCtx(function (canvas) {
         var size = canvas.getSize();
-        canvas.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
+        canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[0], size[1]);
+        canvas.ctx.fillRect(0, 0, size[1], size[0]);
     }, true);
 };
 
@@ -370,13 +388,14 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
     for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
         for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
             var x = [i, j];
-            if(this.insideTriangle(x, array)) {
+            if(this.isInsideTriangle(x, array)) {
                 shader(x, array, this);
             }
         }
     }
 };
 
+// slower than the method below
 //MyCanvas.prototype.insideTriangle = function(x, array) {
 //    var v = [];
 //    var theta = 0;
@@ -389,19 +408,32 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
 //    return Math.abs(theta -  2 * Math.PI) < 1E-3;
 //}
 
-MyCanvas.prototype.insideTriangle = function(x, array) {
-    var isInside = true;
+MyCanvas.prototype.isInsideTriangle = function(x, array) {
     var length = array.length;
+    var v = [];
+    var vDotN = [];
     for(var i = 0; i < length; i++) {
-        var v = diff(array[( i + 1 ) % length], array[i]);
-        var n = [-v[1], v[0]];
+        v[i] = diff(array[( i + 1 ) % length], array[i]);
+        var n = [-v[i][1], v[i][0]];
         var r = diff(x, array[i]);
-        isInside &= dot(r, n) >= 0;
+        vDotN[i] = dot(r, n);
     }
-    return isInside;
+    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
+    for(var i = 0; i < length; i++) {
+        var myDot = vDotN[i] * orientation;
+        if (myDot < 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 MyCanvas.prototype.drawImage = function (img, x, shader) {
+    if("isReady" in img) {
+        if(!img.isReady) {
+            return;
+        }
+    }
     if (shader == null) {
         this.useCanvasCtx(function (canvas) {
             canvas.ctx.drawImage(img, x[1], x[0]);
@@ -409,11 +441,38 @@ MyCanvas.prototype.drawImage = function (img, x, shader) {
     }
 };
 
+
+MyCanvas.prototype.drawCircle = function(x, r, shader) {
+    var corner = scale([1, 1], r);
+    var upperBox = [diff(x, corner), add(x, corner)];
+    var size = this.getSize();
+    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+    for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
+        for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
+            var p = [i, j];
+            if(this.isInsideCircle(p, x, r)) {
+                shader(p, [x, r], this);
+            }
+        }
+    }
+}
+
+MyCanvas.prototype.isInsideCircle = function(p, x, r) {
+    return squareNorm(diff(p, x)) <= r * r;
+}
+
+MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
+    this.canvas.addEventListener(key, lambda, useCapture);
+};
+
+
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
         canvas.drawPxl(x, color);
     };
 };
+
 
 module.exports = MyCanvas;
 },{}],4:[function(require,module,exports){
@@ -427,7 +486,7 @@ function randomVector(a, b) {
 }
 
 var canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-var canvasPoints = new CanvasSpace(document.getElementById("canvasPoints"), [[-1, 1], [-1, 1]]);
+var canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
 var canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 var f = MyCanvas.simpleShader([0, 255, 0, 255]);
 var g = MyCanvas.simpleShader([0, 0, 255, 255]);
@@ -455,7 +514,7 @@ var giveMeLine = function(a, u) {
     return points;
 }
 
-var samples = 10;
+var samples = 100;
 
 for (var i = 0; i < samples; i++) {
     var first = randomVector(-1, 1);
@@ -463,71 +522,103 @@ for (var i = 0; i < samples; i++) {
     canvasLines.drawLine(first, second, f);
 }
 
-//for (var i = 0; i < samples; i++) {
-//    var first = randomVector(-3, 3);
-//    var second = randomVector(-3, 3);
-//    canvasLines.drawLine(first, second, g);
-//}
-//
-//canvasLines.drawLine([0, 0], [2, 2], r);
-//canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
-//
+for (var i = 0; i < samples; i++) {
+    var first = randomVector(-3, 3);
+    var second = randomVector(-3, 3);
+    canvasLines.drawLine(first, second, g);
+}
+
+canvasLines.drawLine([0, 0], [2, 2], r);
+canvasLines.drawLine([0, 0], [-2, -2], interpolativeShader);
+
 canvasLines.paintImage();
-//
-//var size = canvasTriangles.getSize();
-//canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
-//canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
-//canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
-//
-//var avgTime = 0;
-//for(var i = 0; i < samples; i++) {
-//    var first = randomVector(0, size[0]);
-//    var second = randomVector(0, size[0]);
-//    var third = randomVector(0, size[0]);
-//    var time = new Date().getTime();
-//    canvasTriangles.drawTriangle(first, second, third, g);
-//    avgTime += (new Date().getTime() - time) / 1000;
-//}
-//console.log(avgTime / samples);
-//
-//canvasTriangles.paintImage();
-//
-//var img = ImageIO.loadImage("R.png");
-//
-//var i = 0;
-//var j = 0;
-//var t = 0;
-//var a = [-1, 1];
-//var v = [0.1, 0.1];
-//var n = [1, -1];
-//var speed = 0.01;
-//var points = giveMeLine(a, v);
-//function draw() {
-//    canvasLines.drawLine(points[0], points[1], interpolativeShader);
-//
-//    points[0] = [points[0][0] + speed * n[0], points[0][1] + speed * n[1]];
-//    points[1] = [points[1][0] + speed * n[0], points[1][1] + speed * n[1]];
-//
-//    canvasLines.paintImage();
-//
-//    canvasPoints.clearImage([0, 0, 0, 255]);
-//    canvasPoints.drawPxl([i, j], [255, 0, 0, 255]);
-//    canvasPoints.drawPxl([i + 1, j], [255, 0, 0, 255]);
-//    canvasPoints.drawPxl([i - 1, j], [255, 0, 0, 255]);
-//    canvasPoints.drawPxl([i, j - 1], [255, 0, 0, 255]);
-//    canvasPoints.drawPxl([i, j + 1], [255, 0, 0, 255]);
-//    if (img.isReady) {
-//        canvasPoints.drawImage(img, [i + 10, j]);
-//    }
-//    canvasPoints.paintImage();
-//    t++;
-//    var sizePoints = canvasPoints.getSize();
-//    i = t % sizePoints[0];
-//    j = Math.floor(t / sizePoints[0]);
-//    requestAnimationFrame(draw);
-//}
-//
-//requestAnimationFrame(draw);
+
+var size = canvasTriangles.getSize();
+canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
+canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
+canvasTriangles.drawLine([0, 0], [size[0]-1, size[1]-1], f);
+
+var avgTime = 0;
+for(var i = 0; i < samples; i++) {
+    var first = randomVector(0, size[0]);
+    var second = randomVector(0, size[0]);
+    var third = randomVector(0, size[0]);
+    var time = new Date().getTime();
+    canvasTriangles.drawTriangle(first, second, third, g);
+    avgTime += (new Date().getTime() - time) / 1000;
+}
+console.log(avgTime / samples);
+
+canvasTriangles.paintImage();
+
+var img = ImageIO.loadImage("R.png");
+
+var i = 0;
+var j = 0;
+var t = 0;
+var a = [-1, 1];
+var v = [0.1, 0.1];
+var n = [1, -1];
+var speed = 0.01;
+var points = giveMeLine(a, v);
+
+var animeTriangle = [randomVector(0, size[0]), randomVector(0, size[0]), randomVector(0, size[0])]
+var average = [0, 0]
+var diff = []
+for (var k = 0; k < animeTriangle.length; k++) {
+    average[0] += animeTriangle[k][0];
+    average[1] += animeTriangle[k][1];
+}
+average[0] /= 3;
+average[1] /= 3;
+for(var k = 0; k < animeTriangle.length; k++) {
+    diff[k] = [animeTriangle[k][0] - average[0], animeTriangle[k][1] - average[1]]
+}
+var animeCircle = randomVector(0, size[0]);
+
+function invertVector(init, v, t) {
+    var ans = [];
+    ans[0] = init[0] + v[0] * (1 - t) + v[0] * t;
+    ans[1] = init[1] + v[1] * (1 - t) - v[1] * t;
+    return ans;
+}
+
+function draw() {
+    canvasLines.drawLine(points[0], points[1], interpolativeShader);
+
+    points[0] = [points[0][0] + speed * n[0], points[0][1] + speed * n[1]];
+    points[1] = [points[1][0] + speed * n[0], points[1][1] + speed * n[1]];
+
+    canvasLines.paintImage();
+
+    canvasPoints.clearImage([0, 0, 0, 255]);
+    canvasPoints.drawPxl([i, j], [255, 0, 0, 255]);
+    canvasPoints.drawPxl([i + 1, j], [255, 0, 0, 255]);
+    canvasPoints.drawPxl([i - 1, j], [255, 0, 0, 255]);
+    canvasPoints.drawPxl([i, j - 1], [255, 0, 0, 255]);
+    canvasPoints.drawPxl([i, j + 1], [255, 0, 0, 255]);
+
+    canvasPoints.drawImage(img, [i + 10, j]);
+
+    canvasPoints.paintImage();
+
+    canvasTriangles.clearImage([250, 250, 250, 255]);
+    var sin = Math.sin(t / (2 * Math.PI * 10))
+    var sinsin = sin * sin;
+    canvasTriangles.drawTriangle(invertVector(average, diff[0], sinsin), invertVector(average, diff[1], sinsin), invertVector(average, diff[2], sinsin), r)
+
+    canvasTriangles.drawCircle(animeCircle, sinsin * size[0] * 0.25, g)
+
+    canvasTriangles.paintImage();
+
+    t++;
+    var sizePoints = canvasPoints.getSize();
+    i = t % sizePoints[0];
+    j = Math.floor(t / sizePoints[0]);
+    requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
 
 
 },{"./CanvasSpace.js":1,"./ImageIO.js":2,"./MyCanvas.js":3}]},{},[4]);

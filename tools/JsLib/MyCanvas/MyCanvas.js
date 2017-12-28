@@ -26,7 +26,12 @@ Where x in [0, H - 1], y in [0, W - 1] and z in [0, C - 1].
 Note that f(H - 1, W - 1, C - 1) = C * W * H - 1.
 
 */
-
+function scale(u, r) {
+    var ans = [];
+    ans[0] = u[0] * r;
+    ans[1] = u[1] * r;
+    return ans;
+}
 
 function add(u, v) {
     var ans = [];
@@ -51,6 +56,10 @@ function diff(u, v) {
 
 function dot(u, v) {
     return u[0] * v[0] + u[1] * v[1];
+}
+
+function squareNorm(x) {
+    return dot(x, x);
 }
 
 function norm(x) {
@@ -119,15 +128,11 @@ MyCanvas.prototype.paintImage = function () {
  * @param rgba
  */
 MyCanvas.prototype.clearImage = function (rgba) {
-    var rgbaNormalized = [];
-    for (var i = 0; i < rgba.length; i++) {
-        rgbaNormalized[i] = rgba[i] / 255;
-    }
     this.useCanvasCtx(function (canvas) {
         var size = canvas.getSize();
-        canvas.ctx.fillStyle = 'rgba(' + rgbaNormalized[0] + ',' + rgbaNormalized[1] + ',' + rgbaNormalized[2] + ',' + rgbaNormalized[3] + ')';
+        canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[0], size[1]);
+        canvas.ctx.fillRect(0, 0, size[1], size[0]);
     }, true);
 };
 
@@ -286,13 +291,14 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
     for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
         for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
             var x = [i, j];
-            if(this.insideTriangle(x, array)) {
+            if(this.isInsideTriangle(x, array)) {
                 shader(x, array, this);
             }
         }
     }
 };
 
+// slower than the method below
 //MyCanvas.prototype.insideTriangle = function(x, array) {
 //    var v = [];
 //    var theta = 0;
@@ -305,19 +311,32 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
 //    return Math.abs(theta -  2 * Math.PI) < 1E-3;
 //}
 
-MyCanvas.prototype.insideTriangle = function(x, array) {
-    var isInside = true;
+MyCanvas.prototype.isInsideTriangle = function(x, array) {
     var length = array.length;
+    var v = [];
+    var vDotN = [];
     for(var i = 0; i < length; i++) {
-        var v = diff(array[( i + 1 ) % length], array[i]);
-        var n = [-v[1], v[0]];
+        v[i] = diff(array[( i + 1 ) % length], array[i]);
+        var n = [-v[i][1], v[i][0]];
         var r = diff(x, array[i]);
-        isInside &= dot(r, n) >= 0;
+        vDotN[i] = dot(r, n);
     }
-    return isInside;
+    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
+    for(var i = 0; i < length; i++) {
+        var myDot = vDotN[i] * orientation;
+        if (myDot < 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 MyCanvas.prototype.drawImage = function (img, x, shader) {
+    if("isReady" in img) {
+        if(!img.isReady) {
+            return;
+        }
+    }
     if (shader == null) {
         this.useCanvasCtx(function (canvas) {
             canvas.ctx.drawImage(img, x[1], x[0]);
@@ -325,10 +344,37 @@ MyCanvas.prototype.drawImage = function (img, x, shader) {
     }
 };
 
+
+MyCanvas.prototype.drawCircle = function(x, r, shader) {
+    var corner = scale([1, 1], r);
+    var upperBox = [diff(x, corner), add(x, corner)];
+    var size = this.getSize();
+    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+    for(var i = upperBox[0][0]; i <= upperBox[1][0]; i++) {
+        for(var j = upperBox[0][1]; j <= upperBox[1][1]; j++) {
+            var p = [i, j];
+            if(this.isInsideCircle(p, x, r)) {
+                shader(p, [x, r], this);
+            }
+        }
+    }
+}
+
+MyCanvas.prototype.isInsideCircle = function(p, x, r) {
+    return squareNorm(diff(p, x)) <= r * r;
+}
+
+MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
+    this.canvas.addEventListener(key, lambda, useCapture);
+};
+
+
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
         canvas.drawPxl(x, color);
     };
 };
+
 
 module.exports = MyCanvas;
