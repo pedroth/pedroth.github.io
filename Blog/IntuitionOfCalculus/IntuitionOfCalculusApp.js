@@ -2,6 +2,9 @@ var MyCanvas = require('../../tools/JsLib/MyCanvas/MyCanvas.js');
 var CanvasSpace = require('../../tools/JsLib/MyCanvas/CanvasSpace.js');
 var ImageIO = require('../../tools/JsLib/MyCanvas/ImageIO.js');
 
+var simulations = [
+    new Sim1()
+];
 
 function drawArrow(init, v, canvas, shader) {
     var p = 0.05;
@@ -69,7 +72,7 @@ function Sim1() {
     }
 
     this.draw = function() {
-        //this.canvasGraph.clearImage([255, 255, 255, 255]);
+        this.canvasGraph.clearImage([255, 255, 255, 255]);
         drawArrow([-0.1, 0], [1 ,0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
         drawArrow([0, -0.1], [0 ,1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
         this.canvasGraph.drawImage(this.xImg, [0.9, -0.01]);
@@ -78,26 +81,24 @@ function Sim1() {
         this.canvasGraph.drawCircle(this.fb, 0.01, MyCanvas.simpleShader([0, 255, 0, 255]));
         this.canvasGraph.paintImage();
         if(this.checkIfCanDraw()) {
-            requestAnimationFrame(this.draw);
+            requestAnimationFrame(function () {
+               simulations[0].draw();
+            });
         }
     }
 
     this.start = function() {
-        ("#sim1").slideToggle();
-        this.draw();
+        $("#sim1").slideToggle();
+         requestAnimationFrame(function () {
+            simulations[0].draw();
+         });
     }
 }
 
-var simulations = [
-    new Sim1()
-];
-
-function runSimulation(index) {
-    console.log("Hello");
-    simulations[index].start();
+function runSimulation(index, lambda) {
+	lambda(simulations[index]);
 }
 
-
-IntuitionOfCalculus.js
-IntuitionOfCalculus.js
-
+module.exports =  {
+    run  : runSimulation
+}
