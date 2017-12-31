@@ -122,6 +122,10 @@ MyCanvas.prototype.paintImage = function () {
     this.ctx.putImageData(this.image, 0, 0);
 };
 
+MyCanvas.prototype.getCanvas = function() {
+    return this.canvas;
+}
+
 /**
  * Clear Image with @rgba color.
  *
@@ -373,6 +377,18 @@ MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
         canvas.drawPxl(x, color);
+    };
+};
+
+
+MyCanvas.interpolativeShader = function(shader) {
+    return function (x, line, canvas) {
+        var v = diff(line[1], line[0]);
+        var z = diff(x, line[0]);
+        var vnorm = squareNorm(v);
+        var projection = dot(z, v);
+        var t = vnorm == 0.0 ? 0 : projection / vnorm;
+        shader(x, line, canvas, t);
     };
 };
 
