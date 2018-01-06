@@ -121,8 +121,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 First of all before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an
                 output. The input and output could be anything. Here I will just write about functions of one input or univariate functions (one variable functions), but in general a function can have multiple inputs.<br>
                 Every function has a domain which is the set of all possible input values and a co-domain which is the set of all outputs. A function assigns only one output for each input.<br>
-                A typical notation for a function is $F: X \rightarrow Y$ where $F$ represents the function name ,$X$ is the input set and $Y$ is the output set. For a particular assignment of a value $x \in X$, one writes $y = F(x)$, where $y \in Y$. <br><br>
-                Consider the following example of functions :
+                A typical notation for a function is $F: X \rightarrow Y$ where $F$ represents the function name ,$X$ is the input set and $Y$ is the output set. For a particular value $x \in X$, one writes $y = F(x)$, where $y \in Y$, in order to evaluate the function $F$ on the input $x$.<br><br>
+
+                Consider the following examples of functions :
                 <ul>
                     <li>$F: \text{Dollars} \rightarrow \text{Euros};\;\;\;\;\;F(1) = 0.86$</li>
                     <li>$F: \text{Countries} \rightarrow \text{Capitals};\;\;\;\;\;F(\text{"Portugal"}) = \text{"Lisboa"}$</li>
@@ -130,8 +131,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <li>$F: \text{Problems} \rightarrow \text{Solutions}$</li>
                 </ul>
                 <br>
-                In this article we will only refer to functions $F : \mathbb{R}\rightarrow \mathbb{R}$. Which are the functions that we are interested in <a href="https://en.wikipedia.org/wiki/Calculus">Calculus</a><br>
-                Let $f : \mathbb{R}\rightarrow \mathbb{R}$ , $f : x \rightarrow y$ and $f(x) = y$ where $x \in \mathbb{R}$ is the input and $y \in \mathbb{R}$ is the output.<br>
+                In this article we will only refer to functions $F : \mathbb{R}\rightarrow \mathbb{R}$. Which are the functions that we are interested in <a href="https://en.wikipedia.org/wiki/Calculus">Calculus</a>.<br>
+                Let $f : x \in \mathbb{R}\rightarrow y \in \mathbb{R}$.<br>
                 Let $$ f(x) = 2x + 1$$
                 We can compute $y$ in the follow way:
                 <div style="text-align: center;">
@@ -160,14 +161,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
                 <br>
                 <h2> Linear Functions </h2>
-                Now let me give you a problem, suppose you wanted to find a function $f: \mathbb{R} \rightarrow \mathbb{R}, f: x \rightarrow y$ such that for input $a$ we will
-                get $f(a)$ and for $b$ the output $f(b)$. How do you do it ?  This function must also fulfil the condition that the graph is a continuous curve (more on that
-                later).<br>
+                Now let me give you a problem, suppose you wanted to find a function $f: x \in \mathbb{R} \rightarrow y \in \mathbb{R}$, such that for input $a$ we will
+                get $f(a)$ and for $b$ the output $f(b)$. How do you do it ? This function must also fulfil the condition that the graph is a continuous curve (more on that
+                later, but a brief definition could be $\forall x \in [a,b]$ and $\varepsilon > 0$ but close to zero then $f(x \pm \varepsilon) \approx f(x)$).<br>
 
                 A possible solution is as follows. Imagine a function as a graph, then we already have two points of the curve $(a,f(a))$ and $(b,f(b))$. Now just trace a curve
                 between those two points (as long as follows the rules above) and voila! The problem with such method is that it isn't very precise, we
-                need a better way, an algorithmic one. The most simple curve I can imagine is a straight line between the two points $(a,f(a))$ and $(b,f(b))$. But how can I
-                describe such curve in a mathematical/algorithmic way ?
+                need a way to compute $y$ given an $x$ in a mechanic /computational way. The most simple curve I can imagine is a straight line between the two points $(a,f(a))$ and $(b,f(b))$.
                 <br/>
                 <br/>
 
@@ -190,8 +190,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Hence $k = \frac{b-a}{x-a}$ , then by substituting $k$ on (1) we get :
                 $$ f(x) = f(a) + \frac{f(b)-f(a)}{b-a} (x - a)\;\;\;\;\;\;\;(2)$$
 
-                Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem. There is still other way to get to the
-                line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.<br><br>
+                Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem (just compute $f(a)$ and $f(b)$ using (2)). There is still other way to get the
+                line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
+                The idea is to think of a function as a transformation of the space of inputs to the space of outputs. The real x-axis will be deformed, stretched, squeezed and reversed into the y-axis. In Simulation 1 we can see each point of the x-axis being mapped by $f$ to the y-axis.<br><br>
 
                 <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 1</h4></a>
                 <div id="sim1" style="display:none">
@@ -202,6 +203,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     </div>
                 </div>
                 <br><br>
+
+                <div style="text-align: center;">
+                    <img border="0" height="360"
+                         src="https://1.bp.blogspot.com/-KwDnfLPz7pA/Wk6p01LWVdI/AAAAAAAAAfk/U_F_qnB8B7oOZIk0MAlfCy5RBX4GXQfzQCLcBGAs/s1600/LinearGraphII.png"
+                         width="600"/>
+                    <p>Fig.3 Linear function as a transformation of spaces</p>
+                </div>
+
+
+
+                Lets find the line equation with this interpretation of functions. I would say that is easy to find a transformation between the $[0,1]$ interval to the $[a,b]$ where $a \in \mathbb{R} < b \in \mathbb{R}$.
+                Star with a point $a$ then add a vector $v$ with origin at $a$ and end in $b$ ( check image Fig.3 ) you will end up with point $b$. Scale $v$ with $t\in [0,1]$ and add again to $a$, you would get a new point in between $a$ and $b$. If you consider all the points of the form
+                $$x(t) = a + vt ,\; t\in[0,1] \text{ and }  v = b - a \;\;\;\;\;\;\;(3)$$
+                You will get all the points in the interval $[a,b]$. We have just created a function
+
+
+                <div style="text-align: center;">
+                    <img border="0" height="360"
+                         src="https://4.bp.blogspot.com/-nM4WNfWUDHY/WkwhNSEGutI/AAAAAAAAAfE/v95MF6yju-otfiiCFTsDlbV57gK2liTIACLcBGAs/s1600/LinearGraph.jpg"
+                         width="600"/>
+                    <p>Fig.4 Linear function as a transformation of spaces</p>
+                </div>
+
 
                 Note that if $(x-a) = 1$ then $f(x)-f(a) = \frac{f(b)-f(a)}{b-a}$ which means $\frac{f(b)-f(a)}{b-a}$ is the rate of
                 change(gradient) of this curve, this means that for a step $h $ in the domain $y(a + h) = f(a) + h \frac{f(b)-f(a)}{b-a}$.<br/>
@@ -222,7 +246,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          src="http://www.teacherschoice.com.au/images/derivative_secant_1.gif"
                          height="324" width="400"/>
 
-                    <p>Fig.3 Secant approximation</p>
+                    <p>Fig.5 Secant approximation</p>
                 </div>
                 <br/>
                 <br/>
@@ -237,7 +261,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          src="http://www.teacherschoice.com.au/images/derivative_secant_2.gif"
                          height="230" width="400"/>
 
-                    <p>Fig.4 Tangent approximation</p>
+                    <p>Fig.6 Tangent approximation</p>
                 </div>
                 <br/>
                 <br/>
@@ -259,7 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div style="text-align: center;">
                     <img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400"/>
 
-                    <p>Fig.5 Euler step</p>
+                    <p>Fig.7 Euler step</p>
                 </div>
                 <br/>
                 <br/>
@@ -274,7 +298,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          src="https://1.bp.blogspot.com/-LdEJcMlXgH0/U90QHj4oJMI/AAAAAAAAAKA/p81Euh31eb4/s640/DF.png"
                          width="640"/>
 
-                    <p>Fig.6 Euler step II</p>
+                    <p>Fig.8 Euler step II</p>
                 </div>
                 <br/>
                 <br/>
@@ -291,7 +315,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg"
                          height="412" width="640"/>
 
-                    <p>Fig.7 Integral definition</p>
+                    <p>Fig.9 Integral definition</p>
                 </div>
                 <br/>
                 <br/>
