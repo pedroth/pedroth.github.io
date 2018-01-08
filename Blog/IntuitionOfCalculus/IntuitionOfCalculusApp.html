@@ -14,6 +14,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
+                <h2> Intro </h2>
+                This article will summarize the basics one dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and why it is useful, since it a wonderful tool to work with continuous functions.
+
                 <h2> Functions </h2>
                 First of all before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an
                 output. The input and output could be anything. Here I will just write about functions of one input or univariate functions (one variable functions), but in general a function can have multiple inputs.<br>
@@ -96,7 +99,7 @@
                     <canvas id="linearFunctionGraph" width="500" height="500"></canvas>
                     <canvas id="linearFunctionTransformation" width="500" height="500"></canvas>
                     <div style="text-align: center;">
-                        <p>Simulation.1 Linear function graph vs Linear function transformation.</p>
+                        <p>Simulation.1 Linear function graph( left ) vs Linear function transformation ( right ). You can interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>
@@ -106,33 +109,59 @@
                          src="https://1.bp.blogspot.com/-KwDnfLPz7pA/Wk6p01LWVdI/AAAAAAAAAfk/U_F_qnB8B7oOZIk0MAlfCy5RBX4GXQfzQCLcBGAs/s1600/LinearGraphII.png"
                          width="600"/>
                     <p>Fig.3 Linear function as a transformation of spaces</p>
-                </div>
+                </div><br><br>
 
-
-
-                Lets find the line equation with this interpretation of functions. I would say that is easy to find a transformation between the $[0,1]$ interval to the $[a,b]$ where $a \in \mathbb{R} < b \in \mathbb{R}$.
-                Star with a point $a$ then add a vector $v$ with origin at $a$ and end in $b$ ( check image Fig.3 ) you will end up with point $b$. Scale $v$ with $t\in [0,1]$ and add again to $a$, you would get a new point in between $a$ and $b$. If you consider all the points of the form
-                $$x(t) = a + vt ,\; t\in[0,1] \text{ and }  v = b - a \;\;\;\;\;\;\;(3)$$
-                You will get all the points in the interval $[a,b]$. We have just created a function
+                Lets find the line equation with this interpretation of functions. I would say that is easy to find a transformation between the $[0,1]$ interval to the $[a,b]$ where $a < b$ and  $a,b \in \mathbb{R}$.
+                Start with a point $a$ then add a vector $v = b - a$ ( check image Fig.3 ) you will end up with point $a + (b - a) = b$. Scale $v$ with $t\in [0,1]$ and add it again to $a$, you would get a new point in between $a$ and $b$ (eg. if $t = \frac{1}{2}$ then you will get $a + \frac{v}{2} = \frac{a + b}{2}$, which is half distance between $a$ and $b$ ).
+                If you consider all the points of the form
+                $$x(t) = a + vt ,\; t\in[0,1] \;\;\;\;\;\;\;(3)$$
+                You will get all the points in the interval $[a,b]$. We have just created a simple linear function from $[0,1] \rightarrow [a,b]$. Using this knowledge we can build any function between intervals as follows.
 
 
                 <div style="text-align: center;">
                     <img border="0" height="360"
                          src="https://4.bp.blogspot.com/-nM4WNfWUDHY/WkwhNSEGutI/AAAAAAAAAfE/v95MF6yju-otfiiCFTsDlbV57gK2liTIACLcBGAs/s1600/LinearGraph.jpg"
                          width="600"/>
-                    <p>Fig.4 Linear function as a transformation of spaces</p>
-                </div>
+                    <p>Fig.4 Finding a function between intervals using two simple functions.</p>
+                </div><br><br>
 
+                Lets say we have the same problem as before, we want to create a simple continuous function $f$ from $[a, b]$ to $[f(a), f(b)] = [f_a, f_b]$. We found from fig. 4 that we can deduce $f$ by computing $\alpha ( \gamma^{-1} (x))$.
+                But wait a minute, why would someone build two functions in order to find just one ? Seems counterproductive, right ?
+                Let me fill you with the details, as said we want to find $f : x \in [a, b] \rightarrow y \in [f(a), f(b)]$, but this is not trivial unless we knew fig. 2. But it is trivial to build functions from $[0,1]$ to any other interval as we demonstrated before ( fig. 3 ).
+                So we did just that, found two functions $\gamma : t \in [0,1] \rightarrow x \in [a, b]$ and $\alpha : t \in[0,1] \rightarrow y \in [f_a, f_b]$. So if some ask me, compute $f(x_0)$, where $x_0 \in [a, b]$, I would say : <br>
+                Compute the inverse of $\gamma$, which is $\gamma^{-1} : x \in [a, b] \rightarrow t \in [0,1]$. Then apply $\alpha$ to $\gamma ^{-1} (x_0)$, and you are done ( check fig.4 for a visual aid )!
+                To finalize this idea lets compute $f$ using this auxiliary functions and see if we get the same result as equation (2). Using equation (3) we find that:
 
-                Note that if $(x-a) = 1$ then $f(x)-f(a) = \frac{f(b)-f(a)}{b-a}$ which means $\frac{f(b)-f(a)}{b-a}$ is the rate of
-                change(gradient) of this curve, this means that for a step $h $ in the domain $y(a + h) = f(a) + h \frac{f(b)-f(a)}{b-a}$.<br/>
+                $$\gamma(t) = a + (b - a) t$$
+                $$\alpha(t) = f_a + (f_b - f_a) t$$
+
+                Now to compute $\gamma^{-1}$ we must find $t$ in terms of $x = \gamma$.
+
+                $$x = a + (b-a) t$$
+                $$x - a = (b-a) t$$
+                $$\frac{x-a}{b-a} = t$$
+                $$\gamma^{-1}(x) = t \;\;\;\;\;\;\;(4)$$
+
+                Finally we can compute $f$ by composing the two functions as in fig. 4, and we get :
+
+                $$f = \alpha ( \gamma ^{-1} (x) ) = f_a + (f_b - f_a) \gamma^{-1} (x)$$
+
+                Substituting (4),
+
+                $$f(x) = f_a + (f_b - f_a) \frac{x - a}{b - a}\;\;\;\;\;\;\;(5)$$
+
+                And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in a future post.
+
+                Note that if $(x - a) = 1$ then $f(x) - f(a) = \frac{f(b) - f(a)}{b - a}$ which means $\frac{f(b) - f(a)}{b - a}$ is the rate of
+                change(gradient) of this curve, this means that for a step $h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
+                <br/>
                 <br/>
 
                 <h2> Derivatives </h2>
 
-                Now let me give you another problem, imagine that someone gave you a machine that computes a function $f$, where you introduce an $x$ and the machine&nbsp;spits out
+                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$, where you introduce an $x$ and the machine spits out
                 a $y$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then somebody ask you if the
-                function at $x$ is raising ? A solution to this could be, create a line that approximates this function at $x$, to do that we take two points of the function close
+                function at a particular $x$ is raising ? A solution to this could be, create a line that approximates this function at $x$, to do that we take two points of the function close
                 to each other, then compute the line between them and if the gradient > 0 then the
                 function is increasing, else if gradient $< 0$ then is decreasing , else the function is constant.
                 <br/>
