@@ -67,7 +67,7 @@
 
                 A possible solution is as follows. Imagine a function as a graph, then we already have two points of the curve $(a,f(a))$ and $(b,f(b))$. Now just trace a curve
                 between those two points (as long as follows the rules above) and voila! The problem with such method is that it isn't very precise, we
-                need a way to compute $y$ given an $x$ in a mechanic /computational way. The most simple curve I can imagine is a straight line between the two points $(a,f(a))$ and $(b,f(b))$.
+                need a way to compute $y$ given $x$ in a mechanic /computational way. The most simple curve I can imagine is a straight line between the two points $(a,f(a))$ and $(b,f(b))$.
                 <br/>
                 <br/>
 
@@ -90,8 +90,8 @@
                 Hence $k = \frac{b-a}{x-a}$ , then by substituting $k$ on (1) we get :
                 $$ f(x) = f(a) + \frac{f(b)-f(a)}{b-a} (x - a)\;\;\;\;\;\;\;(2)$$
 
-                Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem (just compute $f(a)$ and $f(b)$ using (2)). There is still other way to get the
-                line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
+                Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem (just compute $f(a)$ and $f(b)$ using (2)). Plus we can find any other point on the line using this equation.<br><br>
+                There is still other way to get the line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
                 The idea is to think of a function as a transformation of the space of inputs to the space of outputs. The real x-axis will be deformed, stretched, squeezed and reversed into the y-axis. In Simulation 1 we can see each point of the x-axis being mapped by $f$ to the y-axis.<br><br>
 
                 <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 1</h4></a>
@@ -127,8 +127,8 @@
 
                 Lets say we have the same problem as before, we want to create a simple continuous function $f$ from $[a, b]$ to $[f(a), f(b)] = [f_a, f_b]$. We found from fig. 4 that we can deduce $f$ by computing $\alpha ( \gamma^{-1} (x))$.
                 But wait a minute, why would someone build two functions in order to find just one ? Seems counterproductive, right ?
-                Let me fill you with the details, as said we want to find $f : x \in [a, b] \rightarrow y \in [f(a), f(b)]$, but this is not trivial unless we knew fig. 2. But it is trivial to build functions from $[0,1]$ to any other interval as we demonstrated before ( fig. 3 ).
-                So we did just that, found two functions $\gamma : t \in [0,1] \rightarrow x \in [a, b]$ and $\alpha : t \in[0,1] \rightarrow y \in [f_a, f_b]$. So if some ask me, compute $f(x_0)$, where $x_0 \in [a, b]$, I would say : <br>
+                Let me fill you with the details, as said we want to find $f : x \in [a, b] \rightarrow y \in [f(a), f(b)]$, but this is not trivial unless we knew fig. 2. But it is trivial to build functions from $[0,1]$ to any other interval as we demonstrated before ( fig. 3 ).<br>
+                So we build two trivial functions $\gamma : t \in [0,1] \rightarrow x \in [a, b]$ and $\alpha : t \in[0,1] \rightarrow y \in [f_a, f_b]$ then compute $f(x_0)$, where $x_0 \in [a, b]$ as follows :
                 Compute the inverse of $\gamma$, which is $\gamma^{-1} : x \in [a, b] \rightarrow t \in [0,1]$. Then apply $\alpha$ to $\gamma ^{-1} (x_0)$, and you are done ( check fig.4 for a visual aid )!
                 To finalize this idea lets compute $f$ using this auxiliary functions and see if we get the same result as equation (2). Using equation (3) we find that:
 
@@ -150,20 +150,33 @@
 
                 $$f(x) = f_a + (f_b - f_a) \frac{x - a}{b - a}\;\;\;\;\;\;\;(5)$$
 
-                And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in a future post.
+                And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in a future post.<br><br>
 
                 Note that if $(x - a) = 1$ then $f(x) - f(a) = \frac{f(b) - f(a)}{b - a}$ which means $\frac{f(b) - f(a)}{b - a}$ is the rate of
-                change(gradient) of this curve, this means that for a step $h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
+                change(gradient) of this curve, this means that for a step $ h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
                 <br/>
                 <br/>
 
                 <h2> Derivatives </h2>
 
-                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$, where you introduce an $x$ and the machine spits out
-                a $y$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then somebody ask you if the
-                function at a particular $x$ is raising ? A solution to this could be, create a line that approximates this function at $x$, to do that we take two points of the function close
-                to each other, then compute the line between them and if the gradient > 0 then the
-                function is increasing, else if gradient $< 0$ then is decreasing , else the function is constant.
+                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he ask you if the
+                function at a particular $x$ is increasing or decreasing locally ? And how much it is increasing or decreasing ? <br>
+                So here we are asked to define a way to measure how much a function is increasing or decreasing locally.
+                If we could visualize the function then the first question should be easy, but the issue is that we can't visualize it. This is interesting in terms of computation since computers can only evaluate the function but cannot see a graph of a function.
+                There are other motivations to do such definition, such as getting a precise measurable way of saying that a functions is increasing/decreasing (and to what degree), also we can't visualize functions with more than two inputs (this is useful for future posts).<br>
+                Lets start with simple functions. Let us use function of a line between two points $(a, f(a))$ and $(b, f(b))$. As we saw this is defined by (2) :
+
+                $$f(x) = f(a) + \frac{f(b) - f(a)}{b - a} (x - a)$$
+
+                We saw that $\frac{f(b) - f(a)}{b - a}$ is the rate of change of (2) and thus it tell us how much the linear function change.
+                For different functions we could construct a line between nearby points $(x, f(x))$ and $(x + h, f(x + h))$ ( $h > 0$ ), this line approximates function $f$ near $x$ check fig.5. Using this line we can compute its rate of change and estimate the rate of change of $f$ at $x$.
+                But this approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$.
+                The rate of change of this line is :
+
+                $$df(x, h) = \frac{f(x + h) - f(x)}{h}$$
+
+                But how to choose $h$, if $h$ is too big then $df$ will be a poor estimate of the rate of change, since a function can go up and down in the interval $[x, x + h]$. If too short such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
+                Now we are in a bit of a dilemma here we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
                 <br/>
                 <br/>
 
@@ -176,11 +189,19 @@
                 </div>
                 <br/>
                 <br/>
-                Note that we will have a problem if $h$ is too big, because the curve could go down an up in the interval $[x,x+h]$, so in other to solve this we should find the
-                tangent line to the function. To find a tangent to a curve we simply decrease $h$ to zero until the gradient of the line between $(x,f(x))$ and $(x + h, f(x + h))$
-                converges to a number.
-                <br/>
-                <br/>
+
+                I said earlier that as $h$ gets closer to $0$ the line formed by $(x, f(x))$ and $(x+h, f(x+h))$ better approximates the function near $x$, hence this line is changing less and less hinting to some kind of convergence.
+                Although must be $h > 0$, we can say that $df(x,h)$ tends to a number as $h \rightarrow 0$<br><br>
+
+                <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 2</h4></a>
+                <div id="sim2" style="display:none; text-align: center">
+                    <canvas id="secantApproximation" width="500" height="500"></canvas>
+                    $h = $ <div id="h_sim2"></div><input id="h_slider" type="range" min="1" max="100" value="50">
+                    <div style="text-align: center;">
+                        <p>Simulation.2 Secant Approximation of various functions. You can interact with the canvas (mouse | touch).</p>
+                    </div>
+                </div>
+                <br><br>
 
                 <div style="text-align: center;">
                     <img border="0"
