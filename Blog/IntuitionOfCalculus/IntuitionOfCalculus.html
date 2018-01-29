@@ -255,15 +255,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in a future post.<br><br>
 
-                Note that if $(x - a) = 1$ then $f(x) - f(a) = \frac{f(b) - f(a)}{b - a}$ which means $\frac{f(b) - f(a)}{b - a}$ is the rate of
-                change(gradient) of this curve, this means that for a step $ h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
+                Note that if $(x - a) = 1$ then $x = a + 1$ hence $f(a + 1) - f(a) = \frac{f(b) - f(a)}{b - a}$ which means $\frac{f(b) - f(a)}{b - a}$ is the rate of
+                change ( gradient ) of this curve. This means that for a step $ h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
                 <br/>
                 <br/>
 
                 <h2> Derivatives </h2>
 
                 Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he ask you if the
-                function at a particular $x$ is increasing or decreasing locally ? And how much it is increasing or decreasing ? <br>
+                function at a particular $x$ is increasing or decreasing ? And how much it is increasing or decreasing ? <br>
                 So here we are asked to define a way to measure how much a function is increasing or decreasing locally.
                 If we could visualize the function then the first question should be easy, but the issue is that we can't visualize it. This is interesting in terms of computation since computers can only evaluate the function but cannot see a graph of a function.
                 There are other motivations to do such definition, such as getting a precise measurable way of saying that a functions is increasing/decreasing (and to what degree), also we can't visualize functions with more than two inputs (this is useful for future posts).<br>
@@ -271,7 +271,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$f(x) = f(a) + \frac{f(b) - f(a)}{b - a} (x - a)$$
 
-                We saw that $\frac{f(b) - f(a)}{b - a}$ is the rate of change of (2) and thus it tell us how much the linear function change.
+                We saw that $\frac{f(b) - f(a)}{b - a}$ is the rate of change of (2) and thus it tell us how much the linear function change per unit of the space in the domain.
                 For different functions we could construct a line between nearby points $(x, f(x))$ and $(x + h, f(x + h))$ ( $h > 0$ ), this line approximates function $f$ near $x$ check fig.5. Using this line we can compute its rate of change and estimate the rate of change of $f$ at $x$.
                 But this approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$.
                 The rate of change of this line is :
@@ -279,7 +279,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$df(x, h) = \frac{f(x + h) - f(x)}{h}$$
 
                 But how to choose $h$, if $h$ is too big then $df$ will be a poor estimate of the rate of change, since a function can go up and down in the interval $[x, x + h]$. If too short such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
-                Now we are in a bit of a dilemma here we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
+                Now we are in a bit of a dilemma here since we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
                 <br/>
                 <br/>
 
