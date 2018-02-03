@@ -273,12 +273,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 We saw that $\frac{f(b) - f(a)}{b - a}$ is the rate of change of (2) and thus it tell us how much the linear function change per unit of the space in the domain.
                 For different functions we could construct a line between nearby points $(x, f(x))$ and $(x + h, f(x + h))$ ( $h > 0$ ), this line approximates function $f$ near $x$ check fig.5. Using this line we can compute its rate of change and estimate the rate of change of $f$ at $x$.
-                But this approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$.
+                But this approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$ ? <br>
                 The rate of change of this line is :
 
                 $$df(x, h) = \frac{f(x + h) - f(x)}{h}$$
 
-                But how to choose $h$, if $h$ is too big then $df$ will be a poor estimate of the rate of change, since a function can go up and down in the interval $[x, x + h]$. If too short such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
+                But how to choose $h$, if $h$ is too big then $df$ will be a poor estimate of the rate of change (and what is too big ?) at $x$, since a function can change a lot in the interval $[x, x + h]$. If too small such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
+                Even if we choose a particular small value of $h$ ($h > 0 $), there are still an infinite number of numbers $\varepsilon > 0 $, which are $\varepsilon < h$ such that $df(x,\varepsilon)$ is a better  estimate of the gradient of $f$ at $x$.<br>
                 Now we are in a bit of a dilemma here since we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
                 <br/>
                 <br/>
@@ -293,8 +294,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
 
-                I said earlier that as $h$ gets closer to $0$ the line formed by $(x, f(x))$ and $(x+h, f(x+h))$ better approximates the function near $x$, hence this line is changing less and less hinting to some kind of convergence.
-                Although must be $h > 0$, we can say that $df(x,h)$ tends to a number as $h \rightarrow 0$<br><br>
+                To solve this issue we can think of what I said earlier. As $h$ gets closer to $0$ the line formed by $(x, f(x))$ and $(x+h, f(x+h))$ better approximates the function near $x$ (check fig.6 and simulation 2), hence this line is changing less and less therefore this line is converging.
+                Although $h$ must be $h > 0$, we can say that $ df(x, h) $ is also changing less and less and thus converging to some number as $h \rightarrow 0$<br><br>
 
                 <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 2</h4></a>
                 <div id="sim2" style="display:none; text-align: center">
@@ -315,10 +316,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <br/>
                 <br/>
-                The tangent line to the function at $x = a$ will be $$g(x) = f(a) + f '(a) (x - a)\;\;\;\;\;\;\;(3)$$<br/>
-                <br/>
-                where $f'(a) = \lim_{h\rightarrow0} \; \frac{f(a+h) - f(a)}{h}$ and this means , decrease $h$ to zero until $\frac{f(a+h) - f(a)}{h}$ converges to a number, also
-                $f'(x)$ is the derivative of $f$. Now we can solve our problem. Note also that the tangent line is a local approximation of the curve.<br/>
+
+                This thinking let mathematicians to define the concept of derivative of $f$ which measures the instantaneous rate of change of a function $f$:
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{f(x+h) - f(x)}{h}\;\;\;\;\;\;\;(6)$$
+
+                Which is just the rate of change of the line between $(x, f(x))$ and $(x + h, f(x + h))$ as $h \rightarrow 0$, that is $\lim_{h\rightarrow 0} df(x, h)$.
+                The intuitive meaning of (6) is to define the instantaneous rate of change of a function by the value $df(x,h)$ is converging when $h\rightarrow0$.
+                Note that this definition can only measure the instantaneous rate of change of $x$ for functions where as $h \right 0$, $df(x,h)$ converges to a number.
+                This might not be the case for all functions and thus let me simplify the problem by only allow functions that have derivative for all $x$.
+                These functions are called differentiable functions.<br>
+                So but what do you mean by $\lim_{h->0}$ and for some function to converge to a number ?<br>
+                This will take us to a little digression of limits.
+                <h2>Limits interlude</h2>
+
+                <h2>Back to derivatives</h2>
+                Finally we solve our problem of measuring how much a function (differentiable function!!) is changing at a particular $x$.<br>
+
+                <h2>Digression through 1D Optimization</h2>
+
                 <br/>
                 <br/>
 
