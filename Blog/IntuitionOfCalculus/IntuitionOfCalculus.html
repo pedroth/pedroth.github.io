@@ -262,23 +262,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <h2> Derivatives </h2>
 
-                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you also that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he ask you if the
+                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he ask you if the
                 function at a particular $x$ is increasing or decreasing ? And how much it is increasing or decreasing ? <br>
                 So here we are asked to define a way to measure how much a function is increasing or decreasing locally.
                 If we could visualize the function then the first question should be easy, but the issue is that we can't visualize it. This is interesting in terms of computation since computers can only evaluate the function but cannot see a graph of a function.
-                There are other motivations to do such definition, such as getting a precise measurable way of saying that a functions is increasing/decreasing (and to what degree), also we can't visualize functions with more than two inputs (this is useful for future posts).<br>
+                There are other motivations to do such definition, such as getting a precise measurable way of saying that a functions is increasing/decreasing (and to what degree). Also we can't visualize functions with more than two inputs (this is useful for future posts).<br>
                 Lets start with simple functions. Let us use function of a line between two points $(a, f(a))$ and $(b, f(b))$. As we saw this is defined by (2) :
 
                 $$f(x) = f(a) + \frac{f(b) - f(a)}{b - a} (x - a)$$
 
                 We saw that $\frac{f(b) - f(a)}{b - a}$ is the rate of change of (2) and thus it tell us how much the linear function change per unit of the space in the domain.
                 For different functions we could construct a line between nearby points $(x, f(x))$ and $(x + h, f(x + h))$ ( $h > 0$ ), this line approximates function $f$ near $x$ check fig.5. Using this line we can compute its rate of change and estimate the rate of change of $f$ at $x$.
-                But this approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$ ? <br>
                 The rate of change of this line is :
 
                 $$df(x, h) = \frac{f(x + h) - f(x)}{h}$$
 
-                But how to choose $h$, if $h$ is too big then $df$ will be a poor estimate of the rate of change (and what is too big ?) at $x$, since a function can change a lot in the interval $[x, x + h]$. If too small such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
+                This approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still we want to get the best estimate for the gradient, so how can we select the right $h$ ?
+                If $h$ is too big then $df$ will be a poor estimate of the rate of change at $x$ (and what is too big ?). If too small such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
                 Even if we choose a particular small value of $h$ ($h > 0 $), there are still an infinite number of numbers $\varepsilon > 0 $, which are $\varepsilon < h$ such that $df(x,\varepsilon)$ is a better  estimate of the gradient of $f$ at $x$.<br>
                 Now we are in a bit of a dilemma here since we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
                 <br/>
@@ -295,12 +295,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
 
                 To solve this issue we can think of what I said earlier. As $h$ gets closer to $0$ the line formed by $(x, f(x))$ and $(x+h, f(x+h))$ better approximates the function near $x$ (check fig.6 and simulation 2), hence this line is changing less and less therefore this line is converging.
-                Although $h$ must be $h > 0$, we can say that $ df(x, h) $ is also changing less and less and thus converging to some number as $h \rightarrow 0$<br><br>
+                Although $h$ must be $h > 0$, we can say the same about $ df(x, h) $ and thus it is converging to some number as $h \rightarrow 0$.<br><br>
 
-                <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 2</h4></a>
+                <a onclick="intuition.run(1, function(x) {x.start();})"><h4> Simulation 2</h4></a>
                 <div id="sim2" style="display:none; text-align: center">
                     <canvas id="secantApproximation" width="500" height="500"></canvas>
-                    $h = $ <div id="h_sim2"></div><input id="h_slider" type="range" min="1" max="100" value="50">
+                    <select id="function_sim2">
+                        <option value="Quadratic">Quadratic</option>
+                        <option value="Polynomial">Polynomial</option>
+                        <option value="Fourier">Fourier</option>
+                        <option value="Exponential">Exponential</option>
+                    </select>
+                    <input id="h_slider" type="range" min="1" max="100" value="50" style="">$h = $ <div id="h_sim2"></div><br>
                     <div style="text-align: center;">
                         <p>Simulation.2 Secant Approximation of various functions. You can interact with the canvas (mouse | touch).</p>
                     </div>
@@ -317,17 +323,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
 
-                This thinking let mathematicians to define the concept of derivative of $f$ which measures the instantaneous rate of change of a function $f$:
+                This line of thinking let mathematicians to define the concept of derivative of $f$ at $x$:
 
                 $$f'(x) = \lim_{h\rightarrow 0} \frac{f(x+h) - f(x)}{h}\;\;\;\;\;\;\;(6)$$
 
                 Which is just the rate of change of the line between $(x, f(x))$ and $(x + h, f(x + h))$ as $h \rightarrow 0$, that is $\lim_{h\rightarrow 0} df(x, h)$.
-                The intuitive meaning of (6) is to define the instantaneous rate of change of a function by the value $df(x,h)$ is converging when $h\rightarrow0$.
-                Note that this definition can only measure the instantaneous rate of change of $x$ for functions where as $h \right 0$, $df(x,h)$ converges to a number.
-                This might not be the case for all functions and thus let me simplify the problem by only allow functions that have derivative for all $x$.
+                The intuitive meaning of (6) is to define the instantaneous rate of change of $f$, by the value $df(x,h)$ is converging when $h\rightarrow0$.
+                Note that this definition only applies to functions that have such limit number. This might not be the case for all functions and thus let me simplify the problem by only allowing functions that have derivative for all $x$.
                 These functions are called differentiable functions.<br>
-                So but what do you mean by $\lim_{h->0}$ and for some function to converge to a number ?<br>
-                This will take us to a little digression of limits.
+                So what do you mean by $\lim_{h->0} df(x,h)$ ? What is the limit of a function $f$ as $x$ approaches a number ? <br>
+                This will take us to a little digression to limits.
                 <h2>Limits interlude</h2>
 
                 <h2>Back to derivatives</h2>
