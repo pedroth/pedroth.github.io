@@ -197,7 +197,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 There is still other way to get the line equation that I want explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
                 The idea is to think of a function as a transformation of the space of inputs to the space of outputs. The real x-axis will be deformed, stretched, squeezed and reversed into the y-axis. In Simulation 1 we can see each point of the x-axis being mapped by $f$ to the y-axis.<br><br>
 
-                <a onclick="intuition.run(0, function(x) {x.start();})"><h4> Simulation 1</h4></a>
+                <button class="btn btn-primary" onclick="intuition.run(0)"><h4> Simulation 1</h4></button>
                 <div id="sim1" style="display:none">
                     <canvas id="linearFunctionGraph" width="500" height="500"></canvas>
                     <canvas id="linearFunctionTransformation" width="500" height="500"></canvas>
@@ -297,16 +297,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 To solve this issue we can think of what I said earlier. As $h$ gets closer to $0$ the line formed by $(x, f(x))$ and $(x+h, f(x+h))$ better approximates the function near $x$ (check fig.6 and simulation 2), hence this line is changing less and less therefore this line is converging.
                 Although $h$ must be $h > 0$, we can say the same about $ df(x, h) $ and thus it is converging to some number as $h \rightarrow 0$.<br><br>
 
-                <a onclick="intuition.run(1, function(x) {x.start();})"><h4> Simulation 2</h4></a>
+                <button class="btn btn-primary" onclick="intuition.run(1)"><h4> Simulation 2</h4></button>
                 <div id="sim2" style="display:none; text-align: center">
                     <canvas id="secantApproximation" width="500" height="500"></canvas>
-                    <select id="function_sim2">
-                        <option value="Quadratic">Quadratic</option>
-                        <option value="Polynomial">Polynomial</option>
-                        <option value="Fourier">Fourier</option>
-                        <option value="Exponential">Exponential</option>
-                    </select>
-                    <input id="h_slider" type="range" min="1" max="100" value="50" style="">$h = $ <div id="h_sim2"></div><br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <select id="function_sim2" onchange="intuition.apply(1, function(x) {x.selectUpdate();})">
+                                    <option value="Quadratic">Quadratic</option>
+                                    <option value="Polynomial">Polynomial</option>
+                                    <option value="Sine">Sine</option>
+                                    <option value="Exponential">Exponential</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <input id="h_slider" type="range" min="1" max="100" value="90" onchange="intuition.apply(1, function(x) {x.sliderUpdate();})">
+                            </div>
+                            <div class="col-sm-3">
+                                <div id="h_sim">$h = $ 1</div>
+                            </div>
+                        </div>
+                    </div>
                     <div style="text-align: center;">
                         <p>Simulation.2 Secant Approximation of various functions. You can interact with the canvas (mouse | touch).</p>
                     </div>
