@@ -227,19 +227,40 @@ function Sim2() {
     this.step = 0.25;
     this.cursor = 0.5;
     this.movingStep = 0.25;
+    this.bandwidth = 5;
+    this.maxAmp = 10;
+    this.fourierCoef = [];
 
-    this.functionMap = {
-        Quadratic : function(x) { return (x - 0.5) * (x - 0.5)},
-        Polynomial : function(x) {
-            var z = 7.5 * x - 4;
-            return (z * z * z * z + z * z * z - 11 * z * z - 9 * z + 18) * 0.1;
-        },
-        Sine : function(x) {
-            return Math.sin(10 * x);
-        },
-        Exponential: function(x) {
-            var z = 5 * x;
-            return z * Math.exp(-z);
+    // functionMap must be updated since it depends on object variables
+    this.functionMap = {};
+
+    this.createFourierLambda = function() {
+      return function(x) {
+        var acc = 0;
+        var mul = 1;
+        for(var i = 0; i < this.bandwidth; i++) {
+            acc += mul * this.fourierCoef[i] * Math.sin(i * mul * x);
+            mul /= 2;
+        }
+        return acc;
+      }
+    }
+
+    this.updateFunctionMap = function() {
+        for(var i = 0; i < this.bandwidth; i++) {
+                    this.fourierCoef[i] = this.maxAmp * Math.random();
+        }
+        this.functionMap = {
+            Quadratic : function(x) { return (x - 0.5) * (x - 0.5)},
+            Polynomial : function(x) {
+                var z = 7.5 * x - 4;
+                return (z * z * z * z + z * z * z - 11 * z * z - 9 * z + 18) * 0.1;
+            },
+            Sine : this.createFourierLambda(),
+            Exponential: function(x) {
+                var z = 5 * x;
+                return z * Math.exp(-z);
+            }
         }
     }
 
@@ -309,6 +330,7 @@ function Sim2() {
     }
 
     this.selectUpdate = function() {
+        this.updateFunctionMap();
         this.fx = this.buildFunction(this.samples);
     }
 
@@ -321,7 +343,8 @@ function Sim2() {
 
     this.drawCanvasGraph = function() {
         var h = 1.0 / (this.samples - 1);
-        var scale = (this.fx.max - this.fx.min);
+        var epsilon = 0.2
+        var scale = (1 + epsilon) * (this.fx.max - this.fx.min);
         for(var i = 0; i < this.samples - 1; i++) {
             var zi = (this.fx.funcSamples[i] - this.fx.min) / scale;
             var zj = (this.fx.funcSamples[i + 1] - this.fx.min) / scale;
@@ -350,6 +373,8 @@ function Sim2() {
 
     this.start = function() {
         $("#sim2").slideDown();
+        this.updateFunctionMap();
+        //buildFunction depends on updateFunctionMap;
         this.fx = this.buildFunction(this.samples);
         this.sliderUpdate();
     }
