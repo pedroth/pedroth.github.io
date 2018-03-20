@@ -221,7 +221,6 @@ function Sim2() {
     this.fImg = ImageIO.loadImage("resources/f.png");
     this.isMouseDown = false;
     this.circleRadius = 0.01;
-    this.samples = 50;
     this.fx = [];
     this.step = 0.25;
     this.cursor = 0.5;
@@ -229,16 +228,25 @@ function Sim2() {
     this.bandwidth = 5;
     this.maxAmp = 10;
     this.fourierCoef = [];
+    this.samplesPerPeriod = 12;
+    /**
+     * I want to take k samples in a sine wave period (period of sine wave is 2 * pi = T).
+     * In [0,1] interval I will take k / T samples.
+     * If I have a sine wave with double the frequency ( sin(2 * x) ) I will have in [0,1] : 2 * k / T samples.
+     * For the general case frequency f we get f * k / T samples in [0,1] interval.
+     * The max frequency in our sine waves will (bandwidth - 1) * (2 ^ (bandwidth - 1).
+     */
+    this.samples = Math.ceil((this.bandwidth - 1) * (1 << this.bandwidth - 1) * (this.samplesPerPeriod / (2 * Math.PI)));
 
     // functionMap must be updated since it depends on object variables
     this.functionMap = {};
 
-    this.createFourierLambda = function() {
+    this.createFourierLambda = function(w) {
       return function(x) {
         var acc = 0;
         var mul = 1;
-        for(var i = 0; i < this.bandwidth; i++) {
-            acc += mul * this.fourierCoef[i] * Math.sin(i * mul * x);
+        for(var i = 0; i < w.length; i++) {
+            acc += mul * w[i] * Math.sin(i * (1.0 / mul) * x);
             mul /= 2;
         }
         return acc;
@@ -255,7 +263,7 @@ function Sim2() {
                 var z = 7.5 * x - 4;
                 return (z * z * z * z + z * z * z - 11 * z * z - 9 * z + 18) * 0.1;
             },
-            Sine : this.createFourierLambda(),
+            Fourier : this.createFourierLambda(this.fourierCoef),
             Exponential: function(x) {
                 var z = 5 * x;
                 return z * Math.exp(-z);
@@ -359,8 +367,11 @@ function Sim2() {
         this.canvasGraph.drawCircle([this.cursor, f], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
         this.canvasGraph.drawCircle([this.cursor + this.movingStep, fh], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
 
-        var f = linearFunctor([this.cursor, f], [this.cursor + this.movingStep, fh]);
-        this.canvasGraph.drawLine([-1, f(-1)], [1.5, f(1.5)], MyCanvas.simpleShader([0, 0, 0, 255]));
+        var g = linearFunctor([this.cursor, f], [this.cursor + this.movingStep, fh]);
+        this.canvasGraph.drawLine([-1, g(-1)], [1.5, g(1.5)], MyCanvas.simpleShader([0, 0, 0, 255]));
+
+        var df = ((fh - f) / this.movingStep);
+        $("#df_sim").text("df = " + df.toFixed(3));
     }
 
     this.draw = function() {
