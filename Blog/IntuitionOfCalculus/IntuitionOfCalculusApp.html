@@ -15,13 +15,13 @@
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
-                This article will summarize the basics one dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and why it is useful since it a wonderful tool to work with continuous functions.
+                This article will summarize the basics one-dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and why it is useful since it a wonderful tool to work with continuous functions.
 
                 <h2> Functions </h2>
                 First of all, before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an
-                output. The input and output could be anything. Here I will just write about functions of one input or univariate functions (one variable functions), but in general a function can have multiple inputs.<br>
+                output. The input and output could be anything. Here I will just write about functions of one input or univariate functions (one variable functions), but in general, a function can have multiple inputs.<br>
                 Every function has a domain which is the set of all possible input values and a co-domain which is the set of all outputs. A function assigns only one output for each input.<br>
-                A typical notation for a function is $F: X \rightarrow Y$ where $F$ represents the function name ,$X$ is the input set and $Y$ is the output set. For a particular value $x \in X$, one writes $y = F(x)$, where $y \in Y$, in order to evaluate the function $F$ on the input $x$.<br><br>
+                A typical notation for a function is $F: X \rightarrow Y$ where $F$ represents the function name, $X$ is the input set and $Y$ is the output set. For a particular value $x \in X$, one writes $y = F(x)$, where $y \in Y$, in order to evaluate the function $F$ on the input $x$.<br><br>
 
                 Consider the following examples of functions :
                 <ul>
@@ -90,7 +90,7 @@
                 Hence $k = \frac{b-a}{x-a}$ , then by substituting $k$ on (1) we get :
                 $$ f(x) = f(a) + \frac{f(b)-f(a)}{b-a} (x - a)\;\;\;\;\;\;\;(2)$$
 
-                Equation (2) is the equation of the line. I leave as an exercise to check that in fact this equation solves our problem (just compute $f(a)$ and $f(b)$ using (2)). Plus we can find any other point on the line using this equation.<br><br>
+                Equation (2) is the equation of the line. I leave as an exercise to check that in fact, this equation solves our problem (just compute $f(a)$ and $f(b)$ using (2)). Plus we can find any other point on the line using this equation.<br><br>
                 There is still another way to get the line equation that I want to explain. This approach let us see functions in a different geometric way such that it will be easier to extend to more variables.
                 The idea is to think of a function as a transformation of the space of inputs to the space of outputs. The real x-axis will be deformed, stretched, squeezed and reversed into the y-axis. In Simulation 1 we can see each point of the x-axis being mapped by $f$ to the y-axis.<br><br>
 
@@ -159,7 +159,7 @@
 
                 <h2> Derivatives </h2>
 
-                Let me give you another problem, imagine that someone gave you a machine that computes a function $f : x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he asks you if the
+                Let me give you another problem, imagine that someone gave you a machine that computes a function $ f: x \in \mathbb{R} \rightarrow y\in \mathbb{R}$. That person tells you that the graph of the function is a smooth curve. Imagine also that you can't visualize that graph. Then he asks you if the
                 function at a particular $x$ is increasing or decreasing? And how much it is increasing or decreasing? <br>
                 So here we are asked to define a way to measure how much a function is increasing or decreasing locally.
                 If we could visualize the function then the first question should be easy, but the issue is that we can't visualize it. This is interesting in terms of computation since computers can only evaluate the function but cannot see a graph of a function.
@@ -174,7 +174,7 @@
 
                 $$df(x, h) = \frac{f(x + h) - f(x)}{h}$$
 
-                This approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still, we want to get the best estimate for the gradient, so how can we select the right $h$ ?
+                This approximation depends on $h$, as $h$ gets closer to zero the better the line approximates the function at $x$. Still, we want to get the best estimate for the gradient, so how can we select the right $ h$?
                 If $h$ is too big then $df$ will be a poor estimate of the rate of change at $x$ (and what is too big ?). If too small such as $h = 0$ we will get $\frac{0}{0}$, which is undefined.
                 Even if we choose a particular small value of $h$ ($h > 0 $), there are still an infinite number of numbers $\varepsilon > 0 $, which are $\varepsilon < h$ such that $df(x,\varepsilon)$ is a better  estimate of the gradient of $f$ at $x$.<br>
                 Now we are in a bit of a dilemma here since we don't know how to define a proper $h$ such that $df(x, h)$ defines a rate of change of the function at $x$.
@@ -252,7 +252,7 @@
                 $$ \lim_{x\rightarrow a} g(x) \;\;\;\;\;\;\;(7)$$
 
                 Note that we can describe $\lim_{h \rightarrow 0} df(x, h)$ as $\lim_{h \rightarrow } g_x(h)$ which is similar to (7), by saying that $g_x(h) = df(x, h)$ ( we can think of $x$ fixed and $g_x$ as a function of just $h$).
-                Still I find it hard to define limits in this form because I don't know how to vary $h$ or $x$ to $0$ or $a$. The trick is to thing of sequences. Sequences are functions of the form $s : \mathbb{N} \rightarrow \mathbb{R}$.
+                Still, I find it hard to define limits in this form because I don't know how to vary $h$ or $x$ to $0$ or $a$. The trick is to think of sequences. Sequences are functions of the form $s : \mathbb{N} \rightarrow \mathbb{R}$.
                 Consider the following examples of sequences :
                 <ul>
                     <li>Sequence of odd numbers : $1, 3, 5, 7, 9, \dots$</li>
@@ -264,7 +264,7 @@
                 These sequences might be defined with formulas like the $n$th odd number $s(n) = 2n + 1$. Using these sequences, we can make $x$ vary by saying that $x$ is a sequence that is converging toward $a$. Then (7) will become :
                 $$\lim_{n \rightarrow \infty} g(x(n))\;\;\;\;\;\;\;(8)$$
 
-                This way is easy, since we have a proper way to say that $n \rightarrow \infty$, by saying that $n$ is the identity sequence, that is $1, 2, 3, 4, \dots$.
+                This way is easy since we have a proper way to say that $n \rightarrow \infty$, by saying that $n$ is the identity sequence, that is $1, 2, 3, 4, \dots$.
                 Note that $g(x(n))$ in (8) can be seen as a pure function of $n$, therefore I will write $g(n)$ to simplify the notation. Now we have simplified our problem in (7) to a limit of a sequence in (8).
 
                 $$\lim_{x\rightarrow a} g(x)\Rightarrow \lim_{n\rightarrow\infty}g(n)$$
@@ -273,13 +273,48 @@
                 $$\lim_{n \rightarrow \infty} g(n) = c$$
 
                 If it is converging this means that the sequence is not diverging from $c$, that is the distance between $g(n)$ and $c$ is not growing nor is constant different than zero.
-                Let $d(n) = \left | g(n) - c\right |$ be the distance of $g(n)$ to $c$. Then there should be a $n > N$ such that $d(n+1) < d(n)$ or $d(n+1) - d(n) < 0$. This way when $n > N$, the distance between $g(n)$ and $c$ would be always decreasing until eventually would get to zero (note that the absolute value is always positive).
-                Although this definition would work, mathematicians gave another which is equivalent and may be easier to use in proofs. The definitions goes like this:
+                Let $d(n) = \left | g(n) - c\right |$ be the distance between $g(n)$ and $c$. Then after some $n > N$ we should have $d(n+1) < d(n)$.
+                This way when $n > N$, the distance between $g(n)$ and $c$ would be always decreasing until eventually would get to zero (note that the absolute value is always positive).
+                Although this definition would work, mathematicians gave another which is equivalent and may be easier to use in proofs. The definitions go like this:
 
-                $$\forall \varepsilon > 0 \exists n > N : d(n) < \epsilon$$
+                $$\forall \varepsilon > 0 \; \exists n > N : d(n) < \varepsilon \;\;\;\;\;\;\;(9)$$
 
+                This basically says that for all $\varepsilon > 0$ that we can imagine, for $g(n)$ to converge to $c$, there must be a $n$ that after some $N$ the distance $d(n) = \left | g(n) - c\right |$ is below $\varepsilon$.
+                Lets see an example so we can understand it better. Let's proof that the sequence $\lim_{n\rightarrow \infty} 1 / n = 0$.
 
+                Using the previous definition of limit (9), in order to prove such claim we need to find a $N$, such as given a $\varepsilon > 0$ we have $d(N+1) < \varepsilon$.
+                To find such $N$ we would like to have a function that given $\varepsilon > 0$ it spits $N$. Lets find that function :
 
+                $$d(N) < \varepsilon $$
+                $$\left | \frac{1}{N} \right | < \varepsilon $$
+                $$ \frac{1}{N}  < \varepsilon $$
+                $$ N > \frac{1}{\varepsilon} $$
+
+                Now we have our function $N(\varepsilon) = \frac{1}{\varepsilon}$. Lets try some numbers. Let $\varepsilon = 0.1$ then $N(\varepsilon) = 10$ , so when $n > N$ we have :
+                $$\left | \frac{1}{N+1} \right | < 0.1 $$
+                $$\left | \frac{1}{11} \right | < 0.1 $$
+
+                Which is true. To conclude lets prove a limit of a function using the whole process :
+
+                Let $$\lim_{x\rightarrow 0} 2x + 1 = 1$$
+
+                First we need to find a sequence $x(n)$ such that it converges to 0. Such sequence could be $x(n) = 1 / n$. Now we transform our problem in a limit of a sequence: <br>
+                Substituting $x = 1 / n$ :
+                $$\lim_{x\rightarrow 0} 2x + 1 = \lim_{n\rightarrow \infty} 2\left ( \frac{1}{n}\rigth ) + 1 = 1$$
+
+                Then we need to find $N(\varepsilon)$ :
+
+                $$d(N) < \varepsilon$$
+                $$\left | \frac{2}{N} + 1 - 1\right |< \varepsilon$$
+                $$\left | \frac{2}{N} \right |< \varepsilon$$
+                $$  \frac{2}{N} < \varepsilon$$
+                $$  N > \frac{2}{\varepsilon}$$
+
+                So lets check if $N(\varepsilon)$ is correct. Let $\varepsilon = 0.01$, $N(0.01) = 200$ then $d(N+1) < 0.01$.
+
+                $$d(200 + 1) = \left | \frac{2}{201} + 1 - 1\right | =  \frac{2}{201} < 0.01$$
+
+                Which is true, hence we proved $$\lim_{x\rightarrow 0} 2x + 1 = 1$$. There is more that we could talk about but lets save it for a future post and thus we end our interlude of limits.
 
                 <h2>Back to derivatives</h2>
                 Finally we solve our problem of measuring how much a function (differentiable functions!!) are changing at a particular $x$.<br>
