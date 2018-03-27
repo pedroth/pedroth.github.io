@@ -118,7 +118,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
-                This article will summarize the basics one-dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and why it is useful since it a wonderful tool to work with continuous functions.
+                This article will summarize the basics one-dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and see why it is useful!
 
                 <h2> Functions </h2>
                 First of all, before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an
@@ -347,14 +347,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 These functions are called differentiable functions.<br>
                 So what do you mean by $\lim_{h \rightarrow 0} df(x,h)$ ? What is the limit of a function $f$ as $x$ approaches a number ? <br>
                 This will take us to a little digression to limits.
+
+
                 <h2>Limits interlude</h2>
 
                 Now we have an intuitive notion of limit, but how can we formalize this notion. How can we measure that functions are indeed converging to a number?
-                In (6) we have a variable $h$ which is decreasing to zero. As this variable is changing so $df(x,h)$ is changing since it depends on $h$. But to simplify the problem I will try to formalize instead the following limit
+                In (6) we have used this intuitive notion, but not defined what it is. In order to simplify the problem I will try to formalize instead the following limit :
 
                 $$ \lim_{x\rightarrow a} g(x) \;\;\;\;\;\;\;(7)$$
 
-                Note that we can describe $\lim_{h \rightarrow 0} df(x, h)$ as $\lim_{h \rightarrow } g_x(h)$ which is similar to (7), by saying that $g_x(h) = df(x, h)$ ( we can think of $x$ fixed and $g_x$ as a function of just $h$).
+                Note that we can describe $\lim_{h \rightarrow 0} df(x, h)$ as $\lim_{h \rightarrow } g_x(h)$, by saying that $g_x(h) = df(x, h)$ ( we can think of $x$ fixed and $g_x$ as a function of just $h$).
                 Still, I find it hard to define limits in this form because I don't know how to vary $h$ or $x$ to $0$ or $a$. The trick is to think of sequences. Sequences are functions of the form $s : \mathbb{N} \rightarrow \mathbb{R}$.
                 Consider the following examples of sequences :
                 <ul>
@@ -382,30 +384,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$\forall \varepsilon > 0 \; \exists n > N : d(n) < \varepsilon \;\;\;\;\;\;\;(9)$$
 
-                This basically says that for all $\varepsilon > 0$ that we can imagine, for $g(n)$ to converge to $c$, there must be a $n$ that after some $N$ the distance $d(n) = \left | g(n) - c\right |$ is below $\varepsilon$.
-                Lets see an example so we can understand it better. Let's proof that the sequence $\lim_{n\rightarrow \infty} 1 / n = 0$.
+                This basically says that for all $\varepsilon > 0$ that we can imagine, there must be a $n > N$, such that the distance $d(n) = \left | g(n) - c\right |$ is below $\varepsilon$.
+                Hence if we find a formula for $N$ that is dependent of $\varepsilon$ that fulfils (9), we have shown that indeed $g(n)$ is converging to $c$.
+                Lets see an example so we can understand it better. Let us proof that the following limit $\lim_{n\rightarrow \infty} 1 / n = 0$.
 
-                Using the previous definition of limit (9), in order to prove such claim we need to find a $N$, such as given a $\varepsilon > 0$ we have $d(N+1) < \varepsilon$.
-                To find such $N$ we would like to have a function that given $\varepsilon > 0$ it spits $N$. Lets find that function :
+                <br>In order to prove such claim with definition (9), we need to find a $N$, such that, given a $\varepsilon > 0$ we have $d(N+1) < \varepsilon$ :
 
                 $$d(N) < \varepsilon $$
                 $$\left | \frac{1}{N} \right | < \varepsilon $$
                 $$ \frac{1}{N}  < \varepsilon $$
                 $$ N > \frac{1}{\varepsilon} $$
 
-                Now we have our function $N(\varepsilon) = \frac{1}{\varepsilon}$. Lets try some numbers. Let $\varepsilon = 0.1$ then $N(\varepsilon) = 10$ , so when $n > N$ we have :
+                Having the function $N(\varepsilon) = \frac{1}{\varepsilon}$, we finalize our proof.<br>
+                Since I am a numeric guy I would like to try some numbers. Let $\varepsilon = 0.1$ then $N(\varepsilon) = 10$ , so when $n > N$ we have :
                 $$\left | \frac{1}{N+1} \right | < 0.1 $$
                 $$\left | \frac{1}{11} \right | < 0.1 $$
 
-                Which is true. To conclude lets prove a limit of a function using the whole process :
+                That is nice, by finding $N(\varepsilon)$ we prove the limit and also get a nice tool to find an $N$ such that $d(N+1)< \varepsilon$.<br>
 
+                To conclude let's prove a limit of a function using the whole process : <br>
                 Let $$\lim_{x\rightarrow 0} 2x + 1 = 1$$
 
-                First we need to find a sequence $x(n)$ such that it converges to 0. Such sequence could be $x(n) = 1 / n$. Now we transform our problem in a limit of a sequence: <br>
-                Substituting $x = 1 / n$ :
-                $$\lim_{x\rightarrow 0} 2x + 1 = \lim_{n\rightarrow \infty} 2\left ( \frac{1}{n}\rigth ) + 1 = 1$$
+                First substitute $x$ with a sequence $x(n)$ that converges to 0. Such sequence could be $x(n) = 1 / n$. Now we transform our problem in a limit of a sequence: <br>
+                $$\lim_{x\rightarrow 0} 2x + 1 = \lim_{n \rightarrow \infty} 2 \left ( \frac{1}{n} \right ) + 1 = 1$$
 
-                Then we need to find $N(\varepsilon)$ :
+                To proof the limit we just need to find $N(\varepsilon)$ :
 
                 $$d(N) < \varepsilon$$
                 $$\left | \frac{2}{N} + 1 - 1\right |< \varepsilon$$
@@ -413,11 +416,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$  \frac{2}{N} < \varepsilon$$
                 $$  N > \frac{2}{\varepsilon}$$
 
-                So lets check if $N(\varepsilon)$ is correct. Let $\varepsilon = 0.01$, $N(0.01) = 200$ then $d(N+1) < 0.01$.
+                Checking some numbers, $\varepsilon = 0.01$, $N(0.01) = 200$ then $d(N+1) < 0.01$.
 
                 $$d(200 + 1) = \left | \frac{2}{201} + 1 - 1\right | =  \frac{2}{201} < 0.01$$
 
-                Which is true, hence we proved $$\lim_{x\rightarrow 0} 2x + 1 = 1$$. There is more that we could talk about but lets save it for a future post and thus we end our interlude of limits.
+                There is more that we could talk about, but lets save it for a future posts and thus we end our interlude of limits.
 
                 <h2>Back to derivatives</h2>
                 Finally we solve our problem of measuring how much a function (differentiable functions!!) are changing at a particular $x$.<br>
