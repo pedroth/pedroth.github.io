@@ -4,7 +4,8 @@ var ImageIO = require('../../tools/JsLib/MyCanvas/ImageIO.js');
 
 var simulations = [
     new Sim1(),
-    new Sim2()
+    new Sim2(),
+    new Sim3()
 ];
 
 /**
@@ -64,6 +65,10 @@ function linearFunctor(p1, p2) {
     var m = (p2[1] - p1[1]) / (p2[0] - p1[0]);
     return function(x) { return p1[1] + m * (x - p1[0]);};
 }
+
+/*
+ * Simulations
+ */
 
 function Sim1() {
     this.canvasGraph = new CanvasSpace(document.getElementById("linearFunctionGraph"), [[-0.1, 1], [-0.1, 1]]);
@@ -404,6 +409,163 @@ function Sim2() {
         
     }
 }
+
+
+function Sim3() {
+    this.canvasGraph = new CanvasSpace(document.getElementById("optimizationProblem"), [[-0.1, 1], [-0.5, 1]]);
+    this.isMouseDown = false;
+    this.circleRadius = 0.01;
+    this.fx = [];
+    this.measurementsSamples = 20;
+    this.measurements = [];
+    this.trueMeasure = 0.5;
+    this.samples = 100;
+    this.cursor = 0.5;
+    this.step = 0.01;
+
+
+    this.costFunction = function(mu) {
+        var acc = 0;
+        for(var i = 0; i < this.measurementsSamples; i++) {
+            var diff = mu - this.measurements[i];
+            acc += diff * diff;
+        }
+        return acc;
+    }
+
+    this.buildFunction = function(samples) {
+        var y = [];
+        var minY = Number.MAX_VALUE;
+        var maxY = Number.MIN_VALUE;
+        var aveY = 0;
+        var h = 1.0 / (samples - 1);
+        for(var i = 0; i < samples; i++) {
+            var x =  h * i;
+            y[i] = this.costFunction(x);
+            minY = Math.min(minY, y[i]);
+            maxY = Math.max(maxY, y[i]);
+            aveY += y[i];
+        }
+        return {funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
+    }
+
+    this.generateMeasurementSamples = function() {
+            var epsilon = this.step;
+            this.trueMeasure = Math.random();
+            for(var i = 0; i < this.measurementsSamples; i++) {
+                var noise = this.step * (-1 + 2 * Math.random());
+                this.measurements[i] = this.trueMeasure + noise;
+            }
+            this.fx = this.buildFunction(this.samples);
+    }
+
+    // function that do stuff with mouse coordinates
+    this.baseMouse = function(integerMouse) {
+        if(!this.isMouseDown) {
+            return;
+        }
+        var mouse = this.canvasGraph.inverseTransform(integerMouse);
+        this.cursor = Math.max(mouse[0], 0);
+    }
+
+    this.mouseStart = function (e) {
+        this.isMouseDown = true;
+    }
+
+    this.mouseEnd = function (e) {
+        this.isMouseDown = false;
+    }
+
+    this.mouseMove = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
+        this.baseMouse([my, mx]);
+    }
+
+    this.touchStart = function (e) {
+        this.isMouseDown = true;
+    }
+
+    this.touchEnd = function (e) {
+        this.isMouseDown = false;
+    }
+
+    this.touchMove = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+        this.baseMouse([my, mx]);
+    }
+
+    this.checkIfCanDraw = function() {
+        return $("#sim3").is(":visible");
+    }
+
+    this.sliderUpdate = function() {
+        var sliderValue = $("#epsilon_slider").val();
+        this.step = 0.01 + (0.99 / 99) * (sliderValue - 1);
+        $("#epsilon_sim").text("$ \\tau = $" + this.step.toFixed(3));
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "epsilon_sim"]);
+    }
+
+    this.drawCanvasGraph = function() {
+        this.canvasGraph.drawLine([-0.2,0], [1.2, 0.0], MyCanvas.simpleShader([0, 0, 0, 255]));
+
+        var h = 1.0 / (this.samples - 1);
+        var scale = (this.fx.max - this.fx.min);
+        scale = scale == 0 ? 1.0 : scale;
+        for(var i = 0; i < this.samples - 1; i++) {
+            var zi = (this.fx.funcSamples[i] - this.fx.min) / scale;
+            var zj = (this.fx.funcSamples[i + 1] - this.fx.min) / scale;
+            var x = h * i;
+            this.canvasGraph.drawLine([x, zi], [x + h, zj], MyCanvas.simpleShader([0, 0, 255, 255]));
+        }
+
+        for(var i = 0; i < this.measurementsSamples; i++) {
+            this.canvasGraph.drawCircle([this.measurements[i], 0.0], this.circleRadius, MyCanvas.simpleShader([0, 0, 0, 255]));
+        }
+
+        this.canvasGraph.drawCircle([this.trueMeasure, 0.0], this.circleRadius, MyCanvas.simpleShader([0, 255, 0, 255]));
+
+        var cost = (this.costFunction(this.cursor) - this.fx.min) / scale;
+        this.canvasGraph.drawCircle([this.cursor, cost], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle([this.cursor, 0], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
+
+        $("#cost_sim").text("C = " + cost.toFixed(3));
+    }
+
+    this.draw = function() {
+        this.canvasGraph.clearImage([255, 255, 255, 255]);
+        this.drawCanvasGraph();
+        this.canvasGraph.paintImage();
+    }
+
+    this.start = function() {
+        $("#sim3").slideDown();
+        this.sliderUpdate();
+        this.generateMeasurementSamples();
+    }
+
+    this.end = function() {
+        $("#sim3").slideUp();
+    }
+
+    this.init = function() {
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(2, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend",   function(e) { apply(2, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchmove",  function(e) { apply(2, function(x) { x.touchMove(e) }) }, false);
+
+        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(2, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(2, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(2, function(x) { x.mouseMove(e) }) }, false);
+
+    }
+}
+
+
+/**
+ *
+ * General utilitarian functions
+ */
 
 function closeState(state) {
     if(state > 0) {

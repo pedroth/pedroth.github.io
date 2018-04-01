@@ -118,7 +118,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
-                This article will summarize the basics one-dimensional calculus, by discovering calculus using simple problems. In that way we will get much more the intuition of calculus and see why it is useful!
+                This article will summarize the basics one-dimensional calculus, by discovering calculus using simple problems. In that way, we will get much more the intuition of calculus and see why it is useful!
 
                 <h2> Functions </h2>
                 First of all, before writing about calculus we must know what a function is. A function is like a mathematical machine that receives some input and returns an
@@ -344,8 +344,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Which is just the rate of change of the line between $(x, f(x))$ and $(x + h, f(x + h))$ as $h \rightarrow 0$, that is $\lim_{h\rightarrow 0} df(x, h)$.
                 The intuitive meaning of (6) is to define the instantaneous rate of change of $f$, by the value $df(x,h)$ is converging when $h\rightarrow0$.
                 Note that this definition only applies to functions that have such limit number. This might not be the case for all functions and thus let me simplify the problem by only allowing functions that have derivative for all $x$.
-                These functions are called differentiable functions.<br>
-                So what do you mean by $\lim_{h \rightarrow 0} df(x,h)$ ? What is the limit of a function $f$ as $x$ approaches a number ? <br>
+                These functions are called differentiable functions. A differential function $f$ have a nice property of having a tangent line at every point, this is the limit line we defined before. Using (5) and (6) we can define that tangent line at any point. Let $g_a(x)$ be such tangent line of $f$ at $a$ :
+
+                $$g_a(x) = f(x) + f'(x)(x - a) \;\;\;\;\;\;\;(7)$$
+
+                That is fine but we didn't define what a limit really is. There are some questions in the air.
+                what is $\lim_{h \rightarrow 0} df(x,h)$ ? What is the limit of a function $f$ as $x$ approaches a number? <br>
                 This will take us to a little digression to limits.
 
 
@@ -354,7 +358,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Now we have an intuitive notion of limit, but how can we formalize this notion. How can we measure that functions are indeed converging to a number?
                 In (6) we have used this intuitive notion, but not defined what it is. In order to simplify the problem I will try to formalize instead the following limit :
 
-                $$ \lim_{x\rightarrow a} g(x) \;\;\;\;\;\;\;(7)$$
+                $$ \lim_{x\rightarrow a} g(x) \;\;\;\;\;\;\;(8)$$
 
                 Note that we can describe $\lim_{h \rightarrow 0} df(x, h)$ as $\lim_{h \rightarrow } g_x(h)$, by saying that $g_x(h) = df(x, h)$ ( we can think of $x$ fixed and $g_x$ as a function of just $h$).
                 Still, I find it hard to define limits in this form because I don't know how to vary $h$ or $x$ to $0$ or $a$. The trick is to think of sequences. Sequences are functions of the form $s : \mathbb{N} \rightarrow \mathbb{R}$.
@@ -366,11 +370,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <li>Fibonacci sequence : $1, 1, 2, 3, 5, 8 , \dots $ </li>
                 </ul>
 
-                These sequences might be defined with formulas like the $n$th odd number $s(n) = 2n + 1$. Using these sequences, we can make $x$ vary by saying that $x$ is a sequence that is converging toward $a$. Then (7) will become :
-                $$\lim_{n \rightarrow \infty} g(x(n))\;\;\;\;\;\;\;(8)$$
+                These sequences might be defined with formulas like the $n$th odd number $s(n) = 2n + 1$. Using these sequences, we can make $x$ vary by saying that $x$ is a sequence that is converging toward $a$. Then (8) will become :
+                $$\lim_{n \rightarrow \infty} g(x(n))\;\;\;\;\;\;\;(9)$$
 
-                This way is easy since we have a proper way to say that $n \rightarrow \infty$, by saying that $n$ is the identity sequence, that is $1, 2, 3, 4, \dots$.
-                Note that $g(x(n))$ in (8) can be seen as a pure function of $n$, therefore I will write $g(n)$ to simplify the notation. Now we have simplified our problem in (7) to a limit of a sequence in (8).
+                This way is easy since we have a nice way to say that $n \rightarrow \infty$, by saying that $n$ is the identity sequence, that is $1, 2, 3, 4, \dots$.
+                Note that $g(x(n))$ in (9) can be seen as a pure function of $n$, therefore I will write $g(n)$ to simplify the notation. Now we have simplified our problem in (8) to a limit of a sequence in (9).
 
                 $$\lim_{x\rightarrow a} g(x)\Rightarrow \lim_{n\rightarrow\infty}g(n)$$
 
@@ -382,13 +386,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 This way when $n > N$, the distance between $g(n)$ and $c$ would be always decreasing until eventually would get to zero (note that the absolute value is always positive).
                 Although this definition would work, mathematicians gave another which is equivalent and may be easier to use in proofs. The definitions go like this:
 
-                $$\forall \varepsilon > 0 \; \exists n > N : d(n) < \varepsilon \;\;\;\;\;\;\;(9)$$
+                $$\forall \varepsilon > 0 \; \exists n > N : d(n) < \varepsilon \;\;\;\;\;\;\;(10)$$
 
                 This basically says that for all $\varepsilon > 0$ that we can imagine, there must be a $n > N$, such that the distance $d(n) = \left | g(n) - c\right |$ is below $\varepsilon$.
-                Hence if we find a formula for $N$ that is dependent of $\varepsilon$ that fulfils (9), we have shown that indeed $g(n)$ is converging to $c$.
-                Lets see an example so we can understand it better. Let us proof that the following limit $\lim_{n\rightarrow \infty} 1 / n = 0$.
+                Hence if we find a formula for $N$ that is dependent on $\varepsilon$ that fulfills (10), we have shown that indeed $g(n)$ is converging to $c$.
+                Let's see an example so we can understand it better. Let us proof that the following limit $\lim_{n\rightarrow \infty} 1 / n = 0$.
 
-                <br>In order to prove such claim with definition (9), we need to find a $N$, such that, given a $\varepsilon > 0$ we have $d(N+1) < \varepsilon$ :
+                <br>In order to prove such claim with definition (10), we need to find a $N$, such that, given a $\varepsilon > 0$ we have $d(N+1) < \varepsilon$ :
 
                 $$d(N) < \varepsilon $$
                 $$\left | \frac{1}{N} \right | < \varepsilon $$
@@ -420,24 +424,163 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$d(200 + 1) = \left | \frac{2}{201} + 1 - 1\right | =  \frac{2}{201} < 0.01$$
 
-                There is more that we could talk about, but lets save it for a future posts and thus we end our interlude of limits.
+                There is more that we could talk about, but let's save it for future posts. Now we end our interlude of limits.
 
                 <h2>Back to derivatives</h2>
-                Finally we solve our problem of measuring how much a function (differentiable functions!!) are changing at a particular $x$.<br>
+
+                Finally we solve our problem of measuring how much a function (differentiable functions!!) are changing at a particular $x$. <br>
+                Until now we have seen the derivative as a process that can be applied to any differential function, but I would like to have a closed form of a derivative of some function $f$. Can we do it ? Or we can just have an approximation of the derivative like $df(x, \varepsilon)$ for a low $\varepsilon > 0$ ?<br>
+                Let us put our definition to the test. Let $f$ be the linear function $f(x) = mx +b$ ($m, b \in  \mathbb{R}$) then the derivative should be the rate of change $m$. Using our definition (6) :
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{m(x + h) + b - mx - b}{h}$$
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{mh}{h}$$
+                $$f'(x) = \lim_{h\rightarrow 0} m $$
+                $$f'(x) = m $$
+
+                Well, that was kind of obvious since by construction we based our definition of a derivative by a linear approximation of a function at a point. But let us try the polynomial $f(x) = x^2$.
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{(x + h)^2 - x^2}{h}$$
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{x^2 + 2xh + h^2 - x^2}{h}$$
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{x^2 + 2xh + h^2 - x^2}{h}$$
+
+                $$f'(x) = \lim_{h\rightarrow 0} \frac{(2x + h)h}{h}$$
+
+                $$f'(x) = \lim_{h\rightarrow 0} 2x + h$$
+
+                $$f'(x) = 2x $$
+
+                As an exercise you can try to find the derivative of $f(x) = x^n$ for a particular $n>2$ or for a general $n$. Before I close this chapter I would like to mention two important properties of derivatives :
+
+                $$\text{ 1) }(a f(x))' = a f'(x)$$
+                $$\text{ 2) }(f(x) + g(x))' = f'(x) + g'(x)$$
+
+                These two properties define what is called a <a href="https://en.wikipedia.org/wiki/Linear_map">linear operator</a> (but we will check later) and that is nice to have.
+                Try to proof these properties using the definition of a derivative (6).<br><br>
+
+                <button class="btn btn-primary" onclick='$("#solution_1").slideToggle()'><h4> Solution</h4></button>
+                <div id="solution_1" style="display:none">
+                    $$\text{1) } \lim_{h\rightarrow 0} \frac{(af(x+h)) - (af(x))}{h}$$
+                    $$\text{1) } \lim_{h\rightarrow 0} \frac{a(f(x+h) - f(x))}{h}$$
+                    $$\text{1) } a \lim_{h\rightarrow 0} \frac{(f(x+h) - f(x))}{h}$$
+                    $$\text{1) } a f'(x)$$
+
+                    and
+
+                    $$\text{2) } \lim_{h\rightarrow 0} \frac{(f(x+h) + g(x+h)) - (f(x) + g(x))}{h}$$
+                    $$\text{2) } \lim_{h\rightarrow 0} \frac{f(x+h) - f(x) + g(x + h) - g(x)}{h}$$
+                    $$\text{2) } \lim_{h\rightarrow 0} \frac{f(x+h) - f(x)}{h} + \lim_{h\rightarrow 0}\frac{g(x + h) - g(x)}{h}$$
+                    $$\text{2) } f'(x) + g'(x)$$
+                </div>
+
 
                 <h2>Digression through 1D Optimization</h2>
 
+                One of the best applications of derivatives is the problem of optimization. I will be very brief here since I plan to write more about it in the future. Here I will introduce the topic for one-dimensional optimization problems and will solve one.<br>
+                Let us focus on just the minimization problem ( we will see later that maximization problems are equivalent, you can try to do that as an exercise ) :
+
+                $$\min_{x \in \mathbb{R}} f(x)$$
+
+                This means that we want to find a $x^* \in \mathbb{R}$ such that $f(x^*) < f(x)$ for every $x \in \mathbb{R}$. Let $x^*$ be the minimum of $f$.
+                If we assume that $f$ is smooth (differentiable) and that has only one minimum, one can say that a function will be decreasing until it gets to a minimum then it will increase. This basically tell us that $f'(x^* - \varepsilon) < 0$ and $f'(x^* + \varepsilon) > 0$ for $\varepsilon > 0$.
+                Since the graph is smooth then $f'(x)$ is continuous, therefore we know that there must be a zero of the derivative function in the interval $[x^* - \varepsilon, x^* + \varepsilon]$. When this happens the function is not increasing or decreasing and hence it must be a minimum (by our assumptions).<br>
+
+                Formally we can visualize this by verifying that :
+
+                $$f(x^*) \leq f(x^* + \varepsilon) \text{ and } f(x^*) \leq f(x^* - \varepsilon) \;\;\;\;\;\;\;(11)$$
+
+                By using the linear approximation of $f$ at $x^*$ and (11) we will find that $f'(x^*) = 0$ :
+
+                $$f(x^*) \leq f(x^* + \varepsilon) \approx g_{x^*}(x^* +\varepsilon) = f(x^*) + \varepsilon f'(x^*)$$
+                $$ f'(x^*)\varepsilon \geq 0 $$
+
+                And
+
+                $$f(x^*) \leq f(x^* - \varepsilon) \approx g_{x^*}(x^* -\varepsilon)= f(x^*) - \varepsilon f'(x^*)$$
+                $$f'(x^*) \varepsilon \leq 0$$
+
+                From $f'(x^*)\varepsilon \geq 0$ and $f'(x^*) \varepsilon \leq 0$ we conclude that $f'(x^*) = 0$. Note that the approximation error decreases as $\varepsilon \rightarrow 0$.
+                From the assumptions we made, in order to find $x^*$ that minimizes $f$, we just need to solve the equation $f'(x) = 0$.<br><br>
+
+                Now let us solve a real problem. Imagine that you have a device that measures something in the world like temperature or distance, and that device has errors in its measurements. Let $\phi$ be a function that receives an input(e.g time, height from sea level, etc ... ) and outputs the measured quantity (temperature, air pressure, distance, etc... ).
+                We model our device as $\phi$, and we know that $\phi(x) = y + \tau$, where $y$ is a constant and $\tau$ is a <a href="https://en.wikipedia.org/wiki/Random_variable">random variable </a>. I will not discuss much of the concept of random variable but intuitively every time we measure something with $\phi$ we measure $y$ plus some noise ( value which is always different ).
+                We could start talking about probabilities in more detail but I think is best to postpone that for a future post. Still we can get an intuition of the problem.
+                Having that said we state the problem as follow : <br>
+                Given $n$ samples of measurements of $\phi$ at a particular $x_0$ estimate $y$ (note that $\phi$ does not depend on $x$)? Also assume that the noise of each samples $\tau_i$ is bounded by some finite constant $\varepsilon > 0$. Assume as well that the noise is uniform, that is the samples $\tau_i$ can be a point in $[y-\varepsilon, y+\varepsilon]$ with equal probability.
+                Someone immediately say, "take the sample average", but I would respond why ? Why not the minimum of the samples or maximum or even the third sample, what is the reason to choose the mean ? First we need to note that this problem is ill defined. Why having samples would help us estimate $y$ ? Is this problem solvable (since is not deterministic)?
+                We could apply probability theory and define the problem in a better way, but we will do as our friend <a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">Legendre</a> and see this problem in a intuitive matter (check Victor J. Katz History of Mathematics books).
+
+                Since all samples $\phi_i, i\in {1, \dots , n}$ will be around $y$, a point that is close to all the samples would be a reasonable estimate of $y$. Let us formalize this as a minimization problem :
+
+                $$\min_{\mu \in \mathbb{R}} C(\mu) = \min_{\mu \in \mathbb{R}}\sum_{i=1}^n(\mu - \phi_i)^2$$
+
+                We want to find $\mu$ such as the sum of squared differences to the samples is minimum. Why choose the squared difference and not the absolute difference ? Because the square difference is also a measure of distance and this one is differentiable.
+                Check the simulation 3 to visualize the cost function of a set of instances of the problem : <br><br>
+
+                <button class="btn btn-primary" onclick="intuition.run(2)"><h4> Simulation 3</h4></button>
+                <div id="sim3" style="display:none; text-align: center">
+                    <canvas id="optimizationProblem" width="650" height="500"></canvas>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" onclick="intuition.apply(2, function(x) {x.generateMeasurementSamples();})">generate samples</button>
+                            </div>
+                            <div class="col-md-3">
+                                <input id="epsilon_slider" type="range" min="1" max="100" value="90" onchange="intuition.apply(2, function(x) {x.sliderUpdate();})">
+                            </div>
+                            <div class="col-md-3">
+                                <div id="epsilon_sim">$\tau = $ 1</div>
+                            </div>
+                            <div class="col-md-3">
+                                <div id="cost_sim">C = 1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>Simulation.3 Visualization of the measurement estimation cost function. Green point is $y$, black points are measurements $\phi_i$, red point is the estimate and the curve is the graph of the cost function. You can interact with the canvas (mouse | touch).</p>
+                    </div>
+                </div>
+                <br><br>
+
+                Note that as $\tau$ increases the worst our estimate become. To solve our minimization problem let's notice that it fulfills our assumptions and then we find $\mu$ by solving $C'(\mu) = 0$.
+                We must show that first the function has just one minimum and second that the function is differentiable. Notice that :
+                $$C(\mu) = \sum_{i=1}^n(\mu - \phi_i)^2 = \sum_{i=1}^n\mu^2 -2\mu\phi_i + \phi_i^2$$
+                $$C(\mu) =\mu^2 n-2\mu\sum_{i=1}^n\phi_i + \sum_{i=1}^n\phi_i^2$$
+
+                We see that $C(\mu)$ has just one minimum since it is a parabola with positive coefficient in the squared term, also we see that this function has a derivative everywhere :
+
+                $$C'(\mu) = \left (\mu^2 n-2\mu\sum_{i=1}^n\phi_i + \sum_{i=1}^n\phi_i^2 \right )'$$
+
+                By applying the sum property of derivatives :
+
+                $$C'(\mu) = \left ( \mu^2 n \right )-\left ( 2\mu\sum_{i=1}^n\phi_i \right) + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
+
+                By applying constant multiplication property of derivatives :
+
+                $$C'(\mu) = n\left ( \mu^2 \right )'- \left ( 2\sum_{i=1}^n\phi_i \right )\mu' + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
+
+                Applying the rule for the derivative of the quadratic function, linear function and constant function.
+
+                $$C'(\mu) = 2n\mu - 2\sum_{i=1}^n\phi_i$$
+
+                This function is clearly differentiable. Now we just need to solve for $\mu$.
+
+                $$2n\mu - 2\sum_{i=1}^n\phi_i = 0$$
+                $$\mu = \frac{1}{n}\sum_{i=1}^n\phi_i$$
+
+                Which is the average of the samples, but know we have deduce it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. Now we conclude this topic.
                 <br/>
                 <br/>
 
                 <h2> Integrals </h2>
-                I have written about functions, tangent lines and derivatives what about integration, for that I will give you another problem. Suppose you wanted to find a
-                function $y(t)$, and the only thing you know about that function is it derivative for all $t$(we have this $y'(t)$) and that $y(t_{0}) = y_{0}$. How would you solve
-                this? Using the ideas above, with the derivative we can draw a tangent line, then we can compute the function a little step ahead , like $$y(t_{0} + h) = y(t_{0}) +
-                y'(t_{0}) h\;\;\;\;\;\;\;(4)$$
-                <br/>
-                <br/>
+                I have written about functions, tangent lines and derivatives but what about integration, for that I will give you another problem. Suppose you wanted to find a
+                function $y(t)$, and the only thing you know about that function is it derivative for all $t$ and that $y(t_{0}) = y_{0}$. How would you solve
+                this? Using the ideas above, with the derivative we can draw a tangent line, then we can compute the function a little step ahead , like
+                $$y(t_{0} + h) = y(t_{0}) + y'(t_{0}) h\;\;\;\;\;\;\;(12)$$
 
+                <br/>
+                <br/>
                 <div style="text-align: center;">
                     <img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400"/>
 
@@ -460,14 +603,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <br/>
                 <br/>
-                This translates in the following equation:$$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h +
-                ...\;\;\;\;\;\;\;(5)$$<br/>
-                <br/>
+
+                This translates in the following equation:
+                $$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h + \dots\;\;\;\;\;\;\;(13)$$
+
                 where $n= \left \lfloor \frac{t-t_{0}}{h} \right \rfloor$, note that as $h\rightarrow0$ the approximation gets better and $n \rightarrow \infty $. Also note that
                 summations of the form $$ \lim_{\Delta x\rightarrow0} \; \sum_{i= 0}^{n}f(a+i\Delta x)\Delta x$$ corresponds to areas under the graph of the function $f$.
-                <br/>
-                <br/>
 
+                <br/>
+                <br/>
                 <div style="text-align: center;">
                     <img border="0"
                          src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg"
@@ -477,28 +621,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <br/>
                 <br/>
-                Hence we can solve our problem using (5) while $h \rightarrow 0$.<br/>
-                $$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(6)$$<br/>
-                <br/>
-                Now to simplify the notation we define integral as $$\lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx, n= \left \lfloor \frac{b-a}{h} \right
-                \rfloor\;\;\;\;\;\;\;(7)$$<br/>
-                <br/>
-                With (6) and (7) we get $$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$.<br/>
-                <br/>
+
+                Hence we can solve our problem using (5) while $h \rightarrow 0$.
+                $$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(6)$$
+                Now to simplify the notation we define integral as
+                $$\lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx, n= \left \lfloor \frac{b-a}{h} \right\rfloor\;\;\;\;\;\;\;(7)$$
+                With (12) and (13) we get $$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$.<br/>
+
                 Hence $$\int_{t{0}}^{t} y'(\tau) d\tau = y(t) - y(t_{0})$$ which is the fundamental theorem of calculus<br/>
-                <br/>
-                Final remark<br/>
-                <br/>
-                To compute
-                $$\lim_{x\rightarrow a}f(x)$$
-                <br/>
-                just do the following iteration. Start $x(0) = x_{0}$ then iterate
-                $$x(i+1) = x(i) + (a - x(i)) \epsilon$$
-                <br/>
-                and stop the iteration when
-                $$|f(x(i)) - f(x(i-1))| < \delta$$.
-                <br/>
-                Where $0 < \epsilon < 1$ and $\forall \delta > 0$. Then return $\lim_{x\rightarrow a}f(x) = f(x(i_{converge}))$.
+
             </div>
         </div>
     </div>
