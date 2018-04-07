@@ -1,12 +1,13 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.intuition = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var MyCanvas = require('../../tools/JsLib/MyCanvas/MyCanvas.js');
-var CanvasSpace = require('../../tools/JsLib/MyCanvas/CanvasSpace.js');
-var ImageIO = require('../../tools/JsLib/MyCanvas/ImageIO.js');
+var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
+var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
+var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
 
 var simulations = [
     new Sim1(),
     new Sim2(),
-    new Sim3()
+    new Sim3(),
+    new Sim4()
 ];
 
 /**
@@ -563,6 +564,174 @@ function Sim3() {
 }
 
 
+function Sim4() {
+    this.tImg = ImageIO.loadImage("resources/t.png");
+    this.yImg = ImageIO.loadImage("resources/y.png");
+    this.canvasGraph = new CanvasSpace(document.getElementById("eulerAlgorithm"), [[-0.1, 1.1], [-0.1, 1.1]]);
+    this.isMouseDown = false;
+    this.circleRadius = 0.01;
+    this.fx = [];
+    this.samples = 25;
+    this.step = 0.01;
+    this.maxAmp = 10;
+    this.bandwidth = 5;
+    this.ys = [];
+
+
+    this.generateField = function(w) {
+        return function(x) {
+            var acc = 0;
+            var mul = 1;
+            for(var i = 0; i < w.length; i++) {
+                acc += mul * w[i] * Math.sin(i * (1.0 / mul) * x);
+                mul /= 2;
+            }
+            return acc;
+        }
+    }
+
+    this.buildFunction = function(samples) {
+        var w = [];
+        for(var i = 0; i < this.bandwidth; i++) {
+            w[i] = -this.maxAmp + 2 * this.maxAmp * Math.random();
+        }
+        var f = this.generateField(w);
+        var y = [];
+        var minY = Number.MAX_VALUE;
+        var maxY = Number.MIN_VALUE;
+        var aveY = 0;
+        var h = 1.0 / (samples - 1);
+        for(var i = 0; i < samples; i++) {
+            var x =  h * i;
+            y[i] = f(x);
+            minY = Math.min(minY, y[i]);
+            maxY = Math.max(maxY, y[i]);
+            aveY += y[i];
+        }
+        return {func : f, funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
+    }
+
+    // function that do stuff with mouse coordinates
+    this.baseMouse = function(integerMouse) {
+        if(!this.isMouseDown) {
+            return;
+        }
+        var mouse = this.canvasGraph.inverseTransform(integerMouse);
+        this.ys.push([ mouse ]);
+    }
+
+    this.mouseStart = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
+        this.isMouseDown = true;
+        this.baseMouse([my, mx]);
+    }
+
+    this.mouseEnd = function (e) {
+        this.isMouseDown = false;
+    }
+
+    this.mouseMove = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
+    }
+
+    this.touchStart = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+        this.isMouseDown = true;
+        this.baseMouse([my, mx]);
+    }
+
+    this.touchEnd = function (e) {
+        this.isMouseDown = false;
+    }
+
+    this.touchMove = function (e) {
+        var rect = this.canvasGraph.canvas.getBoundingClientRect();
+        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+    }
+
+    this.checkIfCanDraw = function() {
+        return $("#sim4").is(":visible");
+    }
+
+    this.sliderUpdate = function() {
+        var sliderValue = $("#euler_slider").val();
+        this.step = 0.01 + (0.1 / 99) * (sliderValue - 1);
+        $("#euler_step").text("$ h = $" + this.step.toFixed(3));
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "euler_step"]);
+    }
+
+    this.drawCanvasGraph = function() {
+        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([0, -0.1], [0, 1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasGraph.drawImage(this.tImg, [0.9, -0.01]);
+        this.canvasGraph.drawImage(this.yImg, [-0.05, 0.9]);
+
+        // draw tangent field
+        var h = 1.0 / this.samples;
+        for(var j = 0; j < this.fx.funcSamples.length; j++) {
+            for(var i = 0; i < this.fx.funcSamples.length; i++) {
+                var x = h * i;
+                var y = h * j;
+                var m = this.fx.funcSamples[i];
+                var epsilon = h / 10;
+                this.canvasGraph.drawLine([x - epsilon, y - m * epsilon], [x + epsilon, y + m * epsilon], MyCanvas.simpleShader([0, 0, 255, 255]));
+            }
+        }
+
+        var colorDegree = this.ys.length;
+        for(var k = 0; k < this.ys.length; k++) {
+            var integralCurve = this.ys[k];
+            var n = integralCurve.length;
+            if(integralCurve[n - 1][0] < 1.0) {
+                integralCurve[n] = [integralCurve[n - 1][0] + this.step, integralCurve[n - 1][1] + this.fx.func(integralCurve[n - 1][0]) * this.step];
+            }
+            var color = 1 - (1 / (2 * (colorDegree - 1))) * k;
+            for(var l = 0; l < n-1; l++) {
+                this.canvasGraph.drawLine(integralCurve[l], integralCurve[l + 1], MyCanvas.simpleShader([255 * color, 0, 0, 255]));
+            }
+        }
+    }
+
+    this.draw = function() {
+        this.canvasGraph.clearImage([255, 255, 255, 255]);
+        this.drawCanvasGraph();
+        this.canvasGraph.paintImage();
+    }
+
+    this.start = function() {
+        $("#sim4").slideDown();
+        this.sliderUpdate();
+        this.fx = this.buildFunction(this.samples);
+    }
+
+    this.generateNewField = function() {
+        this.fx = this.buildFunction(this.samples);
+    }
+
+    this.clearIntegralCurves = function() {
+        this.ys = [];
+    }
+
+    this.end = function() {
+        $("#sim4").slideUp();
+    }
+
+    this.init = function() {
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(3, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend",   function(e) { apply(3, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchmove",  function(e) { apply(3, function(x) { x.touchMove(e) }) }, false);
+
+        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(3, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(3, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(3, function(x) { x.mouseMove(e) }) }, false);
+
+    }
+}
+
+
 /**
  *
  * General utilitarian functions
@@ -619,7 +788,7 @@ module.exports =  {
     run : runSimulation,
     apply : apply
 }
-},{"../../tools/JsLib/MyCanvas/CanvasSpace.js":2,"../../tools/JsLib/MyCanvas/ImageIO.js":3,"../../tools/JsLib/MyCanvas/MyCanvas.js":4}],2:[function(require,module,exports){
+},{"../../JsLib/MyCanvas/CanvasSpace.js":2,"../../JsLib/MyCanvas/ImageIO.js":3,"../../JsLib/MyCanvas/MyCanvas.js":4}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b

@@ -456,7 +456,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\text{ 1) }(a f(x))' = a f'(x)$$
                 $$\text{ 2) }(f(x) + g(x))' = f'(x) + g'(x)$$
 
-                These two properties define what is called a <a href="https://en.wikipedia.org/wiki/Linear_map">linear operator</a> (but we will check later) and that is nice to have.
+                These two properties define what is called a <a href="https://en.wikipedia.org/wiki/Linear_map">linear operator</a> (but we will check that later) and that is nice property to have.
                 Try to proof these properties using the definition of a derivative (6).<br><br>
 
                 <button class="btn btn-primary" onclick='$("#solution_1").slideToggle()'><h4> Solution</h4></button>
@@ -493,12 +493,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 By using the linear approximation of $f$ at $x^*$ and (11) we will find that $f'(x^*) = 0$ :
 
                 $$f(x^*) \leq f(x^* + \varepsilon) \approx g_{x^*}(x^* +\varepsilon) = f(x^*) + \varepsilon f'(x^*)$$
-                $$ f'(x^*)\varepsilon \geq 0 $$
+                $$ \Leftrightarrow  f'(x^*)\varepsilon \geq 0 $$
 
                 And
 
                 $$f(x^*) \leq f(x^* - \varepsilon) \approx g_{x^*}(x^* -\varepsilon)= f(x^*) - \varepsilon f'(x^*)$$
-                $$f'(x^*) \varepsilon \leq 0$$
+                $$\Leftrightarrow  f'(x^*) \varepsilon \leq 0$$
 
                 From $f'(x^*)\varepsilon \geq 0$ and $f'(x^*) \varepsilon \leq 0$ we conclude that $f'(x^*) = 0$. Note that the approximation error decreases as $\varepsilon \rightarrow 0$.
                 From the assumptions we made, in order to find $x^*$ that minimizes $f$, we just need to solve the equation $f'(x) = 0$.<br><br>
@@ -569,15 +569,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$2n\mu - 2\sum_{i=1}^n\phi_i = 0$$
                 $$\mu = \frac{1}{n}\sum_{i=1}^n\phi_i$$
 
-                Which is the average of the samples, but know we have deduce it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. Now we conclude this topic.
+                Which is the average of the samples, but know we have deduce it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. All you will be able to generalize the average concept by making small changes to the cost function. Now we conclude this topic.
                 <br/>
                 <br/>
 
                 <h2> Integrals </h2>
                 I have written about functions, tangent lines and derivatives but what about integration, for that I will give you another problem. Suppose you wanted to find a
-                function $y(t)$, and the only thing you know about that function is it derivative for all $t$ and that $y(t_{0}) = y_{0}$. How would you solve
-                this? Using the ideas above, with the derivative we can draw a tangent line, then we can compute the function a little step ahead , like
-                $$y(t_{0} + h) = y(t_{0}) + y'(t_{0}) h\;\;\;\;\;\;\;(12)$$
+                function $y(t)$, and the only thing you know about that function is it derivative for all $t$ and that $y(t_{0}) = y_{0}$. A nice motivation for this problem is to find a way of constructing differentiable functions ( and differentiable functions are nice ). But how would you solve
+                it? Using the ideas above, with the derivative for every $t$, we can draw a tangent line at $t_0$, then we can compute the function a little step ahead using $y(t_0)$ :
+                $$y(t_0 + h) = y(t_0) + y'(t_0)h$$
 
                 <br/>
                 <br/>
@@ -589,8 +589,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
 
-                So if we wanted to find $y(t)$ we would get a approximate result like this:<br/>
-                First choose a $h > 0$ close to zero, then we sum various steps of the tangent lines like figure 6.
+                This will be an approximation as we know very well from previous arguments. Nonetheless with $y(t_0 + h)$ and $y'(t_0 + h)$ we can apply the same technique and get $y(t_0 + 2h)$. By applying this operation multiple times we can find an approximation to $y(t)$. However this approximation depends on $h$, and as $h \rightarrow 0$, the approximation improves. This process can be described as an iterative process:
+
+                $$y(t_i + h) = y(t_i) + y'(t_i)h$$
+
+                From figure 8 we can see that this iteration starting from $y(t_0)$ will follow the form :
                 <br/>
                 <br/>
 
@@ -604,11 +607,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
 
-                This translates in the following equation:
-                $$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h + \dots\;\;\;\;\;\;\;(13)$$
+                $$y(t) \approx y(t_{0}) + \sum_{i= 0}^{n}y'(t_{0}+ih)h =y(t_{0}) + y'(t_{0})h + y'(t_{0} + h) h + \dots\;\;\;\;\;\;\;(12)$$
 
-                where $n= \left \lfloor \frac{t-t_{0}}{h} \right \rfloor$, note that as $h\rightarrow0$ the approximation gets better and $n \rightarrow \infty $. Also note that
-                summations of the form $$ \lim_{\Delta x\rightarrow0} \; \sum_{i= 0}^{n}f(a+i\Delta x)\Delta x$$ corresponds to areas under the graph of the function $f$.
+                Where $n = \left \lfloor \frac{t - t_{0}}{h} \right \rfloor$, note that as $h \rightarrow 0$ the approximation gets better and $n \rightarrow \infty $. Also note that
+                summations of the form $$ \lim_{h \rightarrow 0} \; \sum_{i = 0}^{n}f(a+ih)h$$ corresponds to areas under the graph of the function $f$.
 
                 <br/>
                 <br/>
@@ -617,18 +619,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                          src="http://upload.wikimedia.org/wikipedia/commons/2/27/Integral_definida_rectangulos.jpg"
                          height="412" width="640"/>
 
-                    <p>Fig.9 Integral definition</p>
+                    <p>Fig.9 Area under the graph of the function $f$, note that here in this picture $\Delta x = h$</p>
                 </div>
                 <br/>
                 <br/>
 
-                Hence we can solve our problem using (5) while $h \rightarrow 0$.
-                $$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(6)$$
-                Now to simplify the notation we define integral as
-                $$\lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx, n= \left \lfloor \frac{b-a}{h} \right\rfloor\;\;\;\;\;\;\;(7)$$
-                With (12) and (13) we get $$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$.<br/>
+                By taking the limit of $h \rightarrow 0$ we will reduce the error of (12) and find the true $y(t)$ :
+                $$y(t) = y(t_{0}) + \lim_{h\rightarrow0} \; \sum_{i= 0}^{n}y'(t_{0}+ih)h.\;\;\;\;\;\;\;(13)$$
 
-                Hence $$\int_{t{0}}^{t} y'(\tau) d\tau = y(t) - y(t_{0})$$ which is the fundamental theorem of calculus<br/>
+                Mathematicians defined this limit sum which is the area under a graph of the function as :
+                $$\lim_{h\rightarrow0} \; \sum_{i= 0}^{n}f(a+ih)h = \int_{a}^{b} f(x) dx,\;\; n= \left \lfloor \frac{b - a}{h} \right\rfloor\;\;\;\;\;\;\;(14)$$
+                With (13) and (14) we get :
+
+                $$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$
+
+                Hence $$\int_{t{0}}^{t} y'(\tau) d\tau = y(t) - y(t_{0})$$
+                Which is the fundamental theorem of calculus. And thus we end our intuition of Calculus. I leave you with a small simulation of algorithm described in fig.8 the Euler step.
+
+                <br><br>
+                <button class="btn btn-primary" onclick="intuition.run(3)"><h4> Simulation 4</h4></button>
+                <div id="sim4" style="display:none; text-align: center">
+                    <canvas id="eulerAlgorithm" width="650" height="500"></canvas>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-2">
+                                <input id="euler_slider" type="range" min="1" max="100" value="20" onchange="intuition.apply(3, function(x) {x.sliderUpdate();})">
+                            </div>
+                            <div class="col-md-2">
+                                <div id="euler_step">$\h = $ 1</div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" onclick="intuition.apply(3, function(x) {x.generateNewField();})">generate field</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" onclick="intuition.apply(3, function(x) {x.clearIntegralCurves();})">clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>Simulation.4 Visualization of the Euler algorithm to find functions using just their derivative information . You can interact with the canvas (mouse | touch).</p>
+                    </div>
+                </div>
+
+                <br>
+                <br>
 
             </div>
         </div>
