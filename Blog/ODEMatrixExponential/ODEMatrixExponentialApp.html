@@ -1,11 +1,30 @@
-<h2>
-Differential Equations and Matrix exponential</h2>
-<div>
-In this post I would like to talk about simple differential equations in the euclidean space. Throughout this post let $n,m,k,N$ be integers. This is the problem of finding a function $\mathbf{x}:\mathbb{R}\rightarrow\mathbb{R}^n$ such that $\dot{\mathbf{x}}(t) = \frac{d \mathbf{x}}{dt} = \mathbf{g}(t,\mathbf{x})$. Which is the same as $$\dot{\mathbf{x}} = \begin{bmatrix}\dot{x}_1\\ ...\\ \dot{x}_n\end{bmatrix} = \begin{bmatrix}<br />
-g_1(t,x_1,...,x_n)\\...<br />
-\\ g_n(t,x_1,...,x_n)<br />
-\end{bmatrix} \;\;\;\;(1)$$<br />
-<br />
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                <div class="post-heading">
+                    <h1>Differential Equations and Matrix exponential</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                In this post I would like to talk about simple differential equations in the euclidean space. Throughout this post let $n,m,k,N$ be integers. This is the problem of finding a function $\mathbf{x}:\mathbb{R}\rightarrow\mathbb{R}^n$ such that $\dot{\mathbf{x}}(t) = \frac{d \mathbf{x}}{dt} = \mathbf{g}(t,\mathbf{x})$. Which is the same as
+                $$\dot{\mathbf{x}} = \begin{bmatrix}\dot{x}_1\\ ...\\ \dot{x}_n\end{bmatrix} = \begin{bmatrix}
+
+            </div>
+        </div>
+    </div>
+</article>
+
+
+g_1(t,x_1,...,x_n)\\...
+\\ g_n(t,x_1,...,x_n)
+\end{bmatrix} \;\;\;\;(1)$$
 We have already seen some differential equations in the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> and <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">differential calculus</a> posts. If we simplify (1) we can easily solve it. Suppose we have the following equation $$\dot{\mathbf{x}}(t) = \mathbf{g}(t)\,\,\;\;\;\;(2)$$<br />
 <br />
 To solve it you just need to use the fundamental theorem of calculus, like this:<br />
