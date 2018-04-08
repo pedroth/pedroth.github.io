@@ -158,7 +158,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
 
                 <div style="text-align: center;">
-                    <img border="0" src="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" height="400" width="400"/></a>
+                    <img border="0" src="http://s3.amazonaws.com/answer-board-image/74d15c42-347a-416b-a659-37672b146c72.png" height="400" width="400"/>
                     <p>Fig.1 Graph of a function</p>
                 </div>
                 <br>
@@ -456,7 +456,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\text{ 1) }(a f(x))' = a f'(x)$$
                 $$\text{ 2) }(f(x) + g(x))' = f'(x) + g'(x)$$
 
-                These two properties define what is called a <a href="https://en.wikipedia.org/wiki/Linear_map">linear operator</a> (but we will check that later) and that is nice property to have.
+                These two properties define what is called a <a href="https://en.wikipedia.org/wiki/Linear_map">linear operator</a> (but we will check that later) and that is a nice property to have.
                 Try to proof these properties using the definition of a derivative (6).<br><br>
 
                 <button class="btn btn-primary" onclick='$("#solution_1").slideToggle()'><h4> Solution</h4></button>
@@ -504,19 +504,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 From the assumptions we made, in order to find $x^*$ that minimizes $f$, we just need to solve the equation $f'(x) = 0$.<br><br>
 
                 Now let us solve a real problem. Imagine that you have a device that measures something in the world like temperature or distance, and that device has errors in its measurements. Let $\phi$ be a function that receives an input(e.g time, height from sea level, etc ... ) and outputs the measured quantity (temperature, air pressure, distance, etc... ).
-                We model our device as $\phi$, and we know that $\phi(x) = y + \tau$, where $y$ is a constant and $\tau$ is a <a href="https://en.wikipedia.org/wiki/Random_variable">random variable </a>. I will not discuss much of the concept of random variable but intuitively every time we measure something with $\phi$ we measure $y$ plus some noise ( value which is always different ).
-                We could start talking about probabilities in more detail but I think is best to postpone that for a future post. Still we can get an intuition of the problem.
-                Having that said we state the problem as follow : <br>
-                Given $n$ samples of measurements of $\phi$ at a particular $x_0$ estimate $y$ (note that $\phi$ does not depend on $x$)? Also assume that the noise of each samples $\tau_i$ is bounded by some finite constant $\varepsilon > 0$. Assume as well that the noise is uniform, that is the samples $\tau_i$ can be a point in $[y-\varepsilon, y+\varepsilon]$ with equal probability.
-                Someone immediately say, "take the sample average", but I would respond why ? Why not the minimum of the samples or maximum or even the third sample, what is the reason to choose the mean ? First we need to note that this problem is ill defined. Why having samples would help us estimate $y$ ? Is this problem solvable (since is not deterministic)?
-                We could apply probability theory and define the problem in a better way, but we will do as our friend <a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">Legendre</a> and see this problem in a intuitive matter (check Victor J. Katz History of Mathematics books).
+                We model our device as $\phi$, and we know that $\phi(x) = y + \tau$, where $y$ is a constant and $\tau$ is a <a href="https://en.wikipedia.org/wiki/Random_variable">random variable </a>. I will not discuss much of the concept of random variable but intuitively every time we measure something with $\phi$ we measure $y$ plus some noise (a value which is always different ).
+                We could start talking about probabilities in more detail but I think is best to postpone that for a future post. Still, we can get an intuition of the problem.
+                Having that said we state the problem as follow: <br>
+                Given $n$ samples of measurements of $\phi$ at a particular $x_0$ estimate $y$ (note that $\phi$ does not depend on $x$)? Also, assume that the noise of each sample $\tau_i$ is bounded by some finite constant $\varepsilon > 0$. Assume as well that the noise is uniform, that is the samples $\tau_i$ can be a point in $[y-\varepsilon, y+\varepsilon]$ with equal probability.
+                Someone immediately says, "take the sample average", but I would respond why? Why not the minimum of the samples or maximum or even the third sample, what is the reason to choose the mean? First, we need to note that this problem is ill-defined. Why having samples would help us estimate $ y$? Is this problem solvable (since is not deterministic)?
+                We could apply probability theory and define the problem in a better way, but we will do as our friend <a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">Legendre</a> and see this problem in an intuitive matter (check Victor J. Katz History of Mathematics books).
 
                 Since all samples $\phi_i, i\in {1, \dots , n}$ will be around $y$, a point that is close to all the samples would be a reasonable estimate of $y$. Let us formalize this as a minimization problem :
 
                 $$\min_{\mu \in \mathbb{R}} C(\mu) = \min_{\mu \in \mathbb{R}}\sum_{i=1}^n(\mu - \phi_i)^2$$
 
-                We want to find $\mu$ such as the sum of squared differences to the samples is minimum. Why choose the squared difference and not the absolute difference ? Because the square difference is also a measure of distance and this one is differentiable.
-                Check the simulation 3 to visualize the cost function of a set of instances of the problem : <br><br>
+                We want to find $\mu$ such as the sum of squared differences to the samples is minimum. Why choose the squared difference and not the absolute difference? Because the square difference is also a measure of distance and this one is differentiable.
+                Check the simulation 3 to visualize the cost function of a set of instances of the problem: <br><br>
 
                 <button class="btn btn-primary" onclick="intuition.run(2)"><h4> Simulation 3</h4></button>
                 <div id="sim3" style="display:none; text-align: center">
@@ -560,7 +560,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$C'(\mu) = n\left ( \mu^2 \right )'- \left ( 2\sum_{i=1}^n\phi_i \right )\mu' + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
 
-                Applying the rule for the derivative of the quadratic function, linear function and constant function.
+                Applying the rule for the derivative of the quadratic function, linear function, and constant function.
 
                 $$C'(\mu) = 2n\mu - 2\sum_{i=1}^n\phi_i$$
 
@@ -569,7 +569,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$2n\mu - 2\sum_{i=1}^n\phi_i = 0$$
                 $$\mu = \frac{1}{n}\sum_{i=1}^n\phi_i$$
 
-                Which is the average of the samples, but know we have deduce it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. All you will be able to generalize the average concept by making small changes to the cost function. Now we conclude this topic.
+                Which is the average of the samples, but know we have deduced it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. All you will be able to generalize the average concept by making small changes to the cost function. Now we conclude this topic.
                 <br/>
                 <br/>
 
@@ -634,7 +634,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$y(t) = y(t_{0}) + \int_{t_{0}}^{t} y'(\tau) d\tau$$
 
                 Hence $$\int_{t{0}}^{t} y'(\tau) d\tau = y(t) - y(t_{0})$$
-                Which is the fundamental theorem of calculus. And thus we end our intuition of Calculus. I leave you with a small simulation of algorithm described in fig.8 the Euler step.
+                Which is the fundamental theorem of calculus. And thus we end our intuition of Calculus. Just one note on derivative notation:
+
+                $$f'(x) = \frac{df(x)}{dx} = \frac{d}{dx} f(x)$$
+
+                Now I finally leave you with a small simulation of an algorithm described in fig.8 the Euler step.
 
                 <br><br>
                 <button class="btn btn-primary" onclick="intuition.run(3)"><h4> Simulation 4</h4></button>
