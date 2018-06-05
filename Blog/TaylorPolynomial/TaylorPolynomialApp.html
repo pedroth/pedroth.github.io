@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2>Intro</h2>
-                In this post we will derive a fundamental tool in Calculus, the Taylor polynomial (or Taylor series) of a function. For me this is the best derivation, that I found when I tried to understand this concept. I thought this derivation was new, but I found out later that a good mathematician which name I don't recall have found a similar one earlier :/
+                In this post, we will derive a fundamental tool in Calculus, the Taylor polynomial (or Taylor series) of a function. For me, this is the best derivation, that I found when I tried to understand this concept. I thought this derivation was new, but I found out later that a good mathematician which name I don't recall having found a similar one earlier :/
                 This derivation will just use the fundamental theorem of calculus.
 
                 <h2>Problem </h2>
@@ -91,37 +91,49 @@
                 </div>
                 <br>
                 <br>
-                In Fig.1 we see that $\Omega(x,1)$ is just the area under the graph of a constant function $y=1$. This is just the area of a square of base $x-x_0$ and height $1$, hence its area is $x-x_0$.
-                $\Omega(x,2) = \int_{x_0}^x \int_{x_0}^{\tau_1} 1 d\tau_2 d\tau_1 = \int_{x_0}^x (\tau_1 - x_0) d\tau_1$ is the area below the graph of $(\tau_1-x_0)$.This is the area of a triangle with base and height equals to $x-x_0$, as Fig.1 suggests. Its area is $\frac{1}{2}(x-x_0)^2$.
-                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1  = \int_{x_0}^x 0.5(\tau_1-x_0)^2 d\tau_1$ is the area under a parabola and that it isn't a trivial thing to compute. So we need a different approach. From (7) we have :
+                In Fig.1 we see that $\Omega(x,1)$ is just the area under the graph of a constant function $y=1$. This is just the area of a square of base $x-x_0$ and height $1$, hence it's area is $x-x_0$.
+                $\Omega(x,2) = \int_{x_0}^x \int_{x_0}^{\tau_1} 1 d\tau_2 d\tau_1 = \int_{x_0}^x (\tau_1 - x_0) d\tau_1$ is the area below the graph of $(\tau_1-x_0)$.This is the area of a triangle with base and height equals to $x-x_0$, as Fig.1 suggests. It's area is $\frac{1}{2}(x-x_0)^2$.
+                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1  = \int_{x_0}^x 0.5(\tau_1-x_0)^2 d\tau_1$ is the area under a parabola, and this is not trivial to compute. So we need a different approach. From (7) we have :
 
                 $$\Omega(x,3)' = \Omega(x,2) = \frac{1}{2}(x-x_0)^2$$
 
-                If you have done your homework right from the post <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuition of Calculus</a>, where you were asked to find the derivative of $x^n$, you know that $\left(x^n \right)' = n x^{n-1}$.
-                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$, but the problem is that $\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2$, which is close enough to work. With a simple change we find that :
+                If you have done your homework right from the post <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuition of Calculus</a>, where you were asked to find the derivative of $x^n$. You know that $\left(x^n \right)' = n x^{n-1}$.
+                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$, but the problem is that $\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2$, which is close enough to work. With a simple change we find that:
 
                 $$\frac{1}{2\times3}\left((x-x_0)^3\right)' = \frac{1}{2}(x-x_0)^2 = \Omega(x,2)$$
 
                 Which is our answer. If you continue to do similar steps you will notice an interesting pattern. This pattern suggest that $\Omega(x,k) = \frac{(x-x_0)^k}{k!}$. Let check if that hypothesis works with definition (7).
 
+                $$\Omega'(x,k) = \left ( \frac{(x-x_0)^k}{k!} \right )'$$
+                $$\Omega'(x,k) = k \frac{(x-x_0)^{k-1}}{k(k-1)!}$$
+                $$\Omega'(x,k) = \frac{(x-x_0)^{k-1}}{(k-1)!} = \Omega(x, k-1)$$
+
+                Which proves what we want. Then (5) turns to:
+
+                $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k) = \sum_{k=0}^\infty f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}\;\;\;\;\;\;\;\;(8)$$
+
+                This is the Taylor's polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point. A simple application of the Taylor's series is the following:<br>
+                Let's say we wanted to find a function $y$ such that $y' = y$ and $y(0) = 1$.  If you think for a little time you will find that $y^{(k)} = y$ for $i > 0$ and since $y(0) = 1$ we know that $y^{(k)}(0) = 1$ for $i \geq 0$. Therefore, using (8) we get that (note that $x_0 = 0$ in this problem):
+                $$y(x) = \sum_{k=0}^\infty y^{(k)}(0) \frac{x^k}{k!} = \sum_{k=0}^\infty \frac{x^k}{k!} \;\;\;\;\;\;\;\;(9)$$
+
+                (9) is the famous exponential function $y(x) = \exp(x)$.<br><br>
+
+                It is important to note that there are a few limitations with (8). For instance in real life we can't compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we could compute the sum until $N$.
+                Without this constraint we can only approximate the function with $N$ derivatives.Let's compute the error of this approximation, but first let us define the approximation function:
+                $$p_N(x) = \sum_{k=0}^N f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}$$
+
+                This is $N's$ power Taylor approximation function, but what the error of $p_N$ in relation to $f$? Let's look again to our derivation until (3):
+
+                $$f(x) =  f(x_0) + \int_{x_0}^x f'(\tau_1) d\tau_1$$
+                $$f(x) =  f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1  + \int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2 d\tau_1$$
+                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)$$
+                $$f(x) =  p_N(x) + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)\;\;\;\;\;\;\;\;(10)$$
+
+                The error is defined simply as $R_N(x) = f(x)- p_N(x)$, then using (10) we get:
+
+                $$R_N(x) = \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)$$
 
 
-
-
-
-
-
-
-                <!--
-                We can simplify $\int_{x_{0}}^{x}\int_{x_0}^{\tau}f''(x_{0})du d\tau = \int_{x_{0}}^{x}f''(x_{0})(\tau - x_{0}) d\tau = \frac{f''(x_{0})(x-x_{0})^{2}}{2}$ and we get:
-                $$f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +\frac{f''(x_{0})(x-x_{0})^{2}}{2} + \int_{x_{0}}^{x}\int_{x_0}^{\tau}\int_{x_{0}}^{u} f^{(3)}(v) dvdud\tau$$
-                If we repeat the same procedure for all derivatives(infinite) we will get the taylor expansion :
-                $$f(x) = f(x_{0}) + f'(x_{0})(x-x_{0}) +\frac{f''(x_{0})(x-x_{0})^{2}}{2} + \frac{f^{(3)}(x_{0})(x-x_{0})^{3}}{3!} + \dots $$
-                $$f(x) = \sum_{n=0}^{\infty}\frac{f^{(n)}(x_{0})}{n!}(x-x_{0})^{n} \;\;\;\;\;\;\;\;(3)$$
-                And finally an application, lets say we wanted to find a function $y$ such that $y' = y$ and $y(0) =1$. If you think a little we will find that $y^{(i)} = y , i > 0$, then by using (3) and the fact $y(0) =1$ we know $y^{(i)}(0)= 1, i \geq 0$, therefore:
-                $$y(x) = \sum_{n=0}^{\infty}\frac{1}{n!}(x-0)^{n} $$
-                This function is the well known $y = e^{x}$
-                -->
             </div>
         </div>
     </div>
