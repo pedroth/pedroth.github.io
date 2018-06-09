@@ -141,13 +141,22 @@
 
                 This form of the error or remainder, as it is usually called, isn't very practical, otherwise we would so this post with equation (1). Nevertheless, we can still get un closed form expression of an upper bound on the error.
 
-
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
                 <div id="sim1" style="display:none">
                     <canvas id="graph" width="500" height="500"></canvas>
                     <canvas id="absoluteGraph" width="500" height="500"></canvas>
                     <div style="text-align: center;">
                         <p>Simulation.1 Area under the graph of a $f$( left ) vs Area under the graph of $|f|$( right ). You can interact with the left canvas (mouse | touch).</p>
+                    </div>
+                </div>
+                <br><br>
+
+                <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
+                <div id="sim2" style="display:none">
+                    <canvas id="taylor" width="500" height="500"></canvas>
+                    <canvas id="remainder" width="500" height="500"></canvas>
+                    <div style="text-align: center;">
+                        <p>Simulation.2 Truncated Taylor series of $f$( left ) vs Error and upper bound error of the approximation ( right ). You can interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>
