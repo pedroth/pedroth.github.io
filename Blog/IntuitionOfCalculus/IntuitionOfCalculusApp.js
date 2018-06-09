@@ -70,7 +70,6 @@ function linearFunctor(p1, p2) {
 /*
  * Simulations
  */
-
 function Sim1() {
     this.canvasGraph = new CanvasSpace(document.getElementById("linearFunctionGraph"), [[-0.1, 1], [-0.1, 1]]);
     this.canvasTransformation = new CanvasSpace(document.getElementById("linearFunctionTransformation"), [[-0.1, 1], [-0.1, 1]]);
@@ -735,7 +734,6 @@ function Sim4() {
  *
  * General utilitarian functions
  */
-
 function closeState(state) {
     if(state > 0) {
         simulations[state-1].end();

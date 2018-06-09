@@ -112,29 +112,49 @@
 
                 $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k) = \sum_{k=0}^\infty f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}\;\;\;\;\;\;\;\;(8)$$
 
-                This is the Taylor's polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point. A simple application of the Taylor's series is the following:<br>
+                This is the Taylor's polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point.
+
+                <h2>Simple Application</h2>
+                A simple application of the Taylor's series is the following:<br>
+
                 Let's say we wanted to find a function $y$ such that $y' = y$ and $y(0) = 1$.  If you think for a little time you will find that $y^{(k)} = y$ for $i > 0$ and since $y(0) = 1$ we know that $y^{(k)}(0) = 1$ for $i \geq 0$. Therefore, using (8) we get that (note that $x_0 = 0$ in this problem):
                 $$y(x) = \sum_{k=0}^\infty y^{(k)}(0) \frac{x^k}{k!} = \sum_{k=0}^\infty \frac{x^k}{k!} \;\;\;\;\;\;\;\;(9)$$
 
-                (9) is the famous exponential function $y(x) = \exp(x)$.<br><br>
+                (9) is the famous exponential function $y(x) = \exp(x)$.
+
+                <h2> Approximation and error </h2>
 
                 It is important to note that there are a few limitations with (8). For instance in real life we can't compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we could compute the sum until $N$.
-                Without this constraint we can only approximate the function with $N$ derivatives.Let's compute the error of this approximation, but first let us define the approximation function:
+                Without this constraint we can only approximate the function with $N$ derivatives. Let's compute the error of this approximation, but first let us define the approximation function:
                 $$p_N(x) = \sum_{k=0}^N f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}$$
 
                 This is $N's$ power Taylor approximation function, but what the error of $p_N$ in relation to $f$? Let's look again to our derivation until (3):
 
                 $$f(x) =  f(x_0) + \int_{x_0}^x f'(\tau_1) d\tau_1$$
                 $$f(x) =  f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1  + \int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2 d\tau_1$$
-                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)$$
-                $$f(x) =  p_N(x) + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)\;\;\;\;\;\;\;\;(10)$$
+                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
+                $$f(x) =  p_N(x) + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1\;\;\;\;\;\;\;\;(10)$$
 
                 The error is defined simply as $R_N(x) = f(x)- p_N(x)$, then using (10) we get:
 
-                $$R_N(x) = \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(x_0)$$
+                $$R_N(x) = \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
+
+                This form of the error or remainder, as it is usually called, isn't very practical, otherwise we would so this post with equation (1). Nevertheless, we can still get un closed form expression of an upper bound on the error.
+
+
+                <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
+                <div id="sim1" style="display:none">
+                    <canvas id="graph" width="500" height="500"></canvas>
+                    <canvas id="absoluteGraph" width="500" height="500"></canvas>
+                    <div style="text-align: center;">
+                        <p>Simulation.1 Area under the graph of a $f$( left ) vs Area under the graph of $|f|$( right ). You can interact with the left canvas (mouse | touch).</p>
+                    </div>
+                </div>
+                <br><br>
 
 
             </div>
         </div>
     </div>
 </article>
+<script src="TaylorPolynomial.js"></script>
