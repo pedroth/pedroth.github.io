@@ -74,8 +74,10 @@ function Sim1() {
     this.drawCanvasGraph = function() {
         this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
         for(var i = 0; i < this.y1.length - 1; i++) {
-            this.canvasGraph.drawTriangle([this.x[i], this.y[i]],[this.x[i + 1], this.y1[i]], [this.] );
-
+            var p1 = [this.x[i], this.y[i]];
+            var p2 = [this.x[i + 1], this.y1[i]];
+            this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], MyCanvas.simpleShader([255, 0, 0, 255]));
+            this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, MyCanvas.simpleShader([255, 0, 0, 255]));
         }
     }
 

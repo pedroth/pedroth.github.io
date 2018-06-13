@@ -234,23 +234,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 This is $N's$ power Taylor approximation function, but what the error of $p_N$ in relation to $f$? Let's look again to our derivation until (3):
 
                 $$f(x) =  f(x_0) + \int_{x_0}^x f'(\tau_1) d\tau_1$$
-                $$f(x) =  f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1  + \int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2 d\tau_1$$
-                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
-                $$f(x) =  p_N(x) + \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1\;\;\;\;\;\;\;\;(10)$$
+                $$f(x) =  f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1  + \int_{x_0}^x\int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2 d\tau_1$$
+                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
+                $$f(x) =  p_N(x) + \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1\;\;\;\;\;\;\;\;(10)$$
 
                 The error is defined simply as $R_N(x) = f(x)- p_N(x)$, then using (10) we get:
 
-                $$R_N(x) = \int_{x_0}^{\tau_1}\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
+                $$R_N(x) = \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
 
-                This form of the error or remainder, as it is usually called, isn't very practical, otherwise we would so this post with equation (1). Nevertheless, we can still get un closed form expression of an upper bound on the error.
+                This form of the error or remainder, as it is usually called, isn't very practical, otherwise we could derive Taylor polynomial with equation (1). Nevertheless, we can still get a closed form expression for un upper bound. The idea is simple, we just need some nice tools.
 
+                Proposition 1 :
+                $$\left | \int_a^b f(x) dx \right | \leq  \int_a^b |f(x)| dx$$
 
+                This has a simple to proof, if $f(x) > 0$ or $f(x) < 0$ for every $x$ then the inequality becomes a equality. For the case where $f(x)$ has positive and negative values we could imagine, to simplify, that $\forall x \in [a,b] : f(x) > 0$ and $\forall x \in [b,c] : f(x) \leq 0$, then :
+                $$\left | \int_a^c f(x) dx\right | = \left | \int_a^b f(x) dx + \int_b^c f(x) dx\right | = \int_a^b | f(x) |  dx - \int_b^c |f(x)| dx <  \int_a^c |f(x)| dx$$
+
+                Now it is easy to generalize to any function $f$. You can also play with simulation 1, in order to see a visual proof.
+                <br>
+                <br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
                 <div id="sim1" style="display:none">
                     <canvas id="graph" width="500" height="500"></canvas>
                     <canvas id="absoluteGraph" width="500" height="500"></canvas>
                     <div style="text-align: center;">
                         <p>Simulation.1 Area under the graph of a $f$( left ) vs Area under the graph of $|f|$( right ). You can interact with the left canvas (mouse | touch).</p>
+                    </div>
+                </div>
+                <br><br>
+
+                Using proposition 1, we can proceed with the upper bound calculation:
+
+                $$\left | R_N(x)\right| = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right |$$
+
+                This seems difficult since we have multiple integrals, but it is easier than you thing:
+
+                $$\left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right | = \left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right |$$
+
+                Note that $g_1(\tau_1) = \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1}\dots d\tau_2 $, therefore:
+
+                $$\left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right | \leq   \int_{x_0}^x |g_1(\tau_1)| d\tau_1  =  \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_2 \right | d\tau_1 $$
+                $$\Leftrightarrow  \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_2 \right | d\tau_1  = \int_{x_0}^x \left | \int_{x_0}^{\tau_1} g_2(\tau_2) d\tau_2 \right | d\tau_1 \leq \int_{x_0}^x\int_{x_0}^{\tau_1} |g_2(\tau_2)| d\tau_2 d\tau_1 $$
+
+                Applying similar steps:
+
+                $$\Leftrightarrow  \int_{x_0}^x  \int_{x_0}^{\tau_1} |g_2(\tau_2)| d\tau_2 d\tau_1 \leq \dots \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} |f^{(N+1)}(\tau_{N+1})| d\tau_{N+1} \dots d\tau_1 $$
+
+                In summary:
+
+                $$\left | R_N(x)\right | = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right | \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1$$
+                $$\Leftrightarrow \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \max \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 $$
+
+                Let $M = \max \left |f^{(N+1)}(\tau_{N+1}) \right|$, then:
+
+                $$\left | R_N(x) \right |  \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
+
+
+
+                <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
+                <div id="sim2" style="display:none">
+                    <canvas id="taylor" width="500" height="500"></canvas>
+                    <canvas id="remainder" width="500" height="500"></canvas>
+                    <div style="text-align: center;">
+                        <p>Simulation.2 Truncated Taylor series of $f$( left ) vs Error and upper bound error of the approximation from $x_0$ to $x$ ( right ). You can interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>

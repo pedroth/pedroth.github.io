@@ -282,25 +282,36 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
  * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
-    var array = [x1, x2, x3];
-    var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
-    for(var i = 0; i < array.length; i++) {
-        upperBox[0] = min(array[i], upperBox[0]);
-        upperBox[1] = max(array[i], upperBox[1]);
-    }
-    var size = this.getSize();
-    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
-    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+      var array = [x1, x2, x3];
+      var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
+      for(var i = 0; i < array.length; i++) {
+          upperBox[0] = min(array[i], upperBox[0]);
+          upperBox[1] = max(array[i], upperBox[1]);
+      }
+      var size = this.getSize();
+      upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+      upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
 
-    for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
-        for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
-            var x = [i, j];
-            if(this.isInsideTriangle(x, array)) {
-                shader(x, array, this);
-            }
-        }
-    }
-};
+      for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
+          for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
+              var x = [i, j];
+              if(this.isInsideTriangle(x, array)) {
+                  shader(x, array, this);
+              }
+          }
+      }
+  };
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+*/
+  MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
+      this.drawTriangle(x1, x2, x3, shader);
+      this.drawTriangle(x1, x3, x4, shader);
+  };
 
 // slower than the method below
 //MyCanvas.prototype.insideTriangle = function(x, array) {

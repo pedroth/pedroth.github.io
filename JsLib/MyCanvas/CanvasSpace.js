@@ -52,6 +52,20 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
 }
 
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+*/
+CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	y4 = this.integerTransform(x4);
+	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
+}
+
 CanvasSpace.prototype.drawCircle = function(x, r, shader) {
     // it assumes squared canvas, for now ...
     y = this.integerTransform(x);
