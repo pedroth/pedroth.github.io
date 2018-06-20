@@ -18,22 +18,27 @@ var stateIndexApplicationOpen = 0;
 function Sim1() {
     this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-2, 2], [-2, 2]]);
     this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-2, 2], [-2, 2]]);
-    this.samples = 100;
+    this.samples = 25;
     this.x = [];
     this.y1 = [];
     this.y2 = [];
 
     for(var i = 0; i < this.samples; i++) {
         this.x[i] = -1 + 2 * (i / (this.samples - 1));
-        this.y1[i] = x;
-        this.y2[i] = Math.abs(x);
+        this.y1[i] = this.x[i];
+        this.y2[i] = Math.abs(this.y1[i]);
     }
 
     this.baseMouse = function(integerMouse) {
         var mouse = this.canvasGraph.inverseTransform(integerMouse);
+        console.log(mouse + "  " + Math.floor((mouse[0] + 1.0) * (this.y1.length - 1.0) / 2.0 ));
+        this.canvasGraph.drawCircle(mouse, 0.1, MyCanvas.simpleShader([255, 0, 0, 255]));
         var x = mouse[0];
+        if(!this.isMouseDown) {
+                return;
+        }
         if(x >= -1 || x <= 1) {
-            var i = Math.floor((x + 1) * (this.y1.length - 1) / 2 );
+            var i = Math.floor(((x + 1.0) * (this.y1.length - 1.0)) / 2.0 );
             this.y1[i] = mouse[1];
             this.y2[i] = Math.abs(mouse[1]);
         }
@@ -74,8 +79,9 @@ function Sim1() {
     this.drawCanvasGraph = function() {
         this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
         for(var i = 0; i < this.y1.length - 1; i++) {
-            var p1 = [this.x[i], this.y[i]];
-            var p2 = [this.x[i + 1], this.y1[i]];
+            var p1 = [this.x[i], this.y1[i]];
+            var p2 = [this.x[i + 1], this.y1[i + 1]];
+            this.canvasGraph.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
             this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], MyCanvas.simpleShader([255, 0, 0, 255]));
             this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, MyCanvas.simpleShader([255, 0, 0, 255]));
         }

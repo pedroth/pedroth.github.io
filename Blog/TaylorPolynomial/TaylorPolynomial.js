@@ -19,12 +19,30 @@ var stateIndexApplicationOpen = 0;
 function Sim1() {
     this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-2, 2], [-2, 2]]);
     this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-2, 2], [-2, 2]]);
+    this.samples = 25;
+    this.x = [];
+    this.y1 = [];
+    this.y2 = [];
 
+    for(var i = 0; i < this.samples; i++) {
+        this.x[i] = -1 + 2 * (i / (this.samples - 1));
+        this.y1[i] = this.x[i];
+        this.y2[i] = Math.abs(this.y1[i]);
+    }
 
     this.baseMouse = function(integerMouse) {
         var mouse = this.canvasGraph.inverseTransform(integerMouse);
-        var points = [this.fa, this.fb];
-
+        console.log(mouse + "  " + Math.floor((mouse[0] + 1.0) * (this.y1.length - 1.0) / 2.0 ));
+        this.canvasGraph.drawCircle(mouse, 0.1, MyCanvas.simpleShader([255, 0, 0, 255]));
+        var x = mouse[0];
+        if(!this.isMouseDown) {
+                return;
+        }
+        if(x >= -1 || x <= 1) {
+            var i = Math.floor(((x + 1.0) * (this.y1.length - 1.0)) / 2.0 );
+            this.y1[i] = mouse[1];
+            this.y2[i] = Math.abs(mouse[1]);
+        }
     }
 
     this.mouseStart = function (e) {
@@ -60,8 +78,14 @@ function Sim1() {
     }
 
     this.drawCanvasGraph = function() {
-        this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0,0,0,255]));
-
+        this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        for(var i = 0; i < this.y1.length - 1; i++) {
+            var p1 = [this.x[i], this.y1[i]];
+            var p2 = [this.x[i + 1], this.y1[i + 1]];
+            this.canvasGraph.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
+            this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], MyCanvas.simpleShader([255, 0, 0, 255]));
+            this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, MyCanvas.simpleShader([255, 0, 0, 255]));
+        }
     }
 
     this.drawCanvasAbsolute = function() {
@@ -401,6 +425,20 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
 }
 
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+*/
+CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	y4 = this.integerTransform(x4);
+	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
+}
+
 CanvasSpace.prototype.drawCircle = function(x, r, shader) {
     // it assumes squared canvas, for now ...
     y = this.integerTransform(x);
@@ -735,25 +773,36 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
  * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
-    var array = [x1, x2, x3];
-    var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
-    for(var i = 0; i < array.length; i++) {
-        upperBox[0] = min(array[i], upperBox[0]);
-        upperBox[1] = max(array[i], upperBox[1]);
-    }
-    var size = this.getSize();
-    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
-    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+      var array = [x1, x2, x3];
+      var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
+      for(var i = 0; i < array.length; i++) {
+          upperBox[0] = min(array[i], upperBox[0]);
+          upperBox[1] = max(array[i], upperBox[1]);
+      }
+      var size = this.getSize();
+      upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+      upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
 
-    for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
-        for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
-            var x = [i, j];
-            if(this.isInsideTriangle(x, array)) {
-                shader(x, array, this);
-            }
-        }
-    }
-};
+      for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
+          for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
+              var x = [i, j];
+              if(this.isInsideTriangle(x, array)) {
+                  shader(x, array, this);
+              }
+          }
+      }
+  };
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+*/
+  MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
+      this.drawTriangle(x1, x2, x3, shader);
+      this.drawTriangle(x1, x3, x4, shader);
+  };
 
 // slower than the method below
 //MyCanvas.prototype.insideTriangle = function(x, array) {

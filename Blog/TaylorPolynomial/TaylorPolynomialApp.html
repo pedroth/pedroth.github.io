@@ -187,12 +187,34 @@
                 $$\left | R_N(x) \right |  \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
                 $$\left | R_N(x) \right |  \leq   M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!}$$
 
-                So we finally found our upper bound error, $|\hat R_N(x)| \geq |R_N(x)|$
+                So we finally found our upper bound error, $|\hat R_N(x)| \geq |R_N(x)|$. First thing we should notice is that as $h\rightarrow 0$, $|\hat R_N(x_0 + h)| \rightarrow 0$, but also that $|\hat R_N(x_0 + h)| \geq |\hat R_{N+1}(x_0 + h)|$, actually doing a some math, we find that:
 
+                $$|\hat R_N(x_0 + h)| \geq |\hat R_{N+1}(x_0 + h)| \Rightarrow \max |f^{(N+1)}(c)| \frac{h^{N+1}}{(N+1)!} \geq \max |f^{(N+2)}(c)| \frac{h^{N+2}}{(N+2)!} \Rightarrow M \frac{h^{N+1}}{(N+1)!} \geq M' \frac{h^{N+2}}{(N+2)!} \Rightarrow h \leq \frac{M(N + 2)}{M'}$$
 
+                <h2> Convergence of Taylor polynomial </h2>
 
+                To check the convergence of Taylor polynomial we have to show that, $|\hat R_N(x)| \rightarrow 0$ as $N \rightarrow \infty$. Let $f^{(N)}(x) < M, \forall x \in \mathbb{R}, N > 0$ and $M < \infty$, then:
 
+                $$\lim_{N \rightarrow \infty} M \frac{(x-x_0)^{N+1}}{(N+1)!} = 0$$
 
+                To proof that we just need to prove that:
+                $$\lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
+
+                This is simple to prove since $h$ is finite. Let $k = \lfloor h  \rfloor$:
+
+                $$\frac{h^N}{N!} = \frac{h^k}{1 \dots k} \cdot \frac{h^{N-k}}{(k+1) \dots N}$$
+
+                Let $C = \frac{h^k}{1 \dots k}$, is easy to see that $C > 1$,
+
+                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-K}}$$
+
+                $$\lim_{N\rightarrow 0} C \frac{h^{N-k}}{(k+1)^{N-K}} = 0 \Rightarrow \lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
+
+                End proof.<br><br>
+
+                Now I will end this post with a approximation of $f$ simulation, where the error and the bounded error is displayed.
+                <br>
+                <br>
                 <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
                 <div id="sim2" style="display:none">
                     <canvas id="taylor" width="500" height="500"></canvas>
