@@ -3,7 +3,8 @@ var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
 var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
 
 var simulations = [
-    new Sim1()
+    new Sim1(),
+    new Sim2()
 ];
 
 /**
@@ -16,12 +17,14 @@ var stateIndexApplicationOpen = 0;
  * Simulations
  */
 function Sim1() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-2, 2], [-2, 2]]);
-    this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-2, 2], [-2, 2]]);
+    this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-1.5, 1.5], [-1.5, 1.5]]);
+    this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-1.5, 1.5], [-1.5, 1.5]]);
     this.samples = 25;
     this.x = [];
     this.y1 = [];
     this.y2 = [];
+    this.mouse = []
+    this.isMouseDown = false;
 
     for(var i = 0; i < this.samples; i++) {
         this.x[i] = -1 + 2 * (i / (this.samples - 1));
@@ -29,18 +32,45 @@ function Sim1() {
         this.y2[i] = Math.abs(this.y1[i]);
     }
 
+    this.s1Shader = function(x, element, canvas) {
+        var y = canvas.inverseTransform(x);
+        var b = x[0] % 2 == x[1] % 2;
+        if (y[1] > 0 && b) {
+            canvas.drawPxl(x, [255, 0, 0, 255]);
+        } else if(y[1] < 0 && b) {
+            canvas.drawPxl(x, [0, 0, 255, 255]);
+        }
+    }
+
+    this.smooth = function(y) {
+        var z = [];
+        z[0] = (y[0] + y[1]) / 2;
+        for(var i = 1; i < y.length-1; i++) {
+            z[i] = (y[i] + y[i+1] + y[i-1]) / 3;
+        }
+        z[y.length-1] = (y[y.length-2] + y[y.length-1]) / 2;
+        return z;
+    }
+
+    this.map = function(y, f) {
+        var z = [];
+        for(var i = 0; i < y.length; i++) {
+            z[i] = f(y[i]);
+        }
+        return z;
+    }
+
     this.baseMouse = function(integerMouse) {
-        var mouse = this.canvasGraph.inverseTransform(integerMouse);
-        console.log(mouse + "  " + Math.floor((mouse[0] + 1.0) * (this.y1.length - 1.0) / 2.0 ));
-        this.canvasGraph.drawCircle(mouse, 0.1, MyCanvas.simpleShader([255, 0, 0, 255]));
-        var x = mouse[0];
+       this.mouse = this.canvasGraph.inverseTransform(integerMouse);
+        var x = this.mouse[0];
         if(!this.isMouseDown) {
                 return;
         }
-        if(x >= -1 || x <= 1) {
-            var i = Math.floor(((x + 1.0) * (this.y1.length - 1.0)) / 2.0 );
-            this.y1[i] = mouse[1];
-            this.y2[i] = Math.abs(mouse[1]);
+        if(x >= -1.0 || x <= 1.0) {
+            var i = Math.min(this.samples - 1, Math.max(0, Math.floor(((x + 1.0) * (this.y1.length - 1.0)) / 2.0 )));
+            this.y1[i] = this.mouse[1];
+            this.y1 = this.smooth(this.y1);
+            this.y2 = this.map(this.y1, Math.abs);
         }
     }
 
@@ -79,16 +109,23 @@ function Sim1() {
     this.drawCanvasGraph = function() {
         this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
         for(var i = 0; i < this.y1.length - 1; i++) {
-            var p1 = [this.x[i], this.y1[i]];
-            var p2 = [this.x[i + 1], this.y1[i + 1]];
-            this.canvasGraph.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
-            this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], MyCanvas.simpleShader([255, 0, 0, 255]));
-            this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, MyCanvas.simpleShader([255, 0, 0, 255]));
+           var p1 = [this.x[i], this.y1[i]];
+           var p2 = [this.x[i + 1], this.y1[i + 1]];
+           this.canvasGraph.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
+           this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], this.s1Shader);
+           this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, this.s1Shader);
         }
     }
 
     this.drawCanvasAbsolute = function() {
-
+        this.canvasAbsolute.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        for(var i = 0; i < this.y2.length - 1; i++) {
+            var p1 = [this.x[i], this.y2[i]];
+            var p2 = [this.x[i + 1], this.y2[i + 1]];
+            this.canvasAbsolute.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
+            this.canvasAbsolute.drawTriangle(p1, p2, [this.x[i + 1], this.y2[i + 1]], this.s1Shader);
+            this.canvasAbsolute.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, this.s1Shader);
+        }
     }
 
     this.draw = function() {
@@ -123,7 +160,8 @@ function Sim1() {
 
 
 function Sim2() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("secantApproximation"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasTaylor = new CanvasSpace(document.getElementById("taylor"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasRemainder = new CanvasSpace(document.getElementById("remainder"), [[-0.1, 1], [-0.1, 1]]);
     this.xImg = ImageIO.loadImage("resources/x.png");
     this.yImg = ImageIO.loadImage("resources/y.png");
     this.fImg = ImageIO.loadImage("resources/f.png");

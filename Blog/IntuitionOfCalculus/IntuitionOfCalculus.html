@@ -507,7 +507,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 We model our device as $\phi$, and we know that $\phi(x) = y + \tau$, where $y$ is a constant and $\tau$ is a <a href="https://en.wikipedia.org/wiki/Random_variable">random variable </a>. I will not discuss much of the concept of random variable but intuitively every time we measure something with $\phi$ we measure $y$ plus some noise (a value which is always different ).
                 We could start talking about probabilities in more detail but I think is best to postpone that for a future post. Still, we can get an intuition of the problem.
                 Having that said we state the problem as follow: <br>
-                Given $n$ samples of measurements of $\phi$ at a particular $x_0$ estimate $y$ (note that $\phi$ does not depend on $x$)? Also, assume that the noise of each sample $\tau_i$ is bounded by some finite constant $\varepsilon > 0$. Assume as well that the noise is uniform, that is the samples $\tau_i$ can be a point in $[y-\varepsilon, y+\varepsilon]$ with equal probability.
+                Given $n$ samples of measurements of $\phi$ at a particular $x_0$, estimate $y$ (note that $\phi$ does not depend on $x$)? Also, assume that the noise of each sample $\tau_i$ is bounded by some finite constant $\varepsilon > 0$. Assume as well that the noise is uniform, that is the samples $\tau_i$ can be a point in $[y-\varepsilon, y+\varepsilon]$ with equal probability.
                 Someone immediately says, "take the sample average", but I would respond why? Why not the minimum of the samples or maximum or even the third sample, what is the reason to choose the mean? First, we need to note that this problem is ill-defined. Why having samples would help us estimate $ y$? Is this problem solvable (since is not deterministic)?
                 We could apply probability theory and define the problem in a better way, but we will do as our friend <a href="https://en.wikipedia.org/wiki/Adrien-Marie_Legendre">Legendre</a> and see this problem in an intuitive matter (check Victor J. Katz History of Mathematics books).
 
@@ -569,7 +569,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$2n\mu - 2\sum_{i=1}^n\phi_i = 0$$
                 $$\mu = \frac{1}{n}\sum_{i=1}^n\phi_i$$
 
-                Which is the average of the samples, but know we have deduced it from a basic principle. Now we know that every average you do is the minimum distance point to all other points. All you will be able to generalize the average concept by making small changes to the cost function. Now we conclude this topic.
+                Which is the average of the samples, but now we have deduced it from a basic principle. We now know that the average is the minimum squared distance point to all other points. This way of looking at the average as an optimization problem will let us generalize the average by changing the distance function. Now we conclude this topic.
                 <br/>
                 <br/>
 

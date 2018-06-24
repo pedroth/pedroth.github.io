@@ -310,7 +310,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
 */
   MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
       this.drawTriangle(x1, x2, x3, shader);
-      this.drawTriangle(x1, x3, x4, shader);
+      this.drawTriangle(x3, x4, x1, shader);
   };
 
 // slower than the method below

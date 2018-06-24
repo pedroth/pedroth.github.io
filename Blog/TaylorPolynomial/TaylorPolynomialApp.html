@@ -112,10 +112,10 @@
 
                 $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k) = \sum_{k=0}^\infty f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}\;\;\;\;\;\;\;\;(8)$$
 
-                This is the Taylor's polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point.
+                This is the Taylor polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point.
 
                 <h2>Simple Application</h2>
-                A simple application of the Taylor's series is the following:<br>
+                A simple application of the Taylor series is the following:<br>
 
                 Let's say we wanted to find a function $y$ such that $y' = y$ and $y(0) = 1$.  If you think for a little time you will find that $y^{(k)} = y$ for $i > 0$ and since $y(0) = 1$ we know that $y^{(k)}(0) = 1$ for $i \geq 0$. Therefore, using (8) we get that (note that $x_0 = 0$ in this problem):
                 $$y(x) = \sum_{k=0}^\infty y^{(k)}(0) \frac{x^k}{k!} = \sum_{k=0}^\infty \frac{x^k}{k!} \;\;\;\;\;\;\;\;(9)$$
@@ -124,7 +124,7 @@
 
                 <h2> Approximation and error </h2>
 
-                It is important to note that there are a few limitations with (8). For instance in real life we can't compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we could compute the sum until $N$.
+                It is important to note that there are a few limitations with (8). For instance, in real life, we can't compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we could compute the sum until $N$.
                 Without this constraint we can only approximate the function with $N$ derivatives. Let's compute the error of this approximation, but first let us define the approximation function:
                 $$p_N(x) = \sum_{k=0}^N f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}$$
 
@@ -139,7 +139,7 @@
 
                 $$R_N(x) = \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
 
-                This form of the error or remainder, as it is usually called, isn't very practical, otherwise we could derive Taylor polynomial with equation (1). Nevertheless, we can still get a closed form expression for un upper bound. The idea is simple, we just need some nice tools.
+                This form of the error or remainder, as it is usually called, isn't very practical, otherwise, we could derive Taylor polynomial with equation (1). Nevertheless, we can still get a closed form expression for an upper bound. The idea is simple, we just need some nice tools.
 
                 Proposition 1 :
                 $$\left | \int_a^b f(x) dx \right | \leq  \int_a^b |f(x)| dx$$
@@ -155,7 +155,7 @@
                     <canvas id="graph" width="500" height="500"></canvas>
                     <canvas id="absoluteGraph" width="500" height="500"></canvas>
                     <div style="text-align: center;">
-                        <p>Simulation.1 Area under the graph of a $f$( left ) vs Area under the graph of $|f|$( right ). You can interact with the left canvas (mouse | touch).</p>
+                        <p>Simulation.1 Area under the graph of a $f$ [ left ] vs Area under the graph of $|f|$ [ right ]. Blue area is negative and red area is positive. $|f|$ has always positive area. You can interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>
@@ -185,19 +185,18 @@
                 Let $M = \max \left |f^{(N+1)}(c) \right|$, that is $\left |f^{(N+1)}(c) \right| \geq \left |f^{(N+1)}(\tau) \right|, \forall \tau \in [x_0, x]$:
 
                 $$\left | R_N(x) \right |  \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
-                $$\left | R_N(x) \right |  \leq   M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!}$$
+                $$\left | R_N(x) \right |  \leq   M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!} = |\hat R_N(x)|$$
 
-                So we finally found our upper bound error, $|\hat R_N(x)| \geq |R_N(x)|$. First thing we should notice is that as $h\rightarrow 0$, $|\hat R_N(x_0 + h)| \rightarrow 0$, but also that $|\hat R_N(x_0 + h)| \geq |\hat R_{N+1}(x_0 + h)|$, actually doing a some math, we find that:
-
-                $$|\hat R_N(x_0 + h)| \geq |\hat R_{N+1}(x_0 + h)| \Rightarrow \max |f^{(N+1)}(c)| \frac{h^{N+1}}{(N+1)!} \geq \max |f^{(N+2)}(c)| \frac{h^{N+2}}{(N+2)!} \Rightarrow M \frac{h^{N+1}}{(N+1)!} \geq M' \frac{h^{N+2}}{(N+2)!} \Rightarrow h \leq \frac{M(N + 2)}{M'}$$
+                So we finally found our upper bound error, $|\hat R_N(x)|$. This upper bound is useful to study the properties of the Taylor series, since if we prove that as $N \rightarrow \infty, |\hat R_N(x)| \rightarrow 0$ then we know that $|R_N(x)| \rightarrow 0$.
+                This statement leads us to the question of the convergence of the Taylor polynomial.
 
                 <h2> Convergence of Taylor polynomial </h2>
 
-                To check the convergence of Taylor polynomial we have to show that, $|\hat R_N(x)| \rightarrow 0$ as $N \rightarrow \infty$. Let $f^{(N)}(x) < M, \forall x \in \mathbb{R}, N > 0$ and $M < \infty$, then:
+                To check the convergence of Taylor polynomial we have to show that, $|\hat R_N(x)| \rightarrow 0$ as $N \rightarrow \infty$. Let $\left |f^{(N)}(x) \right | < M < \infty, \forall x \in \mathbb{R}, N > 0$, then:
 
                 $$\lim_{N \rightarrow \infty} M \frac{(x-x_0)^{N+1}}{(N+1)!} = 0$$
 
-                To proof that we just need to prove that:
+                Let $x = x_0 + h$, then:
                 $$\lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
 
                 This is simple to prove since $h$ is finite. Let $k = \lfloor h  \rfloor$:
@@ -206,13 +205,19 @@
 
                 Let $C = \frac{h^k}{1 \dots k}$, is easy to see that $C > 1$,
 
-                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-K}}$$
+                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-K}} = C \left ( \frac{h}{k+1} \right )^{N-k}$$
 
-                $$\lim_{N\rightarrow 0} C \frac{h^{N-k}}{(k+1)^{N-K}} = 0 \Rightarrow \lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
+                Since $h < k+1$ by definition:
 
-                End proof.<br><br>
+                $$\lim_{N\rightarrow 0} C \left ( \frac{h}{k+1} \right )^{N-k} = 0 \Rightarrow \lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
 
-                Now I will end this post with a approximation of $f$ simulation, where the error and the bounded error is displayed.
+                End proof.
+
+                <h2> Conclusion </h2>
+
+                In this post we derived the famous Taylor's Series using just the fundamental theorem of calculus, we also proved it's convergence to the function we are trying to approximate. Although we use a pretty restrictive pre-conditions on that convergence, I will put as an exercise to the reader to prove it's convergence with other pre-conditions.
+                In a sense the Taylor polynomial is the extension of the concept of linear approximation we saw in the post <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuition of calculus</a>.
+                We also checked an application for the series in solving a differential equation, but there are many more, as we will see in future posts. Now I will end this post with a simulation, where an approximation of $f$ is shown as well as the error and the bounded error.
                 <br>
                 <br>
                 <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
