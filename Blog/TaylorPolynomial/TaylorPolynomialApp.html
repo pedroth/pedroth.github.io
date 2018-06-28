@@ -182,7 +182,7 @@
                 $$\left | R_N(x)\right | = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right | \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1$$
                 $$\Leftrightarrow \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \max \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 $$
 
-                Let $M = \max \left |f^{(N+1)}(c) \right|$, that is $\left |f^{(N+1)}(c) \right| \geq \left |f^{(N+1)}(\tau) \right|, \forall \tau \in [x_0, x]$:
+                Let $M = \max \left |f^{(N+1)}(c) \right|$, that is $\left |f^{(N+1)}(\tau) \right| \geq \left |f^{(N+1)}(c) \right|, \forall c \in [x_0, x]$:
 
                 $$\left | R_N(x) \right |  \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
                 $$\left | R_N(x) \right |  \leq   M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!} = |\hat R_N(x)|$$
@@ -223,7 +223,20 @@
                 <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
                 <div id="sim2" style="display:none">
                     <canvas id="taylor" width="500" height="500"></canvas>
-                    <canvas id="remainder" width="500" height="500"></canvas>
+                    <canvas id="remainder" width="500" height="500"></canvas><br>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2 col-md-offset-2">
+                                <input id="taylor_slide" type="range" min="1" max="5" value="1" onchange="app.apply(1, function(x) {x.sliderUpdate();})">
+                            </div>
+                            <div class="col-md-2">
+                                <div id="taylor_n">$N = $ 1</div>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" onclick="app.apply(1, function(x) {x.generateNewField();})">generate function</button>
+                            </div>
+                        </div>
+                    </div>
                     <div style="text-align: center;">
                         <p>Simulation.2 Truncated Taylor series of $f$( left ) vs Error and upper bound error of the approximation from $x_0$ to $x$ ( right ). You can interact with the left canvas (mouse | touch).</p>
                     </div>

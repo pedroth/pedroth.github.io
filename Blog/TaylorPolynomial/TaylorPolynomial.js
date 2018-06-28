@@ -163,18 +163,12 @@ function Sim1() {
 function Sim2() {
     this.canvasTaylor = new CanvasSpace(document.getElementById("taylor"), [[-0.1, 1], [-0.1, 1]]);
     this.canvasRemainder = new CanvasSpace(document.getElementById("remainder"), [[-0.1, 1], [-0.1, 1]]);
-    this.xImg = ImageIO.loadImage("resources/x.png");
-    this.yImg = ImageIO.loadImage("resources/y.png");
-    this.fImg = ImageIO.loadImage("resources/f.png");
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.fx = [];
-    this.step = 0.25;
-    this.cursor = 0.5;
-    this.movingStep = 0.25;
     this.bandwidth = 5;
     this.maxAmp = 10;
-    this.fourierCoef = [];
+    this.w = [];
     this.samplesPerPeriod = 12;
     /**
      * I want to take k samples in a sine wave period (period of sine wave is 2 * pi = T).
@@ -185,45 +179,28 @@ function Sim2() {
      */
     this.samples = Math.ceil((this.bandwidth - 1) * (1 << this.bandwidth - 1) * (this.samplesPerPeriod / (2 * Math.PI)));
 
-    // functionMap must be updated since it depends on object variables
-    this.functionMap = {};
-
-    this.createFourierLambda = function(w) {
-      return function(x) {
-        var acc = 0;
-        var mul = 1;
-        for(var i = 0; i < w.length; i++) {
-            acc += mul * w[i] * Math.sin(i * (1.0 / mul) * x);
-            mul /= 2;
-        }
-        return acc;
-      }
-    }
-
-    this.updateFunctionMap = function() {
-        for(var i = 0; i < this.bandwidth; i++) {
-                    this.fourierCoef[i] = this.maxAmp * Math.random();
-        }
-        this.functionMap = {
-            Quadratic : function(x) { return (x - 0.5) * (x - 0.5)},
-            Polynomial : function(x) {
-                var z = 7.5 * x - 4;
-                return (z * z * z * z + z * z * z - 11 * z * z - 9 * z + 18) * 0.1;
-            },
-            Fourier : this.createFourierLambda(this.fourierCoef),
-            Exponential: function(x) {
-                var z = 5 * x;
-                return z * Math.exp(-z);
+    this.generateField = function(w) {
+        return function(x) {
+            var acc = 0;
+            var mul = 1;
+            for(var i = 0; i < w.length; i++) {
+                acc += mul * w[i] * Math.sin(i * (1.0 / mul) * x);
+                mul /= 2;
             }
+            return acc;
         }
     }
 
     this.buildFunction = function(samples) {
+        this.w = [];
+        for(var i = 0; i < this.bandwidth; i++) {
+            this.w[i] = -this.maxAmp + 2 * this.maxAmp * Math.random();
+        }
+        var f = this.generateField(this.w);
         var y = [];
         var minY = Number.MAX_VALUE;
         var maxY = Number.MIN_VALUE;
         var aveY = 0;
-        var f = this.functionMap[$("#function_sim2").val()];
         var h = 1.0 / (samples - 1);
         for(var i = 0; i < samples; i++) {
             var x =  h * i;
@@ -232,6 +209,8 @@ function Sim2() {
             maxY = Math.max(maxY, y[i]);
             aveY += y[i];
         }
+        var xminMax = this.canvasTaylor.cameraSpace[0]
+        this.canvasTaylor.setCamera([xminMax, [minY, maxY]]);
         return {func : f, funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
     }
 
@@ -240,100 +219,77 @@ function Sim2() {
         if(!this.isMouseDown) {
             return;
         }
-        var mouse = this.canvasGraph.inverseTransform(integerMouse);
-        this.cursor = Math.max(mouse[0], 0);
+        var mouse = this.canvasTaylor.inverseTransform(integerMouse);
     }
 
     this.mouseStart = function (e) {
+        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
         this.isMouseDown = true;
+        this.baseMouse([my, mx]);
     }
 
     this.mouseEnd = function (e) {
         this.isMouseDown = false;
     }
 
-    this.mouseMove = function (e) {
-        var rect = this.canvasGraph.canvas.getBoundingClientRect();
-        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
-        this.baseMouse([my, mx]);
-    }
+    this.mouseMove = function (e) { }
 
     this.touchStart = function (e) {
+        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
+        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
         this.isMouseDown = true;
+        this.baseMouse([my, mx]);
     }
 
     this.touchEnd = function (e) {
         this.isMouseDown = false;
     }
 
-    this.touchMove = function (e) {
-        var rect = this.canvasGraph.canvas.getBoundingClientRect();
-        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
-        this.baseMouse([my, mx]);
-    }
+    this.touchMove = function (e) { }
 
     this.checkIfCanDraw = function() {
         return $("#sim2").is(":visible");
     }
 
     this.sliderUpdate = function() {
-        var sliderValue = $("#h_slider").val();
-        this.step = (1.0 / (100 - (sliderValue - 1)));
-        $("#h_sim").text("$ h = $" + this.step);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "h_sim"]);
+        var sliderValue = $("#taylor_slide").val();
+        $("#taylor_n").text("$ N  = $" + sliderValue);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "taylor_n"]);
     }
 
-    this.selectUpdate = function() {
-        this.updateFunctionMap();
-        this.fx = this.buildFunction(this.samples);
-    }
-
-    this.drawSetup = function() {
-        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
-        drawArrow([0, -0.1], [0, 1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
-        this.canvasGraph.drawImage(this.xImg, [0.9, -0.01]);
-        this.canvasGraph.drawImage(this.yImg, [-0.05, 0.9]);
-    }
-
-    this.drawCanvasGraph = function() {
-        var h = 1.0 / (this.samples - 1);
-        var epsilon = 0.2
-        var scale = (1 + epsilon) * (this.fx.max - this.fx.min);
-        for(var i = 0; i < this.samples - 1; i++) {
-            var zi = (this.fx.funcSamples[i] - this.fx.min) / scale;
-            var zj = (this.fx.funcSamples[i + 1] - this.fx.min) / scale;
+    this.updateTaylorCanvas = function() {
+        this.canvasTaylor.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        var h = 1.0 / this.samples;
+        for(var i = 0; i < this.fx.funcSamples.length-1; i++) {
             var x = h * i;
-            this.canvasGraph.drawLine([x, zi], [x + h, zj], MyCanvas.simpleShader([0, 0, 255, 255]));
+            var y = this.fx.funcSamples[i];
+            var epsilon = h / 10;
+            this.canvasTaylor.drawLine([x, y], [x + h, this.fx.funcSamples[i+1]], MyCanvas.simpleShader([0, 0, 0, 255]));
         }
+    }
 
-        this.movingStep += (this.step - this.movingStep) * 0.01;
+    this.updateRemainderCanvas = function() {
 
-        var f = (this.fx.func(this.cursor) - this.fx.min) / scale;
-        var fh = (this.fx.func(this.cursor + this.movingStep) - this.fx.min) / scale;
-
-        this.canvasGraph.drawCircle([this.cursor, f], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasGraph.drawCircle([this.cursor + this.movingStep, fh], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-
-        var g = linearFunctor([this.cursor, f], [this.cursor + this.movingStep, fh]);
-        this.canvasGraph.drawLine([-1, g(-1)], [1.5, g(1.5)], MyCanvas.simpleShader([0, 0, 0, 255]));
-
-        var df = ((fh - f) / this.movingStep);
-        $("#df_sim").text("df = " + df.toFixed(3));
     }
 
     this.draw = function() {
-        this.canvasGraph.clearImage([255, 255, 255, 255]);
-        this.drawSetup()
-        this.drawCanvasGraph();
-        this.canvasGraph.paintImage();
+        this.canvasTaylor.clearImage([255, 255, 255, 255]);
+        this.canvasRemainder.clearImage([255, 255, 255, 255]);
+        this.updateTaylorCanvas();
+        this.updateRemainderCanvas();
+        this.canvasTaylor.paintImage();
+        this.canvasRemainder.paintImage();
     }
 
     this.start = function() {
         $("#sim2").slideDown();
-        this.updateFunctionMap();
-        //buildFunction depends on updateFunctionMap;
-        this.fx = this.buildFunction(this.samples);
         this.sliderUpdate();
+        this.fx = this.buildFunction(this.samples);
+    }
+
+    this.generateNewField = function() {
+        this.fx = this.buildFunction(this.samples);
     }
 
     this.end = function() {
@@ -341,14 +297,13 @@ function Sim2() {
     }
 
     this.init = function() {
-        this.canvasGraph.addEventListener("touchstart", function(e) { apply(1, function(x) { x.touchStart(e) })}, false);
-        this.canvasGraph.addEventListener("touchend", function(e) { apply(1, function(x) { x.touchEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("touchmove", function(e) { apply(1, function(x) { x.touchMove(e) }) }, false);
+        this.canvasTaylor.addEventListener("touchstart", function(e) { apply(1, function(x) { x.touchStart(e) })}, false);
+        this.canvasTaylor.addEventListener("touchend",   function(e) { apply(1, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasTaylor.addEventListener("touchmove",  function(e) { apply(1, function(x) { x.touchMove(e) }) }, false);
 
-        this.canvasGraph.addEventListener("mousedown", function(e) { apply(1, function(x) { x.mouseStart(e) }) }, false);
-        this.canvasGraph.addEventListener("mouseup", function(e) { apply(1, function(x) { x.mouseEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("mousemove",function(e) { apply(1, function(x) { x.mouseMove(e) }) }, false);
-
+        this.canvasTaylor.addEventListener("mousedown", function(e)  { apply(1, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasTaylor.addEventListener("mouseup",   function(e)  { apply(1, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasTaylor.addEventListener("mousemove", function(e)  { apply(1, function(x) { x.mouseMove(e) }) }, false);
     }
 }
 
@@ -492,10 +447,10 @@ CanvasSpace.prototype.drawImage = function (img, x, shader) {
 
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 CanvasSpace.prototype.setCamera = function(camera) {
-    if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
+    if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
 		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
 	}
-	this.cameraSpace = cameraSpace;
+	this.cameraSpace = camera;
 }
 
 

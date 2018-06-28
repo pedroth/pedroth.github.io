@@ -81,10 +81,10 @@ CanvasSpace.prototype.drawImage = function (img, x, shader) {
 
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 CanvasSpace.prototype.setCamera = function(camera) {
-    if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
+    if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
 		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
 	}
-	this.cameraSpace = cameraSpace;
+	this.cameraSpace = camera;
 }
 
 
