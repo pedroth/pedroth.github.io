@@ -170,6 +170,7 @@ function Sim2() {
     this.maxAmp = 10;
     this.w = [];
     this.samplesPerPeriod = 12;
+    this.samplesPoly = 25;
     /**
      * I want to take k samples in a sine wave period (period of sine wave is 2 * pi = T).
      * In [0,1] interval I will take k / T samples.
@@ -179,7 +180,7 @@ function Sim2() {
      */
     this.samples = Math.ceil((this.bandwidth - 1) * (1 << this.bandwidth - 1) * (this.samplesPerPeriod / (2 * Math.PI)));
 
-    this.generateField = function(w) {
+    this.generateFourier = function(w) {
         return function(x) {
             var acc = 0;
             var mul = 1;
@@ -196,7 +197,7 @@ function Sim2() {
         for(var i = 0; i < this.bandwidth; i++) {
             this.w[i] = -this.maxAmp + 2 * this.maxAmp * Math.random();
         }
-        var f = this.generateField(this.w);
+        var f = this.generateFourier(this.w);
         var y = [];
         var minY = Number.MAX_VALUE;
         var maxY = Number.MIN_VALUE;
@@ -209,8 +210,8 @@ function Sim2() {
             maxY = Math.max(maxY, y[i]);
             aveY += y[i];
         }
-        var xminMax = this.canvasTaylor.cameraSpace[0]
-        this.canvasTaylor.setCamera([xminMax, [minY, maxY]]);
+        var xMinMax = this.canvasTaylor.cameraSpace[0]
+        this.canvasTaylor.setCamera([xMinMax, [minY, maxY]]);
         return {func : f, funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
     }
 
@@ -252,13 +253,10 @@ function Sim2() {
         return $("#sim2").is(":visible");
     }
 
-    this.sliderUpdate = function() {
-        var sliderValue = $("#taylor_slide").val();
-        $("#taylor_n").text("$ N  = $" + sliderValue);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "taylor_n"]);
-    }
-
     this.updateTaylorCanvas = function() {
+        var dist = Math.abs(this.fx.min - this.fx.max);
+        var percentCamera = 0.2;
+        this.canvasTaylor.setCamera([[-0.1, 1],[this.fx.min - percentCamera * dist, this.fx.max + percentCamera * dist]])
         this.canvasTaylor.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
         var h = 1.0 / this.samples;
         for(var i = 0; i < this.fx.funcSamples.length-1; i++) {
@@ -284,7 +282,6 @@ function Sim2() {
 
     this.start = function() {
         $("#sim2").slideDown();
-        this.sliderUpdate();
         this.fx = this.buildFunction(this.samples);
     }
 

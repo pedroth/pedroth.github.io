@@ -13,6 +13,35 @@ var simulations = [
 **/
 var stateIndexApplicationOpen = 0;
 
+/**
+ * Copied from https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
+ *
+ **/
+function HSVtoRGB(h, s, v) {
+    var r, g, b, i, f, p, q, t;
+    if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+    };
+}
+
 /*
  * Simulations
  */
@@ -169,6 +198,9 @@ function Sim2() {
     this.maxAmp = 10;
     this.w = [];
     this.samplesPerPeriod = 12;
+    this.samplesPoly = 25;
+    this.x0 = 0;
+    this.taylorDegree = 5;
     /**
      * I want to take k samples in a sine wave period (period of sine wave is 2 * pi = T).
      * In [0,1] interval I will take k / T samples.
@@ -178,7 +210,7 @@ function Sim2() {
      */
     this.samples = Math.ceil((this.bandwidth - 1) * (1 << this.bandwidth - 1) * (this.samplesPerPeriod / (2 * Math.PI)));
 
-    this.generateField = function(w) {
+    this.generateFourier = function(w) {
         return function(x) {
             var acc = 0;
             var mul = 1;
@@ -195,7 +227,7 @@ function Sim2() {
         for(var i = 0; i < this.bandwidth; i++) {
             this.w[i] = -this.maxAmp + 2 * this.maxAmp * Math.random();
         }
-        var f = this.generateField(this.w);
+        var f = this.generateFourier(this.w);
         var y = [];
         var minY = Number.MAX_VALUE;
         var maxY = Number.MIN_VALUE;
@@ -208,10 +240,12 @@ function Sim2() {
             maxY = Math.max(maxY, y[i]);
             aveY += y[i];
         }
-        var xminMax = this.canvasTaylor.cameraSpace[0]
-        this.canvasTaylor.setCamera([xminMax, [minY, maxY]]);
+        var xMinMax = this.canvasTaylor.cameraSpace[0]
+        this.canvasTaylor.setCamera([xMinMax, [minY, maxY]]);
         return {func : f, funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
     }
+
+
 
     // function that do stuff with mouse coordinates
     this.baseMouse = function(integerMouse) {
@@ -219,6 +253,7 @@ function Sim2() {
             return;
         }
         var mouse = this.canvasTaylor.inverseTransform(integerMouse);
+        this.x0 = mouse[0];
     }
 
     this.mouseStart = function (e) {
@@ -251,21 +286,70 @@ function Sim2() {
         return $("#sim2").is(":visible");
     }
 
-    this.sliderUpdate = function() {
-        var sliderValue = $("#taylor_slide").val();
-        $("#taylor_n").text("$ N  = $" + sliderValue);
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "taylor_n"]);
+    this.factorial = function(x) {
+        var acc = 1;
+        for(var i=x; i > 0; i--) {
+            acc *= x;
+            x--;
+        }
+    }
+
+    this.df = function(f, x, n) {
+        if(n == 0) {
+            return f(x);
+        }
+        var h = 1;
+        do {
+            (df(f, x + h, n-1) - df(f, x - h, n-1)) / h;
+        }while();
+    }
+
+    this.taylorPoly = function(f, n) {
+        var derivatives = [];
+        for(var i = 0; i < n; i++) {
+            derivatives.append()
+        }
+        return function(x) {
+
+        }
+
+    }
+
+    this.drawTaylorPolynomial = function() {
+        var polynomials = [];
+        var colors = []
+        var h = 1 / (this.taylorDegree - 1);
+        for(var i = 0; i < this.taylorDegree; i++) {
+            polynomials.append(this.taylorPoly(this.fx.f, i));
+            rgb = HSVtoRGB(h * i, 1.0, 1.0);
+            colors.append([rgb.r, rgb.g, rgb.b, 255]);
+        }
+        var h = 1 / (this.samplesPoly - 1);
+        for(var i = 0; i < this.samplesPoly - 1; i++) {
+            for(var j = 0; j < this.taylorDegree; j++) {
+              var x = h * j;
+              var xh = x + h;
+              var y = polynomials[j](x);
+              var yh = polynomials[j](xh);
+              this.canvasTaylor.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(colors[j]));
+            }
+        }
+
+
     }
 
     this.updateTaylorCanvas = function() {
+        var dist = Math.abs(this.fx.min - this.fx.max);
+        var percentCamera = 0.2;
+        this.canvasTaylor.setCamera([[-0.1, 1],[this.fx.min - percentCamera * dist, this.fx.max + percentCamera * dist]])
         this.canvasTaylor.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
         var h = 1.0 / this.samples;
         for(var i = 0; i < this.fx.funcSamples.length-1; i++) {
             var x = h * i;
             var y = this.fx.funcSamples[i];
-            var epsilon = h / 10;
             this.canvasTaylor.drawLine([x, y], [x + h, this.fx.funcSamples[i+1]], MyCanvas.simpleShader([0, 0, 0, 255]));
         }
+        this.drawTaylorPolynomial();
     }
 
     this.updateRemainderCanvas = function() {
@@ -283,7 +367,6 @@ function Sim2() {
 
     this.start = function() {
         $("#sim2").slideDown();
-        this.sliderUpdate();
         this.fx = this.buildFunction(this.samples);
     }
 

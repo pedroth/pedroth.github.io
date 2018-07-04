@@ -117,47 +117,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2>Intro</h2>
-                In this post, we will derive a fundamental tool in Calculus, the Taylor polynomial (or Taylor series) of a function. For me, this is the best derivation, that I found when I tried to understand this concept. I thought this derivation was new, but I found out later that a good mathematician which name I don't recall having found a similar one earlier :/
+                In this post, we will derive a fundamental tool in Calculus, the Taylor polynomial (or Taylor series) of
+                a function. For me, this is the best derivation, that I found when I tried to understand this concept. I
+                thought this derivation was new, but I found out later that a good mathematician which name I don't
+                recall having found a similar one earlier :/
                 This derivation will just use the fundamental theorem of calculus.
 
                 <h2>Problem </h2>
-                <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Last time</a> we saw the fundamental theorem of calculus:
+                <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
+                   target="_blank">Last time</a> we saw the fundamental theorem of calculus:
                 <br>
-                Let $f:x\in\mathbb{R}\rightarrow y\in \mathbb{R}$ be a everywhere differentiable function, then $\int_{a}^{b} f'(x) dx = f(b) - f(a)$. This is nice, because I can write this function $f$ in terms of it's derivative:
+                Let $f:x\in\mathbb{R}\rightarrow y\in \mathbb{R}$ be a everywhere differentiable function, then
+                $\int_{a}^{b} f'(x) dx = f(b) - f(a)$. This is nice, because I can write this function $f$ in terms of
+                it's derivative:
 
                 $$f(x) = f(x_{0}) + \int_{x_0}^{x} f'(\tau) d\tau \;\;\;\;\;\;\;\;(1)$$
 
                 But if you recall:
-                $$ \int_{a}^{b} f(x) dx = \lim_{h \rightarrow 0} \sum_{i = 0}^n f(a + i h ) h, \;\; n = \left \lfloor \frac{b-a}{h} \right \rfloor$$
-                And this is difficult to compute, well actually is not that difficult, but maybe there is a simpler method.
+                $$ \int_{a}^{b} f(x) dx = \lim_{h \rightarrow 0} \sum_{i = 0}^n f(a + i h ) h, \;\; n = \left \lfloor
+                \frac{b-a}{h} \right \rfloor$$
+                And this is difficult to compute, well actually is not that difficult, but maybe there is a simpler
+                method.
 
-                Imagine that you can compute all the derivatives of a $f$ at every point, then you could calculate $f'(x) ,\; f''(x), \; f^{(3)}(x), \; \dots$. So we can do the following:
+                Imagine that you can compute all the derivatives of a $f$ at every point, then you could calculate
+                $f'(x) ,\; f''(x), \; f^{(3)}(x), \; \dots$. So we can do the following:
                 $$f'(x) = f'(x_0) + \int_{x_0}^{x} f''(\tau) d\tau\;\;\;\;\;\;\;\;(2)$$
                 From (1) and (2) we get:
                 $$f(x) = f(x_0) + \int_{x_0}^{x}\left [ f'(x_0) + \int_{x_0}^{\tau}f''(u)du \right ]d\tau$$
 
-                $$\Leftrightarrow f(x) = f(x_0) + \int_{x_0}^{x} f'(x_0) + \int_{x_0}^{x}\int_{x_0}^{\tau}f''(u)du d\tau $$
+                $$\Leftrightarrow f(x) = f(x_0) + \int_{x_0}^{x} f'(x_0) + \int_{x_0}^{x}\int_{x_0}^{\tau}f''(u)du d\tau
+                $$
 
                 We can also expand $f''(x) = f''(x_0) + \int_{x_0}^{x}f^{(3)}(\tau) d\tau$ and get:
 
-                $$f(x) = f(x_0) + \int_{x_0}^x f'(x_0)d\tau + \int_{x_0}^x\int_{x_0}^{\tau}f''(x_0)du d\tau + \int_{x_0}^{x}\int_{x_0}^{\tau}\int_{x_0}^{u} f^{(3)}(v) dvdud\tau$$
+                $$f(x) = f(x_0) + \int_{x_0}^x f'(x_0)d\tau + \int_{x_0}^x\int_{x_0}^{\tau}f''(x_0)du d\tau +
+                \int_{x_0}^{x}\int_{x_0}^{\tau}\int_{x_0}^{u} f^{(3)}(v) dvdud\tau$$
 
                 We can do this process until infinity as follows:
 
-                $$f(x) = f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1 + \dots + \int_{x_0}^{x} ... \int_{x_0}^{\tau_{k-1}}f^{(k)}(x_0)d\tau_k...d\tau_1 + \dots \;\;\;\;\;\;\;\;(3)$$
+                $$f(x) = f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1 + \dots + \int_{x_0}^{x} ...
+                \int_{x_0}^{\tau_{k-1}}f^{(k)}(x_0)d\tau_k...d\tau_1 + \dots \;\;\;\;\;\;\;\;(3)$$
 
                 Note that if $C$ is a constant then :
-                $$\int_a^b C g(x) dx = \lim_{h \rightarrow 0} \sum_{i = 0}^n Cg(a + ih)h = \lim_{h \rightarrow 0} C\sum_{i = 0}^n g(a + ih)h = C \int_a^b g(x)dx$$
+                $$\int_a^b C g(x) dx = \lim_{h \rightarrow 0} \sum_{i = 0}^n Cg(a + ih)h = \lim_{h \rightarrow 0}
+                C\sum_{i = 0}^n g(a + ih)h = C \int_a^b g(x)dx$$
 
-                This property tell us that a constant inside an integral is the same as that constant multiplied by that integral. You may think this geometrically in terms of the area below the graph of a function, the area of the scaled version of the function is the area of the function scaled. We may use this idea to take a constant inside the multiple integrals as:
+                This property tell us that a constant inside an integral is the same as that constant multiplied by that
+                integral. You may think this geometrically in terms of the area below the graph of a function, the area
+                of the scaled version of the function is the area of the function scaled. We may use this idea to take a
+                constant inside the multiple integrals as:
 
-                $$ \int_{x_0}^{x} \dots \int_{x_0}^{\tau_{k-1}}Cd\tau_k \dots d\tau_1 =\int_{x_0}^x \dots C\left( \int_{x_0}^{\tau_{k-1}}d\tau_k\right )\dots d\tau_1 = \int_{x_0}^x\dots \int_{x_0}^{\tau_{k-2}}C\left( \int_{x_0}^{\tau_{k-1}}d\tau_k\right )d\tau_{k-1} \dots d\tau_1$$
+                $$ \int_{x_0}^{x} \dots \int_{x_0}^{\tau_{k-1}}Cd\tau_k \dots d\tau_1 =\int_{x_0}^x \dots C\left(
+                \int_{x_0}^{\tau_{k-1}}d\tau_k\right )\dots d\tau_1 = \int_{x_0}^x\dots \int_{x_0}^{\tau_{k-2}}C\left(
+                \int_{x_0}^{\tau_{k-1}}d\tau_k\right )d\tau_{k-1} \dots d\tau_1$$
 
-                $$\Leftrightarrow \int_{x_0}^x \dots \int_{x_0}^{\tau_{k-3}} C \left( \int_{x_0}^{\tau_{k-2}} \int_{x_0}^{\tau_{k-1}} d\tau_k d\tau_{k-1} \right ) d\tau_{k-2} \dots d\tau_1 = \dots = C \int_{x_0}^{x} \dots \int_{x_0}^{\tau_{k-1}} d\tau_k \dots d\tau_1 $$
+                $$\Leftrightarrow \int_{x_0}^x \dots \int_{x_0}^{\tau_{k-3}} C \left( \int_{x_0}^{\tau_{k-2}}
+                \int_{x_0}^{\tau_{k-1}} d\tau_k d\tau_{k-1} \right ) d\tau_{k-2} \dots d\tau_1 = \dots = C
+                \int_{x_0}^{x} \dots \int_{x_0}^{\tau_{k-1}} d\tau_k \dots d\tau_1 $$
 
                 Hence (3) becomes:
 
-                $$f(x) = f(x_0) + f'(x_0)\int_{x_0}^x 1d\tau_1 + \dots + f^{(k)}(x_0)\int_{x_0}^{x} ... \int_{x_0}^{\tau_{k-1}}1d\tau_k...d\tau_1 + \dots$$
+                $$f(x) = f(x_0) + f'(x_0)\int_{x_0}^x 1d\tau_1 + \dots + f^{(k)}(x_0)\int_{x_0}^{x} ...
+                \int_{x_0}^{\tau_{k-1}}1d\tau_k...d\tau_1 + \dots$$
 
                 Let's us define:
 
@@ -173,13 +194,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k)\;\;\;\;\;\;\;\;(5)$$
 
-                With (5) we just need to know all the derivatives at $x_0$ and $\Omega(x,k)$ to compute $f(x)$. Since we assume to know all derivatives at $x_0$, only $\Omega(x,k)$ is missing.
+                With (5) we just need to know all the derivatives at $x_0$ and $\Omega(x,k)$ to compute $f(x)$. Since we
+                assume to know all derivatives at $x_0$, only $\Omega(x,k)$ is missing.
 
                 From the sequence (4) I noticed a pattern :
 
                 $$\Omega(x,k) = \int_{x_0}^x \Omega(\tau,k-1) d\tau\;\;\;\;\;\;\;\;(6)$$
 
-                You may check that this pattern is true, by checking (6) with lower $k$ such as $k=2$. Using the fundamental theorem of calculus we know that ($k > 0$) :
+                You may check that this pattern is true, by checking (6) with lower $k$ such as $k=2$. Using the
+                fundamental theorem of calculus we know that ($k > 0$) :
 
                 $$\Omega(x, k) - \Omega(x_0, k) = \int_{x_0}^x \frac{d\Omega(\tau, k)}{dx} d\tau\;\;\;\;\;\;\;\;(7)$$
 
@@ -194,18 +217,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <br>
                 <br>
-                In Fig.1 we see that $\Omega(x,1)$ is just the area under the graph of a constant function $y=1$. This is just the area of a square of base $x-x_0$ and height $1$, hence it's area is $x-x_0$.
-                $\Omega(x,2) = \int_{x_0}^x \int_{x_0}^{\tau_1} 1 d\tau_2 d\tau_1 = \int_{x_0}^x (\tau_1 - x_0) d\tau_1$ is the area below the graph of $(\tau_1-x_0)$.This is the area of a triangle with base and height equals to $x-x_0$, as Fig.1 suggests. It's area is $\frac{1}{2}(x-x_0)^2$.
-                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1  = \int_{x_0}^x 0.5(\tau_1-x_0)^2 d\tau_1$ is the area under a parabola, and this is not trivial to compute. So we need a different approach. From (7) we have :
+                In Fig.1 we see that $\Omega(x,1)$ is just the area under the graph of a constant function $y=1$. This
+                is just the area of a square of base $x-x_0$ and height $1$, hence it's area is $x-x_0$.
+                $\Omega(x,2) = \int_{x_0}^x \int_{x_0}^{\tau_1} 1 d\tau_2 d\tau_1 = \int_{x_0}^x (\tau_1 - x_0) d\tau_1$
+                is the area below the graph of $(\tau_1-x_0)$.This is the area of a triangle with base and height equals
+                to $x-x_0$, as Fig.1 suggests. It's area is $\frac{1}{2}(x-x_0)^2$.
+                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1 = \int_{x_0}^x 0.5(\tau_1-x_0)^2 d\tau_1$ is the
+                area under a parabola, and this is not trivial to compute. So we need a different approach. From (7) we
+                have :
 
                 $$\Omega(x,3)' = \Omega(x,2) = \frac{1}{2}(x-x_0)^2$$
 
-                If you have done your homework right from the post <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuition of Calculus</a>, where you were asked to find the derivative of $x^n$. You know that $\left(x^n \right)' = n x^{n-1}$.
-                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$, but the problem is that $\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2$, which is close enough to work. With a simple change we find that:
+                If you have done your homework right from the post <a
+                    href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
+                    target="_blank">Intuition of Calculus</a>, where you were asked to find the derivative of $x^n$. You
+                know that $\left(x^n \right)' = n x^{n-1}$.
+                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$, but the problem is
+                that $\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2$, which is close enough to work.
+                With a simple change we find that:
 
                 $$\frac{1}{2\times3}\left((x-x_0)^3\right)' = \frac{1}{2}(x-x_0)^2 = \Omega(x,2)$$
 
-                Which is our answer. If you continue to do similar steps you will notice an interesting pattern. This pattern suggest that $\Omega(x,k) = \frac{(x-x_0)^k}{k!}$. Let check if that hypothesis works with definition (7).
+                Which is our answer. If you continue to do similar steps you will notice an interesting pattern. This
+                pattern suggest that $\Omega(x,k) = \frac{(x-x_0)^k}{k!}$. Let check if that hypothesis works with
+                definition (7).
 
                 $$\Omega'(x,k) = \left ( \frac{(x-x_0)^k}{k!} \right )'$$
                 $$\Omega'(x,k) = k \frac{(x-x_0)^{k-1}}{k(k-1)!}$$
@@ -213,44 +248,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 Which proves what we want. Then (5) turns to:
 
-                $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k) = \sum_{k=0}^\infty f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}\;\;\;\;\;\;\;\;(8)$$
+                $$f(x) = \sum_{k=0}^\infty f^{(k)}(x_0) \Omega(x,k) = \sum_{k=0}^\infty f^{(k)}(x_0)
+                \frac{(x-x_0)^k}{k!}\;\;\;\;\;\;\;\;(8)$$
 
-                This is the Taylor polynomial/series, which has the property of constructing a function by using the values of all derivatives at just one point.
+                This is the Taylor polynomial/series, which has the property of constructing a function by using the
+                values of all derivatives at just one point.
 
                 <h2>Simple Application</h2>
                 A simple application of the Taylor series is the following:<br>
 
-                Let's say we wanted to find a function $y$ such that $y' = y$ and $y(0) = 1$.  If you think for a little time you will find that $y^{(k)} = y$ for $i > 0$ and since $y(0) = 1$ we know that $y^{(k)}(0) = 1$ for $i \geq 0$. Therefore, using (8) we get that (note that $x_0 = 0$ in this problem):
-                $$y(x) = \sum_{k=0}^\infty y^{(k)}(0) \frac{x^k}{k!} = \sum_{k=0}^\infty \frac{x^k}{k!} \;\;\;\;\;\;\;\;(9)$$
+                Let's say we wanted to find a function $y$ such that $y' = y$ and $y(0) = 1$. If you think for a little
+                time you will find that $y^{(k)} = y$ for $i > 0$ and since $y(0) = 1$ we know that $y^{(k)}(0) = 1$ for
+                $i \geq 0$. Therefore, using (8) we get that (note that $x_0 = 0$ in this problem):
+                $$y(x) = \sum_{k=0}^\infty y^{(k)}(0) \frac{x^k}{k!} = \sum_{k=0}^\infty \frac{x^k}{k!}
+                \;\;\;\;\;\;\;\;(9)$$
 
                 (9) is the famous exponential function $y(x) = \exp(x)$.
 
                 <h2> Approximation and error </h2>
 
-                It is important to note that there are a few limitations with (8). For instance, in real life, we can't compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we could compute the sum until $N$.
-                Without this constraint we can only approximate the function with $N$ derivatives. Let's compute the error of this approximation, but first let us define the approximation function:
+                It is important to note that there are a few limitations with (8). For instance, in real life, we can't
+                compute (8) with a computer since it is an infinite sum, unless for $k > N | f^{(k)}(x_0) = 0$ where we
+                could compute the sum until $N$.
+                Without this constraint we can only approximate the function with $N$ derivatives. Let's compute the
+                error of this approximation, but first let us define the approximation function:
                 $$p_N(x) = \sum_{k=0}^N f^{(k)}(x_0) \frac{(x-x_0)^k}{k!}$$
 
-                This is $N's$ power Taylor approximation function, but what the error of $p_N$ in relation to $f$? Let's look again to our derivation until (3):
+                This is $N's$ power Taylor approximation function, but what the error of $p_N$ in relation to $f$? Let's
+                look again to our derivation until (3):
 
-                $$f(x) =  f(x_0) + \int_{x_0}^x f'(\tau_1) d\tau_1$$
-                $$f(x) =  f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1  + \int_{x_0}^x\int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2 d\tau_1$$
-                $$f(x) =  f(x_0) +  f'(x_0)(x - x_0)  + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} + \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
-                $$f(x) =  p_N(x) + \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1\;\;\;\;\;\;\;\;(10)$$
+                $$f(x) = f(x_0) + \int_{x_0}^x f'(\tau_1) d\tau_1$$
+                $$f(x) = f(x_0) + \int_{x_0}^x f'(x_0)d\tau_1 + \int_{x_0}^x\int_{x_0}^{\tau_1} f''(\tau_2) d\tau_2
+                d\tau_1$$
+                $$f(x) = f(x_0) + f'(x_0)(x - x_0) + \dots + f^{(N)}(x_0) \frac{(x - x_0)^N}{N!} +
+                \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
+                $$f(x) = p_N(x) + \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots
+                d\tau_1\;\;\;\;\;\;\;\;(10)$$
 
                 The error is defined simply as $R_N(x) = f(x)- p_N(x)$, then using (10) we get:
 
                 $$R_N(x) = \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1$$
 
-                This form of the error or remainder, as it is usually called, isn't very practical, otherwise, we could derive Taylor polynomial with equation (1). Nevertheless, we can still get a closed form expression for an upper bound. The idea is simple, we just need some nice tools.
+                This form of the error or remainder, as it is usually called, isn't very practical, otherwise, we could
+                derive Taylor polynomial with equation (1). Nevertheless, we can still get a closed form expression for
+                an upper bound. The idea is simple, we just need some nice tools.
 
                 Proposition 1 :
-                $$\left | \int_a^b f(x) dx \right | \leq  \int_a^b |f(x)| dx$$
+                $$\left | \int_a^b f(x) dx \right | \leq \int_a^b |f(x)| dx$$
 
-                This has a simple to proof, if $f(x) > 0$ or $f(x) < 0$ for every $x$ then the inequality becomes a equality. For the case where $f(x)$ has positive and negative values we could imagine, to simplify, that $\forall x \in [a,b] : f(x) > 0$ and $\forall x \in [b,c] : f(x) \leq 0$, then :
-                $$\left | \int_a^c f(x) dx\right | = \left | \int_a^b f(x) dx + \int_b^c f(x) dx\right | = \int_a^b | f(x) |  dx - \int_b^c |f(x)| dx <  \int_a^c |f(x)| dx$$
+                This has a simple to proof, if $f(x) > 0$ or $f(x) < 0$ for every $x$ then the inequality becomes a
+                equality. For the case where $f(x)$ has positive and negative values we could imagine, to simplify, that
+                $\forall x \in [a,b] : f(x) > 0$ and $\forall x \in [b,c] : f(x) \leq 0$, then :
+                $$\left | \int_a^c f(x) dx\right | = \left | \int_a^b f(x) dx + \int_b^c f(x) dx\right | = \int_a^b |
+                f(x) | dx - \int_b^c |f(x)| dx < \int_a^c |f(x)| dx$$
 
-                Now it is easy to generalize to any function $f$. You can also play with simulation 1, in order to see a visual proof.
+                Now it is easy to generalize to any function $f$. You can also play with simulation 1, in order to see a
+                visual proof.
                 <br>
                 <br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
@@ -258,90 +311,116 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <canvas id="graph" width="500" height="500"></canvas>
                     <canvas id="absoluteGraph" width="500" height="500"></canvas>
                     <div style="text-align: center;">
-                        <p>Simulation.1 Area under the graph of a $f$ [ left ] vs Area under the graph of $|f|$ [ right ]. Blue area is negative and red area is positive. $|f|$ has always positive area. You can interact with the left canvas (mouse | touch).</p>
+                        <p>Simulation.1 Area under the graph of a $f$ [ left ] vs Area under the graph of $|f|$ [ right
+                            ]. Blue area is negative and red area is positive. $|f|$ has always positive area. You can
+                            interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>
 
                 Using proposition 1, we can proceed with the upper bound calculation:
 
-                $$\left | R_N(x)\right| = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right |$$
+                $$\left | R_N(x)\right| = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1}
+                \dots d\tau_1 \right |$$
 
                 This seems difficult since we have multiple integrals, but it is easier than you thing:
 
-                $$\left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right | = \left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right |$$
+                $$\left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right |
+                = \left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right |$$
 
-                Note that $g_1(\tau_1) = \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1}\dots d\tau_2 $, therefore:
+                Note that $g_1(\tau_1) = \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1})
+                d\tau_{N+1}\dots d\tau_2 $, therefore:
 
-                $$\left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right | \leq   \int_{x_0}^x |g_1(\tau_1)| d\tau_1  =  \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_2 \right | d\tau_1 $$
-                $$\Leftrightarrow  \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_2 \right | d\tau_1  = \int_{x_0}^x \left | \int_{x_0}^{\tau_1} g_2(\tau_2) d\tau_2 \right | d\tau_1 \leq \int_{x_0}^x\int_{x_0}^{\tau_1} |g_2(\tau_2)| d\tau_2 d\tau_1 $$
+                $$\left | \int_{x_0}^x g_1(\tau_1) d\tau_1 \right | \leq \int_{x_0}^x |g_1(\tau_1)| d\tau_1 =
+                \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1}
+                \dots d\tau_2 \right | d\tau_1 $$
+                $$\Leftrightarrow \int_{x_0}^x \left | \int_{x_0}^{\tau_1} \dots \int_{x_0}^{\tau_N}
+                f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_2 \right | d\tau_1 = \int_{x_0}^x \left |
+                \int_{x_0}^{\tau_1} g_2(\tau_2) d\tau_2 \right | d\tau_1 \leq \int_{x_0}^x\int_{x_0}^{\tau_1}
+                |g_2(\tau_2)| d\tau_2 d\tau_1 $$
 
                 Applying similar steps:
 
-                $$\Leftrightarrow  \int_{x_0}^x  \int_{x_0}^{\tau_1} |g_2(\tau_2)| d\tau_2 d\tau_1 \leq \dots \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} |f^{(N+1)}(\tau_{N+1})| d\tau_{N+1} \dots d\tau_1 $$
+                $$\Leftrightarrow \int_{x_0}^x \int_{x_0}^{\tau_1} |g_2(\tau_2)| d\tau_2 d\tau_1 \leq \dots \leq
+                \int_{x_0}^x\dots\int_{x_0}^{\tau_N} |f^{(N+1)}(\tau_{N+1})| d\tau_{N+1} \dots d\tau_1 $$
 
                 In summary:
 
-                $$\left | R_N(x)\right | = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1}) d\tau_{N+1} \dots d\tau_1 \right | \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1$$
-                $$\Leftrightarrow \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \max \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1 $$
+                $$\left | R_N(x)\right | = \left | \int_{x_0}^x\dots\int_{x_0}^{\tau_N} f^{(N+1)}(\tau_{N+1})
+                d\tau_{N+1} \dots d\tau_1 \right | \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left
+                |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1} \dots d\tau_1$$
+                $$\Leftrightarrow \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \left |f^{(N+1)}(\tau_{N+1}) \right| d\tau_{N+1}
+                \dots d\tau_1 \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} \max \left |f^{(N+1)}(\tau_{N+1}) \right|
+                d\tau_{N+1} \dots d\tau_1 $$
 
-                Let $M = \max \left |f^{(N+1)}(c) \right|$, that is $\left |f^{(N+1)}(\tau) \right| \geq \left |f^{(N+1)}(c) \right|, \forall c \in [x_0, x]$:
+                Let $M = \max \left |f^{(N+1)}(c) \right|$, that is $\left |f^{(N+1)}(\tau) \right| \geq \left
+                |f^{(N+1)}(c) \right|, \forall c \in [x_0, x]$:
 
-                $$\left | R_N(x) \right |  \leq  \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
-                $$\left | R_N(x) \right |  \leq   M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!} = |\hat R_N(x)|$$
+                $$\left | R_N(x) \right | \leq \int_{x_0}^x\dots\int_{x_0}^{\tau_N} M d\tau_{N+1} \dots d\tau_1 = M
+                \int_{x_0}^x\dots\int_{x_0}^{\tau_N} 1 d\tau_{N+1} \dots d\tau_1 = M \Omega(x, N+1)$$
+                $$\left | R_N(x) \right | \leq M \Omega(x, N+1) = M \frac{(x-x_0)^{N+1}}{(N+1)!} = |\hat R_N(x)|$$
 
-                So we finally found our upper bound error, $|\hat R_N(x)|$. This upper bound is useful to study the properties of the Taylor series, since if we prove that as $N \rightarrow \infty, |\hat R_N(x)| \rightarrow 0$ then we know that $|R_N(x)| \rightarrow 0$.
+                So we finally found our upper bound error, $|\hat R_N(x)|$. This upper bound is useful to study the
+                properties of the Taylor series, since if we prove that as $N \rightarrow \infty, |\hat R_N(x)|
+                \rightarrow 0$ then we know that $|R_N(x)| \rightarrow 0$.
                 This statement leads us to the question of the convergence of the Taylor polynomial.
 
                 <h2> Convergence of Taylor polynomial </h2>
 
-                To check the convergence of Taylor polynomial we have to show that, $|\hat R_N(x)| \rightarrow 0$ as $N \rightarrow \infty$. Let $\left |f^{(N)}(x) \right | < M < \infty, \forall x \in \mathbb{R}, N > 0$, then:
+                To check the convergence of Taylor polynomial we have to show that, $|\hat R_N(x)| \rightarrow 0$ as $N
+                \rightarrow \infty$. Let $\left |f^{(N)}(x) \right | < M < \infty, \forall x \in \mathbb{R}, N > 0$,
+                then:
 
                 $$\lim_{N \rightarrow \infty} M \frac{(x-x_0)^{N+1}}{(N+1)!} = 0$$
 
                 Let $x = x_0 + h$, then:
                 $$\lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
 
-                This is simple to prove since $h$ is finite. Let $k = \lfloor h  \rfloor$:
+                This is simple to prove since $h$ is finite. Let $k = \lfloor h \rfloor$:
 
                 $$\frac{h^N}{N!} = \frac{h^k}{1 \dots k} \cdot \frac{h^{N-k}}{(k+1) \dots N}$$
 
                 Let $C = \frac{h^k}{1 \dots k}$, is easy to see that $C > 1$,
 
-                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-K}} = C \left ( \frac{h}{k+1} \right )^{N-k}$$
+                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-K}} = C \left ( \frac{h}{k+1} \right
+                )^{N-k}$$
 
                 Since $h < k+1$ by definition:
 
-                $$\lim_{N\rightarrow 0} C \left ( \frac{h}{k+1} \right )^{N-k} = 0 \Rightarrow \lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
+                $$\lim_{N\rightarrow 0} C \left ( \frac{h}{k+1} \right )^{N-k} = 0 \Rightarrow \lim_{N \rightarrow
+                \infty} \frac{h^N}{N!} = 0$$
 
                 End proof.
 
                 <h2> Conclusion </h2>
 
-                In this post we derived the famous Taylor's Series using just the fundamental theorem of calculus, we also proved it's convergence to the function we are trying to approximate. Although we use a pretty restrictive pre-conditions on that convergence, I will put as an exercise to the reader to prove it's convergence with other pre-conditions.
-                In a sense the Taylor polynomial is the extension of the concept of linear approximation we saw in the post <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">Intuition of calculus</a>.
-                We also checked an application for the series in solving a differential equation, but there are many more, as we will see in future posts. Now I will end this post with a simulation, where an approximation of $f$ is shown as well as the error and the bounded error.
+                In this post we derived the famous Taylor's Series using just the fundamental theorem of calculus, we
+                also proved it's convergence to the function we are trying to approximate. Although we use a pretty
+                restrictive pre-conditions on that convergence, I will put as an exercise to the reader to prove it's
+                convergence with other pre-conditions.
+                In a sense the Taylor polynomial is the extension of the concept of linear approximation we saw in the
+                post <a
+                    href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
+                    target="_blank">Intuition of calculus</a>.
+                We also checked an application for the series in solving a differential equation, but there are many
+                more, as we will see in future posts. Now I will end this post with a simulation, where an approximation
+                of $f$ is shown as well as the error and the bounded error.
                 <br>
                 <br>
                 <button class="btn btn-primary" onclick="app.run(1)"><h4> Simulation 2</h4></button>
+                <br>
                 <div id="sim2" style="display:none">
                     <canvas id="taylor" width="500" height="500"></canvas>
-                    <canvas id="remainder" width="500" height="500"></canvas><br>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-2 col-md-offset-2">
-                                <input id="taylor_slide" type="range" min="1" max="5" value="1" onchange="app.apply(1, function(x) {x.sliderUpdate();})">
-                            </div>
-                            <div class="col-md-2">
-                                <div id="taylor_n">$N = $ 1</div>
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-primary" onclick="app.apply(1, function(x) {x.generateNewField();})">generate function</button>
-                            </div>
-                        </div>
+                    <canvas id="remainder" width="500" height="500"></canvas>
+                    <br><br>
+                    <div align="center" class="container">
+                        <button class="btn btn-primary" onclick="app.apply(1, function(x) {x.generateNewField();})">
+                            generate function
+                        </button>
                     </div>
                     <div style="text-align: center;">
-                        <p>Simulation.2 Truncated Taylor series of $f$( left ) vs Error and upper bound error of the approximation from $x_0$ to $x$ ( right ). You can interact with the left canvas (mouse | touch).</p>
+                        <p>Simulation.2 Truncated Taylor series of $f$ [left] vs upper bound error of the approximation
+                            from $x_0$ to $x$ [right]. You can interact with the left canvas (mouse | touch).</p>
                     </div>
                 </div>
                 <br><br>
