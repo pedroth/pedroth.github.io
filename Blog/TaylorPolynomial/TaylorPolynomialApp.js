@@ -2,6 +2,17 @@ var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
 var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
 var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
 
+
+factorial = function(x) {
+    var acc = 1;
+    for(var i=x; i > 0; i--) {
+        acc *= x;
+        x--;
+    }
+    return acc;
+}
+
+
 var simulations = [
     new Sim1(),
     new Sim2()
@@ -190,17 +201,19 @@ function Sim1() {
 
 function Sim2() {
     this.canvasTaylor = new CanvasSpace(document.getElementById("taylor"), [[-0.1, 1], [-0.1, 1]]);
-    this.canvasRemainder = new CanvasSpace(document.getElementById("remainder"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasRemainder = new CanvasSpace(document.getElementById("remainder"), [[-0.1, 1.1], [-0.1, 1.1]]);
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.fx = [];
-    this.bandwidth = 5;
-    this.maxAmp = 10;
+    this.bandwidth = 4;
+    this.maxAmp = 4;
     this.w = [];
-    this.samplesPerPeriod = 12;
-    this.samplesPoly = 25;
+    this.samplesPerPeriod = 25;
+    this.samplesPoly = 75;
     this.x0 = 0;
-    this.taylorDegree = 5;
+    this.taylorDegree = 6;
+    this.colors = [];
+    this.restPolys = [];
     /**
      * I want to take k samples in a sine wave period (period of sine wave is 2 * pi = T).
      * In [0,1] interval I will take k / T samples.
@@ -219,6 +232,24 @@ function Sim2() {
                 mul /= 2;
             }
             return acc;
+        }
+    }
+
+    this.rest = function(x, n) {
+        return Math.pow(x, n + 1) / factorial(n + 1);
+    }
+
+    this.buildRestFunctions = function() {
+        for(var i = 0; i < this.taylorDegree; i++) {
+            this.restPolys.push([]);
+        }
+        var h = 1 / (this.samples - 1);
+        for(var j = 0; j < this.taylorDegree; j++) {
+            var y = this.restPolys[j]
+            for(var i = 0; i < this.samples; i++) {
+                var x = h * i;
+                y.push(this.rest(x, j));
+            }
         }
     }
 
@@ -245,8 +276,6 @@ function Sim2() {
         return {func : f, funcSamples : y, min : minY, max : maxY, avg : aveY / samples};
     }
 
-
-
     // function that do stuff with mouse coordinates
     this.baseMouse = function(integerMouse) {
         if(!this.isMouseDown) {
@@ -257,85 +286,90 @@ function Sim2() {
     }
 
     this.mouseStart = function (e) {
-        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
-        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
         this.isMouseDown = true;
-        this.baseMouse([my, mx]);
     }
 
     this.mouseEnd = function (e) {
         this.isMouseDown = false;
     }
 
-    this.mouseMove = function (e) { }
+    this.mouseMove = function (e) {
+        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
+        var mx = (e.clientX - rect.left), my = (e.clientY - rect.top);
+        this.baseMouse([my, mx]);
+    }
 
     this.touchStart = function (e) {
-        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
-        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
         this.isMouseDown = true;
-        this.baseMouse([my, mx]);
     }
 
     this.touchEnd = function (e) {
         this.isMouseDown = false;
     }
 
-    this.touchMove = function (e) { }
+    this.touchMove = function (e) {
+        var rect = this.canvasTaylor.canvas.getBoundingClientRect();
+        var mx = (e.touches[0].clientX - rect.left), my = (e.touches[0].clientY - rect.top);
+        this.baseMouse([my, mx]);
+    }
 
     this.checkIfCanDraw = function() {
         return $("#sim2").is(":visible");
     }
 
-    this.factorial = function(x) {
-        var acc = 1;
-        for(var i=x; i > 0; i--) {
-            acc *= x;
-            x--;
-        }
-    }
-
-    this.df = function(f, x, n) {
+    this.dfr = function(f, x, n, h) {
         if(n == 0) {
             return f(x);
         }
-        var h = 1;
-        do {
-            (df(f, x + h, n-1) - df(f, x - h, n-1)) / h;
-        }while();
+        return (this.dfr(f, x + h, n-1, h) - this.dfr(f, x - h, n-1, h)) / (2 * h);
     }
 
-    this.taylorPoly = function(f, n) {
+    this.df = function(f, x, n) {
+        var h = 1;
+        var dfh1 = this.dfr(f, x, n, h);
+        var dfh2 = dfh1;
+        do {
+           dfh1 = dfh2;
+           h /= 2;
+           dfh2 = this.dfr(f, x, n, h);
+        } while(Math.abs(dfh1 - dfh2) > 1E-10);
+        return dfh1;
+    }
+
+    this.taylorPoly = function(f, n, x0) {
         var derivatives = [];
-        for(var i = 0; i < n; i++) {
-            derivatives.append()
+        for(var i = 0; i <= n; i++) {
+            derivatives.push(this.df(f, x0, i));
         }
         return function(x) {
-
+            acc = 0;
+            for(var i = 0; i <= n; i++) {
+                acc += (derivatives[i] * Math.pow(x - x0, i)) / factorial(i);
+            }
+            return acc;
         }
-
     }
 
     this.drawTaylorPolynomial = function() {
         var polynomials = [];
-        var colors = []
-        var h = 1 / (this.taylorDegree - 1);
+        var h = 1 / this.taylorDegree;
         for(var i = 0; i < this.taylorDegree; i++) {
-            polynomials.append(this.taylorPoly(this.fx.f, i));
-            rgb = HSVtoRGB(h * i, 1.0, 1.0);
-            colors.append([rgb.r, rgb.g, rgb.b, 255]);
+            polynomials.push(this.taylorPoly(this.fx.func, i, this.x0));
+            if(this.colors.length < this.taylorDegree) {
+                rgb = HSVtoRGB(h * i, 1.0, 1.0);
+                this.colors.push([rgb.r, rgb.g, rgb.b, 255]);
+            }
         }
         var h = 1 / (this.samplesPoly - 1);
         for(var i = 0; i < this.samplesPoly - 1; i++) {
             for(var j = 0; j < this.taylorDegree; j++) {
-              var x = h * j;
+              var x = h * i;
               var xh = x + h;
               var y = polynomials[j](x);
               var yh = polynomials[j](xh);
-              this.canvasTaylor.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(colors[j]));
+              this.canvasTaylor.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(this.colors[j]));
             }
         }
-
-
     }
 
     this.updateTaylorCanvas = function() {
@@ -352,8 +386,28 @@ function Sim2() {
         this.drawTaylorPolynomial();
     }
 
-    this.updateRemainderCanvas = function() {
+    this.drawLegend = function() {
+        // draw legend
+        for(var i = 0; i < this.taylorDegree; i++){
+            var legendYCoord = 1 - 0.05 * i;
+            this.canvasRemainder.drawLine([0.0, legendYCoord], [0.2, legendYCoord], MyCanvas.simpleShader(this.colors[i]));
+            //this.canvasRemainder.drawString([0.9, 1 - 0.01 * i], [1, 1 - 0.01 * i], MyCanvas.simpleShader(this.colors[i]));
+        }
+    }
 
+    this.updateRemainderCanvas = function() {
+        this.drawLegend();
+        this.canvasRemainder.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        var h = 1 / (this.samples-1);
+        for(var j = 0; j < this.taylorDegree; j++) {
+            for(var i = 0; i < this.samples - 1; i++) {
+                var x = h * i;
+                var xh = x + h;
+                var y = this.restPolys[j][i]
+                var yh = this.restPolys[j][i + 1]
+                this.canvasRemainder.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(this.colors[j]));
+            }
+        }
     }
 
     this.draw = function() {
@@ -368,6 +422,7 @@ function Sim2() {
     this.start = function() {
         $("#sim2").slideDown();
         this.fx = this.buildFunction(this.samples);
+        this.buildRestFunctions();
     }
 
     this.generateNewField = function() {

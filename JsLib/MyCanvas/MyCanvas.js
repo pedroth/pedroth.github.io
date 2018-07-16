@@ -392,7 +392,7 @@ MyCanvas.simpleShader = function (color) {
 };
 
 
-MyCanvas.interpolativeShader = function(shader) {
+MyCanvas.interpolateLineShader = function(shader) {
     return function (x, line, canvas) {
         var v = diff(line[1], line[0]);
         var z = diff(x, line[0]);
