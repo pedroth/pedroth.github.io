@@ -131,9 +131,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 We have already seen some differential equations in the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> and <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition calculus</a> posts, but here we will solve a general class of DE's using what we learned from the previous posts.
                 <br>
                 We can visualize this problem as time-varying vector field in $\mathbb{R}^n$. For each $\mathbf{x} \in \mathbb{R}^n$ and $t \in \mathbb{R}$ we compute $\mathbf{g}(t, \mathbf{x})$ which is the vector quantity. Then for a particular $\mathbf{x}_0$ we want to find $\mathbf{x}(t)$, such that $\mathbf{x}(0) = \mathbf{x}_0$ and $ \dot{\mathbf{x}}(t) = \mathbf{g}(t, \mathbf{x}(t))$.
-                Basically we want to find the curve that follows the vector field, or to find the path of a particle in a velocity field.<br><br>
+                Basically, we want to find the curve that follows the vector field, or to find the path of a particle in a velocity field.<br><br>
 
-                Throughout this post we use $n,m,k,N$ as integers.
+                Throughout this post, we use $n,m,k,N$ as integers.
 
                 <h2> Solving the equation </h2>
 
@@ -142,7 +142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 To solve it you just need to use the fundamental theorem of calculus, like this:
                 $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau\;\;\;\;(3)$$
 
-                We can solve this numerically, but if we want a more analytic expression we need to use same approach as <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> polynomial post.
+                We can solve this numerically, but if we want a more analytic expression we need to use the same approach as <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> polynomial post.
                 Suppose we could compute all the derivatives at $t = 0$. Also note that:
                 $$
                 \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau = \begin{bmatrix}
@@ -160,24 +160,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$\dot{\mathbf{x}} = M \mathbf{x}\;\;,\;\mathbf{x}(0) = \mathbf{x}_0\;\;\;\;(5)$$
 
-                where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. In order to solve (4) we will use the Taylor polynomial approach since we can not use (3) because (5) has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.
+                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. In order to solve (5) we will use the Taylor polynomial approach since we can not use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.
 
                 $$\frac{d\mathbf{x}}{dt} = M \mathbf{x}$$
                 $$\frac{d^2\mathbf{x}}{dt^2} = M \frac{d\mathbf{x}}{dt} = M^2 \mathbf{x}$$
                 $$...$$
                 $$\frac{d^k\mathbf{x}}{dt^k} = M^k \mathbf{x}\;\;\;\;(6)$$
-                Using the initial condition $\mathbf{x}(0) = \mathbf{x}_0$, (6) and (4) we get the solution.
-                $$\mathbf{x}(t) =\sum_{k=0}^{\infty} \frac{d^{(k)}\mathbf{x}(0)}{dt} \frac{t^k}{k!}$$
-                $$\Leftrightarrow \mathbf{x}(t) = \sum_{k=0}^{\infty} M^k \mathbf{x}_0 \frac{t^k}{k!}$$
-                $$\Leftrightarrow \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
 
-                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound on the error:
+                Using the initial condition $\mathbf{x}(0) = \mathbf{x}_0$, (6) and (4) we get the solution:
+
+                $$\mathbf{x}(t) =\sum_{k=0}^{\infty} \frac{d^{(k)}\mathbf{x}(0)}{dt^k} \frac{t^k}{k!}$$
+
+                $$ \mathbf{x}(t) = \sum_{k=0}^{\infty} M^k \mathbf{x}_0 \frac{t^k}{k!}$$
+
+                $$ \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
+
+                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound on the error:
 
                 $$|\hat{R}_N(t)| = \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
 
-                We will see maybe in a future post that this upper bound can be made more usable ( that maximum is difficult to compute ). Using this error estimate we can choose the proper $N$ for a specified error.<br><br>
+                We will see, maybe in a future post, that we can define a better computational bound( that maximum is difficult to compute ). Using this error estimate we can choose the proper $N$ for a specified error.<br><br>
 
-                To study this function little bit further, I will solve this ODE using yet another technique, the <a href="http://en.wikipedia.org/wiki/Euler_method?oldformat=true">Euler method</a> that we already saw on the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition calculus</a> post. To explain the Euler method we need to see (5) as a vector field shown in fig 1 and 2.
+                Another way to solve this problem is to use the <a href="http://en.wikipedia.org/wiki/Euler_method?oldformat=true">Euler method</a> for ODE's. We have seen this technique before in the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition of calculus</a> post.
+                To explain the Euler method we need visualize the problem as a vector field, like it was said in the beginning of this article( please check fig.1 and fig.2 ).
 
                 <br>
                 <br>
@@ -192,54 +197,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
                 <div style="text-align: center;">
                     <img border="0" src="https://3.bp.blogspot.com/-A__n89eCuFY/VQQ2M3-qs7I/AAAAAAAAATo/e1Ig2WMwfw0/s640/Numerozinho_16.jpg" height="400" width="600"/>
-                    <p>Fig.2 Other example of a vector field, blue line is the true integral curve, and the red curve is the approximation curve given by the euler method</p>
+                    <p>Fig.2 Other example of a vector field, blue line is the true integral curve, and the red curve is the approximation curve given by the Euler method</p>
                 </div>
                 <br>
                 <br>
 
-                A vector field is a function $\mathbf{F}(\mathbf{x})$ that attributes at each point in the space a vector. For instance our differential equation (5) can be seen as vector field $\mathbf{F}(\mathbf{x}) = M \mathbf{x}$.
-                e.g: $$\dot{\mathbf{x}} = \begin{bmatrix} 0 & -1\\ 1 & 0 \end{bmatrix} \mathbf{x}$$
+                We can imagine that, a particle $\mathbf{x}(t)$ moving through $\mathbb{R}^n$, with velocity given by $\mathbf{g}(\mathbf{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$.
+                For the more geometrical minds, you can imagine a curve that starts at $\mathbf{x}_0$ and it's tangent vectors are given by $\mathbf{g}(\mathbf{x})$. The general problem we are trying to solve is:
 
-                The example above is the vector field on fig 1. Now we are ready to solve (5) using the Euler method.
-                The Euler method is a simple method which one could derive it just by looking to fig 2. We start at an initial position $\mathbf{x}_0$ then we compute the tangent vector to the curve by computing the vector field function, after that we find the next position by following the tangent vector by a step $h>0$.
-                This translates into the following iteration:
+                $$\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x})\;\;,\;\mathbf{x}(0) = \mathbf{x}_0$$
 
-                $$\mathbf{x}(t_0) = \mathbf{x}_0\\
-                \mathbf{x}(t + h) = \mathbf{x}(t) + h\mathbf{F}(\mathbf{x}(t))\;\;\;\;(8)$$
+                The Euler method works by starting with $\mathbf{x}_0$, then compute the tangent/velocity vector using $\mathbf{g}(\mathbf{x})$, hence compute the next position by moving this point towards the direction of the calculated vector.
+                This algorithm can also be derived in a more analytic way. Take into consideration the fundamental theorem of calculus:
+
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t + \tau) d\tau \simeq \mathbf{x}(t) + h \dot{\mathbf{x}}(t) = \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))$$
+
+                In summary this method translates into the following iteration:
+
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))\;\;\;\;(8)$$
 
                 Using (8) in our simple ODE (5), we get:
 
-                $$ \mathbf{x}(t+h) = \mathbf{x}(t) + h M\mathbf{x}(t)$$
-                $$ \Leftrightarrow \mathbf{x}(t+h) = (I + h M)\mathbf{x}(t)$$
+                $$ \mathbf{x}(t + h) = \mathbf{x}(t) + h M\mathbf{x}(t)$$
+                $$ \mathbf{x}(t + h) = (I + h M)\mathbf{x}(t)$$
 
                 Starting from $t_0$:
 
                 $$\mathbf{x}(t_0) = \mathbf{x}_0$$
                 $$\mathbf{x}(t_0 + h) = (I + h M)\mathbf{x}_0$$
                 $$\mathbf{x}(t_0 + 2h) = (I + h M)\mathbf{x}(t_0+h) = (I + h M)^2\mathbf{x}_0$$
-                $$...$$
-                $$\mathbf{x}(t_0 + nh) = (I + h M)^n\mathbf{x}_0\;\;\;(9)$$
+                $$\dots$$
+                $$\mathbf{x}(t_0 + kh) = (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
 
-                This method is simple but comes with great cost, which is the error of the curve varies with $h$ (as $h$ increases the error increases), as you can see in fig 2 (red curve). In the limit of $h\rightarrow 0$ the curve generated by the Euler method converges to solution of the ODE.<br />
-
-                Let $t = t_0 + nh$, where $n$ is the number of samples. Then $h = \frac{t - t_0}{n}$
+                Let $t = t_0 + Nh$, where $N$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
                 From (9) and substituting $h$:
 
-                $$\mathbf{x}(t) = \lim_{n\to \infty}\left (I + \left (\frac{t-t_0}{n}\right )M \right )^{n}\mathbf{x}_0\;\;\;(10)$$
+                $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0\;\;\;(10)$$
 
-                We can define the matrix exponential as :
-                $$e^{M(t-t_0)} = \lim_{n\to \infty}\left (I + \frac{t-t_0}{n} M \right )^n$$
-
-                From (7) and (8) we can conclude that solution of (5) is :
+                From (7) and (10) we can conclude that solution of (5) is:
                 $$\mathbf{x}(t) = \left( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!}\right)\mathbf{x}_0$$
-                $$\Leftrightarrow \mathbf{x}(t) = \lim_{n \to \infty}\left (I + \left (\frac{t-t_0}{n}\right )M\right )^{n}\mathbf{x}_0$$
-                $$\Leftrightarrow \mathbf{x}(t) = \exp\left (M(t-t_0)\right )\mathbf{x_0} = e^{M(t-t_0)}\mathbf{x}_0 $$
+                $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right )^{N}\mathbf{x}_0$$
 
-                We have deduced two ways of solving (5), so let us solve a real problem.
+                Finally we can define the matrix exponential as:
+                $$e^{M(t-t_0)} = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = \exp\left (M(t-t_0)\right )$$
 
-                <h2> Example </h2>
+                A simple analysis on the local error can be made. We know from the Taylor polynomial error that:
 
-                Solve:
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t)h + \int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$$
+
+                Then the local error is given by $\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) + \dot{\mathbf{x}}(t)h|$, thus:
+
+                $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right | \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
+
+                $$\mathcal{E}(h) \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau} 1 d\mu d\tau,\;\;\; c\in[t, t+h]$$
+                $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
+
+                From this upper bound on the local error we can deduce that as $h \rightarrow 0$ the generated curve converges to the solution of the ODE.
+                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.
+
+                Now we have deduced two ways of solving (5), so let us solve a real problem.
+
+                <h2> Worked example </h2>
+
+                Let us solve:
 
                 $$
                 \dot{\mathbf{x}} = \begin{bmatrix} 0 & -1\\ 1 & 0\end{bmatrix}
@@ -270,7 +290,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 0 & -1\\
                 1 & 0
                 \end{bmatrix} t\right)^k}{k!}\\
-                \Leftrightarrow \exp\left (\begin{bmatrix}
+                \exp\left (\begin{bmatrix}
                 0 & -1\\
                 1 &  0
                 \end{bmatrix} t \right) = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \left(\begin{bmatrix}
@@ -284,7 +304,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 \begin{bmatrix}
                 1 & 0\\
                 0 & 1
-                \end{bmatrix} , \text{if } k\mod{4} = 0\\\\
+                \end{bmatrix} , \text{if } k \mod{4} = 0\\\\
                 \begin{bmatrix}
                 0 & -1\\
                 1 & 0
@@ -322,20 +342,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 \end{bmatrix}+\begin{bmatrix}
                 0 & -\frac{t^4}{4!}\\
                 \frac{t^5}{5!} & 0
-                \end{bmatrix} + ...$$
+                \end{bmatrix} + \dots$$
 
-                $$\Leftrightarrow \exp\left (\begin{bmatrix}
+                $$\exp\left (\begin{bmatrix}
                 0 & -1\\
                 1 & 0
                 \end{bmatrix} t \right) = \begin{bmatrix}
-                1-\frac{t^2}{2}+\frac{t^4}{4!}+... & -t+\frac{t^3}{3!}-\frac{t^5}{5!}+ ...\\\\
-                t-\frac{t^3}{3!}+\frac{t^5}{5!}+...& 1-\frac{t^2}{2}+\frac{t^4}{4!} + ...
+                1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots & -t+\frac{t^3}{3!}-\frac{t^5}{5!}+ \dots\\\\
+                t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots & 1-\frac{t^2}{2} + \frac{t^4}{4!} + \dots
                 \end{bmatrix} $$
 
                 With a little effort you can recognize that:
 
-                $$\cos(t) = 1-\frac{t^2}{2}+\frac{t^4}{4!}+...$$
-                $$\sin(t) = t-\frac{t^3}{3!}+\frac{t^5}{5!}+...$$
+                $$\cos(t) = 1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots$$
+                $$\sin(t) = t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots$$
                 are the Taylor expansion of $\cos$ and $\sin$ function.Therefore we conclude that:
                 $$\exp\left (\begin{bmatrix}
                 0 & -1\\
@@ -357,9 +377,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 \end{bmatrix}$$
 
                 $\mathbf{x}(t)$ is the circle as the fig 1 suggested.
+
                 <h2> Conclusion </h2>
-                In this post we solved the basic n-dimensional ODE using the basics of calculus. There are still a few loose ends in this post such as how to compute the error in Euler method, and to compare the Taylor polynomial with the Euler method.
-                I leave you with a linear ODE solver.
+                In this post, we solved the basic n-dimensional ODE using the basics of calculus. There are still a few loose ends in this post such as how to compute the global error in the Euler method, and to compare the Taylor polynomial with the Euler method.
+                To finish, I leave you with a linear ODE solver.
 
                 <br><br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Linear ODE Solver </h4></button>
@@ -368,7 +389,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-2 col-md-offset-2">
-                                <input id="euler_slider" type="range" min="1" max="100" value="20" onchange="intuition.apply(3, function(x) {x.sliderUpdate();})">
+                                <input id="euler_slider" type="range" min="1" max="100" value="20" onchange="app.apply(0, function(x) {x.sliderUpdate();})">
                             </div>
                             <div class="col-md-2">
                                 <div id="euler_step">$\h = $ 1</div>

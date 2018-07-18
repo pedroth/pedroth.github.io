@@ -1,190 +1,179 @@
-<h2>
-Discrete Calculus</h2>
-<div>
-We wish to study discrete functions, functions of the form $f: \mathbb{N} \rightarrow \mathbb{R}$, by using the same principles of calculus (check my previous <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">article</a>&nbsp;or the wiki).</div>
-<div>
-<br /></div>
-<div>
-Usually a discrete function is a function of $n$ and not $x$.</div>
-<div>
-<br /></div>
-<div>
-First lets find a formula that describes the following sequence(which is a discrete function):</div>
-<div>
-$$1,3,5,7,9, ...$$</div>
-<div>
-Now can you predict the next in the sequence, well if we have a formula that describes this sequence it should be easy, so lets find it. It is easy to see that $f(n+1) - f(n) = 2 \;\;\forall n \in \mathbb{N}$, hence we can construct the function using this difference. $$f(0) = 1$$</div>
-<div>
-$$f(1) = f(0) + 2$$</div>
-<div>
-$$f(2) = f(1) + 2 = f(0) + 2 + 2$$</div>
-<div>
-$$f(3) = f(2) + 2 = f(1) + 2 + 2 = f(0) + 3 \times 2$$</div>
-<div>
-$$...$$</div>
-<div>
-$$f(n) = f(0) + 2 \times n$$</div>
-<div>
-<br /></div>
-<div>
-or the other way</div>
-<div>
-<div>
-$$f(n) = f(n-1) + 2$$</div>
-<div>
-$$f(n) = f(n-2) + 2 + 2$$</div>
-<div>
-$$f(n) = f(n-3) + 2 \times 3$$</div>
-<div>
-$$...$$</div>
-<div>
-$$f(n) = f(0) + 2 \times n$$</div>
-</div>
-<div>
-<br /></div>
-<div>
-But we can use this technique for all functions, let me define $\Delta f (n)= f(n+1) - f(n)$ which is the discrete differential. Then every function can be constructed using differences.</div>
-<div>
-<br /></div>
-<div>
-<div>
-$$f(0) = f(0)$$</div>
-<div>
-$$f(1) = f(0) + \Delta f(0)$$</div>
-<div>
-$$f(2) = f(1) + \Delta f(1) = f(0) + \Delta f(0) + \Delta f(1)$$</div>
-<div>
-$$f(3) = f(2) + \Delta f(2) = f(1) + \Delta f(1) + \Delta f(2) = f(0) + \Delta f(0) + \Delta f(1) + \Delta f(2)$$</div>
-<div>
-$$...$$</div>
-<div>
-$$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \;\;\;\; (1)$$</div>
-</div>
-<div>
-<br /></div>
-<div>
-but (1) is just the fundamental theorem of calculus in the discrete setting.</div>
-<div>
-<br /></div>
-<div>
-$$\sum _{i= 0}^{n-1} \Delta f(i) = f(n) - f(0)$$.</div>
-<div>
-<br /></div>
-<div>
-Now we can see that the first sequence is just the linear discrete function $f(n) = 1 + 2 n$ where $\Delta f(n) = 2$</div>
-<div>
-<br /></div>
-<div>
-We can use linear function to locally approximate a discrete function just like in the continuous calculus. Let $f$ be a function then the linear approximation of $f$, around $n=a$ is :</div>
-<div>
-<br /></div>
-<div>
-$$f(n) \simeq f(a) + \Delta f(a) (n - a)\;\;\;\; (2)$$</div>
-<div>
-<br /></div>
-<div>
-Imagine that we have a function $f: \mathbb{N} \rightarrow \mathbb{R}$, and we don't know the expression but we know $\Delta f(n)$ and $f(0)$, then &nbsp;by (1) : $$f(n) = f(0) + \sum _{i= 0}^{n-1} \Delta f(i)$$</div>
-<div>
-<br /></div>
-<div>
-This reminds me of the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial article</a>, then we should apply the same technique and see where we can get. But first let me define $$\Delta^{(k)} f(n) = \Delta^{(k-1)}f(n+1) - \Delta^{(k-1)}f(n)&nbsp;$$</div>
-<div>
-The definition above just tell us how to take the difference of a difference $$\Delta^{(2)} f(n) = \Delta^{(1)}f(n+1) - \Delta^{(1)}f(n) = &nbsp;(f(n+2) &nbsp;- f(n+1)) - (f(n+1) - f(n))$$<br />
-<br /></div>
-<div>
-Thus $$\Delta^{(1)} f(n) = \Delta^{(1)}f(0) &nbsp;+ \sum_{i = 0}^{n-1} \Delta^{(2)}f(i)&nbsp;$$</div>
-<div>
-hence $$ f(n) = f(0) + \sum _{i= 0}^{n-1} \left [ \Delta f(0) &nbsp;+ \sum _{j= 0}^{i-1} \Delta^{(2)}f(j) \right ] =f(0) + \sum _{i= 0}^{n-1} \Delta f(0) &nbsp;+ \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(j)$$</div>
-<div>
-<br /></div>
-<div>
-we can expand little further by doing the same thing for $\Delta^{(2)}f(j)$ &nbsp;and we would get&nbsp;</div>
-<div>
-$$f(0) + \sum _{i= 0}^{n-1} \Delta f(0) &nbsp;+ \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1}\sum_{k=0}^{j-1}\Delta^{(3)}f(0) + ...\;\;\;\; (3)$$</div>
-<div>
-<br /></div>
-<div>
-Now we have an explicit formula for $f$ in terms of the differentials, but this is a horrible formula. Can we simplify it?&nbsp;</div>
-<div>
-<br /></div>
-<div>
-In order to simplify we need to compute $$\Delta f(0)\sum_{i_1 = 0}^{n-1} 1$$ $$...$$ $$\Delta^{(k)}f(0)\sum_{i_1 = 0}^{n-1} ... \sum_{i_k}^{i_{k-1} - 1}1$$ To simplify the notation I define $$\Psi(n,k) = \sum_{i_1 = 0}^{n-1} ... \sum_{i_k}^{i_{k-1} - 1}1$$</div>
-<div>
-<br /></div>
-<div>
-Then (3) becomes $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + ... + \Delta^{(k)}f(0)\Psi(n,k)+ ...$$</div>
-<div>
-<br /></div>
-<div>
-In the continuous calculus we have a similar problem, the Taylor expansion at $0$ is given by<br />
-$$f(x) = \sum_{k=0}^{\infty}\frac{d^{(k)}f(0)}{dx^k}\Omega(x,k)$$<br />
-where $$\Omega (x,k) = \int_{0}^{x} ... \int_{u_k}^{u_{k-1}}1du_k...du_1$$<br />
-<br />
-And this is easier than the discrete setting since we have nice closed formulas to compute integrals.</div>
-<div>
-<br />
-$$\Omega(x,1) = \int_{0}^{x}1du_1 = x$$</div>
-<div>
-$$\Omega(x,2) = \int_{0}^{x}\int_{0}^{u1}1du_2du_1 = \int_{0}^{x}u_1 du_1 = \frac{x^2}{2}$$</div>
-<div>
-$$... \;\;\;\; (4)$$</div>
-<div>
-<br /></div>
-<div>
-What about $\Omega(x,k)&nbsp;$ first we can check from (4) sequence that $\Omega(x,k) = \int_{0}^{x} \Omega(u_1,k-1) du_1$ then by the fundamental theorem of calculus we need to find a $$\frac{\partial\Omega(x,k)}{\partial x} = \Omega(x,k-1)$$</div>
-<div>
-Now by trial and error and a little inspiration form &nbsp;sequence (4) we get that $$\Omega(x,k) = \frac{x^k}{k!}$$ , lets check if its true&nbsp;</div>
-<div>
-$$\frac{\partial (\frac{x^k}{k!})}{\partial x} = \frac{x^{(k-1)}}{(k-1)!}$$&nbsp;</div>
-<div>
-<br /></div>
-<div>
-If you read the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial article</a>&nbsp;you could predict that&nbsp;</div>
-<div>
-$$\Omega(x,k) = \frac{x^k}{k!}$$.<br />
-<br /></div>
-<div>
-But what what about the discrete case? We have to do the same thing. We know that $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$</div>
-<div>
-Then by the fundamental theorem of discrete calculus we need to find a $\Psi$ such that $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(5)$$<br />
-<br />
-so from (5) we find the next recursion $$\Psi(n+ 1, k) &nbsp;- &nbsp;\Psi(n,k) = \Psi(n,k-1) \;\;\;\; (6)$$<br />
-$$\Leftrightarrow \Psi(n+ 1, k) = &nbsp;\Psi(n,k) + \Psi(n,k-1)$$<br />
-<br />
-Note that &nbsp;$\Psi(n,1) = \sum_{i_1=0}^{n-1} \Psi(n,0) =\sum_{i_1=0}^{n-1}1&nbsp;$, hence $\Psi(n,0) = 1 \; \forall n\geq 0$. Also we &nbsp;can check by definition that $\Psi(0,k) = 0 \;\forall k &gt; 0 $<br />
-<br />
-With recursion (6) we know how to compute $\Psi(n,k)$<br />
-<br />
-$$\Psi(n,k) = \begin{cases}<br />
-&nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n=0 \text{ and } k&gt;0\\<br />
-&nbsp;&amp; 1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n&gt;0 \text{ and } k=0\\<br />
-&nbsp;&amp; \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n&gt;0 \text{ and } k&gt;0\\<br />
-&nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}<br />
-\end{cases}$$</div>
-<div>
-This is good for computers but for humans it is not that good, we need to find another way<br />
-<br /></div>
-<div>
-Lets check a sequence of $\Psi(n,k)$ and see if we got a pattern</div>
-<div>
-<br /></div>
-<div>
-$$\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = n$$</div>
-<div>
-$$\Psi(n,2) = \sum_{i_1=0}^{n-1}\sum_{i_2=0}^{i_1-1}1 = \sum_{i_1=0}^{n-1}i$$</div>
-<div>
-<br /></div>
-<div>
-How to find $\sum_{i_1=0}^{n-1}i$, we need to find $\Delta g(n) = n$, let us try $g(n) = n^2$</div>
-<div>
-by definition $$\Delta g(n) = (n+1)^2 - n^2 = 2n + 1$$ Not quite what we want. It is simple to proof that $$\Delta(f + g)(n) = \Delta f(n) + \Delta g(n)$$ and $$\Delta(c f)(n) = c \Delta f(n)$$<br />
-<br />
-By trial and error I get the following function $$\Delta(\frac{n^2}{2} - \frac{n}{2}) = 0.5 \Delta(n^2) - 0.5\Delta(n)$$</div>
-<div>
-$$\Leftrightarrow 0.5(2n + 1) - 0.5(1) = n$$<br />
-Thus<br />
-$$\sum_{i_1=0}^{n-1}i = \frac{n^2 - n}{2} =&nbsp;&nbsp;\frac{n(n-1)}{2}$$<br />
-<br />
-Is too hard to find $\Psi$ by trial and error, we need another approach, ... to be continued</div>
-<div>
-<br /></div>
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                <div class="post-heading">
+                    <h1>Discrete Calculus I</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                <h2> Intro </h2>
+
+                In this post we want to study sequences. Sequences are functions of the form $f: n \in \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same rules of differential calculus to sequences.
+                Here we will try to build a discrete version of the continuous calculus using the same principles. We will follow the same ideas of previous posts, namely the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">intuition of calculus</a> and the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial</a> ( in this discrete setting it is actually called Newton polynomial ).
+
+                <h2> Discrete Derivative </h2>
+
+                Let us look at the following sequence:
+
+                $$1,3,5,7,9,\dots$$
+
+                Can you predict the next in the sequence ? </br>
+                Well if we have a formula that describes this sequence it should be easy, so lets find it out. It is easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property continues, we can construct the function using this difference.
+
+                $$f(n+1) - f(n) = 2$$
+                $$\Leftrightarrow f(n+1)= f(n) + 2$$
+
+                Starting from $n = 0$:
+
+                $$f(0) = 1$$
+                $$f(1) = f(0) + 2$$
+                $$f(2) = f(1) + 2 = f(0) + 2 + 2$$
+                $$f(3) = f(2) + 2 = f(1) + 2 + 2 = f(0) + 3 \times 2$$
+                $$\dots$$
+                $$f(n) = f(0) + 2n$$
+
+                By applying this formula we find that the next element in the sequence is $f(5) = 11$. This technique can be applied to any sequence. So let's do that! But first let us make one useful definition.
+
+                <h4>Definition 1</h4>
+
+                Discrete derivative:
+
+                $$\Delta f (n) = f(n+1) - f(n)$$
+
+                The discrete derivative defined here is just the forward difference. We could have defined any other difference as a derivative, like the backward difference or the weighted difference.
+                In the continuous case all those generalizations of differences would converge to the derivative under the limit procedure, but in the discrete case we don't have such procedure, hence I will stick with this definition.<br><br>
+
+                So how do we construct a sequence using just it's differences? Look at the following steps:
+
+                $$f(0) = f(0)$$
+                $$f(1) = f(0) + \Delta f(0)$$
+                $$f(2) = f(1) + \Delta f(1) = [f(0) + \Delta f(0)] + \Delta f(1)$$
+                $$f(3) = f(2) + \Delta f(2) = [f(1) + \Delta f(1)] + \Delta f(2) = [f(0) + \Delta f(0)] + \Delta f(1) + \Delta f(2)$$
+                $$\dots$$
+                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \;\;\;\; (1)$$
+
+                But (1) is just the fundamental theorem of calculus in the discrete setting:
+
+                $$\sum _{i= 0}^{n-1} \Delta f(i) = f(n) - f(0)$$
+
+                In the discrete theorem we replaced the integral with the summation. Now we can see that the first sequence has the property that for every $n > 0$, $\Delta f(n) = 2$.
+                Actually if we assume that a particular sequence has such property, $\forall n > 0, \Delta f(n) = \Delta f(0)$ we would get the linear approximation of the sequence around $n=0$.
+                We just need to apply the fundamental theorem of discrete calculus using this assumption, and you would get such approximation, like in the continuous calculus:
+
+                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \simeq f(0) +\sum_{i= 0}^{n-1} \Delta f(0) = f(0) + \Delta f(0) n$$
+
+                This approximation would be great for the first few numbers but then it would collapse under its error as $n \rightarrow \infty$.<br><br>
+
+                This reminds me of the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor
+                polynomial article</a>, therefore we could apply the same techniques and see where we go. Starting from (1) we have:
+
+                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i)$$
+
+                We can apply the same theorem to $\Delta f(n)$
+
+                $$\Delta f(n) = \Delta f(0) +\sum _{i= 0}^{n-1} \Delta(\Delta f(i))$$
+
+                Substituting on (1):
+
+                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \left [ \Delta f(0) + \sum _{j= 0}^{i-1} \Delta^{(2)}f(j) \right ] =
+                f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(j)\;\;\;\; (2)$$
+
+                Here we see one new concept, the concept of the second derivative $\Delta(\Delta f(n)) = \Delta^{(2)}f(n)$. Which leads me to the second definition:
+
+                <h4>Definition 2</h4>
+                Discrete kth derivative:
+
+                $$\Delta^{(k)} f(n) = \Delta^{(k-1)}f(n+1) - \Delta^{(k-1)}f(n)$$
+
+                This definition follows from applying the derivative operator multiple times, e.g:
+
+                $$\Delta^{(2)}f(n) = \Delta(\Delta f(n)) = \Delta f(n+1) - \Delta f(n) = f(n+2) - f(n+1) - f(n + 1) + f(n) $$
+
+                We can expand (2) little further by doing the same thing for $\Delta^{(2)}f(j)$ and so on:
+
+                $$f(n) = f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(0) + \sum _{i=
+                0}^{n-1} \sum _{j= 0}^{i-1}\sum_{k=0}^{j-1}\Delta^{(3)}f(0) + \dots\;\;\;\; (3)$$
+
+                Now we have an explicit formula for $f$ in terms of the differentials, but this is a horrible formula. Can we
+                simplify it?
+
+                In order to simplify we need to compute:
+                $$\Delta f(0)\sum_{i_1 = 0}^{n-1} 1$$
+                $$\dots$$
+                $$\Delta^{(k)}f(0)\sum_{i_1 = 0}^{n-1} \dots \sum_{i_k = 0}^{i_{k-1} - 1}1$$
+
+                To simplify the notation I define:
+                $$\Psi(n,k) = \sum_{i_1 = 0}^{n-1} \dots \sum_{i_k = 0}^{i_{k-1} - 1}1$$
+
+                Then (3) becomes:
+                $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + \dots + \Delta^{(k)}f(0)\Psi(n,k)+ \dots$$
+
+                In the continuous calculus we had a similar problem, the Taylor expansion at $0$ was given by:
+                $$f(x) = \sum_{k=0}^{\infty}\frac{d^{(k)}f(0)}{dx^k}\Omega(x,k)$$
+                Where $$\Omega (x,k) = \int_{0}^{x} ... \int_{u_k}^{u_{k-1}}1du_k...du_1$$
+
+                And this is easier than the discrete setting since we have nice closed formulas to compute integrals. In that post we found that:
+
+                $$\Omega(x,k) = \frac{x^k}{k!}$$
+
+                But what what about the discrete case? We have to do the same thing. We know that:
+                $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
+
+                Then by the fundamental theorem of discrete calculus we know that $\Psi$ has the property:
+                $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(4)$$
+                So from (4) we find the next recursion:
+                $$\Psi(n+ 1, k) - \Psi(n,k) = \Psi(n,k-1) \;\;\;\; (5)$$
+                $$\Leftrightarrow \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
+
+                Note that $\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = \sum_{i_1=0}^{n-1} \Psi(n,0)$, hence $\Psi(n,0) = 1 \; \forall n\geq 0$.
+                Also we can check by definition that $\Psi(0,k) = 0 \;\forall k > 0 $
+
+                With recursion (5) we know how to compute $\Psi(n,k)$
+
+                $$\Psi(n,k) = \begin{cases}
+                0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n = 0 \text{ and
+                } k > 0\\
+                1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n > 0 \text{ and
+                } k=0\\
+                \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n > 0 \text{ and } k > 0\\
+                0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}
+                \end{cases}$$
+
+                This expression is good for computers but not for humans, hence we need to find another way. Lets check a sequence of $\Psi(n,k)$ values and see if we find some pattern:
+                $$\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = n$$
+                $$\Psi(n,2) = \sum_{i_1=0}^{n-1}\sum_{i_2=0}^{i_1-1}1 = \sum_{i_1=0}^{n-1}i_1$$
+
+                How do you compute $\sum_{i_1=0}^{n-1}i_1$ ? <br><br>
+
+                We know by the fundamental theorem of discrete calculus that if we find a function $g$, such that $\Delta g(n) = n$ and $g(0) = 0$, then $g(n) = \sum_{i_1=0}^{n-1}\Delta g(i_1) = \sum_{i_1=0}^{n-1} i_1$.<br>
+                Let's try $g(n) = n^2$. By definition:
+                $$\Delta g(n) = (n+1)^2 - n^2 = 2n + 1$$
+
+                Not quite what we want. We need more tools.<br><br>
+
+                It is simple to proof that:
+                $$\Delta(f + g)(n) = \Delta f(n) + \Delta g(n)$$
+                And
+                $$\Delta(c f)(n) = c \Delta f(n)$$
+
+                Using these tools and trial and error, I get the following expression:
+                $$\Delta \left( \frac{n^2}{2} - \frac{n}{2} \right ) = \frac{\Delta(n^2)}{2} - \frac{\Delta(n)}{2}$$
+                $$\Leftrightarrow \frac{2n + 1}{2} - \frac{1}{2} = n$$
+                Thus:
+                $$\sum_{i_1=0}^{n-1}i_1 = \frac{n^2 - n}{2} =\frac{n(n-1)}{2}$$
+
+                Is too hard to find $\Psi$ by trial and error, we need another approach.
+
+                <h2> Computing $\Psi$ </h2>
+
+            </div>
+        </div>
+    </div>
+</article>
