@@ -28,7 +28,7 @@
                 Well if we have a formula that describes this sequence it should be easy, so lets find it out. It is easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property continues, we can construct the function using this difference.
 
                 $$f(n+1) - f(n) = 2$$
-                $$\Leftrightarrow f(n+1)= f(n) + 2$$
+                $$f(n+1)= f(n) + 2$$
 
                 Starting from $n = 0$:
 
@@ -130,7 +130,7 @@
                 $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(4)$$
                 So from (4) we find the next recursion:
                 $$\Psi(n+ 1, k) - \Psi(n,k) = \Psi(n,k-1) \;\;\;\; (5)$$
-                $$\Leftrightarrow \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
+                $$ \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
 
                 Note that $\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = \sum_{i_1=0}^{n-1} \Psi(n,0)$, hence $\Psi(n,0) = 1 \; \forall n\geq 0$.
                 Also we can check by definition that $\Psi(0,k) = 0 \;\forall k > 0 $
@@ -140,7 +140,7 @@
                 $$\Psi(n,k) = \begin{cases}
                 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n = 0 \text{ and
                 } k > 0\\
-                1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n > 0 \text{ and
+                1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n \geq 0 \text{ and
                 } k=0\\
                 \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n > 0 \text{ and } k > 0\\
                 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}
@@ -165,7 +165,7 @@
 
                 Using these tools and trial and error, I get the following expression:
                 $$\Delta \left( \frac{n^2}{2} - \frac{n}{2} \right ) = \frac{\Delta(n^2)}{2} - \frac{\Delta(n)}{2}$$
-                $$\Leftrightarrow \frac{2n + 1}{2} - \frac{1}{2} = n$$
+                $$ \frac{2n + 1}{2} - \frac{1}{2} = n$$
                 Thus:
                 $$\sum_{i_1=0}^{n-1}i_1 = \frac{n^2 - n}{2} =\frac{n(n-1)}{2}$$
 

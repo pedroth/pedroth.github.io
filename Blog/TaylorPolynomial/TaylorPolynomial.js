@@ -60,7 +60,7 @@ function HSVtoRGB(h, s, v) {
 function Sim1() {
     this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-1.5, 1.5], [-1.5, 1.5]]);
     this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-1.5, 1.5], [-1.5, 1.5]]);
-    this.samples = 25;
+    this.samples = 50;
     this.x = [];
     this.y1 = [];
     this.y2 = [];
@@ -333,7 +333,7 @@ function Sim2() {
            dfh1 = dfh2;
            h /= 2;
            dfh2 = this.dfr(f, x, n, h);
-        } while(Math.abs(dfh1 - dfh2) > 1E-10);
+        } while(Math.abs(dfh1 - dfh2) > 1E-2);
         return dfh1;
     }
 

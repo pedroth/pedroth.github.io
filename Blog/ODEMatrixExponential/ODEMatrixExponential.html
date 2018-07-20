@@ -156,11 +156,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \dot{\mathbf{g}}(0) \,d\tau + \int_0^t\int_0^\tau\ddot{\mathbf{g}}(0) d\tau_2 d\tau + \dots$$
                 $$\mathbf{x}(t) = \mathbf{x}(0) + \sum_{k=1}^{\infty} \frac{d^{k}\mathbf{g}(0)}{dt^k} \frac{t^k}{k!}\;\;\;\;(4)$$
 
-                We could stop our post here, but let us first see an example. The example I choose is the simple linear ordinary differential equations (ODE). The problem is:
+                We solved our basic problem, now using this tool we can solve others.
+
+                <h2>Ordinary differential equation(ODE)</h2>
+
+                This problem of solving an ODE is also called the initial value problem, since the initial conditions must be specified in order to have a concrete solution. It is described as follows:
 
                 $$\dot{\mathbf{x}} = M \mathbf{x}\;\;,\;\mathbf{x}(0) = \mathbf{x}_0\;\;\;\;(5)$$
 
-                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. In order to solve (5) we will use the Taylor polynomial approach since we can not use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.
+                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. To solve (5) we will use the Taylor polynomial approach since we can't use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.
 
                 $$\frac{d\mathbf{x}}{dt} = M \mathbf{x}$$
                 $$\frac{d^2\mathbf{x}}{dt^2} = M \frac{d\mathbf{x}}{dt} = M^2 \mathbf{x}$$
@@ -203,7 +207,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
 
                 We can imagine that, a particle $\mathbf{x}(t)$ moving through $\mathbb{R}^n$, with velocity given by $\mathbf{g}(\mathbf{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$.
-                For the more geometrical minds, you can imagine a curve that starts at $\mathbf{x}_0$ and it's tangent vectors are given by $\mathbf{g}(\mathbf{x})$. The general problem we are trying to solve is:
+                For the more geometrical minds, you can imagine a curve that starts at $\mathbf{x}_0$ and for all points on the curve $\mathbf{x}(t)$, it's tangent vectors are given by $\mathbf{g}(\mathbf{x})$. The general problem we are trying to solve is:
 
                 $$\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x})\;\;,\;\mathbf{x}(0) = \mathbf{x}_0$$
 

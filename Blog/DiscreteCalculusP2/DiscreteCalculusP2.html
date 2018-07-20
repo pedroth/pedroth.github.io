@@ -111,7 +111,7 @@ Discrete Calculus Part 2</h2>
 Where $\Psi$ was defined as $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$ and later we found out that we could define $\Psi$ in an easier way :<br />
 $$\Psi(n,k) = \begin{cases}<br />
 &nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n=0 \text{ and } k&gt;0\\<br />
-&nbsp;&amp; 1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n&gt;0 \text{ and } k=0\\<br />
+&nbsp;&amp; 1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n \geq 0 \text{ and } k=0\\<br />
 &nbsp;&amp; \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n&gt;0 \text{ and } k&gt;0\\<br />
 &nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}<br />
 \end{cases}$$<br />
