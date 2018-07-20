@@ -899,6 +899,26 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
 
 };
 
+MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
+    var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
+    for(var i = 0; i < array.length; i++) {
+      upperBox[0] = min(array[i], upperBox[0]);
+      upperBox[1] = max(array[i], upperBox[1]);
+    }
+    var size = this.getSize();
+    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
+    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+
+    for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
+      for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
+          var x = [i, j];
+          if(isInsidePoly(x, array)) {
+              shader(x, array, this);
+          }
+      }
+    }
+}
+
 /* 
  * x1     :   2-dim array
  * x2     :   2-dim array
@@ -907,24 +927,8 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
-      for(var i = 0; i < array.length; i++) {
-          upperBox[0] = min(array[i], upperBox[0]);
-          upperBox[1] = max(array[i], upperBox[1]);
-      }
-      var size = this.getSize();
-      upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
-      upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
-
-      for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
-          for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
-              var x = [i, j];
-              if(this.isInsideTriangle(x, array)) {
-                  shader(x, array, this);
-              }
-          }
-      }
-  };
+      this.drawPolygon(array, shader, this.isInsideTriangle);
+};
 
 /* x1     :   2-dim array
  * x2     :   2-dim array
@@ -932,23 +936,22 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
-  MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-      this.drawTriangle(x1, x2, x3, shader);
-      this.drawTriangle(x3, x4, x1, shader);
-  };
+MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
+    this.drawPolygon([x1, x2, x3, x4], this.insidePolygon);
+};
 
 // slower than the method below
-//MyCanvas.prototype.insideTriangle = function(x, array) {
-//    var v = [];
-//    var theta = 0;
-//    var length = array.length;
-//    for(var i = 0; i < length; i++) {
-//        v[0] = diff(array[(i + 1) % length], x);
-//        v[1] = diff(array[i], x);
-//        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
-//    }
-//    return Math.abs(theta -  2 * Math.PI) < 1E-3;
-//}
+MyCanvas.prototype.insidePolygon = function(x, array) {
+    var v = [];
+    var theta = 0;
+    var length = array.length;
+    for(var i = 0; i < length; i++) {
+        v[0] = diff(array[(i + 1) % length], x);
+        v[1] = diff(array[i], x);
+        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
+    }
+    return Math.abs(theta -  2 * Math.PI) < 1E-3;
+}
 
 MyCanvas.prototype.isInsideTriangle = function(x, array) {
     var length = array.length;
@@ -1015,6 +1018,11 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
+MyCanvas.interpolateTriangleShader = function(shader) {
+    return function(x, triangle, canvas) {
+
+    }
+}
 
 MyCanvas.interpolateLineShader = function(shader) {
     return function (x, line, canvas) {

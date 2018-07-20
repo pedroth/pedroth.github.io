@@ -1,4 +1,4 @@
-var DenseNDArray = require('./DenseNDArray.js');
+var DenseNDArray = require('../main/DenseNDArray.js');
 
 function denseTest() {
         var table = new DenseNDArray([3, 3, 3]);

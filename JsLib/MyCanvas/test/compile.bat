@@ -1,0 +1,1 @@
+browserify TestMyCanvas.js > test.js

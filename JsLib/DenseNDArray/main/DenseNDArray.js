@@ -3,7 +3,6 @@
 * First implementation doesn't care about type checking, assumes client knows how to use this class
 */
  var DenseNDArray = function(dim) {
-
     this.dim = dim;
     this.powers = [];
     this.denseNDArray = [];
@@ -59,7 +58,7 @@ DenseNDArray.prototype.computeNewDim = function(intervals) {
     }
 
 DenseNDArray.prototype.getIntervalFromStr = function(x) {
-        var split = x.split(",");
+        var split = x.replace(" ", "").split(",");
         this.checkIndexDimension(split.length);
         var intervals = [];
         for (var i = 0; i < split.length; i++) {
@@ -71,7 +70,7 @@ DenseNDArray.prototype.getIntervalFromStr = function(x) {
                     break;
                 case 1:
                     var integer = parseInt(intervalBounds[0]);
-                    intervals[i] = [integer, integer];
+                    intervals[i] = [integer, split[i].contains(":") ? this.dim[i] - 1 : integer];
                     break;
                 case 2:
                     var xmin = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[0])));
