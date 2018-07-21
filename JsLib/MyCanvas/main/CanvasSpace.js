@@ -63,9 +63,7 @@ CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y2 = this.integerTransform(x2);
 	y3 = this.integerTransform(x3);
 	y4 = this.integerTransform(x4);
-	// I could not call MyCanvas.drawQuad since MyCanvas.drawQuad uses this.drawTriangle
-	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
-	MyCanvas.prototype.drawTriangle.call(this, y3, y4, y1, shader);
+	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
 }
 
 CanvasSpace.prototype.drawCircle = function(x, r, shader) {

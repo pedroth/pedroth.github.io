@@ -1,8 +1,11 @@
-var ImageIO = function() {
-    // empty constructor
+var ImageIO = {
+    // empty object
 };
 
-ImageIO.getDataFromImage = function(img) {
+/**
+ * img : html image
+ */
+ImageIO.getImageCanvas = function(img) {
     var canvasAux = document.createElement('canvas');
     canvasAux.width = img.width;
     canvasAux.height = img.height;
@@ -11,10 +14,18 @@ ImageIO.getDataFromImage = function(img) {
     contextAux.globalCompositeOperation = 'source-over';
     contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
     contextAux.drawImage(img, 0 ,0);
-    return contextAux.getImageData(0, 0, img.width, img.height);
+    return canvasAux;
+}
+
+/**
+ * img : html image
+ */
+ImageIO.getDataFromImage = function(img) {
+    canvas = ImageIO.getImageCanvas(img);
+    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
 };
 
-ImageIO.loadImage= function(src) {
+ImageIO.loadImage = function(src) {
     var img = new Image();
     img.src = src;
     img.isReady = false;
@@ -23,5 +34,9 @@ ImageIO.loadImage= function(src) {
     };
     return img;
 };
+
+ImageIO.generateImageReadyPredicate = function(img) {
+    return function() { return img.isReady;};
+}
 
 module.exports = ImageIO;

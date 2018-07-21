@@ -1,6 +1,7 @@
 var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
+var Choice = require('../../Choice/main/Choice.js');
 
 
 function randomVector(a, b) {
@@ -159,12 +160,53 @@ var Test3 = function() {
     }
 }
 
+var Test4 = function() {
+    this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
+    this.oldTime = new Date().getTime();
+
+    this.texture = ImageIO.loadImage("R.png");
+    this.t = 0;
+    this.quad = [
+                 [-0.25, -0.25],
+                 [ 0.35, -0.25],
+                 [ 0.25,  0.35],
+                 [-0.25,  0.25],
+                ];
+
+    this.shader = new Choice(MyCanvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]]), MyCanvas.simpleShader([255, 0, 255, 255]), ImageIO.generateImageReadyPredicate(this.texture));
+
+    this.update = function() {
+        var dt = 1E-3 * (new Date().getTime() - this.oldTime);
+        this.oldTime = new Date().getTime();
+
+        this.canvasTexture.clearImage([0, 0, 0, 255]);
+        var cos = Math.cos(this.t / (2 * Math.PI * 10));
+        var coscos = cos * cos;
+
+        var transformQuad = [];
+        for(var i = 0; i < this.quad.length; i++) {
+            transformQuad.push([coscos * this.quad[i][0], coscos * this.quad[i][1]]);
+        }
+
+        this.canvasTexture.drawQuad(
+                                    transformQuad[0],
+                                    transformQuad[1],
+                                    transformQuad[2],
+                                    transformQuad[3],
+                                    this.shader.get()
+                                   );
+        this.t+= dt;
+        this.canvasTexture.paintImage();
+    }
+}
+
 
 
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3()
+//             new Test1(),
+//             new Test2(),
+//             new Test3(),
+             new Test4()
 ]
 
 function draw() {

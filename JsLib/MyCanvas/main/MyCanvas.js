@@ -1,3 +1,4 @@
+var ImageIO = require('./ImageIO.js');
 /*
  Canvas coordinates
 
@@ -99,6 +100,31 @@ function solve2by2LowerTriMatrix(u, w, z) {
     return [aux, (-u[1] * aux + z[1]) / w];
 }
 
+function triangleBaryCoord(x, triangle) {
+    var y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
+    var u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
+    var v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
+    var det = (u[0] * v[1] - u[1] * v[0]);
+    if(det == 0) return [0, 0, 0];
+    var alpha = [(v[1] * y[0] - v[0] * y[1]) / det, (u[0] * y[1] - u[1] * y[0]) / det];
+    return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
+}
+
+/**
+ * values \in R^{k * 4}
+ * x \in [0,1]^2
+ */
+function bilinearInterpolation(values, x) {
+    var acc = [];
+    for(var k = 0; k < values.length; k++) {
+        var f03 = values[0][k] + (values[3][k] - values[0][k]) * x[1];
+        var f12 = values[1][k] + (values[2][k] - values[1][k]) * x[1];
+        var f = f03 + (f12 - f03) * x[0];
+        acc.push(f);
+    }
+    return acc;
+}
+
 
 var MyCanvas = function (canvas) {
     this.canvas = canvas;
@@ -109,10 +135,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
+ * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
  */
 MyCanvas.prototype.getSize = function () {
-    return [this.canvas.height, this.canvas.width];
+    return [this.canvas.width, this.canvas.height];
 };
 
 /**
@@ -136,7 +162,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[1], size[0]);
+        canvas.ctx.fillRect(0, 0, size[0], size[1]);
     }, true);
 };
 
@@ -152,6 +178,11 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
 MyCanvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
+
+MyCanvas.prototype.getPxl = function(x) {
+    var index = this.getImageIndex(x);
+    return [this.imageData[index], this.imageData[index + 1], this.imageData[index + 2], this.imageData[index + 3]];
+}
 
 MyCanvas.prototype.drawPxl = function (x, rgb) {
     var index = this.getImageIndex(x);
@@ -313,11 +344,11 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], this.insidePolygon);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideTriangle);
 };
 
 // slower than the method below
-MyCanvas.prototype.insidePolygon = function(x, array) {
+MyCanvas.prototype.isInsidePolygon = function(x, array) {
     var v = [];
     var theta = 0;
     var length = array.length;
@@ -394,15 +425,26 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
-MyCanvas.interpolateTriangleShader = function(shader) {
-    return function(x, triangle, canvas) {
 
+
+MyCanvas.interpolateQuadShader = function(shader) {
+    return function(x, quad, canvas) {
+        var t1 = [quad[0], quad[1], quad[2]];
+        var t2 = [quad[2], quad[3], quad[0]];
+        var alpha = triangleBaryCoord(x, t1);
+        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
+            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
+        } else {
+            alpha = triangleBaryCoord(x, t2);
+            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]])
+        }
     }
 }
 
 MyCanvas.interpolateTriangleShader = function(shader) {
     return function(x, triangle, canvas) {
-
+        alpha = triangleBaryCoord(x, triangle);
+        shader(x, triangle, canvas, alpha);
     }
 }
 
@@ -416,6 +458,30 @@ MyCanvas.interpolateLineShader = function(shader) {
         shader(x, line, canvas, t);
     };
 };
+
+/**
+ * img: html loaded image.
+ * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
+ */
+MyCanvas.quadTextureShader = function(img, quadTexCoord) {
+    var imageShader = function(x, quad, canvas, alpha) {
+        var imageCanvas = new MyCanvas(ImageIO.getImageCanvas(img));
+        var imgSize = imageCanvas.getSize();
+        var interpolateTexCoord = [0, 0];
+        for(var i = 0; i < quadTexCoord.length; i++) {
+            interpolateTexCoord = add(interpolateTexCoord, scale(quadTexCoord[i], alpha[i]));
+        }
+        var i = [(1 - interpolateTexCoord[1]) * (imgSize[1] - 1), (imgSize[0] - 1) * interpolateTexCoord[0]];
+        // bound coordinates
+        i = max([0, 0], min(diff([imgSize[0], imgSize[1]], [1, 1]), i));
+        // pxl lower corner
+        var j = floor(i);
+        var cornerColors = [imageCanvas.getPxl(j), imageCanvas.getPxl(add(j, [1,0])), imageCanvas.getPxl(add(j, [1, 1])), imageCanvas.getPxl(add(j, [0, 1]))];
+        var bilinearColor = bilinearInterpolation(cornerColors, diff(i, j));
+        canvas.drawPxl(x, bilinearColor);
+    }
+    return MyCanvas.interpolateQuadShader(imageShader);
+}
 
 
 module.exports = MyCanvas;

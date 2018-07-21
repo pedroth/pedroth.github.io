@@ -1,4 +1,16 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Choice = function(opt1, opt2, predicate) {
+    this.opt1 = opt1;
+    this.opt2 = opt2;
+
+    this.get = function() {
+        if(predicate()) return this.opt1;
+        return this.opt2;
+    }
+}
+
+module.exports = Choice;
+},{}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
@@ -64,9 +76,7 @@ CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y2 = this.integerTransform(x2);
 	y3 = this.integerTransform(x3);
 	y4 = this.integerTransform(x4);
-	// I could not call MyCanvas.drawQuad since MyCanvas.drawQuad uses this.drawTriangle
-	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
-	MyCanvas.prototype.drawTriangle.call(this, y3, y4, y1, shader);
+	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
 }
 
 CanvasSpace.prototype.drawCircle = function(x, r, shader) {
@@ -90,12 +100,15 @@ CanvasSpace.prototype.setCamera = function(camera) {
 
 
 module.exports = CanvasSpace;
-},{"./MyCanvas.js":3}],2:[function(require,module,exports){
-var ImageIO = function() {
-    // empty constructor
+},{"./MyCanvas.js":4}],3:[function(require,module,exports){
+var ImageIO = {
+    // empty object
 };
 
-ImageIO.getDataFromImage = function(img) {
+/**
+ * img : html image
+ */
+ImageIO.getImageCanvas = function(img) {
     var canvasAux = document.createElement('canvas');
     canvasAux.width = img.width;
     canvasAux.height = img.height;
@@ -104,10 +117,18 @@ ImageIO.getDataFromImage = function(img) {
     contextAux.globalCompositeOperation = 'source-over';
     contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
     contextAux.drawImage(img, 0 ,0);
-    return contextAux.getImageData(0, 0, img.width, img.height);
+    return canvasAux;
+}
+
+/**
+ * img : html image
+ */
+ImageIO.getDataFromImage = function(img) {
+    canvas = ImageIO.getImageCanvas(img);
+    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
 };
 
-ImageIO.loadImage= function(src) {
+ImageIO.loadImage = function(src) {
     var img = new Image();
     img.src = src;
     img.isReady = false;
@@ -117,8 +138,13 @@ ImageIO.loadImage= function(src) {
     return img;
 };
 
+ImageIO.generateImageReadyPredicate = function(img) {
+    return function() { return img.isReady;};
+}
+
 module.exports = ImageIO;
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+var ImageIO = require('./ImageIO.js');
 /*
  Canvas coordinates
 
@@ -220,6 +246,31 @@ function solve2by2LowerTriMatrix(u, w, z) {
     return [aux, (-u[1] * aux + z[1]) / w];
 }
 
+function triangleBaryCoord(x, triangle) {
+    var y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
+    var u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
+    var v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
+    var det = (u[0] * v[1] - u[1] * v[0]);
+    if(det == 0) return [0, 0, 0];
+    var alpha = [(v[1] * y[0] - v[0] * y[1]) / det, (u[0] * y[1] - u[1] * y[0]) / det];
+    return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
+}
+
+/**
+ * values \in R^{k * 4}
+ * x \in [0,1]^2
+ */
+function bilinearInterpolation(values, x) {
+    var acc = [];
+    for(var k = 0; k < values.length; k++) {
+        var f03 = values[0][k] + (values[3][k] - values[0][k]) * x[1];
+        var f12 = values[1][k] + (values[2][k] - values[1][k]) * x[1];
+        var f = f03 + (f12 - f03) * x[0];
+        acc.push(f);
+    }
+    return acc;
+}
+
 
 var MyCanvas = function (canvas) {
     this.canvas = canvas;
@@ -230,10 +281,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
+ * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
  */
 MyCanvas.prototype.getSize = function () {
-    return [this.canvas.height, this.canvas.width];
+    return [this.canvas.width, this.canvas.height];
 };
 
 /**
@@ -257,7 +308,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[1], size[0]);
+        canvas.ctx.fillRect(0, 0, size[0], size[1]);
     }, true);
 };
 
@@ -273,6 +324,11 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
 MyCanvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
+
+MyCanvas.prototype.getPxl = function(x) {
+    var index = this.getImageIndex(x);
+    return [this.imageData[index], this.imageData[index + 1], this.imageData[index + 2], this.imageData[index + 3]];
+}
 
 MyCanvas.prototype.drawPxl = function (x, rgb) {
     var index = this.getImageIndex(x);
@@ -434,11 +490,11 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], this.insidePolygon);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsidePolygon);
 };
 
 // slower than the method below
-MyCanvas.prototype.insidePolygon = function(x, array) {
+MyCanvas.prototype.isInsidePolygon = function(x, array) {
     var v = [];
     var theta = 0;
     var length = array.length;
@@ -515,9 +571,26 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
+
+
+MyCanvas.interpolateQuadShader = function(shader) {
+    return function(x, quad, canvas) {
+        var t1 = [quad[0], quad[1], quad[2]];
+        var t2 = [quad[2], quad[3], quad[0]];
+        var alpha = triangleBaryCoord(x, t1);
+        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
+            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
+        } else {
+            alpha = triangleBaryCoord(x, t2);
+            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]])
+        }
+    }
+}
+
 MyCanvas.interpolateTriangleShader = function(shader) {
     return function(x, triangle, canvas) {
-
+        alpha = triangleBaryCoord(x, triangle);
+        shader(x, triangle, canvas, alpha);
     }
 }
 
@@ -532,12 +605,37 @@ MyCanvas.interpolateLineShader = function(shader) {
     };
 };
 
+/**
+ * img: html loaded image.
+ * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
+ */
+MyCanvas.quadTextureShader = function(img, quadTexCoord) {
+    var imageShader = function(x, quad, canvas, alpha) {
+        var imageCanvas = new MyCanvas(ImageIO.getImageCanvas(img));
+        var imgSize = imageCanvas.getSize();
+        var interpolateTexCoord = [0, 0];
+        for(var i = 0; i < quadTexCoord.length; i++) {
+            interpolateTexCoord = add(interpolateTexCoord, scale(quadTexCoord[i], alpha[i]));
+        }
+        var i = [(1 - interpolateTexCoord[1]) * (imgSize[1] - 1), (imgSize[0] - 1) * interpolateTexCoord[0]];
+        // bound coordinates
+        i = max([0, 0], min(diff([imgSize[0], imgSize[1]], [1, 1]), i));
+        // pxl lower corner
+        var j = floor(i);
+        var cornerColors = [imageCanvas.getPxl(j), imageCanvas.getPxl(add(j, [1,0])), imageCanvas.getPxl(add(j, [1, 1])), imageCanvas.getPxl(add(j, [0, 1]))];
+        var bilinearColor = bilinearInterpolation(cornerColors, diff(i, j));
+        canvas.drawPxl(x, bilinearColor);
+    }
+    return MyCanvas.interpolateQuadShader(imageShader);
+}
+
 
 module.exports = MyCanvas;
-},{}],4:[function(require,module,exports){
+},{"./ImageIO.js":3}],5:[function(require,module,exports){
 var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
+var Choice = require('../../Choice/main/Choice.js');
 
 
 function randomVector(a, b) {
@@ -696,12 +794,53 @@ var Test3 = function() {
     }
 }
 
+var Test4 = function() {
+    this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
+    this.oldTime = new Date().getTime();
+
+    this.texture = ImageIO.loadImage("R.png");
+    this.t = 0;
+    this.quad = [
+                 [-0.25, -0.25],
+                 [ 0.35, -0.25],
+                 [ 0.25,  0.35],
+                 [-0.25,  0.25],
+                ];
+
+    this.shader = new Choice(MyCanvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]]), MyCanvas.simpleShader([255, 0, 255, 255]), ImageIO.generateImageReadyPredicate(this.texture));
+
+    this.update = function() {
+        var dt = 1E-3 * (new Date().getTime() - this.oldTime);
+        this.oldTime = new Date().getTime();
+
+        this.canvasTexture.clearImage([0, 0, 0, 255]);
+        var cos = Math.cos(this.t / (2 * Math.PI * 10));
+        var coscos = cos * cos;
+
+        var transformQuad = [];
+        for(var i = 0; i < this.quad.length; i++) {
+            transformQuad.push([coscos * this.quad[i][0], coscos * this.quad[i][1]]);
+        }
+
+        this.canvasTexture.drawQuad(
+                                    transformQuad[0],
+                                    transformQuad[1],
+                                    transformQuad[2],
+                                    transformQuad[3],
+                                    this.shader.get()
+                                   );
+        this.t+= dt;
+        this.canvasTexture.paintImage();
+    }
+}
+
 
 
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3()
+//             new Test1(),
+//             new Test2(),
+//             new Test3(),
+             new Test4()
 ]
 
 function draw() {
@@ -714,4 +853,4 @@ function draw() {
 requestAnimationFrame(draw);
 
 
-},{"../main/CanvasSpace.js":1,"../main/ImageIO.js":2,"../main/MyCanvas.js":3}]},{},[4]);
+},{"../../Choice/main/Choice.js":1,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}]},{},[5]);
