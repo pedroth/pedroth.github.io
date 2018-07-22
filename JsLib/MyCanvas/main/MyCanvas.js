@@ -453,13 +453,13 @@ MyCanvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
-
-        if (squareNorm(diff(quad[1], x)) < squareNorm(diff(quad[3], x))) {
-            var alpha = triangleBaryCoord(x, t1);
-            return shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
+        var alpha = triangleBaryCoord(x, t1);
+        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
+            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
+        } else {
+            alpha = triangleBaryCoord(x, t2);
+            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
         }
-        var alpha = alpha = triangleBaryCoord(x, t2);
-        shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
     }
 }
 
