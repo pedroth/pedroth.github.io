@@ -90,6 +90,11 @@ CanvasSpace.prototype.drawImage = function (img, x, shader) {
     MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
 }
 
+CanvasSpace.prototype.drawString = function(x, string, contextShader) {
+    y = this.integerTransform(x);
+    MyCanvas.prototype.drawString.call(this, y, string, contextShader);
+};
+
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 CanvasSpace.prototype.setCamera = function(camera) {
     if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
@@ -466,7 +471,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
       for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
           var x = [i, j];
           if(isInsidePoly(x, array)) {
-              shader(x, array, this);
+            shader(x, array, this);
           }
       }
     }
@@ -490,7 +495,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsidePolygon);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideTriangle);
 };
 
 // slower than the method below
@@ -564,6 +569,15 @@ MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
     this.canvas.addEventListener(key, lambda, useCapture);
 };
 
+MyCanvas.prototype.drawString = function(x, string, contextShader) {
+    this.useCanvasCtx(
+        function (canvas) {
+            contextShader(canvas.ctx);
+            canvas.ctx.fillText(string, x[1], x[0]);
+        }
+    );
+};
+
 
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
@@ -571,19 +585,32 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
+MyCanvas.colorShader = function(colors) {
+    var auxShader = function(x, poly, canvas, alpha) {
+        var interpolateColors = [0, 0, 0, 0];
+        for(var i = 0; i < poly.length; i++) {
+            interpolateColors[0] = interpolateColors[0] + colors[i][0] * alpha[i];
+            interpolateColors[1] = interpolateColors[1] + colors[i][1] * alpha[i];
+            interpolateColors[2] = interpolateColors[2] + colors[i][2] * alpha[i];
+            interpolateColors[3] = interpolateColors[3] + colors[i][3] * alpha[i];
+        }
+        canvas.drawPxl(x, interpolateColors);
+    }
+    return MyCanvas.interpolateTriangleShader(auxShader);
+}
 
 
 MyCanvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
-        var alpha = triangleBaryCoord(x, t1);
-        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
-            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
-        } else {
-            alpha = triangleBaryCoord(x, t2);
-            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]])
+
+        if (squareNorm(diff(quad[1], x)) < squareNorm(diff(quad[3], x))) {
+            var alpha = triangleBaryCoord(x, t1);
+            return shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
         }
+        var alpha = alpha = triangleBaryCoord(x, t2);
+        shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
     }
 }
 
@@ -615,7 +642,8 @@ MyCanvas.quadTextureShader = function(img, quadTexCoord) {
         var imgSize = imageCanvas.getSize();
         var interpolateTexCoord = [0, 0];
         for(var i = 0; i < quadTexCoord.length; i++) {
-            interpolateTexCoord = add(interpolateTexCoord, scale(quadTexCoord[i], alpha[i]));
+            interpolateTexCoord[0] = interpolateTexCoord[0] + quadTexCoord[i][0] * alpha[i];
+            interpolateTexCoord[1] = interpolateTexCoord[1] + quadTexCoord[i][1] * alpha[i];
         }
         var i = [(1 - interpolateTexCoord[1]) * (imgSize[1] - 1), (imgSize[0] - 1) * interpolateTexCoord[0]];
         // bound coordinates
@@ -739,6 +767,9 @@ var Test2 = function() {
 }
 
 var Test3 = function() {
+
+    this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
+
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 
     this.isFirstIte = true;
@@ -784,7 +815,7 @@ var Test3 = function() {
             this.canvasTriangles.clearImage([250, 250, 250, 255]);
             var sin = Math.sin(this.t / (2 * Math.PI * 10))
             var sinsin = sin * sin;
-            this.canvasTriangles.drawTriangle(invertVector(this.average, this.diff[0], sinsin), invertVector(this.average, this.diff[1], sinsin), invertVector(this.average, this.diff[2], sinsin), r);
+            this.canvasTriangles.drawTriangle(invertVector(this.average, this.diff[0], sinsin), invertVector(this.average, this.diff[1], sinsin), invertVector(this.average, this.diff[2], sinsin), this.triangleShader);
 
             this.canvasTriangles.drawCircle(this.animeCircle, sinsin * size[0] * 0.25, g);
 
@@ -814,7 +845,17 @@ var Test4 = function() {
         this.oldTime = new Date().getTime();
 
         this.canvasTexture.clearImage([0, 0, 0, 255]);
-        var cos = Math.cos(this.t / (2 * Math.PI * 10));
+
+        this.canvasTexture.drawString(
+                                        [-0.95, 0.9],
+                                         "FPS : " + (1 / dt),
+                                         function(ctx) {
+                                            ctx.fillStyle = "white";
+                                            ctx.font = "bold 16px Arial";
+                                         }
+        );
+
+        var cos = Math.cos(this.t / (2 * Math.PI));
         var coscos = cos * cos;
 
         var transformQuad = [];

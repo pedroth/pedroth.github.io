@@ -105,6 +105,9 @@ var Test2 = function() {
 }
 
 var Test3 = function() {
+
+    this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
+
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
 
     this.isFirstIte = true;
@@ -150,7 +153,7 @@ var Test3 = function() {
             this.canvasTriangles.clearImage([250, 250, 250, 255]);
             var sin = Math.sin(this.t / (2 * Math.PI * 10))
             var sinsin = sin * sin;
-            this.canvasTriangles.drawTriangle(invertVector(this.average, this.diff[0], sinsin), invertVector(this.average, this.diff[1], sinsin), invertVector(this.average, this.diff[2], sinsin), r);
+            this.canvasTriangles.drawTriangle(invertVector(this.average, this.diff[0], sinsin), invertVector(this.average, this.diff[1], sinsin), invertVector(this.average, this.diff[2], sinsin), this.triangleShader);
 
             this.canvasTriangles.drawCircle(this.animeCircle, sinsin * size[0] * 0.25, g);
 
@@ -180,7 +183,17 @@ var Test4 = function() {
         this.oldTime = new Date().getTime();
 
         this.canvasTexture.clearImage([0, 0, 0, 255]);
-        var cos = Math.cos(this.t / (2 * Math.PI * 10));
+
+        this.canvasTexture.drawString(
+                                        [-0.95, 0.9],
+                                         "FPS : " + (1 / dt),
+                                         function(ctx) {
+                                            ctx.fillStyle = "white";
+                                            ctx.font = "bold 16px Arial";
+                                         }
+        );
+
+        var cos = Math.cos(this.t / (2 * Math.PI));
         var coscos = cos * cos;
 
         var transformQuad = [];

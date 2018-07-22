@@ -320,7 +320,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
       for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
           var x = [i, j];
           if(isInsidePoly(x, array)) {
-              shader(x, array, this);
+            shader(x, array, this);
           }
       }
     }
@@ -418,6 +418,15 @@ MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
     this.canvas.addEventListener(key, lambda, useCapture);
 };
 
+MyCanvas.prototype.drawString = function(x, string, contextShader) {
+    this.useCanvasCtx(
+        function (canvas) {
+            contextShader(canvas.ctx);
+            canvas.ctx.fillText(string, x[1], x[0]);
+        }
+    );
+};
+
 
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
@@ -425,19 +434,32 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
+MyCanvas.colorShader = function(colors) {
+    var auxShader = function(x, poly, canvas, alpha) {
+        var interpolateColors = [0, 0, 0, 0];
+        for(var i = 0; i < poly.length; i++) {
+            interpolateColors[0] = interpolateColors[0] + colors[i][0] * alpha[i];
+            interpolateColors[1] = interpolateColors[1] + colors[i][1] * alpha[i];
+            interpolateColors[2] = interpolateColors[2] + colors[i][2] * alpha[i];
+            interpolateColors[3] = interpolateColors[3] + colors[i][3] * alpha[i];
+        }
+        canvas.drawPxl(x, interpolateColors);
+    }
+    return MyCanvas.interpolateTriangleShader(auxShader);
+}
 
 
 MyCanvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
-        var alpha = triangleBaryCoord(x, t1);
-        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
-            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
-        } else {
-            alpha = triangleBaryCoord(x, t2);
-            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]])
+
+        if (squareNorm(diff(quad[1], x)) < squareNorm(diff(quad[3], x))) {
+            var alpha = triangleBaryCoord(x, t1);
+            return shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
         }
+        var alpha = alpha = triangleBaryCoord(x, t2);
+        shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
     }
 }
 
@@ -469,7 +491,8 @@ MyCanvas.quadTextureShader = function(img, quadTexCoord) {
         var imgSize = imageCanvas.getSize();
         var interpolateTexCoord = [0, 0];
         for(var i = 0; i < quadTexCoord.length; i++) {
-            interpolateTexCoord = add(interpolateTexCoord, scale(quadTexCoord[i], alpha[i]));
+            interpolateTexCoord[0] = interpolateTexCoord[0] + quadTexCoord[i][0] * alpha[i];
+            interpolateTexCoord[1] = interpolateTexCoord[1] + quadTexCoord[i][1] * alpha[i];
         }
         var i = [(1 - interpolateTexCoord[1]) * (imgSize[1] - 1), (imgSize[0] - 1) * interpolateTexCoord[0]];
         // bound coordinates

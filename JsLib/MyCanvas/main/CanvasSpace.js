@@ -77,6 +77,11 @@ CanvasSpace.prototype.drawImage = function (img, x, shader) {
     MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
 }
 
+CanvasSpace.prototype.drawString = function(x, string, contextShader) {
+    y = this.integerTransform(x);
+    MyCanvas.prototype.drawString.call(this, y, string, contextShader);
+};
+
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 CanvasSpace.prototype.setCamera = function(camera) {
     if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
