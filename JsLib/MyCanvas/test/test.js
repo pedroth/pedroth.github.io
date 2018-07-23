@@ -878,9 +878,9 @@ var Test4 = function() {
 
 
 var tests = [
-//             new Test1(),
-//             new Test2(),
-//             new Test3(),
+             new Test1(),
+             new Test2(),
+             new Test3(),
              new Test4()
 ]
 
