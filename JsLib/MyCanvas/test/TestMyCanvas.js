@@ -214,7 +214,6 @@ var Test4 = function() {
 }
 
 
-
 var tests = [
              new Test1(),
              new Test2(),

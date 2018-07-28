@@ -1,30 +1,71 @@
+function join(a1, a2) {
+    var copy = [];
+    for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
+    for(var i = 0; i < a2.length; i++) copy.push(a2[i]);
+    return copy;
+}
+
+function checkIfArrayIsLinear(array) {
+    return array.length > 0 && array[0].length === undefined;
+}
+
+function buildDenseFromJsArray(array) {
+
+}
+
+function computePowers(dim) {
+    var powers = [];
+    var aux = [1, 0];
+    var acc = 1;
+    powers[0] = acc;
+    for (var i = 0; i < dim.length; i++) {
+        // to be row major like numpy
+        var j = i < 2 ? aux[i] : i;
+        acc *= dim[j];
+        powers[i + 1] = acc;
+    }
+    return powers;
+}
+
 /*
 *
 * First implementation doesn't care about type checking, assumes client knows how to use this class
 */
- var DenseNDArray = function(dim) {
+ var DenseNDArray = function(dim, array) {
     this.dim = dim;
     this.powers = [];
     this.denseNDArray = [];
-    var acc = 1;
-    this.powers[0] = acc;
-    for (var i = 0; i < dim.length; i++) {
-        acc *= dim[i];
-        this.powers[i + 1] = acc;
-    }
-    for (var i = 0; i < this.powers[this.powers.length - 1]; i++) {
-        this.denseNDArray[i] = null;
+
+    this.powers = computePowers(dim);
+    if (array === undefined) {
+        for (var i = 0; i < this.powers[this.powers.length - 1]; i++) this.denseNDArray[i] = null;
+    } else {
+        if(array.length != this.powers[this.powers.length - 1]) throw "Shape/dim doesn't agree with size ${dim}";
+        for (var i = 0; i < this.powers[this.powers.length - 1]; i++) this.denseNDArray[i] = array[i];
     }
 }
+
+DenseNDArray.of = function(array, dim) {
+    if(array.prototype === DenseNDArray) {
+        return dim === undefined ? new DenseNDArray(array.dim, array.denseNDArray) : new DenseNDArray(dim, array.denseNDArray)
+    }
+    if(!checkIfArrayIsLinear(array)) return buildDenseFromJsArray(array);
+    if(array.length > 0 && dim === undefined) return new DenseNDArray([array.length], array);
+    return new DenseNDArray(dim, array);
+}
+
 
 DenseNDArray.prototype.size = function() {
         return this.powers[this.powers.length - 1];
     }
 
 DenseNDArray.prototype.getIndex = function(x) {
+        var aux = [1, 0];
         var index = 0;
         for (var i = 0; i < this.dim.length; i++) {
-            index += x[i] * this.powers[i];
+            // to be row major like numpy
+            var j = i < 2 ? aux[i] : i;
+            index += x[j] * this.powers[i];
         }
         return index;
     }
@@ -63,18 +104,14 @@ DenseNDArray.prototype.getIntervalFromStr = function(x) {
         var intervals = [];
         for (var i = 0; i < split.length; i++) {
             var intervalBounds = split[i].split(":");
-            intervalBounds = intervalBounds.length > 1 && "" === intervalBounds[0] ? [] : intervalBounds; 
             switch (intervalBounds.length) {
-                case 0:
-                    intervals[i] = [0, this.dim[i] - 1];
-                    break;
                 case 1:
                     var integer = parseInt(intervalBounds[0]);
-                    intervals[i] = [integer, split[i].contains(":") ? this.dim[i] - 1 : integer];
+                    intervals[i] = [integer, integer];
                     break;
                 case 2:
-                    var xmin = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[0])));
-                    var xmax = Math.max(0, Math.min(this.dim[i]-1, parseInt(intervalBounds[1])));
+                    var xmin = Math.max(0, Math.min(this.dim[i]-1, "" == intervalBounds[0] ? 0 : parseInt(intervalBounds[0])));
+                    var xmax = Math.max(0, Math.min(this.dim[i]-1, "" == intervalBounds[1] ? this.dim[i] - 1 : parseInt(intervalBounds[1])));
                     var myInterval = [xmin, xmax];
                     if (xmax - xmin === 0) {
                         throw "empty interval xmax : " + xmax + " < xmin : " + xmin;
@@ -136,6 +173,23 @@ DenseNDArray.prototype.set = function(x, value) {
         } else {
             throw "set only accepts strings and integer arrays as the first argument and objects and DenseNDArray as the second";
         }
+
+DenseNDArray.prototype.toArray = function() {
+      return this.toArrayRecursive([]);
+}
+
+DenseNDArray.prototype.toArrayRecursive = function(coord) {
+      var array = [];
+      var size = coord.length;
+      if(size != this.dim.length) {
+          for (var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
+              array.push(this.toArrayRecursive(join([j], coord)));
+          }
+          return array;
+      } else  {
+          return this.get(coord);
+      }
+  }
 }
 
 module.exports = DenseNDArray;

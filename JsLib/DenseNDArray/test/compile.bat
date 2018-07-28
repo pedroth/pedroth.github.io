@@ -1,0 +1,1 @@
+browserify TestDenseNDArray.js > test.js
