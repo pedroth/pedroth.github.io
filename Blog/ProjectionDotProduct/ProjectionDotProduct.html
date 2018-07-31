@@ -118,8 +118,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2>Intro</h2>
-                In this post, we will talk about vectors and in particular about a special operation which is the projection operation. As usual, we will discover the projection as a problem. I assume that you know what vectors and matrices are. Also, all vectors here belong to $\mathbb{R}^n$ for $n > 0$, unless said otherwise. All vectors are in the canonical basis of the identity matrix, that is vectors are of the form $\mathbf{u} = \sum_{i=1}^n u_i \mathbf{e}_i$, where if we stack $\mathbf{e}_i$ as the columns of a matrix we would get the identity matrix.
-                Some notation: vectors are bold symbols $\mathbf{u}$ and its coordinates are $u_i$. We will talk of vectors in $n$ dimensions because all the operations we will use are indifferent to its dimension, however, we can always imagine that vectors belong to $n=2,3$ and then generalize to $n$ dimensions.
+                In this post, we will talk about vectors, and in particular about a special operation which is called the projection operation. As usual, we will discover the projection as a problem. I assume that you already know about what vectors and matrices are. Also, all vectors here belong to $\mathbb{R}^n$ for $n > 0$.
+                All vectors are in the canonical basis of the identity matrix, that is vectors are of the form $\mathbf{u} = \sum_{i=1}^n u_i \mathbf{e}_i$, where if we stack $\mathbf{e}_i$ as the columns of a matrix we would get the identity matrix.
+                Some notation: vectors are bold symbols $\mathbf{u}$ and its coordinates are $u_i$. We will talk of vectors in $n$ dimensions, because all the operations we will use are indifferent to its dimension, however, we can always imagine that vectors belong to $n=2,3$ and then generalize to $n$ dimensions.
 
                 <h2>The Problem </h2>
                 <br>
@@ -131,11 +132,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
                 <br>
 
-                Let $\mathbf{u} \in \mathbb{R}^{n}$ and $\mathbf{v} \in \mathbb{R}^{n}$ we want to find $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$, as Fig.1 suggests. The first thing we can tell about $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$ is that
-                $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} = |\mathbf{proj}_{\mathbf{v}}\mathbf{u}| \frac{\mathbf{v}}{|\mathbf{v}|} \;\;\;\;(1)$$
+                Let $\mathbf{u} \in \mathbb{R}^{n}$ and $\mathbf{v} \in \mathbb{R}^{n}$ we want to find $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$, as Fig.1 suggests. The first thing we can tell about $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$ is that, it is in the same direction has $\mathbf{v}$ but has a different length. This means that:
 
-                Note that $\left | \frac{\mathbf{v}}{|\mathbf{v}|}\right | = \frac{1}{|\mathbf{v}|} |\mathbf{v}| = 1$.<br>
-                Before we move forward I will introduce the dot product operation that is a very useful operation. At first it seems that it is just syntactic sugar to reduce the length of calculations, but actually, its properties and geometric interpretations will provide an amazing tool for many problems and proofs.
+                $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} = |\mathbf{proj}_{\mathbf{v}}\mathbf{u}| \hat{\mathbf{v}}\;\;\;\;(1)$$
+
+                Where $\hat{\mathbf{v}}$ is the unit vector in the direction of $\mathbf{v}$. In order to compute $\hat{\mathbf{v}}$, we must notice the following property:
+
+                $$|\alpha \mathbf{v}| = |\alpha| |\mathbf{v}|$$
+
+                <button class="btn btn-primary" onclick='$("#proof_1").slideToggle()'><h4> Proof </h4></button>
+                <div id="proof_1" style="display:none">
+                    In the euclidean space the vector distance is given by the n-dimensional pythagoras theorem:
+                    $$|\mathbf{v}| = \sqrt{\sum_{i=0}^n v_i^2}$$
+
+                    Then:
+
+                    $$|\alpha \mathbf{v}| = \sqrt{\sum_{i=0}^n (\alpha v_i)^2 } = \sqrt{\sum_{i=0}^n \alpha^2 v_i^2} = \sqrt{\alpha^2 \sum_{i=0}^n v_i^2} = |\alpha| \sqrt{\sum_{i=0}^n v_i^2} = |\alpha| |\mathbf{v}|$$
+                </div><br>
+
+                Using this property it is easy to compute $\hat{\mathbf{v}}$, just solve for $\alpha$. What is the $\alpha$ such that $|\alpha \mathbf{v}| = 1$:
+
+                $$|\alpha \mathbf{v}| = 1$$
+                $$|\alpha| = \frac{1}{|\mathbf{v}|}$$
+
+                Hence:
+
+                $$\hat{\mathbf{v}}= \frac{\mathbf{v}}{|\mathbf{v}|}$$
+
+                Before we proceed I will introduce the dot product operation, that is a very useful operation. At first it seems that it is just syntactic sugar to reduce the length of calculations, but actually, its properties and geometric interpretations will provide an amazing tool for many problems and proofs.
 
                 <h3>Definition 1 : Dot product </h3>
                 $$ \mathbf{u}\cdot \mathbf{v} = \left < \mathbf{u},\mathbf{v} \right > = \sum_{i=1}^{n} u_i v_i$$
@@ -172,7 +196,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
                 <br>
 
-                Using Fig 2 and the <a href="http://en.wikipedia.org/wiki/Law_of_cosines" target="_blank">Law of Cosines</a> we get :
+                Using Fig.2 and the <a href="http://en.wikipedia.org/wiki/Law_of_cosines" target="_blank">Law of Cosines</a> we get :
                 $$|\mathbf{v} - \mathbf{u}|^{2} = |\mathbf{u}|^{2} + |\mathbf{v}|^{2} - 2|\mathbf{u}||\mathbf{v}|\cos(\theta)$$
                 $$\Leftrightarrow\cos(\theta) = \frac{|\mathbf{u}|^{2} + |\mathbf{v}|^{2} - |\mathbf{v} - \mathbf{u}|^{2}}{ 2|\mathbf{u}||\mathbf{v}|}$$
 

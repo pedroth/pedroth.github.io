@@ -135,8 +135,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
                 <br>
                 In this article we will only refer to functions $F : \mathbb{R}\rightarrow \mathbb{R}$. Which are the functions that we are interested in <a href="https://en.wikipedia.org/wiki/Calculus">Calculus</a>.<br>
-                Let $f : x \in \mathbb{R}\rightarrow y \in \mathbb{R}$.<br>
-                Let $$ f(x) = 2x + 1$$
+                Let $f : x \in \mathbb{R}\rightarrow y \in \mathbb{R}$ be:
+                $$ f(x) = 2x + 1$$
+
                 We can compute $y$ in the follow way:
                 <div style="text-align: center;">
                     $x = $ <input type="number" style="width: 55px;" id="simple_function_x" value="1" onchange="y()">
@@ -151,7 +152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     y();
                 </script>
 
-                A good visualization of a function is the graph of one (check Fig.1) where the curve represents all the points $(x, f(x))$. Any curve that you can imagine such
+                A good visualization of a function is to see the graph of one (check Fig.1), where the curve represents all the points $(x, f(x))$. Any curve that you can imagine such
                 that there are no two points in the curve with the same $x$ coordinate, is a valid graph of a function. For more about functions check <a
                     href="https://en.wikipedia.org/wiki/Function_(mathematics)"> wikipedia </a>.
                 <br>
@@ -164,9 +165,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br>
                 <br>
                 <h2> Linear Functions </h2>
-                Now let me give you a problem, suppose you wanted to find a function $f: x \in \mathbb{R} \rightarrow y \in \mathbb{R}$, such that for input $a$ we will
-                get $f(a)$ and for $b$ the output $f(b)$. How do you do it ? This function must also fulfil the condition that the graph is a continuous curve (more on that
-                later, but a brief definition could be $\forall x \in [a,b]$ and $\varepsilon > 0$ but close to zero then $f(x \pm \varepsilon) \approx f(x)$).<br>
+                Now let me give you a problem, suppose you want to find a function $f: x \in \mathbb{R} \rightarrow y \in \mathbb{R}$, such that for input $a$ we will
+                get $f(a)$ and for $b$ the output $f(b)$. You want also that this function must also fulfil the condition that the graph is a continuous curve, that is you can draw this curve without taking the pencil from the paper.<br>
 
                 A possible solution is as follows. Imagine a function as a graph, then we already have two points of the curve $(a,f(a))$ and $(b,f(b))$. Now just trace a curve
                 between those two points (as long as follows the rules above) and voila! The problem with such method is that it isn't very precise, we
@@ -184,7 +184,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
 
-                A solution can be found by looking to figure 2. We see two triangles, triangle $t =\left < (a,f(a)) , (x,f(a)), (x,f(x)) \right >$ and triangle $T = \left <
+                This line can be found by looking at figure 2. We see two triangles, triangle $t =\left < (a,f(a)) , (x,f(a)), (x,f(x)) \right >$ and triangle $T = \left <
                 (a,f(a)),(b,f(a)),(b,f(b))\right >$. Its easy to see that all angles of $t$ are equal to the angles of $T$, hence the triangles are similar (this means $T$
                 is scaled version of $t$), which mean that:
                 $$(x - a) k = (b - a)$$
@@ -218,7 +218,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Start with a point $a$ then add a vector $v = b - a$ ( check image Fig.3 ) you will end up with point $a + (b - a) = b$. Scale $v$ with $t\in [0,1]$ and add it again to $a$, you would get a new point in between $a$ and $b$ (eg. if $t = \frac{1}{2}$ then you will get $a + \frac{v}{2} = \frac{a + b}{2}$, which is half distance between $a$ and $b$ ).
                 If you consider all the points of the form
                 $$x(t) = a + vt ,\; t\in[0,1] \;\;\;\;\;\;\;(3)$$
-                You will get all the points in the interval $[a,b]$. We have just created a simple linear function from $[0,1] \rightarrow [a,b]$. Using this knowledge we can build any function between intervals as follows.
+                You will get all the points in the interval $[a,b]$. Here we created a simple linear function from $[0,1] \rightarrow [a,b]$. Using this knowledge we can build any function between intervals.
 
 
                 <div style="text-align: center;">
@@ -253,10 +253,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$f(x) = f_a + (f_b - f_a) \frac{x - a}{b - a}\;\;\;\;\;\;\;(5)$$
 
-                And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in a future post.<br><br>
+                And (5) is equal to (2)!! This method is sometimes easier to generalize to higher dimensions as you will see in future posts.<br><br>
 
                 Note that if $(x - a) = 1$ then $x = a + 1$ hence $f(a + 1) - f(a) = \frac{f(b) - f(a)}{b - a}$ which means $\frac{f(b) - f(a)}{b - a}$ is the rate of
-                change ( gradient ) of this curve. This means that for a step $ h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is $f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$.
+                change ( gradient ) of this curve. This means that for a step $ h $ in the domain,  $f$ will change by $h \frac{f(b)-f(a)}{b-a}$, that is
+
+                $$f(a + h) - f(a) = \frac{f(b) - f(a)}{b - a} h$$.
                 <br/>
                 <br/>
 
@@ -286,8 +288,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <div style="text-align: center;">
                     <img border="0"
-                         src="http://www.teacherschoice.com.au/images/derivative_secant_1.gif"
-                         height="324" width="400"/>
+                         src="resources/secant.png"
+                         height="500" width="500"/>
 
                     <p>Fig.5 Secant approximation</p>
                 </div>
@@ -329,8 +331,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <div style="text-align: center;">
                     <img border="0"
-                         src="http://www.teacherschoice.com.au/images/derivative_secant_2.gif"
-                         height="230" width="400"/>
+                         src="resources/tangent.png"
+                         height="500" width="500"/>
 
                     <p>Fig.6 Tangent approximation</p>
                 </div>
@@ -582,7 +584,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <br/>
                 <br/>
                 <div style="text-align: center;">
-                    <img border="0" src="http://tutorial.math.lamar.edu/Classes/DE/EulersMethod_files/image001.gif" height="253" width="400"/>
+                    <img border="0" src="resources/eulerStep.gif" height="253" width="400"/>
 
                     <p>Fig.7 Euler step</p>
                 </div>
