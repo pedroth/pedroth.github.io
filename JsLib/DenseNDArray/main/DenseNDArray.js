@@ -18,6 +18,11 @@ function computePowers(dim) {
     var aux = [1, 0];
     var acc = 1;
     powers[0] = acc;
+    // special case
+    if(dim.length == 1) {
+        powers[1] = dim[0];
+        return powers;
+    }
     for (var i = 0; i < dim.length; i++) {
         // to be row major like numpy
         var j = i < 2 ? aux[i] : i;
@@ -46,7 +51,7 @@ function computePowers(dim) {
 }
 
 DenseNDArray.of = function(array, dim) {
-    if(array.prototype === DenseNDArray) {
+    if(array instanceof DenseNDArray) {
         return dim === undefined ? new DenseNDArray(array.dim, array.denseNDArray) : new DenseNDArray(dim, array.denseNDArray)
     }
     if(!checkIfArrayIsLinear(array)) return buildDenseFromJsArray(array);
@@ -62,6 +67,8 @@ DenseNDArray.prototype.size = function() {
 DenseNDArray.prototype.getIndex = function(x) {
         var aux = [1, 0];
         var index = 0;
+        //special case
+        if(x.length == 1) return x[0];
         for (var i = 0; i < this.dim.length; i++) {
             // to be row major like numpy
             var j = i < 2 ? aux[i] : i;
@@ -131,6 +138,14 @@ DenseNDArray.prototype.get = function(x) {
         } else if(x.constructor === String) {
             var intervals = this.getIntervalFromStr(x);
             var newDim = this.computeNewDim(intervals);
+            // string doesn't have any range
+            if(newDim.length == 0) {
+                var coord = []
+                for(var i = 0; i < intervals.length; i++) {
+                    coord.push(intervals[i][0]);
+                }
+                return this.get(coord);
+            }
             var newDenseNDArray = new DenseNDArray(newDim);
             var size = newDenseNDArray.size();
             var y = [];
