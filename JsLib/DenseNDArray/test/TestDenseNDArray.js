@@ -19,10 +19,11 @@ function Tester() {
         assert.assertTrue(table.get([1,2]) == 6);
         assert.assertTrue(table.get([0,2]) == 3);
         assert.assertTrue(table.get([2,1]) == 8);
+        assert.assertTrue(table.get([1,1]) == 5);
         var tableReshape = DenseNDArray.of(table, [9,1]);
-        assert.assertTrue(table.get([0,0]) == 1);
-        assert.assertTrue(table.get([4,0]) == 5);
-        assert.assertTrue(table.get([8,0]) == 8);
+        assert.assertTrue(tableReshape.get([0,0]) == 1);
+        assert.assertTrue(tableReshape.get([4,0]) == 5);
+        assert.assertTrue(tableReshape.get([8,0]) == 8);
     }
 
     this.denseTest = function() {
