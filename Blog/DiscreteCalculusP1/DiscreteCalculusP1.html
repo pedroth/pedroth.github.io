@@ -197,7 +197,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 This definition follows from applying the derivative operator multiple times, e.g:
 
-                $$\Delta^{(2)}f(n) = \Delta(\Delta f(n)) = \Delta f(n+1) - \Delta f(n) = f(n+2) - f(n+1) - f(n + 1) + f(n) $$
+                $$\Delta^{(2)}f(n) = \Delta(\Delta f(n)) = \Delta f(n+1) - \Delta f(n) = [f(n+2) - f(n+1)] - [f(n + 1) + f(n)] $$
 
                 We can expand (2) little further by doing the same thing for $\Delta^{(2)}f(j)$ and so on:
 
@@ -218,9 +218,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Then (3) becomes:
                 $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + \dots + \Delta^{(k)}f(0)\Psi(n,k)+ \dots$$
 
-                In the continuous calculus we had a similar problem, the Taylor expansion at $0$ was given by:
+                In the continuous calculus we had a similar problem, the Taylor expansion at $x_0=0$ was given by:
                 $$f(x) = \sum_{k=0}^{\infty}\frac{d^{(k)}f(0)}{dx^k}\Omega(x,k)$$
-                Where $$\Omega (x,k) = \int_{0}^{x} ... \int_{u_k}^{u_{k-1}}1du_k...du_1$$
+                Where $$\Omega (x,k) = \int_{0}^{x} ... \int_{0}^{u_{k-1}}1du_k...du_1$$
 
                 And this is easier than the discrete setting since we have nice closed formulas to compute integrals. In that post we found that:
 
@@ -229,8 +229,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 But what what about the discrete case? We have to do the same thing. We know that:
                 $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
 
-                Then by the fundamental theorem of discrete calculus we know that $\Psi$ has the property:
+                Then by the fundamental theorem of discrete calculus and knowing that $\Psi(0,k) = 0$ we get:
+                $$\Psi(n,k) = \sum_{i_1=0}^{n-1} \Delta \Psi(i_1, k) = \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
+                Hence,
                 $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(4)$$
+
                 So from (4) we find the next recursion:
                 $$\Psi(n+ 1, k) - \Psi(n,k) = \Psi(n,k-1) \;\;\;\; (5)$$
                 $$ \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
@@ -265,6 +268,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\Delta(f + g)(n) = \Delta f(n) + \Delta g(n)$$
                 And
                 $$\Delta(c f)(n) = c \Delta f(n)$$
+
+                <button class="btn btn-primary" onclick='$("#proof_1").slideToggle()'><h4>Proof</h4></button>
+                <div id="proof_1" style="display:none">
+                    $$\Delta(f(n) + g(n)) = [f(n+1) + g(n+1)] - [f(n) + g(n)] = f(n+1)-f(n) + g(n+1)-g(n) = \Delta f(n) + \Delta g(n)$$
+
+                    and
+
+                    $$\Delta(c f(n)) = [cf(n+1)] - [cf(n)] = c (f(n+1) - f(n)) = c \Delta f(n)$$
+                </div>
+                <br><br>
 
                 Using these tools and trial and error, I get the following expression:
                 $$\Delta \left( \frac{n^2}{2} - \frac{n}{2} \right ) = \frac{\Delta(n^2)}{2} - \frac{\Delta(n)}{2}$$
