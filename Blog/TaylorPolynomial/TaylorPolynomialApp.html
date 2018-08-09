@@ -103,14 +103,14 @@
 
                 $$\Omega(x, k) - \Omega(x_0, k) = \int_{x_0}^x \frac{d\Omega(\tau, k)}{dx} d\tau\;\;\;\;\;\;\;\;(7)$$
 
-                Hence we infer that (for $k > 0$) $\Omega(x_0, k) = 0$ and
+                We know that $\Omega(x_0, k) = 0$, because the integral on an empty interval is $0$, hence we may infer ($k > 0$) that:
 
                 $$\Omega'(x,k) = \Omega(x, k-1)\;\;\;\;\;\;\;\;(7)$$
                 <br>
                 <br>
                 <div style="text-align: center;">
                     <img border="0" src="Omega.png" height="400" width="600"/>
-                    <p>Fig.1 $\Omega(x,0)$ and $\Omega(x,1)$</p>
+                    <p>Fig.1 $\Omega(x,1)$ and $\Omega(x,2)$</p>
                 </div>
                 <br>
                 <br>
@@ -119,7 +119,7 @@
                 $\Omega(x,2) = \int_{x_0}^x \int_{x_0}^{\tau_1} 1 d\tau_2 d\tau_1 = \int_{x_0}^x (\tau_1 - x_0) d\tau_1$
                 is the area below the graph of $(\tau_1-x_0)$.This is the area of a triangle with base and height equals
                 to $x-x_0$, as Fig.1 suggests. It's area is $\frac{1}{2}(x-x_0)^2$.
-                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1 = \int_{x_0}^x 0.5(\tau_1-x_0)^2 d\tau_1$ is the
+                $\Omega(x,3) = \int_{x_0}^x \Omega(\tau_1,2) d\tau_1 = \int_{x_0}^x \frac{1}{2}(\tau_1-x_0)^2 d\tau_1$ is the
                 area under a parabola, and this is not trivial to compute. So we need a different approach. From (7) we
                 have :
 
@@ -129,11 +129,12 @@
                     href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
                     target="_blank">Intuition of Calculus</a>, where you were asked to find the derivative of $x^n$. You
                 know that $\left(x^n \right)' = n x^{n-1}$.
-                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$, but the problem is
-                that $\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2$, which is close enough to work.
-                With a simple change we find that:
+                Using this information we can make the hypothesis that $\Omega(x,3) = (x-x_0)^3$. But we have a problem:
+                $$\left((x-x_0)^3\right)' = 3(x-x_0)^2 \neq \frac{1}{2}(x-x_0)^2 = \Omega(x,2)$$
 
-                $$\frac{1}{2\times3}\left((x-x_0)^3\right)' = \frac{1}{2}(x-x_0)^2 = \Omega(x,2)$$
+                This hypothesis didn't work, but we are close. A simple change in the hypothesis and we get our solution:
+
+                $$\left( \frac{1}{2\times3} (x-x_0)^3 \right)' = \frac{1}{2}(x-x_0)^2 = \Omega(x,2)$$
 
                 Which is our answer. If you continue to do similar steps you will notice an interesting pattern. This
                 pattern suggest that $\Omega(x,k) = \frac{(x-x_0)^k}{k!}$. Let check if that hypothesis works with
