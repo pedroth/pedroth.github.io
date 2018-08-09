@@ -32,7 +32,13 @@ function Tester() {
         assert.assertTrue(denseNDArray2.get([3]) == 4);
         assert.assertTrue(denseNDArray2.get([8]) == 9);
         
-        assert.assertTrue(denseNDArray.get("1,2"), 6.0, 1E-10);
+        assert.assertTrue(denseNDArray.get("1,2") == 6.0);
+        assert.assertTrue(denseNDArray.get("1,1") == 5.0);
+        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,0]) == 3);
+        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([2,1]) == 6);
+        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get([2,1,2]) == 18);
+        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
+        
     }
 
     this.denseTest = function() {
