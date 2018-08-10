@@ -17,9 +17,9 @@ function Tester() {
         
         var denseNDArray = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
         assert.assertTrue(denseNDArray.get([0,0]) == 1);
-        assert.assertTrue(denseNDArray.get([1,2]) == 6);
-        assert.assertTrue(denseNDArray.get([0,2]) == 3);
-        assert.assertTrue(denseNDArray.get([2,1]) == 8);
+        assert.assertTrue(denseNDArray.get([1,2]) == 8);
+        assert.assertTrue(denseNDArray.get([0,2]) == 7);
+        assert.assertTrue(denseNDArray.get([2,1]) == 6);
         assert.assertTrue(denseNDArray.get([1,1]) == 5);
 
         var denseNDArray1 = DenseNDArray.of(denseNDArray, [9,1]);
@@ -28,17 +28,18 @@ function Tester() {
         assert.assertTrue(denseNDArray1.get([8,0]) == 9);
 
         var denseNDArray2 = DenseNDArray.of(denseNDArray, [9]);
-        assert.assertTrue(denseNDArray2.get([1]) == 2);
-        assert.assertTrue(denseNDArray2.get([3]) == 4);
+        assert.assertTrue(denseNDArray2.get([0]) == 1);
+        assert.assertTrue(denseNDArray2.get([4]) == 5);
         assert.assertTrue(denseNDArray2.get([8]) == 9);
         
-        assert.assertTrue(denseNDArray.get("1,2") == 6.0);
+        assert.assertTrue(denseNDArray.get("1,2") == 8.0);
         assert.assertTrue(denseNDArray.get("1,1") == 5.0);
-        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,0]) == 3);
-        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([2,1]) == 6);
-        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get([2,1,2]) == 18);
-        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
-        
+
+        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([0,1]) == 3);
+        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,2]) == 6);
+        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get([1,2,2]) == 18);
+        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
+        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("0,1,0") == 3); 
     }
 
     this.denseTest = function() {
@@ -51,16 +52,19 @@ function Tester() {
                 }
             }
         }
-        console.log(table);
+        console.log(`table : ${table.toString()}`);
 
         assert.assertTrue(table.get("1,:,:").get([0, 0]) === 1);
         assert.assertTrue(table.get("1,:,:").get([1, 1]) === 13);
         assert.assertTrue(table.get("1,:,:").get([2, 2]) === 25);
+        assert.assertTrue(table.get("1,:,:").get([2, 1]) === 16);
 
-        var secondTable = table.get("0:1,1:2,:");
-        assert.assertTrue(secondTable.get([1,1,0]) === 7);
-        assert.assertTrue(secondTable.get([1,1,1]) === 16);
-        assert.assertTrue(secondTable.get([1,1,2]) === 25);
+        var secondTable = table.get("0 : 1, 1 : 2, : ");
+        console.log(`secondTable : ${secondTable.toString()}`);
+
+        assert.assertTrue(secondTable.get([1, 1, 0]) === 7);
+        assert.assertTrue(secondTable.get([1, 1, 1]) === 16);
+        assert.assertTrue(secondTable.get([1, 1, 2]) === 25);
 
         var thirdTable = new DenseNDArray([3, 3]);
         for (var j = 0; j < 3; j++) {
@@ -71,14 +75,21 @@ function Tester() {
 
         table.set("1,:,:", thirdTable);
 
-        assert.assertTrue(table.get( [0, 0, 0 ]) === 0);
-        assert.assertTrue(table.get( [1, 1, 1 ]) === 100 && table.get([1, 2, 1]) === 100);
-        assert.assertTrue(table.get( [2, 2, 2 ]) === 26);
+        assert.assertTrue(table.get( [0, 0, 0]) === 100);
+        assert.assertTrue(table.get( [1, 1, 1]) === 100);
+        assert.assertTrue(table.get( [1, 1, 2]) === 100);
+        assert.assertTrue(table.get( [1, 2, 2]) === 100);
+        assert.assertTrue(table.get( [0, 2, 2]) === 24 );
 
         var denseNDArray = table.get("1:,0:,:1");
+        
         console.log(table.toArray());
+        console.log(table.toString);
+        
         assert.assertTrue(denseNDArray.dim[0] == 2 && denseNDArray.dim[1] == 3 && denseNDArray.dim[2] == 2);
-        assert.assertTrue(11 == denseNDArray.get([1, 1, 1]));
+        assert.assertTrue(denseNDArray.get([0, 0, 1]) == 100);
+        assert.assertTrue(denseNDArray.get([1, 1, 0]) == 5  );
+        assert.assertTrue(denseNDArray.get([1, 1, 1]) == 17 );
     }
 
     for(key in this) {
