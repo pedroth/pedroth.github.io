@@ -137,11 +137,35 @@
                 This make us think that functions maybe thought as infinite dimensional vectors, where its coordinates are indexed by $x$.<br>
                 One more thing , note that when $|\mathbf{v}|^2 = 1$, $\mathbf{v}$ is a unit vector then $\mathbf{proj}_{\mathbf{v}}\mathbf{u} = \left < \mathbf{u},\mathbf{v} \right> \mathbf{v}$ , in functions if $ \left< g, g \right> = 1$, this means that $g^2$ is a <a href="http://en.wikipedia.org/wiki/Probability_density_function" target="_blank">probability density function</a>, then projection of $f$ in $g$ is $\mathbf{proj}_{g}f = \left < f, g \right > g$.
 
-                Now we finish this post on the projector operator of vector spaces.
+                Now we finish this post by checking some nice properties of the dot product/inner product.
+
+                <h2>Dot product cheat sheet</h2>
+
+                <h4>Lemma 1</h4>
+                The dot product is commutative:
+                $$\left < \mathbf{u}, \mathbf{v}\right > = \left < \mathbf{v}, \mathbf{u}\right >$$
+                <button class="btn btn-primary" onclick='$("#proof_2").slideToggle()'><h4> Proof </h4></button>
+                <div id="proof_2" style="display:none">
+                    $$\left < \mathbf{u}, \mathbf{v}\right > = \sum_{i=1}^n u_iv_i = \sum_{i=1}^n v_iu_i = \left < \mathbf{v}, \mathbf{u}\right >$$
+                </div><br>
+
+                <h4>Lemma 2</h4>
+                Let $M \in \mathbb{R}^{n\times n}$:
+                $$\left < \mathbf{u}, M\mathbf{v}\right > = \left < M^T \mathbf{u}, \mathbf{v}\right > $$
+                <button class="btn btn-primary" onclick='$("#proof_3").slideToggle()'><h4> Proof </h4></button>
+                <div id="proof_3" style="display:none">
+                    In matrix form a dot product can be seen as a matrix product:
+
+                    $$< \mathbf{u}, \mathbf{v}\right > = \mathbf{u}^T \mathbf{v}$$
+
+                    Using the commutative property,
+
+                    $$\left < \mathbf{u}, M\mathbf{v}\right > = < M\mathbf{v}, \mathbf{u}\right > (M\mathbf{v})^T, \mathbf{u} = \mathbf{v}^T M^T \mathbf{u} = < \mathbf{v}, M^T\mathbf{u}\right > = \left < M^T \mathbf{u}, \mathbf{v}\right > $$
+                </div><br>
 
                 <h2>Conclusion</h2>
 
-                Here we studied the projection and dot/inner product operator by deriving it using a geometric argument and an optimization argument. We also viewed functions as an infinite dimensional space.
+                Here we studied the projection and dot/inner product operator by deriving it using a geometric argument and an optimization argument. We also viewed functions as an infinite dimensional space, and proved a few fundamental dot/inner product properties.
 
                 <br><br>
             </div>
