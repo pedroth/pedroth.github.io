@@ -1,22 +1,9 @@
-var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
-var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
-
-var simulations = [
-    new Sim1(),
-    new Sim2(),
-    new Sim3(),
-    new Sim4()
-];
-
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
+var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
+var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var ImageIO = require('../../JsLib/MyCanvas/main/ImageIO.js');
 
 function getDashedLineShader(color) {
-    return MyCanvas.interpolativeShader(
+    return MyCanvas.interpolateLineShader(
         function(x, line, canvas, t) {
             var p = 0.1;
             var isDash = (t % p) < (p / 2) ? true : false;
@@ -731,9 +718,22 @@ function Sim4() {
 
 
 /**
- *
- * General utilitarian functions
+ * Simulation Management
  */
+
+ var simulations = [
+     new Sim1(),
+     new Sim2(),
+     new Sim3(),
+     new Sim4()
+ ];
+
+/**
+* state of opened simulations, is a number \in {0, ... , n}.
+* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+**/
+var stateIndexApplicationOpen = 0;
+
 function closeState(state) {
     if(state > 0) {
         simulations[state-1].end();
@@ -756,20 +756,16 @@ function clickOperator(clickNumber, state) {
     return condition ? clickNumber : 0;
 }
 
-function simulate(simulation) {
-    simulation.draw();
-    if (simulation.checkIfCanDraw()) {
-        requestAnimationFrame(function() {
-            simulate(simulation);
-        });
+function simulate(index) {
+    simulations[index].draw();
+    if (simulations[index].checkIfCanDraw()) {
+        requestAnimationFrame(() => simulate(index));
     }
 }
 
 function runSimulation(index) {
 	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(function() {
-	    simulate(simulations[index]);
-	});
+	requestAnimationFrame(() => simulate(index));
 }
 
 function apply(index, lambda) {

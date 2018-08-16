@@ -664,7 +664,7 @@ var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
 var Choice = require('../../Choice/main/Choice.js');
-
+var SimManager = require('../../SimManager/main/SimManager.js');
 
 function randomVector(a, b) {
     return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
@@ -874,56 +874,143 @@ var Test4 = function() {
     }
 }
 
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0; 
+
 var tests = [
-             ["test1", new Test1()],
-             ["test2", new Test2()],
-             ["test3", new Test3()],
-             ["test4", new Test4()]
+    ["test1", new Test1()],
+    ["test2", new Test2()],
+    ["test3", new Test3()],
+    ["test4", new Test4()]
 ];
 
-function closeState(state) {
-    if(state > 0) {
-        $(`#${tests[state-1][0]}`).slideUp();
-    }
+var simManagerBuilder = SimManager.builder();
+for(var i = 0; i < tests.length; i++){
+    simManagerBuilder.push(SimManager.simulatorBuilder()
+                        .checkIfCanDraw(() => $(`#${tests[i][0]}`).is(":visible"))
+                        .draw(() => tests[i][1].update())
+                        .start(() => {console.log(tests[i]); $(`#${tests[i][0]}`).slideDown()})
+                        .end(() => $(`#${tests[i][0]}`).slideUp())
+                        .build()
+                    );
 }
+                           
+var simManager = simManagerBuilder.build();
 
-function openState(state) {
-    $(`#${tests[state-1][0]}`).slideDown();
-}
+module.exports =  {
+    run : simManager.runSimulation
+} 
+},{"../../Choice/main/Choice.js":1,"../../SimManager/main/SimManager.js":6,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}],6:[function(require,module,exports){
+var SimManager = {}
 
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
+SimManager.builder = function() {
+    return new function() {
+        var simulations = [];
 
-function simulate(index) {
-    return () => {
-        tests[index][1].update();
-        if($(`#${tests[index][0]}`).is(":visible")) {
-            requestAnimationFrame(simulate(index));
+        this.push = function(sim) {
+            simulations.push(sim);
+            return this;
+        }
+
+        this.build = function() {
+            return new SimManager.SimManager(simulations);
         }
     };
 }
 
-function run(index) {
-    stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen);
-    requestAnimationFrame(simulate(index));
+SimManager.SimManager = function(_simulations){
+    /**
+    * state of opened simulations, is a number \in {0, ... , n}.
+    * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+    **/
+    var stateIndexApplicationOpen = 0;
+    var simulations = _simulations;
+
+    var closeState = function(state) {
+        if(state > 0) {
+            simulations[state - 1].end();
+        }
+    }
+
+    var openState = function(state) {
+        simulations[state - 1].start();
+    }
+
+    // click number > 0
+    var clickOperator = function(clickNumber, state) {
+        var condition = state != clickNumber;
+        if(condition) {
+            closeState(state);
+            openState(clickNumber);
+        } else {
+            closeState(state);
+        }
+        return condition ? clickNumber : 0;
+    }
+
+    var simulate = function(index) {
+        simulations[index].draw();
+        if (simulations[index].checkIfCanDraw()) {
+            requestAnimationFrame(() => simulate(index));
+        }
+    }
+
+    this.runSimulation = function(index) {
+        stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
+        requestAnimationFrame(() => simulate(index));
+    }
+
+    this.apply = function(index, lambda) {
+        lambda(simulations[index]);
+        return this;
+    }
+
+    this.init = function() {
+        simulations.forEach(element => element.init());
+        return this;
+    }
 }
 
-module.exports =  {
-    run : run
-} 
-},{"../../Choice/main/Choice.js":1,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}]},{},[5])(5)
+SimManager.simulatorBuilder = function() {
+    return new function() {
+        var simulator = {
+            "init": () => 0,
+            "checkIfCanDraw": () => 0,
+            "draw": () => 0,
+            "start": () => 0,
+            "end": () => 0
+        };
+
+        this.init = function(f) {
+            simulator.init = f;
+            return this;
+        }
+
+        this.checkIfCanDraw = function(f) {
+            simulator.checkIfCanDraw = f;
+            return this;
+        }
+        
+        this.draw = function(f) {
+            simulator.draw = f;
+            return this;
+        }
+
+        this.start = function(f) {
+            simulator.start = f;
+            return this;
+        }
+
+        this.end = function(f) {
+            simulator.end = f;
+            return this;
+        }
+
+        this.build = function() {
+            return simulator;
+        }
+    };
+}
+
+
+module.exports = SimManager; 
+},{}]},{},[5])(5)
 });

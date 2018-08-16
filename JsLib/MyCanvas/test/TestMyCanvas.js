@@ -2,7 +2,7 @@ var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
 var Choice = require('../../Choice/main/Choice.js');
-
+var SimManager = require('../../SimManager/main/SimManager.js');
 
 function randomVector(a, b) {
     return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
@@ -216,7 +216,7 @@ var Test4 = function() {
 * state of opened simulations, is a number \in {0, ... , n}.
 * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
 **/
-var stateIndexApplicationOpen = 0; 
+var stateIndexApplicationOpen = 0;
 var tests = [
              ["test1", new Test1()],
              ["test2", new Test2()],
@@ -262,4 +262,23 @@ function run(index) {
 
 module.exports =  {
     run : run
-} 
+}
+
+
+// TODO find a way to use this!!
+//var simManagerBuilder = SimManager.builder();
+//for(var i = 0; i < tests.length; i++){
+//    simManagerBuilder.push(SimManager.simulatorBuilder()
+//                        .checkIfCanDraw(() => $(`#${tests[i][0]}`).is(":visible"))
+//                        .draw(() => tests[i][1].update())
+//                        .start(() => {console.log(tests[i]); $(`#${tests[i][0]}`).slideDown()})
+//                        .end(() => $(`#${tests[i][0]}`).slideUp())
+//                        .build()
+//                    );
+//}
+//
+//var simManager = simManagerBuilder.build();
+//
+//module.exports =  {
+//    run : simManager.runSimulation
+//}
