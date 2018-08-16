@@ -1,3 +1,4 @@
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 /**
  * N-dimensional array implementation in column major order
  */
@@ -99,22 +100,33 @@ DenseNDArray.prototype.set = function(x, value) {
     }
 }
 
-DenseNDArray.prototype.map = function(lambda) {
+DenseNDArray.prototype.map = function(f) {
     var ans = this.copy();
-    var size = size();
+    var size = this.size();
     for (var i = 0; i < size; i++) {
         ans.denseNDArray[i] = f(this.denseNDArray[i]);
     }
     return ans;
 }
 
+DenseNDArray.prototype.reduce = function(identity, binaryOperator) {
+    var size = this.size();
+    for (var i = 0; i < size; i++) {
+        identity = binaryOperator(identity, this.denseNDArray[i]);
+    }
+    return identity;
+}
+
 DenseNDArray.prototype.forEach = function(f) {
-    var size = size();
+    var size = this.size();
     for (var i = 0; i < size; i++) {
         f(this.denseNDArray[i]);
     }
 }
 
+/**
+ * DenseArray to js array in column major order 
+ */
 DenseNDArray.prototype.toArray = function() {
     return this.toArrayRecursive([]);
 }
@@ -124,7 +136,7 @@ DenseNDArray.prototype.toArrayRecursive = function(coord) {
     var size = coord.length;
     if(size != this.dim.length) {
         for (var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            array.push(this.toArrayRecursive(join([j], coord)));
+            array.push(this.toArrayRecursive(ArrayUtils.join([j], coord)));
         }
         return array;
     } else  {
@@ -133,7 +145,7 @@ DenseNDArray.prototype.toArrayRecursive = function(coord) {
 }
 
 DenseNDArray.prototype.toString = function() {
-    return this.toArrayRecursive([]);
+    return this.toStringRecursive([]);
 }
 
 DenseNDArray.prototype.toStringRecursive = function(coord) {
@@ -142,7 +154,7 @@ DenseNDArray.prototype.toStringRecursive = function(coord) {
     if(size != this.dim.length) {
         stringBuilder.push("[");
         for(var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            stringBuilder.append(this.toStringRecursive(join([j], coord)));
+            stringBuilder.push(this.toStringRecursive(ArrayUtils.join([j], coord)));
         }
         stringBuilder.push("]");
     } else {
@@ -152,15 +164,15 @@ DenseNDArray.prototype.toStringRecursive = function(coord) {
 }
 
 DenseNDArray.prototype.copy = function() {
-    return DenseNDArray.of(this.dim, this.denseNDArray);
+    return DenseNDArray.of(this.denseNDArray, this.dim);
 }
 
 DenseNDArray.prototype.equals = function(o) {
     if (this == o) return true;
     if (o == null || this.prototype != o.prototype) return false;
-    return arrayEquals(this.denseNDArray, o.denseNDArray) &&
-           arrayEquals(this.powers, o.powers) &&
-           arrayEquals(this.dim, o.dim);
+    return ArrayUtils.arrayEquals(this.denseNDArray, o.denseNDArray) &&
+           ArrayUtils.arrayEquals(this.powers, o.powers) &&
+           ArrayUtils.arrayEquals(this.dim, o.dim);
 }
 
 DenseNDArray.prototype.hashCode = function() {
@@ -191,7 +203,7 @@ DenseNDArray.prototype.computeNewDim = function(intervals) {
 }
 
 DenseNDArray.prototype.getIntervalFromStr = function(x) {
-    var split = x.replace(" ", "").split(",");
+    var split = x.split(" ").join("").split(",");
     this.checkIndexDimension(split.length);
     var intervals = [];
     for (var i = 0; i < split.length; i++) {
@@ -248,7 +260,7 @@ function checkIfArrayIsLinear(array) {
 function findJsArrayDim(array) {
     var dim = [];
     if(array instanceof Array) {
-        return join(findJsArrayDim(array[0]), [array.length]); 
+        return ArrayUtils.join(findJsArrayDim(array[0]), [array.length]); 
     } else {
         return [];
     }
@@ -258,7 +270,7 @@ function unpackJsArray(array) {
     if(array instanceof Array) {
         var joinIdentity = []
         for(var i = 0; i < array.length; i++) {
-            joinIdentity = join(joinIdentity, unpackJsArray(array[i]));
+            joinIdentity = ArrayUtils.join(joinIdentity, unpackJsArray(array[i]));
         }
         return joinIdentity;
     } else {

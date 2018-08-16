@@ -28,7 +28,6 @@ r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
 var Test1 = function() {
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-
     this.isFirstIte = true;
 
     this.a = [-1, 1];
@@ -213,20 +212,54 @@ var Test4 = function() {
     }
 }
 
-
+/**
+* state of opened simulations, is a number \in {0, ... , n}.
+* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+**/
+var stateIndexApplicationOpen = 0; 
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3(),
-             new Test4()
-]
+             ["test1", new Test1()],
+             ["test2", new Test2()],
+             ["test3", new Test3()],
+             ["test4", new Test4()]
+];
 
-function draw() {
-    for(var i = 0; i < tests.length; i++) {
-        tests[i].update();
+function closeState(state) {
+    if(state > 0) {
+        $(`#${tests[state-1][0]}`).slideUp();
     }
-    requestAnimationFrame(draw);
 }
 
-requestAnimationFrame(draw);
+function openState(state) {
+    $(`#${tests[state-1][0]}`).slideDown();
+}
 
+// click number > 0
+function clickOperator(clickNumber, state) {
+    var condition = state != clickNumber;
+    if(condition) {
+        closeState(state);
+        openState(clickNumber);
+    } else {
+        closeState(state);
+    }
+    return condition ? clickNumber : 0;
+}
+
+function simulate(index) {
+    return () => {
+        tests[index][1].update();
+        if($(`#${tests[index][0]}`).is(":visible")) {
+            requestAnimationFrame(simulate(index));
+        }
+    };
+}
+
+function run(index) {
+    stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen);
+    requestAnimationFrame(simulate(index));
+}
+
+module.exports =  {
+    run : run
+} 

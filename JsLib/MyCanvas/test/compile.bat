@@ -1,1 +1,1 @@
-browserify TestMyCanvas.js > test.js
+browserify TestMyCanvas.js --s test > test.js

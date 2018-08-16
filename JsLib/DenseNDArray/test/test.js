@@ -1,4 +1,60 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var ArrayUtils = {};
+
+/**
+ * Union of array a1 and a2
+ * @param {*} a1 
+ * @param {*} a2 
+ */
+ArrayUtils.join = function(a1, a2) {
+    var copy = [];
+    for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
+    for(var i = 0; i < a2.length; i++) copy.push(a2[i]);
+    return copy;
+}
+
+/**
+ *  Test if linear arrays are equal
+ * @param {*} a1 
+ * @param {*} a2 
+ */
+ArrayUtils.arrayEquals = function(a1, a2) {
+    if(a1.length != a2.length) return false;
+    for(var i = 0; i < a1.length; i++) {
+        if (a1[i] != a2[i]) return false;
+    }
+    return true;
+}
+
+/**
+ * Return a new array permutation
+ * @param {*} array 
+ * @param {*} permutation is an array with length <= array.length that has the new indexes
+ */
+ArrayUtils.permute = function(array, permutation) {
+    if(permutation.length > array.length ){
+        throw `permutation array length > array length[${array.length}]`
+    }
+    var copy = array.slice();
+    for(var i = 0; i < permutation.length; i++) {
+        copy[permutation[i]] = array[i];
+    }
+    return copy;
+}
+
+/**
+ * return swap array indexes
+ */
+ArrayUtils.swap = function(array, i, j) {
+    var t = array[i];
+    array[i] = array[j];
+    array[j] = t;
+    return array;
+}
+
+module.exports = ArrayUtils;
+},{}],2:[function(require,module,exports){
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 /**
  * N-dimensional array implementation in column major order
  */
@@ -23,13 +79,6 @@ DenseNDArray.prototype.size = function() {
 
 DenseNDArray.prototype.shape = function() {
     return this.dim;
-}
-
-DenseNDArray.prototype.forEach = function(f) {
-    var size = size();
-    for (var i = 0; i < size; i++) {
-        f(this.denseNDArray[i]);
-    }
 }
 
 DenseNDArray.prototype.get = function(x) {
@@ -107,6 +156,33 @@ DenseNDArray.prototype.set = function(x, value) {
     }
 }
 
+DenseNDArray.prototype.map = function(f) {
+    var ans = this.copy();
+    var size = this.size();
+    for (var i = 0; i < size; i++) {
+        ans.denseNDArray[i] = f(this.denseNDArray[i]);
+    }
+    return ans;
+}
+
+DenseNDArray.prototype.reduce = function(identity, binaryOperator) {
+    var size = this.size();
+    for (var i = 0; i < size; i++) {
+        identity = binaryOperator(identity, this.denseNDArray[i]);
+    }
+    return identity;
+}
+
+DenseNDArray.prototype.forEach = function(f) {
+    var size = this.size();
+    for (var i = 0; i < size; i++) {
+        f(this.denseNDArray[i]);
+    }
+}
+
+/**
+ * DenseArray to js array in column major order 
+ */
 DenseNDArray.prototype.toArray = function() {
     return this.toArrayRecursive([]);
 }
@@ -116,7 +192,7 @@ DenseNDArray.prototype.toArrayRecursive = function(coord) {
     var size = coord.length;
     if(size != this.dim.length) {
         for (var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            array.push(this.toArrayRecursive(join([j], coord)));
+            array.push(this.toArrayRecursive(ArrayUtils.join([j], coord)));
         }
         return array;
     } else  {
@@ -125,7 +201,7 @@ DenseNDArray.prototype.toArrayRecursive = function(coord) {
 }
 
 DenseNDArray.prototype.toString = function() {
-    return this.toArrayRecursive([]);
+    return this.toStringRecursive([]);
 }
 
 DenseNDArray.prototype.toStringRecursive = function(coord) {
@@ -134,7 +210,7 @@ DenseNDArray.prototype.toStringRecursive = function(coord) {
     if(size != this.dim.length) {
         stringBuilder.push("[");
         for(var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            stringBuilder.append(this.toStringRecursive(join([j], coord)));
+            stringBuilder.push(this.toStringRecursive(ArrayUtils.join([j], coord)));
         }
         stringBuilder.push("]");
     } else {
@@ -144,16 +220,19 @@ DenseNDArray.prototype.toStringRecursive = function(coord) {
 }
 
 DenseNDArray.prototype.copy = function() {
-    return DenseNDArray.of(this.dim, this.denseNDArray);
+    return DenseNDArray.of(this.denseNDArray, this.dim);
 }
 
-DenseNDArray.prototype.map = function(lambda) {
-    var ans = this.copy();
-    var size = size();
-    for (var i = 0; i < size; i++) {
-        ans.denseNDArray[i] = f(this.denseNDArray[i]);
-    }
-    return ans;
+DenseNDArray.prototype.equals = function(o) {
+    if (this == o) return true;
+    if (o == null || this.prototype != o.prototype) return false;
+    return ArrayUtils.arrayEquals(this.denseNDArray, o.denseNDArray) &&
+           ArrayUtils.arrayEquals(this.powers, o.powers) &&
+           ArrayUtils.arrayEquals(this.dim, o.dim);
+}
+
+DenseNDArray.prototype.hashCode = function() {
+    
 }
 
 DenseNDArray.prototype.getIndex = function(x) {
@@ -180,7 +259,7 @@ DenseNDArray.prototype.computeNewDim = function(intervals) {
 }
 
 DenseNDArray.prototype.getIntervalFromStr = function(x) {
-    var split = x.replace(" ", "").split(",");
+    var split = x.split(" ").join("").split(",");
     this.checkIndexDimension(split.length);
     var intervals = [];
     for (var i = 0; i < split.length; i++) {
@@ -230,22 +309,24 @@ DenseNDArray.of = function(array, dim) {
 /**
  * Auxiliar functions 
  */
-function join(a1, a2) {
-    var copy = [];
-    for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
-    for(var i = 0; i < a2.length; i++) copy.push(a2[i]);
-    return copy;
-}
-
 function checkIfArrayIsLinear(array) {
     return array.length > 0 && array[0].length === undefined;
+}
+
+function findJsArrayDim(array) {
+    var dim = [];
+    if(array instanceof Array) {
+        return ArrayUtils.join(findJsArrayDim(array[0]), [array.length]); 
+    } else {
+        return [];
+    }
 }
 
 function unpackJsArray(array) {
     if(array instanceof Array) {
         var joinIdentity = []
         for(var i = 0; i < array.length; i++) {
-            joinIdentity = join(joinIdentity, unpackJsArray(array[i]));
+            joinIdentity = ArrayUtils.join(joinIdentity, unpackJsArray(array[i]));
         }
         return joinIdentity;
     } else {
@@ -253,23 +334,8 @@ function unpackJsArray(array) {
     }
 }
 
-function findJsArrayDim(array) {
-    var dim = [];
-    if(array instanceof Array) {
-        return join(findJsArrayDim(array[0]), [array.length]); 
-    } else {
-        return [];
-    }
-}
-
 function buildDenseFromJsArray(array) {
     var dim = findJsArrayDim(array);
-    if(dim.length >= 2) {
-        // exchange index 0 with index 1, to maintain row major
-        dim[0] = dim[0] + dim[1];
-        dim[1] = dim[0] - dim[1];
-        dim[0] = dim[0] - dim[1];
-    }
     var ans = unpackJsArray(array);
     return DenseNDArray.of(ans, dim);
 }
@@ -286,96 +352,185 @@ function computePowers(dim) {
 }
 
 module.exports = DenseNDArray;
-},{}],2:[function(require,module,exports){
+},{"../../ArrayUtils/main/ArrayUtils.js":1}],3:[function(require,module,exports){
+var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var DenseNDArray = require('../main/DenseNDArray.js');
 
-var Assertion = function(test) {
-    this.testFunction = test;
-    this.index = 0;
+var testBasic = function() {
+    var assert = UnitTest.Assert(this);
+    
+    var denseNDArray = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.assertTrue(denseNDArray.get([0,0]) == 1);
+    assert.assertTrue(denseNDArray.get([1,2]) == 8);
+    assert.assertTrue(denseNDArray.get([0,2]) == 7);
+    assert.assertTrue(denseNDArray.get([2,1]) == 6);
+    assert.assertTrue(denseNDArray.get([1,1]) == 5);
 
-    this.assertTrue = function(boolean) {
-        if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
-        console.log("Assertion successful : " + [this.testFunction, this.index]);
-        this.index++;
+    var denseNDArray1 = DenseNDArray.of(denseNDArray, [9,1]);
+    assert.assertTrue(denseNDArray1.get([0,0]) == 1);
+    assert.assertTrue(denseNDArray1.get([4,0]) == 5);
+    assert.assertTrue(denseNDArray1.get([8,0]) == 9);
+
+    var denseNDArray2 = DenseNDArray.of(denseNDArray, [9]);
+    assert.assertTrue(denseNDArray2.get([0]) == 1);
+    assert.assertTrue(denseNDArray2.get([4]) == 5);
+    assert.assertTrue(denseNDArray2.get([8]) == 9);
+    
+    assert.assertTrue(denseNDArray.get("1,2") == 8.0);
+    assert.assertTrue(denseNDArray.get("1,1") == 5.0);
+
+    assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([0,1]) == 3);
+    assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,2]) == 6);
+    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get([1,2,2]) == 18);
+    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
+    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("0,1,0") == 3); 
+}
+
+var testDense = function() {
+    var assert = UnitTest.Assert(this);
+    var table = new DenseNDArray([3, 3, 3]);
+    for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+            for (var k = 0; k < 3; k++) {
+                table.set([i, j, k], i + 3 * j + 9 * k);
+            }
+        }
+    }
+    console.log(`table : ${table.toString()}`);
+
+    assert.assertTrue(table.get("1,:,:").get([0, 0]) === 1);
+    assert.assertTrue(table.get("1,:,:").get([1, 1]) === 13);
+    assert.assertTrue(table.get("1,:,:").get([2, 2]) === 25);
+    assert.assertTrue(table.get("1,:,:").get([2, 1]) === 16);
+
+    var secondTable = table.get("0 : 1, 1 : 2, : ");
+    console.log(`secondTable : ${secondTable.toString()}`);
+
+    assert.assertTrue(secondTable.get([1, 1, 0]) === 7);
+    assert.assertTrue(secondTable.get([1, 1, 1]) === 16);
+    assert.assertTrue(secondTable.get([1, 1, 2]) === 25);
+
+    var thirdTable = new DenseNDArray([3, 3]);
+    for (var j = 0; j < 3; j++) {
+        for (var i = 0; i < 3; i++) {
+            thirdTable.set([i, j], 100);
+        }
+    }
+
+    table.set("1,:,:", thirdTable);
+
+    assert.assertTrue(table.get( [1, 0, 0]) === 100);
+    assert.assertTrue(table.get( [1, 1, 1]) === 100);
+    assert.assertTrue(table.get( [1, 1, 2]) === 100);
+    assert.assertTrue(table.get( [1, 2, 2]) === 100);
+    assert.assertTrue(table.get( [0, 2, 2]) === 24 );
+
+    var denseNDArray = table.get("1:,0:,:1");
+    
+    console.log(table.toArray());
+    console.log(table.toString());
+    
+    assert.assertTrue(denseNDArray.dim[0] == 2 && denseNDArray.dim[1] == 3 && denseNDArray.dim[2] == 2);
+    assert.assertTrue(denseNDArray.get([0, 0, 1]) == 100);
+    assert.assertTrue(denseNDArray.get([1, 1, 0]) == 5  );
+    assert.assertTrue(denseNDArray.get([1, 2, 1]) == 17 );
+}
+
+var testDenseCreation = function() {
+    var assert = UnitTest.Assert(this);
+    var d1 = new DenseNDArray([2, 3], [1, 2, 3, 4, 5, 6]);
+    var d2 = DenseNDArray.of([[1, 2], [3, 4], [5, 6]]);
+    assert.assertTrue(d1.equals(d2));
+    assert.assertTrue(d1.equals(DenseNDArray.of(d1.toArray())));
+}
+
+var testMap = function() {
+    var assert = UnitTest.Assert(this);
+    var array = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    var arraySq = new DenseNDArray([3, 3], [1, 4, 9, 16, 25, 36, 49, 64, 81]);
+    assert.assertTrue(array.map(x => x * x).equals(arraySq));
+}
+
+var testReduce = function() {
+    var assert = UnitTest.Assert(this);
+    var n = 10;
+    var sum = n * (n - 1) / 2.0;
+    var array = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    assert.assertTrue(array.reduce(0.0, (x, y) => x + y) == sum);
+    var acc = 0;
+    array.forEach(x => acc += x);
+    assert.assertTrue(acc == sum);
+}
+
+UnitTest.builder()
+        .addLogger(UnitTest.bodyLogger)
+        .push(testBasic)
+        .push(testDense)
+        .push(testDenseCreation)
+        .push(testMap)
+        .push(testReduce)
+        .test()
+
+},{"../../UnitTest/main/UnitTest.js":4,"../main/DenseNDArray.js":2}],4:[function(require,module,exports){
+var UnitTest = {};
+
+UnitTest.Assert = function(test) {
+    return new function() {
+        this.testFunction = test;
+        this.index = 0;
+    
+        this.assertTrue = function(boolean) {
+            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
+            this.index++;
+        }
     }
 };
 
-function Tester() {
-    this.basicTest = function() {
-        var assert = new Assertion(this.basicTest);
-        
-        var denseNDArray = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        assert.assertTrue(denseNDArray.get([0,0]) == 1);
-        assert.assertTrue(denseNDArray.get([1,2]) == 8);
-        assert.assertTrue(denseNDArray.get([0,2]) == 7);
-        assert.assertTrue(denseNDArray.get([2,1]) == 6);
-        assert.assertTrue(denseNDArray.get([1,1]) == 5);
+UnitTest.builder = function() {
+    return new UnitTest.UnitTestBuilder();
+}
 
-        var denseNDArray1 = DenseNDArray.of(denseNDArray, [9,1]);
-        assert.assertTrue(denseNDArray1.get([0,0]) == 1);
-        assert.assertTrue(denseNDArray1.get([4,0]) == 5);
-        assert.assertTrue(denseNDArray1.get([8,0]) == 9);
+UnitTest.bodyLogger = x => document.write(`<p>${x}</p>`)
 
-        var denseNDArray2 = DenseNDArray.of(denseNDArray, [9]);
-        assert.assertTrue(denseNDArray2.get([0]) == 1);
-        assert.assertTrue(denseNDArray2.get([4]) == 5);
-        assert.assertTrue(denseNDArray2.get([8]) == 9);
-        
-        assert.assertTrue(denseNDArray.get("1,2") == 8.0);
-        assert.assertTrue(denseNDArray.get("1,1") == 5.0);
-        
-        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,0]) == 3);
-        assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([2,1]) == 6);
-        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get([2,1,2]) == 18);
-        assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]],[[7, 8], [9, 10], [11, 12]],[[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
-        
+UnitTest.UnitTestBuilder = function(){
+    this.log = x => console.log(x);
+    this.tests = [];
+    this.asserts = [];
+
+    this.addLogger = function(logger) {
+        this.log = logger;
+        return this;
     }
 
-    this.denseTest = function() {
-        var assert = new Assertion(this.denseTest);
-        var table = new DenseNDArray([3, 3, 3]);
-        for (var i = 0; i < 3; i++) {
-            for (var j = 0; j < 3; j++) {
-                for (var k = 0; k < 3; k++) {
-                    table.set([i, j, k], i + 3 * j + 9 * k);
-                }
-            }
-        }
-        console.log(table);
-
-        assert.assertTrue(table.get("1,:,:").get([0, 0]) === 1);
-        assert.assertTrue(table.get("1,:,:").get([1, 1]) === 13);
-        assert.assertTrue(table.get("1,:,:").get([2, 2]) === 25);
-
-        var secondTable = table.get("0:1,1:2,:");
-        assert.assertTrue(secondTable.get([1,1,0]) === 7);
-        assert.assertTrue(secondTable.get([1,1,1]) === 16);
-        assert.assertTrue(secondTable.get([1,1,2]) === 25);
-
-        var thirdTable = new DenseNDArray([3, 3]);
-        for (var j = 0; j < 3; j++) {
-            for (var i = 0; i < 3; i++) {
-                thirdTable.set([i, j], 100);
-            }
-        }
-
-        table.set("1,:,:", thirdTable);
-
-        assert.assertTrue(table.get( [0, 0, 0 ]) === 0);
-        assert.assertTrue(table.get( [1, 1, 1 ]) === 100 && table.get([1, 2, 1]) === 100);
-        assert.assertTrue(table.get( [2, 2, 2 ]) === 26);
-
-        var denseNDArray = table.get("1:,0:,:1");
-        console.log(table.toArray());
-        assert.assertTrue(denseNDArray.dim[0] == 2 && denseNDArray.dim[1] == 3 && denseNDArray.dim[2] == 2);
-        assert.assertTrue(11 == denseNDArray.get([1, 1, 1]));
+    this.push = function(test){
+        this.tests.push(test);
+        return this;
     }
 
-    for(key in this) {
-        this[key]();
+    this.test = function() {
+        this.tests.forEach(x => {
+            try {
+                x();
+                this.asserts.push([true]);
+            } catch(err) {
+                this.asserts.push([false, err]);
+            }
+        });
+        var passedTests = 0;
+        var failedTests = 0;
+        this.asserts.forEach(x => {
+            passedTests += x[0] ? 1 : 0;
+            failedTests += x[0] ? 0 : 1;
+        });
+
+        this.log(`Passed Test: ${passedTests} / ${this.tests.length}`)
+        this.log(`Failed Test: ${failedTests} / ${this.tests.length}`)
+        for(var i = 0; i < this.asserts.length; i++) {
+            this.log(`Test ${i}, ${this.asserts[i][0] ? "Passed" : "Failed"}`);
+            if(!this.asserts[i][0]) this.log(`\t ${this.asserts[i][1]}`);
+        }
     }
 }
 
-new Tester();
-
-},{"../main/DenseNDArray.js":1}]},{},[2]);
+module.exports = UnitTest;
+},{}]},{},[3]);

@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.test = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Choice = function(opt1, opt2, predicate) {
     this.opt1 = opt1;
     this.opt2 = opt2;
@@ -690,7 +690,6 @@ r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
 var Test1 = function() {
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-
     this.isFirstIte = true;
 
     this.a = [-1, 1];
@@ -875,22 +874,56 @@ var Test4 = function() {
     }
 }
 
-
+/**
+* state of opened simulations, is a number \in {0, ... , n}.
+* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+**/
+var stateIndexApplicationOpen = 0; 
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3(),
-             new Test4()
-]
+             ["test1", new Test1()],
+             ["test2", new Test2()],
+             ["test3", new Test3()],
+             ["test4", new Test4()]
+];
 
-function draw() {
-    for(var i = 0; i < tests.length; i++) {
-        tests[i].update();
+function closeState(state) {
+    if(state > 0) {
+        $(`#${tests[state-1][0]}`).slideUp();
     }
-    requestAnimationFrame(draw);
 }
 
-requestAnimationFrame(draw);
+function openState(state) {
+    $(`#${tests[state-1][0]}`).slideDown();
+}
 
+// click number > 0
+function clickOperator(clickNumber, state) {
+    var condition = state != clickNumber;
+    if(condition) {
+        closeState(state);
+        openState(clickNumber);
+    } else {
+        closeState(state);
+    }
+    return condition ? clickNumber : 0;
+}
 
-},{"../../Choice/main/Choice.js":1,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}]},{},[5]);
+function simulate(index) {
+    return () => {
+        tests[index][1].update();
+        if($(`#${tests[index][0]}`).is(":visible")) {
+            requestAnimationFrame(simulate(index));
+        }
+    };
+}
+
+function run(index) {
+    stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen);
+    requestAnimationFrame(simulate(index));
+}
+
+module.exports =  {
+    run : run
+} 
+},{"../../Choice/main/Choice.js":1,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}]},{},[5])(5)
+});

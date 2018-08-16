@@ -1,5 +1,10 @@
 var ArrayUtils = {};
 
+/**
+ * Union of array a1 and a2
+ * @param {*} a1 
+ * @param {*} a2 
+ */
 ArrayUtils.join = function(a1, a2) {
     var copy = [];
     for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
@@ -7,6 +12,11 @@ ArrayUtils.join = function(a1, a2) {
     return copy;
 }
 
+/**
+ *  Test if linear arrays are equal
+ * @param {*} a1 
+ * @param {*} a2 
+ */
 ArrayUtils.arrayEquals = function(a1, a2) {
     if(a1.length != a2.length) return false;
     for(var i = 0; i < a1.length; i++) {
@@ -16,12 +26,29 @@ ArrayUtils.arrayEquals = function(a1, a2) {
 }
 
 /**
- * 
+ * Return a new array permutation
  * @param {*} array 
- * @param {*} permutation is 2-dim array [from, to], where from.length==to.length and from as the position from and to have the positions to  
+ * @param {*} permutation is an array with length <= array.length that has the new indexes
  */
 ArrayUtils.permute = function(array, permutation) {
-    // TODO
+    if(permutation.length > array.length ){
+        throw `permutation array length > array length[${array.length}]`
+    }
+    var copy = array.slice();
+    for(var i = 0; i < permutation.length; i++) {
+        copy[permutation[i]] = array[i];
+    }
+    return copy;
+}
+
+/**
+ * return swap array indexes
+ */
+ArrayUtils.swap = function(array, i, j) {
+    var t = array[i];
+    array[i] = array[j];
+    array[j] = t;
+    return array;
 }
 
 module.exports = ArrayUtils;
