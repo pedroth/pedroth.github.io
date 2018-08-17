@@ -1,5 +1,7 @@
 var MyCanvas = require('./MyCanvas.js');
 
+//Note that we can switch from heritage to composition, think about that
+
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 var CanvasSpace = function(canvas, cameraSpace) {
 	MyCanvas.call(this, canvas);

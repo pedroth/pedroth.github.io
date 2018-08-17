@@ -26,7 +26,8 @@ f = MyCanvas.simpleShader([0, 255, 0, 255]);
 g = MyCanvas.simpleShader([0, 0, 255, 255]);
 r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
-var Test1 = function() {
+var Test1 = function(divName) {
+    this.divName = divName;
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
     this.isFirstIte = true;
 
@@ -77,7 +78,8 @@ var Test1 = function() {
     }
 }
 
-var Test2 = function() {
+var Test2 = function(divName) {
+    this.divName = divName;
     this.canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
     this.i = 0;
     this.j = 0;
@@ -103,8 +105,8 @@ var Test2 = function() {
     }
 }
 
-var Test3 = function() {
-
+var Test3 = function(divName) {
+    this.divName = divName;
     this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
 
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
@@ -162,7 +164,8 @@ var Test3 = function() {
     }
 }
 
-var Test4 = function() {
+var Test4 = function(divName) {
+    this.divName = divName;
     this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
     this.oldTime = new Date().getTime();
 
@@ -212,73 +215,37 @@ var Test4 = function() {
     }
 }
 
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
+
+/*
+ * Main
+ */
 var tests = [
-             ["test1", new Test1()],
-             ["test2", new Test2()],
-             ["test3", new Test3()],
-             ["test4", new Test4()]
+             new Test1("test1"),
+             new Test2("test2"),
+             new Test3("test3"),
+             new Test4("test4")
 ];
 
-function closeState(state) {
-    if(state > 0) {
-        $(`#${tests[state-1][0]}`).slideUp();
-    }
+// TODO find a way to use this!!
+var simManagerBuilder = SimManager.builder();
+for(var i = 0; i < tests.length; i++){
+    simManagerBuilder.push(
+                        SimManager.simulatorBuilder()
+                                  .addBaseSimulator(tests[i])
+                                  .checkIfCanDraw(x => $(`#${x.divName}`).is(":visible"))
+                                  .draw(x => x.update())
+                                  .start(x => $(`#${x.divName}`).slideDown())
+                                  .end(x => $(`#${x.divName}`).slideUp())
+                                  .build()
+                    );
 }
 
-function openState(state) {
-    $(`#${tests[state-1][0]}`).slideDown();
-}
-
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
-
-function simulate(index) {
-    return () => {
-        tests[index][1].update();
-        if($(`#${tests[index][0]}`).is(":visible")) {
-            requestAnimationFrame(simulate(index));
-        }
-    };
-}
+var simManager = simManagerBuilder.build();
 
 function run(index) {
-    stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen);
-    requestAnimationFrame(simulate(index));
+    simManager.runSimulation(index);
 }
 
 module.exports =  {
     run : run
 }
-
-
-// TODO find a way to use this!!
-//var simManagerBuilder = SimManager.builder();
-//for(var i = 0; i < tests.length; i++){
-//    simManagerBuilder.push(SimManager.simulatorBuilder()
-//                        .checkIfCanDraw(() => $(`#${tests[i][0]}`).is(":visible"))
-//                        .draw(() => tests[i][1].update())
-//                        .start(() => {console.log(tests[i]); $(`#${tests[i][0]}`).slideDown()})
-//                        .end(() => $(`#${tests[i][0]}`).slideUp())
-//                        .build()
-//                    );
-//}
-//
-//var simManager = simManagerBuilder.build();
-//
-//module.exports =  {
-//    run : simManager.runSimulation
-//}

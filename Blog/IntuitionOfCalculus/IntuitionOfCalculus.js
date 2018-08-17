@@ -2,6 +2,7 @@
 var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
 var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
 var ImageIO = require('../../JsLib/MyCanvas/main/ImageIO.js');
+var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 function getDashedLineShader(color) {
     return MyCanvas.interpolateLineShader(
@@ -729,60 +730,29 @@ function Sim4() {
      new Sim4()
  ];
 
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
+ var simManagerBuilder = SimManager.builder();
 
-function closeState(state) {
-    if(state > 0) {
-        simulations[state-1].end();
-    }
-}
+ for(var i = 0; i < simulations.length; i++){
+     simManagerBuilder.push(simulations[i]);
+ }
 
-function openState(state) {
-    simulations[state-1].start();
-}
-
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
-
-function simulate(index) {
-    simulations[index].draw();
-    if (simulations[index].checkIfCanDraw()) {
-        requestAnimationFrame(() => simulate(index));
-    }
-}
+ var simManager = simManagerBuilder.build();
 
 function runSimulation(index) {
-	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(() => simulate(index));
+	simManager.runSimulation(index);
 }
 
 function apply(index, lambda) {
-    lambda(simulations[index]);
+    simManager.apply(index, lambda);
 }
 
-for (var i = 0; i < simulations.length; i++) {
-    var simulation = simulations[i];
-    simulation.init();
-}
+simManager.init();
 
 module.exports =  {
     run : runSimulation,
     apply : apply
 }
-},{"../../JsLib/MyCanvas/main/CanvasSpace.js":2,"../../JsLib/MyCanvas/main/ImageIO.js":3,"../../JsLib/MyCanvas/main/MyCanvas.js":4}],2:[function(require,module,exports){
+},{"../../JsLib/MyCanvas/main/CanvasSpace.js":2,"../../JsLib/MyCanvas/main/ImageIO.js":3,"../../JsLib/MyCanvas/main/MyCanvas.js":4,"../../JsLib/SimManager/main/SimManager.js":5}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
@@ -1431,5 +1401,132 @@ MyCanvas.quadTextureShader = function(img, quadTexCoord) {
 
 
 module.exports = MyCanvas;
-},{"./ImageIO.js":3}]},{},[1])(1)
+},{"./ImageIO.js":3}],5:[function(require,module,exports){
+var SimManager = {}
+
+/**
+ * Tried to put private methods and variables but it didn´t work!!
+ */
+
+SimManager.builder = function() {
+    return new function() {
+        this.simulations = [];
+
+        this.push = function(sim) {
+            this.simulations.push(sim);
+            return this;
+        }
+
+        this.build = function() {
+            return new SimManager.SimManager(this.simulations);
+        }
+    };
+}
+
+SimManager.SimManager = function(_simulations){
+    /**
+    * state of opened simulations, is a number \in {0, ... , n}.
+    * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+    **/
+    this.stateIndexApplicationOpen = 0;
+    this.simulations = _simulations;
+
+    this.closeState = function(state) {
+        if(state > 0) {
+            this.simulations[state - 1].end();
+        }
+    }
+
+    this.openState = function(state) {
+        this.simulations[state - 1].start();
+    }
+
+    // click number > 0
+    this.clickOperator = function(clickNumber, state) {
+        var condition = state != clickNumber;
+        if(condition) {
+            this.closeState(state);
+            this.openState(clickNumber);
+        } else {
+            this.closeState(state);
+        }
+        return condition ? clickNumber : 0;
+    }
+
+    this.simulate = function(index) {
+        this.simulations[index].draw();
+        if (this.simulations[index].checkIfCanDraw()) {
+            requestAnimationFrame(() => this.simulate(index));
+        }
+    }
+
+    this.runSimulation = function(index) {
+        this.stateIndexApplicationOpen = this.clickOperator(index + 1, this.stateIndexApplicationOpen);
+        requestAnimationFrame(() => this.simulate(index));
+    }
+
+    this.apply = function(index, lambda) {
+        lambda(this.simulations[index]);
+        return this;
+    }
+
+    this.init = function() {
+        this.simulations.forEach(element => element.init());
+        return this;
+    }
+}
+
+SimManager.simulatorBuilder = function() {
+    return new function() {
+        var throwUndefined = function() {
+            throw "Undefined obligatory function";
+        }
+        this.simulator = {
+            "base": {},
+            "init": throwUndefined,
+            "checkIfCanDraw": throwUndefined,
+            "draw": () => throwUndefined,
+            "start": () => throwUndefined,
+            "end": () => throwUndefined
+        };
+
+        this.addBaseSimulator = function(obj) {
+            this.simulator.base = obj;
+            return this;
+        }
+
+        this.init = function(f) {
+            this.simulator.init = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.checkIfCanDraw = function(f) {
+            this.simulator.checkIfCanDraw = () => f(this.simulator.base);
+            return this;
+        }
+        
+        this.draw = function(f) {
+            this.simulator.draw = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.start = function(f) {
+            this.simulator.start = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.end = function(f) {
+            this.simulator.end = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.build = function() {
+            return this.simulator;
+        }
+    };
+}
+
+
+module.exports = SimManager; 
+},{}]},{},[1])(1)
 });

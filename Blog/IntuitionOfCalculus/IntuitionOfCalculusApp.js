@@ -1,6 +1,7 @@
 var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
 var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
 var ImageIO = require('../../JsLib/MyCanvas/main/ImageIO.js');
+var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 function getDashedLineShader(color) {
     return MyCanvas.interpolateLineShader(
@@ -728,54 +729,23 @@ function Sim4() {
      new Sim4()
  ];
 
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
+ var simManagerBuilder = SimManager.builder();
 
-function closeState(state) {
-    if(state > 0) {
-        simulations[state-1].end();
-    }
-}
+ for(var i = 0; i < simulations.length; i++){
+     simManagerBuilder.push(simulations[i]);
+ }
 
-function openState(state) {
-    simulations[state-1].start();
-}
-
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
-
-function simulate(index) {
-    simulations[index].draw();
-    if (simulations[index].checkIfCanDraw()) {
-        requestAnimationFrame(() => simulate(index));
-    }
-}
+ var simManager = simManagerBuilder.build();
 
 function runSimulation(index) {
-	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(() => simulate(index));
+	simManager.runSimulation(index);
 }
 
 function apply(index, lambda) {
-    lambda(simulations[index]);
+    simManager.apply(index, lambda);
 }
 
-for (var i = 0; i < simulations.length; i++) {
-    var simulation = simulations[i];
-    simulation.init();
-}
+simManager.init();
 
 module.exports =  {
     run : runSimulation,

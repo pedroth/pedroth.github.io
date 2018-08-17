@@ -688,7 +688,8 @@ f = MyCanvas.simpleShader([0, 255, 0, 255]);
 g = MyCanvas.simpleShader([0, 0, 255, 255]);
 r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
-var Test1 = function() {
+var Test1 = function(divName) {
+    this.divName = divName;
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
     this.isFirstIte = true;
 
@@ -739,7 +740,8 @@ var Test1 = function() {
     }
 }
 
-var Test2 = function() {
+var Test2 = function(divName) {
+    this.divName = divName;
     this.canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
     this.i = 0;
     this.j = 0;
@@ -765,8 +767,8 @@ var Test2 = function() {
     }
 }
 
-var Test3 = function() {
-
+var Test3 = function(divName) {
+    this.divName = divName;
     this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
 
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
@@ -824,7 +826,8 @@ var Test3 = function() {
     }
 }
 
-var Test4 = function() {
+var Test4 = function(divName) {
+    this.divName = divName;
     this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
     this.oldTime = new Date().getTime();
 
@@ -875,43 +878,57 @@ var Test4 = function() {
 }
 
 
+/*
+ * Main
+ */
 var tests = [
-    ["test1", new Test1()],
-    ["test2", new Test2()],
-    ["test3", new Test3()],
-    ["test4", new Test4()]
+             new Test1("test1"),
+             new Test2("test2"),
+             new Test3("test3"),
+             new Test4("test4")
 ];
 
+// TODO find a way to use this!!
 var simManagerBuilder = SimManager.builder();
 for(var i = 0; i < tests.length; i++){
-    simManagerBuilder.push(SimManager.simulatorBuilder()
-                        .checkIfCanDraw(() => $(`#${tests[i][0]}`).is(":visible"))
-                        .draw(() => tests[i][1].update())
-                        .start(() => {console.log(tests[i]); $(`#${tests[i][0]}`).slideDown()})
-                        .end(() => $(`#${tests[i][0]}`).slideUp())
-                        .build()
+    simManagerBuilder.push(
+                        SimManager.simulatorBuilder()
+                                  .addBaseSimulator(tests[i])
+                                  .checkIfCanDraw(x => $(`#${x.divName}`).is(":visible"))
+                                  .draw(x => x.update())
+                                  .start(x => $(`#${x.divName}`).slideDown())
+                                  .end(x => $(`#${x.divName}`).slideUp())
+                                  .build()
                     );
 }
-                           
+
 var simManager = simManagerBuilder.build();
 
+function run(index) {
+    simManager.runSimulation(index);
+}
+
 module.exports =  {
-    run : simManager.runSimulation
-} 
+    run : run
+}
 },{"../../Choice/main/Choice.js":1,"../../SimManager/main/SimManager.js":6,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}],6:[function(require,module,exports){
 var SimManager = {}
 
+/**
+ * Tried to put private methods and variables but it didn´t work!!
+ */
+
 SimManager.builder = function() {
     return new function() {
-        var simulations = [];
+        this.simulations = [];
 
         this.push = function(sim) {
-            simulations.push(sim);
+            this.simulations.push(sim);
             return this;
         }
 
         this.build = function() {
-            return new SimManager.SimManager(simulations);
+            return new SimManager.SimManager(this.simulations);
         }
     };
 }
@@ -921,91 +938,100 @@ SimManager.SimManager = function(_simulations){
     * state of opened simulations, is a number \in {0, ... , n}.
     * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
     **/
-    var stateIndexApplicationOpen = 0;
-    var simulations = _simulations;
+    this.stateIndexApplicationOpen = 0;
+    this.simulations = _simulations;
 
-    var closeState = function(state) {
+    this.closeState = function(state) {
         if(state > 0) {
-            simulations[state - 1].end();
+            this.simulations[state - 1].end();
         }
     }
 
-    var openState = function(state) {
-        simulations[state - 1].start();
+    this.openState = function(state) {
+        this.simulations[state - 1].start();
     }
 
     // click number > 0
-    var clickOperator = function(clickNumber, state) {
+    this.clickOperator = function(clickNumber, state) {
         var condition = state != clickNumber;
         if(condition) {
-            closeState(state);
-            openState(clickNumber);
+            this.closeState(state);
+            this.openState(clickNumber);
         } else {
-            closeState(state);
+            this.closeState(state);
         }
         return condition ? clickNumber : 0;
     }
 
-    var simulate = function(index) {
-        simulations[index].draw();
-        if (simulations[index].checkIfCanDraw()) {
-            requestAnimationFrame(() => simulate(index));
+    this.simulate = function(index) {
+        this.simulations[index].draw();
+        if (this.simulations[index].checkIfCanDraw()) {
+            requestAnimationFrame(() => this.simulate(index));
         }
     }
 
     this.runSimulation = function(index) {
-        stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-        requestAnimationFrame(() => simulate(index));
+        this.stateIndexApplicationOpen = this.clickOperator(index + 1, this.stateIndexApplicationOpen);
+        requestAnimationFrame(() => this.simulate(index));
     }
 
     this.apply = function(index, lambda) {
-        lambda(simulations[index]);
+        lambda(this.simulations[index]);
         return this;
     }
 
     this.init = function() {
-        simulations.forEach(element => element.init());
+        this.simulations.forEach(element => element.init());
         return this;
     }
 }
 
 SimManager.simulatorBuilder = function() {
     return new function() {
-        var simulator = {
-            "init": () => 0,
-            "checkIfCanDraw": () => 0,
-            "draw": () => 0,
-            "start": () => 0,
-            "end": () => 0
+        var throwUndefined = function() {
+            throw "Undefined obligatory function";
+        }
+        this.simulator = {
+            "base": {},
+            "init": throwUndefined,
+            "checkIfCanDraw": throwUndefined,
+            "draw": () => throwUndefined,
+            "start": () => throwUndefined,
+            "end": () => throwUndefined
         };
 
+        this.addBaseSimulator = function(obj) {
+            this.simulator.base = obj;
+            return this;
+        }
+
         this.init = function(f) {
-            simulator.init = f;
+            this.simulator.init = () => f(this.simulator.base);
             return this;
         }
 
         this.checkIfCanDraw = function(f) {
-            simulator.checkIfCanDraw = f;
+            this.simulator.checkIfCanDraw = () => f(this.simulator.base);
             return this;
         }
         
         this.draw = function(f) {
-            simulator.draw = f;
+            this.simulator.draw = () => f(this.simulator.base);
             return this;
         }
 
         this.start = function(f) {
-            simulator.start = f;
+            this.simulator.start = () => f(this.simulator.base);
             return this;
         }
 
         this.end = function(f) {
-            simulator.end = f;
+            this.simulator.end = () => f(this.simulator.base);
             return this;
         }
 
         this.build = function() {
-            return simulator;
+            return this.simulator;
         }
     };
 }
