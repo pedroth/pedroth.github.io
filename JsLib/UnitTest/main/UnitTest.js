@@ -29,7 +29,21 @@ UnitTest.UnitTestBuilder = function(){
     }
 
     this.push = function(test){
-        this.tests.push(test);
+        var types = [
+                     ["Function", Function],
+                     ["Object", Object]
+                    ];
+        var map  = {
+            "Function": () => this.tests.push(test),
+            "Object": () => {
+                for(var f in test) {
+                    if(f instanceof Function) this.tests.push(f);
+                }
+            }
+        }
+        types.forEach(x => {
+            if(test instanceof x[1]) map[x[0]]();
+        });
         return this;
     }
 

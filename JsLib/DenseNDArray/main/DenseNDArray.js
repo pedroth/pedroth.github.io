@@ -234,10 +234,13 @@ DenseNDArray.prototype.checkIndexDimension = function(d) {
     }
 }
 
+DenseNDArray.prototype.reshape = function(newShape) {
+    return DenseNDArray.of(this, newShape);
+}
+
 /**
  * Static functions
  */
-
 /**
  * Create DenseArray from old DenseArray or JsArray, it can also reshape
  */
@@ -257,30 +260,10 @@ function checkIfArrayIsLinear(array) {
     return array.length > 0 && array[0].length === undefined;
 }
 
-function findJsArrayDim(array) {
-    var dim = [];
-    if(array instanceof Array) {
-        return ArrayUtils.join(findJsArrayDim(array[0]), [array.length]); 
-    } else {
-        return [];
-    }
-}
-
-function unpackJsArray(array) {
-    if(array instanceof Array) {
-        var joinIdentity = []
-        for(var i = 0; i < array.length; i++) {
-            joinIdentity = ArrayUtils.join(joinIdentity, unpackJsArray(array[i]));
-        }
-        return joinIdentity;
-    } else {
-        return [array];
-    }
-}
 
 function buildDenseFromJsArray(array) {
-    var dim = findJsArrayDim(array);
-    var ans = unpackJsArray(array);
+    var dim = ArrayUtils.findJsArrayDim(array);
+    var ans = ArrayUtils.unpackJsArray(array);
     return DenseNDArray.of(ans, dim);
 }
 

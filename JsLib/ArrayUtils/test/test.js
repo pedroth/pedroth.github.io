@@ -52,6 +52,26 @@ ArrayUtils.swap = function(array, i, j) {
     return array;
 }
 
+ArrayUtils.findJsArrayDim = function(array) {
+    if(array instanceof Array) {
+        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
+    } else {
+        return [];
+    }
+}
+
+ArrayUtils.unpackJsArray = function(array) {
+    if(array instanceof Array) {
+        var joinIdentity = []
+        for(var i = 0; i < array.length; i++) {
+            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
+        }
+        return joinIdentity;
+    } else {
+        return [array];
+    }
+}
+
 module.exports = ArrayUtils;
 },{}],2:[function(require,module,exports){
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
@@ -88,12 +108,26 @@ var testArraySwap = function() {
     assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.swap(a1, 0, 4), swaped));
 }
 
+var testFindArrayDim = function() {
+    var assert = UnitTest.Assert(this);
+    var a1 = [[[1, 2, 3],[4, 5, 6]], [[7, 8, 9], [10, 11, 12]]];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.findJsArrayDim(a1), [3, 2, 2]));
+}
+
+var testUnpackJsArray = function() {
+    var assert = UnitTest.Assert(this);
+    var a1 = [[[1, 2, 3],[4, 5, 6]], [[7, 8, 9], [10, 11, 12]]];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.unpackJsArray(a1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testJoinArray)
         .push(testArrayEquals)
         .push(testArrayPermute)
         .push(testArraySwap)
+        .push(testFindArrayDim)
+        .push(testUnpackJsArray)
         .test()
 },{"../../UnitTest/main/UnitTest.js":3,"../main/ArrayUtils.js":1}],3:[function(require,module,exports){
 var UnitTest = {};
@@ -127,7 +161,21 @@ UnitTest.UnitTestBuilder = function(){
     }
 
     this.push = function(test){
-        this.tests.push(test);
+        var types = [
+                     ["Function", Function],
+                     ["Object", Object]
+                    ];
+        var map  = {
+            "Function": () => this.tests.push(test),
+            "Object": () => {
+                for(var f in test) {
+                    if(f instanceof Function) this.tests.push(f);
+                }
+            }
+        }
+        types.forEach(x => {
+            if(test instanceof x[1]) map[x[0]]();
+        });
         return this;
     }
 
@@ -151,7 +199,7 @@ UnitTest.UnitTestBuilder = function(){
         this.log(`Failed Test: ${failedTests} / ${this.tests.length}`)
         for(var i = 0; i < this.asserts.length; i++) {
             this.log(`Test ${i}, ${this.asserts[i][0] ? "Passed" : "Failed"}`);
-            if(!this.asserts[i][0]) this.log(this.asserts[i][1]);
+            if(!this.asserts[i][0]) this.log(`\t ${this.asserts[i][1]}`);
         }
     }
 }

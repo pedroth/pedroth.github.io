@@ -107,6 +107,13 @@ var testReduce = function() {
     assert.assertTrue(acc == sum);
 }
 
+var testReshape = function() {
+    var assert = UnitTest.Assert(this);
+    var dense = DenseNDArray.of([[1,2,3],[4,5,6]]);
+    var denseReshape = DenseNDArray.of([[1, 2], [3, 4], [5, 6]]);
+    assert.assertTrue(dense.reshape([2, 3]).equals(denseReshape));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testBasic)
@@ -114,4 +121,5 @@ UnitTest.builder()
         .push(testDenseCreation)
         .push(testMap)
         .push(testReduce)
+        .push(testReshape)
         .test()

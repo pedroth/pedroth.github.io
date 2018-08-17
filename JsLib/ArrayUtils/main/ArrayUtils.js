@@ -51,4 +51,24 @@ ArrayUtils.swap = function(array, i, j) {
     return array;
 }
 
+ArrayUtils.findJsArrayDim = function(array) {
+    if(array instanceof Array) {
+        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
+    } else {
+        return [];
+    }
+}
+
+ArrayUtils.unpackJsArray = function(array) {
+    if(array instanceof Array) {
+        var joinIdentity = []
+        for(var i = 0; i < array.length; i++) {
+            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
+        }
+        return joinIdentity;
+    } else {
+        return [array];
+    }
+}
+
 module.exports = ArrayUtils;

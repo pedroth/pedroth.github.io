@@ -32,10 +32,24 @@ var testArraySwap = function() {
     assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.swap(a1, 0, 4), swaped));
 }
 
+var testFindArrayDim = function() {
+    var assert = UnitTest.Assert(this);
+    var a1 = [[[1, 2, 3],[4, 5, 6]], [[7, 8, 9], [10, 11, 12]]];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.findJsArrayDim(a1), [3, 2, 2]));
+}
+
+var testUnpackJsArray = function() {
+    var assert = UnitTest.Assert(this);
+    var a1 = [[[1, 2, 3],[4, 5, 6]], [[7, 8, 9], [10, 11, 12]]];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.unpackJsArray(a1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testJoinArray)
         .push(testArrayEquals)
         .push(testArrayPermute)
         .push(testArraySwap)
+        .push(testFindArrayDim)
+        .push(testUnpackJsArray)
         .test()

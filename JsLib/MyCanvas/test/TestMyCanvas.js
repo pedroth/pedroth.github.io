@@ -224,7 +224,6 @@ var tests = [
              new Test4("test4")
 ];
 
-// TODO find a way to use this!!
 var simManagerBuilder = SimManager.builder();
 for(var i = 0; i < tests.length; i++){
     simManagerBuilder.push(

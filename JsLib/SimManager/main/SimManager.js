@@ -3,7 +3,6 @@ var SimManager = {}
 /**
  * Tried to put private methods and variables but it didn´t work!!
  */
-
 SimManager.builder = function() {
     return new function() {
         this.simulations = [];
