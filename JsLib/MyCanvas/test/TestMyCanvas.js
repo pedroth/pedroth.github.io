@@ -108,10 +108,10 @@ var Test2 = function(divName) {
 var Test3 = function(divName) {
     this.divName = divName;
     this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
-
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
-
-    this.isFirstIte = true;
+    this.samples = 25;
+    this.avgTime = 0;
+    this.ite = this.samples;
 
     var size = this.canvasTriangles.getSize();
     this.animeTriangle = [randomVector(0, size[0]), randomVector(0, size[0]), randomVector(0, size[0])];
@@ -132,24 +132,22 @@ var Test3 = function(divName) {
     
     this.update = function() {
         var size = this.canvasTriangles.getSize();
-        if(this.isFirstIte) {
-            var samples = 100;
+
+        if(this.ite > 0) {
             this.canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
             this.canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
             this.canvasTriangles.drawLine([0, 0], [size[0]-1, size[1] - 1], f);
             
-            var avgTime = 0;
-            for(var i = 0; i < samples; i++) {
-                var first = randomVector(0, size[0]);
-                var second = randomVector(0, size[0]);
-                var third = randomVector(0, size[0]);
-                var time = new Date().getTime();
-                this.canvasTriangles.drawTriangle(first, second, third, g);
-                avgTime += (new Date().getTime() - time) / 1000;
-            }
-            console.log(avgTime / samples);
+            var first = randomVector(0, size[0]);
+            var second = randomVector(0, size[0]);
+            var third = randomVector(0, size[0]);
+            var time = new Date().getTime();
+            this.canvasTriangles.drawTriangle(first, second, third, g);
+
+            this.avgTime += (new Date().getTime() - time) / 1000;
             this.canvasTriangles.paintImage();
-            this.isFirstIte = false;
+            this.ite--;
+            if(this.ite == 0) console.log(this.avgTime / this.samples);
         } else {
             this.canvasTriangles.clearImage([250, 250, 250, 255]);
             var sin = Math.sin(this.t / (2 * Math.PI * 10))
@@ -173,8 +171,8 @@ var Test4 = function(divName) {
     this.t = 0;
     this.quad = [
                  [-0.25, -0.25],
-                 [ 0.35, -0.25],
-                 [ 0.25,  0.35],
+                 [ 0.45, -0.25],
+                 [ 0.25,  0.45],
                  [-0.25,  0.25],
                 ];
 

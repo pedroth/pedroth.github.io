@@ -755,6 +755,8 @@ module.exports =  {
 },{"../../JsLib/MyCanvas/main/CanvasSpace.js":2,"../../JsLib/MyCanvas/main/ImageIO.js":3,"../../JsLib/MyCanvas/main/MyCanvas.js":4,"../../JsLib/SimManager/main/SimManager.js":5}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
 
+//Note that we can switch from heritage to composition, think about that
+
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 var CanvasSpace = function(canvas, cameraSpace) {
 	MyCanvas.call(this, canvas);
@@ -769,7 +771,7 @@ CanvasSpace.prototype.constructor = CanvasSpace;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
-*/
+ */
 CanvasSpace.prototype.integerTransform = function(x) {
 	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
 	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
@@ -778,7 +780,7 @@ CanvasSpace.prototype.integerTransform = function(x) {
 
 /* x : 2-dim array in integer coordinates
  * returns : 2-dim array in camera space coordinates
-*/
+ */
 CanvasSpace.prototype.inverseTransform = function(x) {
 	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
 	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
@@ -788,7 +790,7 @@ CanvasSpace.prototype.inverseTransform = function(x) {
 /* x1     :   2-dim array
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -799,7 +801,7 @@ CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
  * x2     :   2-dim array
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -812,7 +814,7 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
  * x3     :   2-dim array
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -1028,10 +1030,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
 MyCanvas.prototype.getSize = function () {
-    return [this.canvas.width, this.canvas.height];
+    return [this.canvas.height, this.canvas.width];
 };
 
 /**
@@ -1055,7 +1057,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[0], size[1]);
+        canvas.ctx.fillRect(0, 0, size[1], size[0]);
     }, true);
 };
 
@@ -1227,7 +1229,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, this.isInsideTriangle);
+      this.drawPolygon(array, shader, this.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -1237,7 +1239,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideTriangle);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
 };
 
 // slower than the method below
@@ -1253,7 +1255,7 @@ MyCanvas.prototype.isInsidePolygon = function(x, array) {
     return Math.abs(theta -  2 * Math.PI) < 1E-3;
 }
 
-MyCanvas.prototype.isInsideTriangle = function(x, array) {
+MyCanvas.prototype.isInsideConvex = function(x, array) {
     var length = array.length;
     var v = [];
     var vDotN = [];
