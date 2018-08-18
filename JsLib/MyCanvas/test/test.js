@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.test = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Choice = function(opt1, opt2, predicate) {
     this.opt1 = opt1;
     this.opt2 = opt2;
@@ -12,6 +12,8 @@ var Choice = function(opt1, opt2, predicate) {
 module.exports = Choice;
 },{}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
+
+//Note that we can switch from heritage to composition, think about that
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 var CanvasSpace = function(canvas, cameraSpace) {
@@ -27,7 +29,7 @@ CanvasSpace.prototype.constructor = CanvasSpace;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
-*/
+ */
 CanvasSpace.prototype.integerTransform = function(x) {
 	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
 	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
@@ -36,7 +38,7 @@ CanvasSpace.prototype.integerTransform = function(x) {
 
 /* x : 2-dim array in integer coordinates
  * returns : 2-dim array in camera space coordinates
-*/
+ */
 CanvasSpace.prototype.inverseTransform = function(x) {
 	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
 	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
@@ -46,7 +48,7 @@ CanvasSpace.prototype.inverseTransform = function(x) {
 /* x1     :   2-dim array
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -57,7 +59,7 @@ CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
  * x2     :   2-dim array
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -70,7 +72,7 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
  * x3     :   2-dim array
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -286,10 +288,10 @@ var MyCanvas = function (canvas) {
 };
 
 /**
- * Returns a two vector with Width as first coordinate and Height as second. [Width, Height].
+ * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
 MyCanvas.prototype.getSize = function () {
-    return [this.canvas.width, this.canvas.height];
+    return [this.canvas.height, this.canvas.width];
 };
 
 /**
@@ -313,7 +315,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
         canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[0], size[1]);
+        canvas.ctx.fillRect(0, 0, size[1], size[0]);
     }, true);
 };
 
@@ -485,7 +487,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, this.isInsideTriangle);
+      this.drawPolygon(array, shader, this.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -495,7 +497,7 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideTriangle);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
 };
 
 // slower than the method below
@@ -511,7 +513,7 @@ MyCanvas.prototype.isInsidePolygon = function(x, array) {
     return Math.abs(theta -  2 * Math.PI) < 1E-3;
 }
 
-MyCanvas.prototype.isInsideTriangle = function(x, array) {
+MyCanvas.prototype.isInsideConvex = function(x, array) {
     var length = array.length;
     var v = [];
     var vDotN = [];
@@ -664,7 +666,7 @@ var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
 var Choice = require('../../Choice/main/Choice.js');
-
+var SimManager = require('../../SimManager/main/SimManager.js');
 
 function randomVector(a, b) {
     return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
@@ -688,9 +690,9 @@ f = MyCanvas.simpleShader([0, 255, 0, 255]);
 g = MyCanvas.simpleShader([0, 0, 255, 255]);
 r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
-var Test1 = function() {
+var Test1 = function(divName) {
+    this.divName = divName;
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-
     this.isFirstIte = true;
 
     this.a = [-1, 1];
@@ -740,7 +742,8 @@ var Test1 = function() {
     }
 }
 
-var Test2 = function() {
+var Test2 = function(divName) {
+    this.divName = divName;
     this.canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
     this.i = 0;
     this.j = 0;
@@ -766,13 +769,13 @@ var Test2 = function() {
     }
 }
 
-var Test3 = function() {
-
+var Test3 = function(divName) {
+    this.divName = divName;
     this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
-
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
-
-    this.isFirstIte = true;
+    this.samples = 25;
+    this.avgTime = 0;
+    this.ite = this.samples;
 
     var size = this.canvasTriangles.getSize();
     this.animeTriangle = [randomVector(0, size[0]), randomVector(0, size[0]), randomVector(0, size[0])];
@@ -793,24 +796,22 @@ var Test3 = function() {
     
     this.update = function() {
         var size = this.canvasTriangles.getSize();
-        if(this.isFirstIte) {
-            var samples = 100;
+
+        if(this.ite > 0) {
             this.canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
             this.canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
             this.canvasTriangles.drawLine([0, 0], [size[0]-1, size[1] - 1], f);
             
-            var avgTime = 0;
-            for(var i = 0; i < samples; i++) {
-                var first = randomVector(0, size[0]);
-                var second = randomVector(0, size[0]);
-                var third = randomVector(0, size[0]);
-                var time = new Date().getTime();
-                this.canvasTriangles.drawTriangle(first, second, third, g);
-                avgTime += (new Date().getTime() - time) / 1000;
-            }
-            console.log(avgTime / samples);
+            var first = randomVector(0, size[0]);
+            var second = randomVector(0, size[0]);
+            var third = randomVector(0, size[0]);
+            var time = new Date().getTime();
+            this.canvasTriangles.drawTriangle(first, second, third, g);
+
+            this.avgTime += (new Date().getTime() - time) / 1000;
             this.canvasTriangles.paintImage();
-            this.isFirstIte = false;
+            this.ite--;
+            if(this.ite == 0) console.log(this.avgTime / this.samples);
         } else {
             this.canvasTriangles.clearImage([250, 250, 250, 255]);
             var sin = Math.sin(this.t / (2 * Math.PI * 10))
@@ -825,7 +826,8 @@ var Test3 = function() {
     }
 }
 
-var Test4 = function() {
+var Test4 = function(divName) {
+    this.divName = divName;
     this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
     this.oldTime = new Date().getTime();
 
@@ -833,8 +835,8 @@ var Test4 = function() {
     this.t = 0;
     this.quad = [
                  [-0.25, -0.25],
-                 [ 0.35, -0.25],
-                 [ 0.25,  0.35],
+                 [ 0.45, -0.25],
+                 [ 0.25,  0.45],
                  [-0.25,  0.25],
                 ];
 
@@ -876,21 +878,165 @@ var Test4 = function() {
 }
 
 
+/*
+ * Main
+ */
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3(),
-             new Test4()
-]
+             new Test1("test1"),
+             new Test2("test2"),
+             new Test3("test3"),
+             new Test4("test4")
+];
 
-function draw() {
-    for(var i = 0; i < tests.length; i++) {
-        tests[i].update();
-    }
-    requestAnimationFrame(draw);
+// TODO find a way to use this!!
+var simManagerBuilder = SimManager.builder();
+for(var i = 0; i < tests.length; i++){
+    simManagerBuilder.push(
+                        SimManager.simulatorBuilder()
+                                  .addBaseSimulator(tests[i])
+                                  .checkIfCanDraw(x => $(`#${x.divName}`).is(":visible"))
+                                  .draw(x => x.update())
+                                  .start(x => $(`#${x.divName}`).slideDown())
+                                  .end(x => $(`#${x.divName}`).slideUp())
+                                  .build()
+                    );
 }
 
-requestAnimationFrame(draw);
+var simManager = simManagerBuilder.build();
+
+function run(index) {
+    simManager.runSimulation(index);
+}
+
+module.exports =  {
+    run : run
+}
+},{"../../Choice/main/Choice.js":1,"../../SimManager/main/SimManager.js":6,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}],6:[function(require,module,exports){
+var SimManager = {}
+
+/**
+ * Tried to put private methods and variables but it didn´t work!!
+ */
+
+SimManager.builder = function() {
+    return new function() {
+        this.simulations = [];
+
+        this.push = function(sim) {
+            this.simulations.push(sim);
+            return this;
+        }
+
+        this.build = function() {
+            return new SimManager.SimManager(this.simulations);
+        }
+    };
+}
+
+SimManager.SimManager = function(_simulations){
+    /**
+    * state of opened simulations, is a number \in {0, ... , n}.
+    * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+    **/
+    this.stateIndexApplicationOpen = 0;
+    this.simulations = _simulations;
+
+    this.closeState = function(state) {
+        if(state > 0) {
+            this.simulations[state - 1].end();
+        }
+    }
+
+    this.openState = function(state) {
+        this.simulations[state - 1].start();
+    }
+
+    // click number > 0
+    this.clickOperator = function(clickNumber, state) {
+        var condition = state != clickNumber;
+        if(condition) {
+            this.closeState(state);
+            this.openState(clickNumber);
+        } else {
+            this.closeState(state);
+        }
+        return condition ? clickNumber : 0;
+    }
+
+    this.simulate = function(index) {
+        this.simulations[index].draw();
+        if (this.simulations[index].checkIfCanDraw()) {
+            requestAnimationFrame(() => this.simulate(index));
+        }
+    }
+
+    this.runSimulation = function(index) {
+        this.stateIndexApplicationOpen = this.clickOperator(index + 1, this.stateIndexApplicationOpen);
+        requestAnimationFrame(() => this.simulate(index));
+    }
+
+    this.apply = function(index, lambda) {
+        lambda(this.simulations[index]);
+        return this;
+    }
+
+    this.init = function() {
+        this.simulations.forEach(element => element.init());
+        return this;
+    }
+}
+
+SimManager.simulatorBuilder = function() {
+    return new function() {
+        var throwUndefined = function() {
+            throw "Undefined obligatory function";
+        }
+        this.simulator = {
+            "base": {},
+            "init": throwUndefined,
+            "checkIfCanDraw": throwUndefined,
+            "draw": () => throwUndefined,
+            "start": () => throwUndefined,
+            "end": () => throwUndefined
+        };
+
+        this.addBaseSimulator = function(obj) {
+            this.simulator.base = obj;
+            return this;
+        }
+
+        this.init = function(f) {
+            this.simulator.init = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.checkIfCanDraw = function(f) {
+            this.simulator.checkIfCanDraw = () => f(this.simulator.base);
+            return this;
+        }
+        
+        this.draw = function(f) {
+            this.simulator.draw = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.start = function(f) {
+            this.simulator.start = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.end = function(f) {
+            this.simulator.end = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.build = function() {
+            return this.simulator;
+        }
+    };
+}
 
 
-},{"../../Choice/main/Choice.js":1,"../main/CanvasSpace.js":2,"../main/ImageIO.js":3,"../main/MyCanvas.js":4}]},{},[5]);
+module.exports = SimManager; 
+},{}]},{},[5])(5)
+});

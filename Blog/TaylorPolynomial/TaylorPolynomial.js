@@ -1,7 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.app = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
-var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
+var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
+var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 
 factorial = function(x) {
@@ -12,18 +12,6 @@ factorial = function(x) {
     }
     return acc;
 }
-
-
-var simulations = [
-    new Sim1(),
-    new Sim2()
-];
-
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
 
 /**
  * Copied from https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
@@ -392,7 +380,7 @@ function Sim2() {
         for(var i = 0; i < this.taylorDegree; i++){
             var legendYCoord = 1 - 0.05 * i;
             this.canvasRemainder.drawLine([0.0, legendYCoord], [0.2, legendYCoord], MyCanvas.simpleShader(this.colors[i]));
-            //this.canvasRemainder.drawString([0.9, 1 - 0.01 * i], [1, 1 - 0.01 * i], MyCanvas.simpleShader(this.colors[i]));
+            this.canvasRemainder.drawString([0.2, legendYCoord], "" + i, ctx => { ctx.fillStyle = "black"; ctx.font = "bold 12px Arial"; });
         }
     }
 
@@ -447,62 +435,39 @@ function Sim2() {
 
 
 /**
- *
- * General utilitarian functions
+ * Main
  */
-function closeState(state) {
-    if(state > 0) {
-        simulations[state-1].end();
-    }
+var simulations = [
+    new Sim1(),
+    new Sim2()
+];
+
+var simManagerBuilder = SimManager.builder();
+
+for(var i = 0; i < simulations.length; i++){
+    simManagerBuilder.push(simulations[i]);
 }
 
-function openState(state) {
-    simulations[state-1].start();
-}
-
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
-
-function simulate(simulation) {
-    simulation.draw();
-    if (simulation.checkIfCanDraw()) {
-        requestAnimationFrame(function() {
-            simulate(simulation);
-        });
-    }
-}
+var simManager = simManagerBuilder.build();
 
 function runSimulation(index) {
-	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(function() {
-	    simulate(simulations[index]);
-	});
+    simManager.runSimulation(index);
 }
 
 function apply(index, lambda) {
-    lambda(simulations[index]);
+    simManager.apply(index, lambda);
 }
 
-for (var i = 0; i < simulations.length; i++) {
-    var simulation = simulations[i];
-    simulation.init();
-}
+simManager.init();
 
 module.exports =  {
     run : runSimulation,
     apply : apply
 }
-},{"../../JsLib/MyCanvas/CanvasSpace.js":2,"../../JsLib/MyCanvas/ImageIO.js":3,"../../JsLib/MyCanvas/MyCanvas.js":4}],2:[function(require,module,exports){
+},{"../../JsLib/MyCanvas/main/CanvasSpace.js":2,"../../JsLib/MyCanvas/main/MyCanvas.js":4,"../../JsLib/SimManager/main/SimManager.js":5}],2:[function(require,module,exports){
 var MyCanvas = require('./MyCanvas.js');
+
+//Note that we can switch from heritage to composition, think about that
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 var CanvasSpace = function(canvas, cameraSpace) {
@@ -518,7 +483,7 @@ CanvasSpace.prototype.constructor = CanvasSpace;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
-*/
+ */
 CanvasSpace.prototype.integerTransform = function(x) {
 	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
 	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
@@ -527,7 +492,7 @@ CanvasSpace.prototype.integerTransform = function(x) {
 
 /* x : 2-dim array in integer coordinates
  * returns : 2-dim array in camera space coordinates
-*/
+ */
 CanvasSpace.prototype.inverseTransform = function(x) {
 	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
 	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
@@ -537,7 +502,7 @@ CanvasSpace.prototype.inverseTransform = function(x) {
 /* x1     :   2-dim array
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -548,7 +513,7 @@ CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
  * x2     :   2-dim array
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
@@ -561,15 +526,13 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
  * x3     :   2-dim array
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
-*/
+ */
 CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
 	y3 = this.integerTransform(x3);
 	y4 = this.integerTransform(x4);
-	// I could not call MyCanvas.drawQuad since MyCanvas.drawQuad uses this.drawTriangle
-	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
-	MyCanvas.prototype.drawTriangle.call(this, y3, y4, y1, shader);
+	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
 }
 
 CanvasSpace.prototype.drawCircle = function(x, r, shader) {
@@ -583,6 +546,11 @@ CanvasSpace.prototype.drawImage = function (img, x, shader) {
     MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
 }
 
+CanvasSpace.prototype.drawString = function(x, string, contextShader) {
+    y = this.integerTransform(x);
+    MyCanvas.prototype.drawString.call(this, y, string, contextShader);
+};
+
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
 CanvasSpace.prototype.setCamera = function(camera) {
     if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
@@ -594,11 +562,14 @@ CanvasSpace.prototype.setCamera = function(camera) {
 
 module.exports = CanvasSpace;
 },{"./MyCanvas.js":4}],3:[function(require,module,exports){
-var ImageIO = function() {
-    // empty constructor
+var ImageIO = {
+    // empty object
 };
 
-ImageIO.getDataFromImage = function(img) {
+/**
+ * img : html image
+ */
+ImageIO.getImageCanvas = function(img) {
     var canvasAux = document.createElement('canvas');
     canvasAux.width = img.width;
     canvasAux.height = img.height;
@@ -607,10 +578,18 @@ ImageIO.getDataFromImage = function(img) {
     contextAux.globalCompositeOperation = 'source-over';
     contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
     contextAux.drawImage(img, 0 ,0);
-    return contextAux.getImageData(0, 0, img.width, img.height);
+    return canvasAux;
+}
+
+/**
+ * img : html image
+ */
+ImageIO.getDataFromImage = function(img) {
+    canvas = ImageIO.getImageCanvas(img);
+    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
 };
 
-ImageIO.loadImage= function(src) {
+ImageIO.loadImage = function(src) {
     var img = new Image();
     img.src = src;
     img.isReady = false;
@@ -620,8 +599,13 @@ ImageIO.loadImage= function(src) {
     return img;
 };
 
+ImageIO.generateImageReadyPredicate = function(img) {
+    return function() { return img.isReady;};
+}
+
 module.exports = ImageIO;
 },{}],4:[function(require,module,exports){
+var ImageIO = require('./ImageIO.js');
 /*
  Canvas coordinates
 
@@ -723,6 +707,31 @@ function solve2by2LowerTriMatrix(u, w, z) {
     return [aux, (-u[1] * aux + z[1]) / w];
 }
 
+function triangleBaryCoord(x, triangle) {
+    var y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
+    var u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
+    var v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
+    var det = (u[0] * v[1] - u[1] * v[0]);
+    if(det == 0) return [0, 0, 0];
+    var alpha = [(v[1] * y[0] - v[0] * y[1]) / det, (u[0] * y[1] - u[1] * y[0]) / det];
+    return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
+}
+
+/**
+ * values \in R^{k * 4}
+ * x \in [0,1]^2
+ */
+function bilinearInterpolation(values, x) {
+    var acc = [];
+    for(var k = 0; k < values.length; k++) {
+        var f03 = values[0][k] + (values[3][k] - values[0][k]) * x[1];
+        var f12 = values[1][k] + (values[2][k] - values[1][k]) * x[1];
+        var f = f03 + (f12 - f03) * x[0];
+        acc.push(f);
+    }
+    return acc;
+}
+
 
 var MyCanvas = function (canvas) {
     this.canvas = canvas;
@@ -776,6 +785,11 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
 MyCanvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
+
+MyCanvas.prototype.getPxl = function(x) {
+    var index = this.getImageIndex(x);
+    return [this.imageData[index], this.imageData[index + 1], this.imageData[index + 2], this.imageData[index + 3]];
+}
 
 MyCanvas.prototype.drawPxl = function (x, rgb) {
     var index = this.getImageIndex(x);
@@ -913,7 +927,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
       for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
           var x = [i, j];
           if(isInsidePoly(x, array)) {
-              shader(x, array, this);
+            shader(x, array, this);
           }
       }
     }
@@ -927,7 +941,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  */
 MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, this.isInsideTriangle);
+      this.drawPolygon(array, shader, this.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -937,11 +951,11 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], this.insidePolygon);
+    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
 };
 
 // slower than the method below
-MyCanvas.prototype.insidePolygon = function(x, array) {
+MyCanvas.prototype.isInsidePolygon = function(x, array) {
     var v = [];
     var theta = 0;
     var length = array.length;
@@ -953,7 +967,7 @@ MyCanvas.prototype.insidePolygon = function(x, array) {
     return Math.abs(theta -  2 * Math.PI) < 1E-3;
 }
 
-MyCanvas.prototype.isInsideTriangle = function(x, array) {
+MyCanvas.prototype.isInsideConvex = function(x, array) {
     var length = array.length;
     var v = [];
     var vDotN = [];
@@ -1011,6 +1025,15 @@ MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
     this.canvas.addEventListener(key, lambda, useCapture);
 };
 
+MyCanvas.prototype.drawString = function(x, string, contextShader) {
+    this.useCanvasCtx(
+        function (canvas) {
+            contextShader(canvas.ctx);
+            canvas.ctx.fillText(string, x[1], x[0]);
+        }
+    );
+};
+
 
 MyCanvas.simpleShader = function (color) {
     return function (x, element, canvas) {
@@ -1018,9 +1041,39 @@ MyCanvas.simpleShader = function (color) {
     };
 };
 
+MyCanvas.colorShader = function(colors) {
+    var auxShader = function(x, poly, canvas, alpha) {
+        var interpolateColors = [0, 0, 0, 0];
+        for(var i = 0; i < poly.length; i++) {
+            interpolateColors[0] = interpolateColors[0] + colors[i][0] * alpha[i];
+            interpolateColors[1] = interpolateColors[1] + colors[i][1] * alpha[i];
+            interpolateColors[2] = interpolateColors[2] + colors[i][2] * alpha[i];
+            interpolateColors[3] = interpolateColors[3] + colors[i][3] * alpha[i];
+        }
+        canvas.drawPxl(x, interpolateColors);
+    }
+    return MyCanvas.interpolateTriangleShader(auxShader);
+}
+
+
+MyCanvas.interpolateQuadShader = function(shader) {
+    return function(x, quad, canvas) {
+        var t1 = [quad[0], quad[1], quad[2]];
+        var t2 = [quad[2], quad[3], quad[0]];
+        var alpha = triangleBaryCoord(x, t1);
+        if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
+            shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
+        } else {
+            alpha = triangleBaryCoord(x, t2);
+            shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
+        }
+    }
+}
+
 MyCanvas.interpolateTriangleShader = function(shader) {
     return function(x, triangle, canvas) {
-
+        alpha = triangleBaryCoord(x, triangle);
+        shader(x, triangle, canvas, alpha);
     }
 }
 
@@ -1035,7 +1088,159 @@ MyCanvas.interpolateLineShader = function(shader) {
     };
 };
 
+/**
+ * img: html loaded image.
+ * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
+ */
+MyCanvas.quadTextureShader = function(img, quadTexCoord) {
+    var imageShader = function(x, quad, canvas, alpha) {
+        var imageCanvas = new MyCanvas(ImageIO.getImageCanvas(img));
+        var imgSize = imageCanvas.getSize();
+        var interpolateTexCoord = [0, 0];
+        for(var i = 0; i < quadTexCoord.length; i++) {
+            interpolateTexCoord[0] = interpolateTexCoord[0] + quadTexCoord[i][0] * alpha[i];
+            interpolateTexCoord[1] = interpolateTexCoord[1] + quadTexCoord[i][1] * alpha[i];
+        }
+        var i = [(1 - interpolateTexCoord[1]) * (imgSize[1] - 1), (imgSize[0] - 1) * interpolateTexCoord[0]];
+        // bound coordinates
+        i = max([0, 0], min(diff([imgSize[0], imgSize[1]], [1, 1]), i));
+        // pxl lower corner
+        var j = floor(i);
+        var cornerColors = [imageCanvas.getPxl(j), imageCanvas.getPxl(add(j, [1,0])), imageCanvas.getPxl(add(j, [1, 1])), imageCanvas.getPxl(add(j, [0, 1]))];
+        var bilinearColor = bilinearInterpolation(cornerColors, diff(i, j));
+        canvas.drawPxl(x, bilinearColor);
+    }
+    return MyCanvas.interpolateQuadShader(imageShader);
+}
+
 
 module.exports = MyCanvas;
+},{"./ImageIO.js":3}],5:[function(require,module,exports){
+var SimManager = {}
+
+/**
+ * Tried to put private methods and variables but it didn´t work!!
+ */
+
+SimManager.builder = function() {
+    return new function() {
+        this.simulations = [];
+
+        this.push = function(sim) {
+            this.simulations.push(sim);
+            return this;
+        }
+
+        this.build = function() {
+            return new SimManager.SimManager(this.simulations);
+        }
+    };
+}
+
+SimManager.SimManager = function(_simulations){
+    /**
+    * state of opened simulations, is a number \in {0, ... , n}.
+    * Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
+    **/
+    this.stateIndexApplicationOpen = 0;
+    this.simulations = _simulations;
+
+    this.closeState = function(state) {
+        if(state > 0) {
+            this.simulations[state - 1].end();
+        }
+    }
+
+    this.openState = function(state) {
+        this.simulations[state - 1].start();
+    }
+
+    // click number > 0
+    this.clickOperator = function(clickNumber, state) {
+        var condition = state != clickNumber;
+        if(condition) {
+            this.closeState(state);
+            this.openState(clickNumber);
+        } else {
+            this.closeState(state);
+        }
+        return condition ? clickNumber : 0;
+    }
+
+    this.simulate = function(index) {
+        this.simulations[index].draw();
+        if (this.simulations[index].checkIfCanDraw()) {
+            requestAnimationFrame(() => this.simulate(index));
+        }
+    }
+
+    this.runSimulation = function(index) {
+        this.stateIndexApplicationOpen = this.clickOperator(index + 1, this.stateIndexApplicationOpen);
+        requestAnimationFrame(() => this.simulate(index));
+    }
+
+    this.apply = function(index, lambda) {
+        lambda(this.simulations[index]);
+        return this;
+    }
+
+    this.init = function() {
+        this.simulations.forEach(element => element.init());
+        return this;
+    }
+}
+
+SimManager.simulatorBuilder = function() {
+    return new function() {
+        var throwUndefined = function() {
+            throw "Undefined obligatory function";
+        }
+        this.simulator = {
+            "base": {},
+            "init": throwUndefined,
+            "checkIfCanDraw": throwUndefined,
+            "draw": () => throwUndefined,
+            "start": () => throwUndefined,
+            "end": () => throwUndefined
+        };
+
+        this.addBaseSimulator = function(obj) {
+            this.simulator.base = obj;
+            return this;
+        }
+
+        this.init = function(f) {
+            this.simulator.init = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.checkIfCanDraw = function(f) {
+            this.simulator.checkIfCanDraw = () => f(this.simulator.base);
+            return this;
+        }
+        
+        this.draw = function(f) {
+            this.simulator.draw = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.start = function(f) {
+            this.simulator.start = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.end = function(f) {
+            this.simulator.end = () => f(this.simulator.base);
+            return this;
+        }
+
+        this.build = function() {
+            return this.simulator;
+        }
+    };
+}
+
+
+module.exports = SimManager; 
 },{}]},{},[1])(1)
 });

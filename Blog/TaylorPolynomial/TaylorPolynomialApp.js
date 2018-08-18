@@ -1,6 +1,6 @@
-var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
-var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
+var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
+var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 
 factorial = function(x) {
@@ -11,18 +11,6 @@ factorial = function(x) {
     }
     return acc;
 }
-
-
-var simulations = [
-    new Sim1(),
-    new Sim2()
-];
-
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
 
 /**
  * Copied from https://stackoverflow.com/questions/17242144/javascript-convert-hsb-hsv-color-to-rgb-accurately
@@ -391,7 +379,7 @@ function Sim2() {
         for(var i = 0; i < this.taylorDegree; i++){
             var legendYCoord = 1 - 0.05 * i;
             this.canvasRemainder.drawLine([0.0, legendYCoord], [0.2, legendYCoord], MyCanvas.simpleShader(this.colors[i]));
-            //this.canvasRemainder.drawString([0.9, 1 - 0.01 * i], [1, 1 - 0.01 * i], MyCanvas.simpleShader(this.colors[i]));
+            this.canvasRemainder.drawString([0.2, legendYCoord], "" + i, ctx => { ctx.fillStyle = "black"; ctx.font = "bold 12px Arial"; });
         }
     }
 
@@ -446,55 +434,30 @@ function Sim2() {
 
 
 /**
- *
- * General utilitarian functions
+ * Main
  */
-function closeState(state) {
-    if(state > 0) {
-        simulations[state-1].end();
-    }
+var simulations = [
+    new Sim1(),
+    new Sim2()
+];
+
+var simManagerBuilder = SimManager.builder();
+
+for(var i = 0; i < simulations.length; i++){
+    simManagerBuilder.push(simulations[i]);
 }
 
-function openState(state) {
-    simulations[state-1].start();
-}
-
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
-
-function simulate(simulation) {
-    simulation.draw();
-    if (simulation.checkIfCanDraw()) {
-        requestAnimationFrame(function() {
-            simulate(simulation);
-        });
-    }
-}
+var simManager = simManagerBuilder.build();
 
 function runSimulation(index) {
-	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(function() {
-	    simulate(simulations[index]);
-	});
+    simManager.runSimulation(index);
 }
 
 function apply(index, lambda) {
-    lambda(simulations[index]);
+    simManager.apply(index, lambda);
 }
 
-for (var i = 0; i < simulations.length; i++) {
-    var simulation = simulations[i];
-    simulation.init();
-}
+simManager.init();
 
 module.exports =  {
     run : runSimulation,

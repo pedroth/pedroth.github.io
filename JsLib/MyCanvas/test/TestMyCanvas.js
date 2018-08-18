@@ -2,7 +2,7 @@ var MyCanvas = require('../main/MyCanvas.js');
 var CanvasSpace = require('../main/CanvasSpace.js');
 var ImageIO = require('../main/ImageIO.js');
 var Choice = require('../../Choice/main/Choice.js');
-
+var SimManager = require('../../SimManager/main/SimManager.js');
 
 function randomVector(a, b) {
     return [a + (b - a) * Math.random(), a + (b - a) * Math.random()];
@@ -26,9 +26,9 @@ f = MyCanvas.simpleShader([0, 255, 0, 255]);
 g = MyCanvas.simpleShader([0, 0, 255, 255]);
 r = MyCanvas.simpleShader([255, 0, 0, 255]);
 
-var Test1 = function() {
+var Test1 = function(divName) {
+    this.divName = divName;
     this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
-
     this.isFirstIte = true;
 
     this.a = [-1, 1];
@@ -78,7 +78,8 @@ var Test1 = function() {
     }
 }
 
-var Test2 = function() {
+var Test2 = function(divName) {
+    this.divName = divName;
     this.canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
     this.i = 0;
     this.j = 0;
@@ -104,13 +105,13 @@ var Test2 = function() {
     }
 }
 
-var Test3 = function() {
-
+var Test3 = function(divName) {
+    this.divName = divName;
     this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
-
     this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
-
-    this.isFirstIte = true;
+    this.samples = 25;
+    this.avgTime = 0;
+    this.ite = this.samples;
 
     var size = this.canvasTriangles.getSize();
     this.animeTriangle = [randomVector(0, size[0]), randomVector(0, size[0]), randomVector(0, size[0])];
@@ -131,24 +132,22 @@ var Test3 = function() {
     
     this.update = function() {
         var size = this.canvasTriangles.getSize();
-        if(this.isFirstIte) {
-            var samples = 100;
+
+        if(this.ite > 0) {
             this.canvasTriangles.drawLine([0, Math.floor(size[0] / 10)], [size[1], Math.floor(size[0] / 10)], r);
             this.canvasTriangles.drawLine([Math.floor(size[1] / 10), 0], [Math.floor(size[1] / 10), size[0]], g);
             this.canvasTriangles.drawLine([0, 0], [size[0]-1, size[1] - 1], f);
             
-            var avgTime = 0;
-            for(var i = 0; i < samples; i++) {
-                var first = randomVector(0, size[0]);
-                var second = randomVector(0, size[0]);
-                var third = randomVector(0, size[0]);
-                var time = new Date().getTime();
-                this.canvasTriangles.drawTriangle(first, second, third, g);
-                avgTime += (new Date().getTime() - time) / 1000;
-            }
-            console.log(avgTime / samples);
+            var first = randomVector(0, size[0]);
+            var second = randomVector(0, size[0]);
+            var third = randomVector(0, size[0]);
+            var time = new Date().getTime();
+            this.canvasTriangles.drawTriangle(first, second, third, g);
+
+            this.avgTime += (new Date().getTime() - time) / 1000;
             this.canvasTriangles.paintImage();
-            this.isFirstIte = false;
+            this.ite--;
+            if(this.ite == 0) console.log(this.avgTime / this.samples);
         } else {
             this.canvasTriangles.clearImage([250, 250, 250, 255]);
             var sin = Math.sin(this.t / (2 * Math.PI * 10))
@@ -163,7 +162,8 @@ var Test3 = function() {
     }
 }
 
-var Test4 = function() {
+var Test4 = function(divName) {
+    this.divName = divName;
     this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
     this.oldTime = new Date().getTime();
 
@@ -171,8 +171,8 @@ var Test4 = function() {
     this.t = 0;
     this.quad = [
                  [-0.25, -0.25],
-                 [ 0.35, -0.25],
-                 [ 0.25,  0.35],
+                 [ 0.45, -0.25],
+                 [ 0.25,  0.45],
                  [-0.25,  0.25],
                 ];
 
@@ -214,19 +214,35 @@ var Test4 = function() {
 }
 
 
+/*
+ * Main
+ */
 var tests = [
-             new Test1(),
-             new Test2(),
-             new Test3(),
-             new Test4()
-]
+             new Test1("test1"),
+             new Test2("test2"),
+             new Test3("test3"),
+             new Test4("test4")
+];
 
-function draw() {
-    for(var i = 0; i < tests.length; i++) {
-        tests[i].update();
-    }
-    requestAnimationFrame(draw);
+var simManagerBuilder = SimManager.builder();
+for(var i = 0; i < tests.length; i++){
+    simManagerBuilder.push(
+                        SimManager.simulatorBuilder()
+                                  .addBaseSimulator(tests[i])
+                                  .checkIfCanDraw(x => $(`#${x.divName}`).is(":visible"))
+                                  .draw(x => x.update())
+                                  .start(x => $(`#${x.divName}`).slideDown())
+                                  .end(x => $(`#${x.divName}`).slideUp())
+                                  .build()
+                    );
 }
 
-requestAnimationFrame(draw);
+var simManager = simManagerBuilder.build();
 
+function run(index) {
+    simManager.runSimulation(index);
+}
+
+module.exports =  {
+    run : run
+}

@@ -1,22 +1,10 @@
-var MyCanvas = require('../../JsLib/MyCanvas/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/CanvasSpace.js');
-var ImageIO = require('../../JsLib/MyCanvas/ImageIO.js');
-
-var simulations = [
-    new Sim1(),
-    new Sim2(),
-    new Sim3(),
-    new Sim4()
-];
-
-/**
-* state of opened simulations, is a number \in {0, ... , n}.
-* Where state 0, represents closed simulations, and state != 0 represents all simulations close unless simulations[state-1].
-**/
-var stateIndexApplicationOpen = 0;
+var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
+var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var ImageIO = require('../../JsLib/MyCanvas/main/ImageIO.js');
+var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 function getDashedLineShader(color) {
-    return MyCanvas.interpolativeShader(
+    return MyCanvas.interpolateLineShader(
         function(x, line, canvas, t) {
             var p = 0.1;
             var isDash = (t % p) < (p / 2) ? true : false;
@@ -731,55 +719,33 @@ function Sim4() {
 
 
 /**
- *
- * General utilitarian functions
+ * Simulation Management
  */
-function closeState(state) {
-    if(state > 0) {
-        simulations[state-1].end();
-    }
-}
 
-function openState(state) {
-    simulations[state-1].start();
-}
+ var simulations = [
+     new Sim1(),
+     new Sim2(),
+     new Sim3(),
+     new Sim4()
+ ];
 
-// click number > 0
-function clickOperator(clickNumber, state) {
-    var condition = state != clickNumber;
-    if(condition) {
-        closeState(state);
-        openState(clickNumber);
-    } else {
-        closeState(state);
-    }
-    return condition ? clickNumber : 0;
-}
+ var simManagerBuilder = SimManager.builder();
 
-function simulate(simulation) {
-    simulation.draw();
-    if (simulation.checkIfCanDraw()) {
-        requestAnimationFrame(function() {
-            simulate(simulation);
-        });
-    }
-}
+ for(var i = 0; i < simulations.length; i++){
+     simManagerBuilder.push(simulations[i]);
+ }
+
+ var simManager = simManagerBuilder.build();
 
 function runSimulation(index) {
-	stateIndexApplicationOpen = clickOperator(index + 1, stateIndexApplicationOpen)
-	requestAnimationFrame(function() {
-	    simulate(simulations[index]);
-	});
+	simManager.runSimulation(index);
 }
 
 function apply(index, lambda) {
-    lambda(simulations[index]);
+    simManager.apply(index, lambda);
 }
 
-for (var i = 0; i < simulations.length; i++) {
-    var simulation = simulations[i];
-    simulation.init();
-}
+simManager.init();
 
 module.exports =  {
     run : runSimulation,

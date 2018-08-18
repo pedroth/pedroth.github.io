@@ -179,7 +179,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$ \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
 
-                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound on the error:
+                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound ($|\hat{R}_N(t)|$) on the error:
 
                 $$|\hat{R}_N(t)| = \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
 
@@ -323,7 +323,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 1 & 0
                 \end{bmatrix} , \text{if } k \mod{4} = 3
                 \end{matrix}\right.$$
-                where $n \mod k$ is the <a href="http://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a>.
+                Where $n \mod k$ is the <a href="http://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a>.
 
                 Thus $$\exp\left (\begin{bmatrix}
                 0 & -1\\

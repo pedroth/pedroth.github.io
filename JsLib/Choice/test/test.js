@@ -11,46 +11,92 @@ var Choice = function(opt1, opt2, predicate) {
 
 module.exports = Choice;
 },{}],2:[function(require,module,exports){
+var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var Choice = require("../main/Choice.js");
 
-var Assertion = function(test) {
-    this.testFunction = test;
-    this.index = 0;
+testChoice = function() {
+    var assertion = UnitTest.Assert(this);
+    var samples = 100;
+    var i = 0;
 
-    this.assertTrue = function(boolean) {
-        if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
-        console.log("Assertion successful : " + [this.testFunction, this.index]);
-        this.index++;
-    }
-};
+    var opt1 = "choice_1";
+    var opt2 = "choice_2";
 
-
-var Test1 = function() {
-    this.test = function() {
-        var assertion = new Assertion(this.test);
-        var samples = 100;
-        var i = 0;
-
-        var opt1 = "choice_1";
-        var opt2 = "choice_2";
-
-        var choice = new Choice(opt1, opt2, function() { return i % 2 == 0; });
-        for(; i < samples; i++) {
-            if(i % 2 == 0) {
-                assertion.assertTrue(opt1 === choice.get());
-            } else {
-                assertion.assertTrue(opt2 === choice.get());
-            }
+    var choice = new Choice(opt1, opt2, function() { return i % 2 == 0; });
+    for(; i < samples; i++) {
+        if(i % 2 == 0) {
+            assertion.assertTrue(opt1 === choice.get());
+        } else {
+            assertion.assertTrue(opt2 === choice.get());
         }
     }
 }
 
 
-var tests = [
-    new Test1()
-]
+UnitTest.builder()
+        .addLogger(UnitTest.bodyLogger)
+        .push(testChoice)
+        .test()
+},{"../../UnitTest/main/UnitTest.js":3,"../main/Choice.js":1}],3:[function(require,module,exports){
+var UnitTest = {};
 
-for(var i = 0; i < tests.length; i++) {
-    tests[i].test();
+UnitTest.Assert = function(test) {
+    return new function() {
+        this.testFunction = test;
+        this.index = 0;
+    
+        this.assertTrue = function(boolean) {
+            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
+            this.index++;
+        }
+    }
+};
+
+UnitTest.builder = function() {
+    return new UnitTest.UnitTestBuilder();
 }
-},{"../main/Choice.js":1}]},{},[2]);
+
+UnitTest.bodyLogger = x => document.write(`<p>${x}</p>`)
+
+UnitTest.UnitTestBuilder = function(){
+    this.log = x => console.log(x);
+    this.tests = [];
+    this.asserts = [];
+
+    this.addLogger = function(logger) {
+        this.log = logger;
+        return this;
+    }
+
+    this.push = function(test){
+        this.tests.push(test);
+        return this;
+    }
+
+    this.test = function() {
+        this.tests.forEach(x => {
+            try {
+                x();
+                this.asserts.push([true]);
+            } catch(err) {
+                this.asserts.push([false, err]);
+            }
+        });
+        var passedTests = 0;
+        var failedTests = 0;
+        this.asserts.forEach(x => {
+            passedTests += x[0] ? 1 : 0;
+            failedTests += x[0] ? 0 : 1;
+        });
+
+        this.log(`Passed Test: ${passedTests} / ${this.tests.length}`)
+        this.log(`Failed Test: ${failedTests} / ${this.tests.length}`)
+        for(var i = 0; i < this.asserts.length; i++) {
+            this.log(`Test ${i}, ${this.asserts[i][0] ? "Passed" : "Failed"}`);
+            if(!this.asserts[i][0]) this.log(this.asserts[i][1]);
+        }
+    }
+}
+
+module.exports = UnitTest;
+},{}]},{},[2]);

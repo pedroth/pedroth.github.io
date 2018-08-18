@@ -52,26 +52,6 @@ ArrayUtils.swap = function(array, i, j) {
     return array;
 }
 
-ArrayUtils.findJsArrayDim = function(array) {
-    if(array instanceof Array) {
-        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
-    } else {
-        return [];
-    }
-}
-
-ArrayUtils.unpackJsArray = function(array) {
-    if(array instanceof Array) {
-        var joinIdentity = []
-        for(var i = 0; i < array.length; i++) {
-            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
-        }
-        return joinIdentity;
-    } else {
-        return [array];
-    }
-}
-
 module.exports = ArrayUtils;
 },{}],2:[function(require,module,exports){
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
@@ -310,13 +290,10 @@ DenseNDArray.prototype.checkIndexDimension = function(d) {
     }
 }
 
-DenseNDArray.prototype.reshape = function(newShape) {
-    return DenseNDArray.of(this, newShape);
-}
-
 /**
  * Static functions
  */
+
 /**
  * Create DenseArray from old DenseArray or JsArray, it can also reshape
  */
@@ -336,10 +313,30 @@ function checkIfArrayIsLinear(array) {
     return array.length > 0 && array[0].length === undefined;
 }
 
+function findJsArrayDim(array) {
+    var dim = [];
+    if(array instanceof Array) {
+        return ArrayUtils.join(findJsArrayDim(array[0]), [array.length]); 
+    } else {
+        return [];
+    }
+}
+
+function unpackJsArray(array) {
+    if(array instanceof Array) {
+        var joinIdentity = []
+        for(var i = 0; i < array.length; i++) {
+            joinIdentity = ArrayUtils.join(joinIdentity, unpackJsArray(array[i]));
+        }
+        return joinIdentity;
+    } else {
+        return [array];
+    }
+}
 
 function buildDenseFromJsArray(array) {
-    var dim = ArrayUtils.findJsArrayDim(array);
-    var ans = ArrayUtils.unpackJsArray(array);
+    var dim = findJsArrayDim(array);
+    var ans = unpackJsArray(array);
     return DenseNDArray.of(ans, dim);
 }
 
@@ -465,13 +462,6 @@ var testReduce = function() {
     assert.assertTrue(acc == sum);
 }
 
-var testReshape = function() {
-    var assert = UnitTest.Assert(this);
-    var dense = DenseNDArray.of([[1,2,3],[4,5,6]]);
-    var denseReshape = DenseNDArray.of([[1, 2], [3, 4], [5, 6]]);
-    assert.assertTrue(dense.reshape([2, 3]).equals(denseReshape));
-}
-
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testBasic)
@@ -479,7 +469,6 @@ UnitTest.builder()
         .push(testDenseCreation)
         .push(testMap)
         .push(testReduce)
-        .push(testReshape)
         .test()
 
 },{"../../UnitTest/main/UnitTest.js":4,"../main/DenseNDArray.js":2}],4:[function(require,module,exports){
@@ -514,21 +503,7 @@ UnitTest.UnitTestBuilder = function(){
     }
 
     this.push = function(test){
-        var types = [
-                     ["Function", Function],
-                     ["Object", Object]
-                    ];
-        var map  = {
-            "Function": () => this.tests.push(test),
-            "Object": () => {
-                for(var f in test) {
-                    if(f instanceof Function) this.tests.push(f);
-                }
-            }
-        }
-        types.forEach(x => {
-            if(test instanceof x[1]) map[x[0]]();
-        });
+        this.tests.push(test);
         return this;
     }
 
