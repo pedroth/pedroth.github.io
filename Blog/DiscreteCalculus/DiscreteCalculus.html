@@ -60,14 +60,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	    },
 	    "HTML-CSS": { availableFonts: ["TeX"] }
 	  });
-
     </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <!-- MathJax -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
             type='text/javascript'></script>
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 </head>
@@ -100,13 +105,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="container">
 
 
-<h1>DiscreteCalculusP1</h1>
+<h1>DiscreteCalculus</h1>
 <header>
     <div class="container">
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <div class="post-heading">
-                    <h1>Discrete Calculus I</h1>
+                    <h1>Discrete Calculus</h1>
                 </div>
             </div>
         </div>
@@ -133,6 +138,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$f(n+1) - f(n) = 2$$
                 $$f(n+1)= f(n) + 2$$
 
+                We know that $f(4) = 9$, hence $f(5) = 9 + 2$, but what about $f(1000)$. Assuming the same pattern on all the sequence we can find $f(n)$ for every $n > 0$.
+
                 Starting from $n = 0$:
 
                 $$f(0) = 1$$
@@ -142,7 +149,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\dots$$
                 $$f(n) = f(0) + 2n$$
 
-                By applying this formula we find that the next element in the sequence is $f(5) = 11$. This technique can be applied to any sequence. So let's do that! But first let us make one useful definition.
+                By applying this formula we find that the next element in the sequence is $f(1000) = 1 + 2 \times 1000 = 2001$. This technique can be applied to any sequence. So let's do that! But first let us make one useful definition.
 
                 <h4>Definition 1</h4>
 
