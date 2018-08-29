@@ -15,7 +15,7 @@
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
 
-                In this post we want to study sequences. Sequences are functions of the form $f: n \in \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same rules of differential calculus to sequences.
+                In this post, we want to study sequences. Sequences are functions of the form $f: n \in \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same rules of differential calculus to sequences.
                 Here we will try to build a discrete version of the continuous calculus using the same principles. We will follow the same ideas of previous posts, namely the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">intuition of calculus</a> and the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial</a> ( in this discrete setting it is actually called Newton polynomial ).
 
                 <h2> Discrete Derivative </h2>
@@ -24,8 +24,8 @@
 
                 $$1,3,5,7,9,\dots$$
 
-                Can you predict the next in the sequence ? </br>
-                Well if we have a formula that describes this sequence it should be easy, so lets find it out. It is easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property continues, we can construct the function using this difference.
+                Can you predict the next in the sequence? </br>
+                Well if we have a formula that describes this sequence it should be easy, so let's find it out. It is easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property continues, we can construct the function using this difference.
 
                 $$f(n+1) - f(n) = 2$$
                 $$f(n+1)= f(n) + 2$$
@@ -41,7 +41,7 @@
                 $$\dots$$
                 $$f(n) = f(0) + 2n$$
 
-                By applying this formula we find that the next element in the sequence is $f(1000) = 1 + 2 \times 1000 = 2001$. This technique can be applied to any sequence. So let's do that! But first let us make one useful definition.
+                By applying this formula we find that the next element in the sequence is $f(1000) = 1 + 2 \times 1000 = 2001$. This technique can be applied to any sequence. So let's do that! But first, let us make one useful definition.
 
                 <h4>Definition 1</h4>
 
@@ -65,13 +65,15 @@
 
                 $$\sum _{i= 0}^{n-1} \Delta f(i) = f(n) - f(0)$$
 
-                In the discrete theorem we replaced the integral with the summation. Now we can see that the first sequence has the property that for every $n > 0$, $\Delta f(n) = 2$.
+                In the discrete theorem, we replaced the integral with the summation. Now we can see that the first sequence has the property that for every $n > 0$, $\Delta f(n) = 2$.
                 Actually if we assume that a particular sequence has such property, $\forall n > 0, \Delta f(n) = \Delta f(0)$ we would get the linear approximation of the sequence around $n=0$.
                 We just need to apply the fundamental theorem of discrete calculus using this assumption, and you would get such approximation, like in the continuous calculus:
 
                 $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \simeq f(0) +\sum_{i= 0}^{n-1} \Delta f(0) = f(0) + \Delta f(0) n$$
 
                 This approximation would be great for the first few numbers but then it would collapse under its error as $n \rightarrow \infty$.<br><br>
+
+                <h2> Discrete Taylor/Newton series </h2>
 
                 This reminds me of the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor
                 polynomial article</a>, therefore we could apply the same techniques and see where we go. Starting from (1) we have:
@@ -182,12 +184,38 @@
                 $$\Delta \left( \frac{n^2}{2} - \frac{n}{2} \right ) = \frac{\Delta(n^2)}{2} - \frac{\Delta(n)}{2}$$
                 $$ \frac{2n + 1}{2} - \frac{1}{2} = n$$
                 Thus:
-                $$\sum_{i_1=0}^{n-1}i_1 = \frac{n^2 - n}{2} =\frac{n(n-1)}{2}$$
+                $$\Psi(n, 2) = \sum_{i_1=0}^{n-1}i_1 = \frac{n^2 - n}{2} =\frac{n(n-1)}{2}$$
 
-                Is too hard to find $\Psi$ by trial and error, we need another approach.
+                We could continue to guess $\Psi(n, 3)$, and then check if $\Delta \Psi(n, 3) = \frac{n(n-1)}{2}$, but I find this way to difficult to proceed.
+                Instead I will try and check some new pattern. We have until now:
+                $$\Psi(n,0) = 1$$
+                $$\Psi(n,1) = n = n[1]$$
+                $$\Psi(n,2) = n \frac{n}{2} = \frac{n}{2}[n][1]$$
 
-                <h2> Computing $\Psi$ </h2>
+                It seems to me that $\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1)$. Using this hypothesis we find:
 
+                $$\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1) = \frac {n -(k-1)}{k} \left [ \frac {n -(k-2)}{k-1} \Psi(n, k-2)\right]$$
+                $$\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1) = \dots = \frac {n -(k-1)}{k} \dots \frac {n -(k - k)}{k - (k + 1)} = \frac{(n - (k - 1))(n - (k - 2)) \dots n}{k (k-1) \dots 1}$$
+                $$\Psi(n, k) = \frac{n(n - 1)(n - 2) \dots (n - (k - 1))}{k!}$$
+
+                Let us check if this hypothesis is correct:
+
+                $$\Psi(n,k) = \Psi(n-1,k) + \Psi(n-1,k-1)$$
+                Substituting with our conjecture:
+                $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k)}{k!} + \frac{(n-1)(n-2)...(n-k+1)}{(k-1)!}$$
+                $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k)}{k!} + \frac{k(n-1)(n-2)...(n-k+1)}{k(k-1)!}$$
+                $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k) + k(n-1)(n-2)...(n-k+1)}{k!}$$
+                $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]((n-k)+ k)}{k!}$$
+                $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]n}{k!} = \Psi(n,k)$$
+
+                With this argument, we conclude that our conjecture is indeed the function $\Psi$. Its important to note what we did here. We assumed that the ratio of neighbour values of $\Psi$ had a specific formula, $\frac{\Psi(n,k)}{\Psi(n, k-1)} = \frac{n - k + 1}{k}$, then we derived $\Psi$ using that assumption.
+                If you watch closely, you will notice the similarity with the discrete derivative, but instead of taking the difference of neighbour values we divide. This technique made me think that we can define other calculus and find some nice theorems. Maybe in a future post we can explore a multiplicative calculus (discrete and continuous).<br><br>
+
+                Just to be completely sure (that we didn't make any mistake in the derivation of $\Psi$), I will make a little program that compute $\Psi$ using their three definitions, $\Psi_{\text{sum}}$, $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$.
+
+                <br>$n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0" id="kPsi" value="3">  <button class="btn btn-primary" onclick='app.showTable()'>Compute</button>
+                <div id="psiComputeTable" style="display:none">
+                </div>
             </div>
         </div>
     </div>
