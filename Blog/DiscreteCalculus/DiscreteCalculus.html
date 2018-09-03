@@ -123,8 +123,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
 
-                In this post, we want to study sequences. Sequences are functions of the form $f: n \in \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same rules of differential calculus to sequences.
-                Here we will try to build a discrete version of the continuous calculus using the same principles. We will follow the same ideas of previous posts, namely the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html" target="_blank">intuition of calculus</a> and the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial</a> ( in this discrete setting it is actually called Newton polynomial ).
+                In this post, we want to study sequences. Sequences are functions of the form $f: n \in
+                \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same
+                rules of differential calculus to sequences.
+                Here we will try to build a discrete version of the continuous calculus using the same principles. We
+                will follow the same ideas of previous posts, namely the <a
+                    href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
+                    target="_blank">intuition of calculus</a> and the <a
+                    href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html"
+                    target="_blank">Taylor polynomial</a> ( in this discrete setting it is actually called Newton
+                polynomial ).
 
                 <h2> Discrete Derivative </h2>
 
@@ -133,12 +141,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$1,3,5,7,9,\dots$$
 
                 Can you predict the next in the sequence? </br>
-                Well if we have a formula that describes this sequence it should be easy, so let's find it out. It is easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property continues, we can construct the function using this difference.
+                Well if we have a formula that describes this sequence it should be easy, so let's find it out. It is
+                easy to see that $f(n+1) - f(n) = 2$ for all numbers we see in the sequence. Assuming this property
+                continues, we can construct the function using this difference.
 
                 $$f(n+1) - f(n) = 2$$
                 $$f(n+1)= f(n) + 2$$
 
-                We know that $f(4) = 9$, hence $f(5) = 9 + 2$, but what about $f(1000)$. Assuming the same pattern on all the sequence we can find $f(n)$ for every $n > 0$.
+                We know that $f(4) = 9$, hence $f(5) = 9 + 2$, but what about $f(1000)$. Assuming the same pattern on
+                all the sequence we can find $f(n)$ for every $n > 0$.
 
                 Starting from $n = 0$:
 
@@ -149,7 +160,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\dots$$
                 $$f(n) = f(0) + 2n$$
 
-                By applying this formula we find that the next element in the sequence is $f(1000) = 1 + 2 \times 1000 = 2001$. This technique can be applied to any sequence. So let's do that! But first, let us make one useful definition.
+                By applying this formula we find that the next element in the sequence is $f(1000) = 1 + 2 \times 1000 =
+                2001$. This technique can be applied to any sequence. So let's do that! But first, let us make one
+                useful definition.
 
                 <h4>Definition 1</h4>
 
@@ -157,15 +170,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$\Delta f (n) = f(n+1) - f(n)$$
 
-                The discrete derivative defined here is just the forward difference. We could have defined any other difference as a derivative, like the backward difference or the weighted difference.
-                In the continuous case all those generalizations of differences would converge to the derivative under the limit procedure, but in the discrete case we don't have such procedure, hence I will stick with this definition.<br><br>
+                The discrete derivative defined here is just the forward difference. We could have defined any other
+                difference as a derivative, like the backward difference or the weighted difference.
+                In the continuous case all those generalizations of differences would converge to the derivative under
+                the limit procedure, but in the discrete case we don't have such procedure, hence I will stick with this
+                definition.<br><br>
 
                 So how do we construct a sequence using just it's differences? Look at the following steps:
 
                 $$f(0) = f(0)$$
                 $$f(1) = f(0) + \Delta f(0)$$
                 $$f(2) = f(1) + \Delta f(1) = [f(0) + \Delta f(0)] + \Delta f(1)$$
-                $$f(3) = f(2) + \Delta f(2) = [f(1) + \Delta f(1)] + \Delta f(2) = [f(0) + \Delta f(0)] + \Delta f(1) + \Delta f(2)$$
+                $$f(3) = f(2) + \Delta f(2) = [f(1) + \Delta f(1)] + \Delta f(2) = [f(0) + \Delta f(0)] + \Delta f(1) +
+                \Delta f(2)$$
                 $$\dots$$
                 $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \;\;\;\; (1)$$
 
@@ -173,18 +190,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 $$\sum _{i= 0}^{n-1} \Delta f(i) = f(n) - f(0)$$
 
-                In the discrete theorem, we replaced the integral with the summation. Now we can see that the first sequence has the property that for every $n > 0$, $\Delta f(n) = 2$.
-                Actually if we assume that a particular sequence has such property, $\forall n > 0, \Delta f(n) = \Delta f(0)$ we would get the linear approximation of the sequence around $n=0$.
-                We just need to apply the fundamental theorem of discrete calculus using this assumption, and you would get such approximation, like in the continuous calculus:
+                In the discrete theorem, we replaced the integral with the summation. Now we can see that the first
+                sequence has the property that for every $n > 0$, $\Delta f(n) = 2$.
+                Actually if we assume that a particular sequence has such property, $\forall n > 0, \Delta f(n) = \Delta
+                f(0)$ we would get the linear approximation of the sequence around $n=0$.
+                We just need to apply the fundamental theorem of discrete calculus using this assumption, and you would
+                get such approximation, like in the continuous calculus:
 
-                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \simeq f(0) +\sum_{i= 0}^{n-1} \Delta f(0) = f(0) + \Delta f(0) n$$
+                $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \simeq f(0) +\sum_{i= 0}^{n-1} \Delta f(0) = f(0) + \Delta
+                f(0) n$$
 
-                This approximation would be great for the first few numbers but then it would collapse under its error as $n \rightarrow \infty$.<br><br>
+                This approximation would be great for the first few numbers but then it would collapse under it's error
+                as $n \rightarrow \infty$.<br><br>
 
                 <h2> Discrete Taylor/Newton series </h2>
 
-                This reminds me of the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor
-                polynomial article</a>, therefore we could apply the same techniques and see where we go. Starting from (1) we have:
+                This reminds me of the <a
+                    href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html"
+                    target="_blank">Taylor
+                polynomial article</a>, therefore we could apply the same techniques and see where we go. Starting from
+                (1) we have:
 
                 $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i)$$
 
@@ -195,9 +220,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Substituting on (1):
 
                 $$f(n) = f(0) +\sum _{i= 0}^{n-1} \left [ \Delta f(0) + \sum _{j= 0}^{i-1} \Delta^{(2)}f(j) \right ] =
-                f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(j)\;\;\;\; (2)$$
+                f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(j)\;\;\;\;
+                (2)$$
 
-                Here we see one new concept, the concept of the second derivative $\Delta(\Delta f(n)) = \Delta^{(2)}f(n)$. Which leads me to the second definition:
+                Here we see one new concept, the concept of the second derivative $\Delta(\Delta f(n)) =
+                \Delta^{(2)}f(n)$. Which leads me to the second definition:
 
                 <h4>Definition 2</h4>
                 Discrete kth derivative:
@@ -206,14 +233,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 This definition follows from applying the derivative operator multiple times, e.g:
 
-                $$\Delta^{(2)}f(n) = \Delta(\Delta f(n)) = \Delta f(n+1) - \Delta f(n) = [f(n+2) - f(n+1)] - [f(n + 1) + f(n)] $$
+                $$\Delta^{(2)}f(n) = \Delta(\Delta f(n)) = \Delta f(n+1) - \Delta f(n) = [f(n+2) - f(n+1)] - [f(n + 1) +
+                f(n)] $$
 
                 We can expand (2) little further by doing the same thing for $\Delta^{(2)}f(j)$ and so on:
 
-                $$f(n) = f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(0) + \sum _{i=
+                $$f(n) = f(0) + \sum _{i= 0}^{n-1} \Delta f(0) + \sum _{i= 0}^{n-1} \sum _{j= 0}^{i-1} \Delta^{(2)}f(0)
+                + \sum _{i=
                 0}^{n-1} \sum _{j= 0}^{i-1}\sum_{k=0}^{j-1}\Delta^{(3)}f(0) + \dots\;\;\;\; (3)$$
 
-                Now we have an explicit formula for $f$ in terms of the differentials, but this is a horrible formula. Can we
+                Now we have an explicit formula for $f$ in terms of the differentials, but this is a horrible formula.
+                Can we
                 simplify it?
 
                 In order to simplify we need to compute:
@@ -225,49 +255,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\Psi(n,k) = \sum_{i_1 = 0}^{n-1} \dots \sum_{i_k = 0}^{i_{k-1} - 1}1$$
 
                 Then (3) becomes:
-                $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + \dots + \Delta^{(k)}f(0)\Psi(n,k)+ \dots$$
+                $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + \dots + \Delta^{(k)}f(0)\Psi(n,k)+ \dots \;\;\; (4)$$
 
                 In the continuous calculus we had a similar problem, the Taylor expansion at $x_0=0$ was given by:
                 $$f(x) = \sum_{k=0}^{\infty}\frac{d^{(k)}f(0)}{dx^k}\Omega(x,k)$$
                 Where $$\Omega (x,k) = \int_{0}^{x} ... \int_{0}^{u_{k-1}}1du_k...du_1$$
 
-                And this is easier than the discrete setting since we have nice closed formulas to compute integrals. In that post we found that:
+                And this is easier than the discrete setting since we have nice closed formulas to compute integrals. In
+                that post we found that:
 
                 $$\Omega(x,k) = \frac{x^k}{k!}$$
 
                 But what what about the discrete case? We have to do the same thing. We know that:
-                $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
+                $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]=
+                \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
 
                 Then by the fundamental theorem of discrete calculus and knowing that $\Psi(0,k) = 0$ we get:
                 $$\Psi(n,k) = \sum_{i_1=0}^{n-1} \Delta \Psi(i_1, k) = \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
                 Hence,
-                $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(4)$$
+                $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(5)$$
 
-                So from (4) we find the next recursion:
-                $$\Psi(n+ 1, k) - \Psi(n,k) = \Psi(n,k-1) \;\;\;\; (5)$$
+                So from (5) we find the next recursion:
+                $$\Psi(n+ 1, k) - \Psi(n,k) = \Psi(n,k-1) \;\;\;\; (6)$$
                 $$ \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
 
-                Note that $\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = \sum_{i_1=0}^{n-1} \Psi(n,0)$, hence $\Psi(n,0) = 1 \; \forall n\geq 0$.
+                Note that $\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = \sum_{i_1=0}^{n-1} \Psi(n,0)$, hence $\Psi(n,0) = 1 \;
+                \forall n\geq 0$.
                 Also we can check by definition that $\Psi(0,k) = 0 \;\forall k > 0 $
 
-                With recursion (5) we know how to compute $\Psi(n,k)$
+                With recursion (6) we know how to compute $\Psi(n,k)$
 
                 $$\Psi(n,k) = \begin{cases}
-                0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n = 0 \text{ and
+                0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n = 0
+                \text{ and
                 } k > 0\\
-                1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n \geq 0 \text{ and
+                1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n
+                \geq 0 \text{ and
                 } k=0\\
                 \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n > 0 \text{ and } k > 0\\
                 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}
                 \end{cases}$$
 
-                This expression is good for computers but not for humans, hence we need to find another way. Lets check a sequence of $\Psi(n,k)$ values and see if we find some pattern:
+                This expression is good for computers but not for humans, hence we need to find another way. Lets check
+                a sequence of $\Psi(n,k)$ values and see if we find some pattern:
                 $$\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = n$$
                 $$\Psi(n,2) = \sum_{i_1=0}^{n-1}\sum_{i_2=0}^{i_1-1}1 = \sum_{i_1=0}^{n-1}i_1$$
 
                 How do you compute $\sum_{i_1=0}^{n-1}i_1$ ? <br><br>
 
-                We know by the fundamental theorem of discrete calculus that if we find a function $g$, such that $\Delta g(n) = n$ and $g(0) = 0$, then $g(n) = \sum_{i_1=0}^{n-1}\Delta g(i_1) = \sum_{i_1=0}^{n-1} i_1$.<br>
+                We know by the fundamental theorem of discrete calculus that if we find a function $g$, such that
+                $\Delta g(n) = n$ and $g(0) = 0$, then $g(n) = \sum_{i_1=0}^{n-1}\Delta g(i_1) = \sum_{i_1=0}^{n-1}
+                i_1$.<br>
                 Let's try $g(n) = n^2$. By definition:
                 $$\Delta g(n) = (n+1)^2 - n^2 = 2n + 1$$
 
@@ -280,7 +318,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <button class="btn btn-primary" onclick='$("#proof_1").slideToggle()'><h4>Proof</h4></button>
                 <div id="proof_1" style="display:none">
-                    $$\Delta(f(n) + g(n)) = [f(n+1) + g(n+1)] - [f(n) + g(n)] = f(n+1)-f(n) + g(n+1)-g(n) = \Delta f(n) + \Delta g(n)$$
+                    $$\Delta(f(n) + g(n)) = [f(n+1) + g(n+1)] - [f(n) + g(n)] = f(n+1)-f(n) + g(n+1)-g(n) = \Delta f(n)
+                    + \Delta g(n)$$
 
                     and
 
@@ -294,16 +333,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 Thus:
                 $$\Psi(n, 2) = \sum_{i_1=0}^{n-1}i_1 = \frac{n^2 - n}{2} =\frac{n(n-1)}{2}$$
 
-                We could continue to guess $\Psi(n, 3)$, and then check if $\Delta \Psi(n, 3) = \frac{n(n-1)}{2}$, but I find this way to difficult to proceed.
+                We could continue to guess $\Psi(n, 3)$, and then check if $\Delta \Psi(n, 3) = \frac{n(n-1)}{2}$, but I
+                find this way to difficult to proceed.
                 Instead I will try and check some new pattern. We have until now:
                 $$\Psi(n,0) = 1$$
                 $$\Psi(n,1) = n = n[1]$$
-                $$\Psi(n,2) = n \frac{n}{2} = \frac{n}{2}[n][1]$$
+                $$\Psi(n,2) = \frac{n(n-1)}{2} = \frac{n-1}{2}[n][1]$$
+                I guess that $\Psi(n,3)$ will be:
+
+                $$\Psi(n,3) = \frac{(n-2)}{3}\left [\frac{n(n-1)}{2} \right]$$
 
                 It seems to me that $\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1)$. Using this hypothesis we find:
 
-                $$\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1) = \frac {n -(k-1)}{k} \left [ \frac {n -(k-2)}{k-1} \Psi(n, k-2)\right]$$
-                $$\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1) = \dots = \frac {n -(k-1)}{k} \dots \frac {n -(k - k)}{k - (k + 1)} = \frac{(n - (k - 1))(n - (k - 2)) \dots n}{k (k-1) \dots 1}$$
+                $$\Psi(n, k) = \frac {n -(k-1)}{k} \Psi(n, k-1) = \frac {n -(k-1)}{k} \left [ \frac {n -(k-2)}{k-1}
+                \Psi(n, k-2)\right]$$
+                $$\Psi(n, k) = \frac {n -(k-1)}{k} \left [ \frac {n -(k-2)}{k-1} \Psi(n, k-2)\right] = \dots = \frac {n
+                -(k-1)}{k} \dots \frac {n -(k - k)}{k - (k - 1)} = \frac{(n - (k - 1))(n - (k - 2)) \dots n}{k (k-1)
+                \dots 1}$$
                 $$\Psi(n, k) = \frac{n(n - 1)(n - 2) \dots (n - (k - 1))}{k!}$$
 
                 Let us check if this hypothesis is correct:
@@ -316,13 +362,167 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]((n-k)+ k)}{k!}$$
                 $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]n}{k!} = \Psi(n,k)$$
 
-                With this argument, we conclude that our conjecture is indeed the function $\Psi$. Its important to note what we did here. We assumed that the ratio of neighbour values of $\Psi$ had a specific formula, $\frac{\Psi(n,k)}{\Psi(n, k-1)} = \frac{n - k + 1}{k}$, then we derived $\Psi$ using that assumption.
-                If you watch closely, you will notice the similarity with the discrete derivative, but instead of taking the difference of neighbour values we divide. This technique made me think that we can define other calculus and find some nice theorems. Maybe in a future post we can explore a multiplicative calculus (discrete and continuous).<br><br>
+                With this argument, we conclude that our conjecture is indeed the function $\Psi$. It's important to
+                note what we did here. We assumed that the ratio of neighbour values of $\Psi$ had a specific formula,
+                $\frac{\Psi(n,k)}{\Psi(n, k-1)} = \frac{n - k + 1}{k}$, then we derived $\Psi$ using that assumption.
+                If you watch closely, you will notice the similarity with the discrete derivative, but instead of taking
+                the difference of neighbor values we divide. This technique made me think that we can define other
+                calculus and find some nice theorems. Maybe in a future post, we can explore a multiplicative calculus
+                (discrete and continuous).<br><br>
 
-                Just to be completely sure (that we didn't make any mistake in the derivation of $\Psi$), I will make a little program that compute $\Psi$ using their three definitions, $\Psi_{\text{sum}}$, $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$.
+                Just to be completely sure (that we didn't make any mistake in the derivation of $\Psi$), I will make a
+                little program that compute $\Psi$ using their three definitions, $\Psi_{\text{sum}}$,
+                $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$.
 
-                <br>$n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0" id="kPsi" value="3">  <button class="btn btn-primary" onclick='app.showTable()'>Compute</button>
-                <div id="psiComputeTable" style="display:none">
+                <br><br>$n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0"
+                                                                                                 id="kPsi" value="3">
+                <button class="btn btn-primary" onclick='app.showTable()'>Compute</button>
+                <div id="psiComputeTable" style="display:none"></div>
+                <br><br>
+
+                From (4) and $\Psi$ we get the discrete Taylor series:
+
+                $$f(n) = \sum_{k=0}^\infty \Delta^k f(0) \Psi(n, k) = \sum_{k=0}^\infty \Delta^k f(0) \frac{n\dots(n
+                -(k-1))}{k!}$$
+
+                Which is also called the Newton series. In order to simplify the formula, we define the failing
+                factorial formula.
+
+                <h4>Definition 3</h4>
+
+                The failing factorial:
+
+                $$n^{\underline{k}} = n \dots (n - (k - 1)) = \prod_{j=0}^{k-1} n - j$$
+
+                Using definition 3, we simplify the discrete Taylor expansion to:
+
+                $$f(n) = \sum_{k=0}^\infty \Delta^k f(0) \frac{n^{\underline{k}}}{k!} \;\;\; (7)$$
+
+                Now that we find the discrete Taylor polynomial we can compare with the continuous one:
+
+                $$f(n) = \sum_{k = 0}^\infty \Delta^k f(0) \frac{n^{\underline{k}}}{k!}, f(x) = \sum_{n=0}^\infty
+                \frac{d^n f(0)}{dx^n} \frac{x^n}{n!}$$
+
+                They are very similar their major difference lies on the derivative they use. I would say that $\Delta^k
+                f(0) \equiv \frac{d^n f}{dx^n}(0)$ and $\Psi \equiv \Omega$. Note that $\Psi$ and $\Omega$ are
+                equivalent since both of them have the following property:
+
+                $$\Delta \Psi(n, k) = \Psi(n, k - 1) \text{ and } \Omega'(x, k) = \Omega(x, k - 1)$$
+
+                This similarities are amazing, but the infinity symbol on the discrete series is troubling me, I would
+                expect the continuous version to have that but not the discrete. Fortunately there is one property about
+                $\Psi$ that solves our issue, this property is $\Psi(n, k) = 0, k > n$. Thus (7) becomes:
+
+                $$f(n) = \sum_{k=0}^n \Delta^k f(0) \frac{n^{\underline{k}}}{k!} \;\;\; (8)$$
+
+                <button class="btn btn-primary" onclick='$("#proof_2").slideToggle()'><h4>Proof of property</h4>
+                </button>
+                <div id="proof_2" style="display:none"><br><br>
+
+                    To prove that $\Psi(n, k) = 0, k > n$, we will use the technique called <a target="_blank"
+                                                                                               href="https://en.wikipedia.org/wiki/Mathematical_induction">proof
+                        by induction</a>.<br><br>
+
+                    In order to use induction, I will transform the problem to an equivalent one:
+
+                    $$\Psi(n, n + \varepsilon) = 0, \varepsilon > 0 $$
+
+                    The base case, $n = 0$ is true by the definition of $\Psi$:
+
+                    $$\Psi(0, \varepsilon) = 0$$
+
+                    The inductive step is:
+
+                    $$\Psi(n + 1, n + \varepsilon + 1) = \Psi(n, n + \varepsilon + 1) + \Psi(n, n + \varepsilon)$$
+
+                    By the induction hypothesis we know that $\Psi(n, n + \varepsilon) = 0$. Also if $\varepsilon + 1 =
+                    \eta$ then:
+
+                    $$\Psi(n + 1, n + \varepsilon + 1) = \Psi(n, n + \eta)$$
+
+                    We know by our hypothesis that $\Psi(n, n + \eta) = 0$, therefore $\Psi(n + 1, n + \varepsilon + 1)
+                    = 0$.<br><br>
+
+                    This finishes our proof. We can also check that this true by constructing $\Psi$ using a table.
+
+                    <br><br>$n = $ <input type="number" min="0" id="nPsi2" value="10">, $k = $ <input type="number"
+                                                                                                      min="0" id="kPsi2"
+                                                                                                      value="11">
+                    <button class="btn btn-primary" onclick='app.showTable2()'>Compute</button>
+                    <div id="psiComputeTable2" style="display:none">
+                    </div>
+                </div>
+                <br><br>
+
+                <h2> Applications </h2>
+
+                Let us look into some applications, the simplest one is to solve a discrete differential equation also
+                know as difference equation. The one equation I will show is the discrete exponential equation:
+
+                $$\Delta u = u, \; u(0) = 1$$
+
+                Using the discrete Taylor expansion at zero we find that:
+
+                $$u(n) = \sum_{k=0}^n \Delta^k u(0) \frac{x^{\underline{k}}}{k!}$$
+
+                We just need to find $\Delta^k u$, but that is easy since $\Delta u = u$. It is easy to see that
+                $\Delta^k u = u$, hence $\Delta ^k u(0) = u(0) = 1$, therefore we get:
+
+                $$u(n) = \sum_{k=0}^n \frac{x^{\underline{k}}}{k!}$$
+
+                Actually there is easier way to derive a closed form solution to this difference equation, note that:
+
+                $$\Delta u(n) = u(n)$$
+                $$u(n+1) - u(n) = u(n)$$
+                $$u(n+1) = 2u(n)$$
+
+                Starting from zero we get:
+
+                $$u(1) = 2u(0)$$
+                $$u(2) = 2u(1) = 2^2u(0)$$
+                $$\dots$$
+                $$u(n) = 2^n u(0) = 2^n$$
+
+                Therefore we find out the following identity:
+
+                $$u(n) = 2^n = \sum_{k=0}^n \frac{x^{\underline{k}}}{k!}$$
+
+                I didn't mention before but $\frac{x^{\underline{k}}}{k!}$ is a formula for the number of <a
+                    href="https://en.wikipedia.org/wiki/Combination" target="_blank"> combinations </a> in a set. It has
+                the following notation:
+
+                $$\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n \dots (n-k+1)}{k!} = \frac{n^{\underline{k}}}{k!}$$
+
+                Using this notation we found one amazing combinatorial fact:
+
+                $$u(n) = 2^n = \sum_{k=0}^n \binom{n}{k} $$
+
+                Which is the number of all subsets of a set of size $n$ ( see <a target="_blank"
+                                                                                 href="https://en.wikipedia.org/wiki/Power_set">power
+                set </a> for more).<br><br>
+
+                Other application is interpolation of sequences. Imagine a sequence $f_0, \dots, f_n$, then we can make
+                the Newton polynomial of this sequence:
+
+                $$f(n) = \sum_{k=0}^n \Delta ^k f(0) \Psi(n, k)$$
+
+                By extending $\Psi$ to real values, we automatically interpolate the sequence over $\mathbb{R}_+$. In
+                simulation 1 we can see a demo. You will see that as the sequence increases it's size the interpolation
+                will become more and more unstable, but interpolation is a topic for a future post.
+
+                $$f(x \in \mathbb{R}) = \sum_{k=0}^n \Delta ^k f(0) \Psi(x, k)$$
+
+                <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
+                <div id="sim1" style="display:none; text-align: center">
+                    <canvas id="interpolation" width="650" height="500"></canvas>
+                    <div style="text-align: center;">
+                        <button class="btn btn-primary" onclick="app.apply(0, x => x.nextRandomSeq())">Random Sequence
+                        </button>
+                        <button class="btn btn-primary" onclick="app.apply(0, x => x.increaseSeq())">+</button>
+                        <button class="btn btn-primary" onclick="app.apply(0, x => x.decreaseSeq())">-</button>
+                        <p>Simulation.1 Interpolate a sequence using the method above. You can interact with the canvas
+                            (mouse | touch).</p>
+                    </div>
                 </div>
             </div>
         </div>

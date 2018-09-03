@@ -44,6 +44,24 @@ var testUnpackJsArray = function() {
     assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.unpackJsArray(a1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
 }
 
+var testArrayMap = function() {
+    var assert = UnitTest.Assert(this);
+    var s = [1, 2, 3, 4, 5];
+    var sMap = ArrayUtils.map(s, x => x*x);
+    assert.assertTrue(ArrayUtils.arrayEquals(s, ArrayUtils.map(sMap, x => Math.sqrt(x))));
+}
+
+var testArrayRange = function() {
+    var assert = UnitTest.Assert(this);
+    var control = [0, 2, 4, 6, 8];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0, 10, 2), control));
+}
+
+var testArrayReduce = function() {
+    var n = 10;
+    UnitTest.Assert(this).assertTrue(ArrayUtils.reduce(ArrayUtils.range(0, n, 1), 0, (x, y) => x + y) == (n * (n - 1) / 2));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testJoinArray)
@@ -52,4 +70,7 @@ UnitTest.builder()
         .push(testArraySwap)
         .push(testFindArrayDim)
         .push(testUnpackJsArray)
+        .push(testArrayMap)
+        .push(testArrayRange)
+        .push(testArrayReduce)
         .test()

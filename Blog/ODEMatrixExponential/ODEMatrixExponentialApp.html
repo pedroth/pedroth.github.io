@@ -140,7 +140,7 @@
                 $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right )^{N}\mathbf{x}_0$$
 
                 Finally we can define the matrix exponential as:
-                $$e^{M(t-t_0)} = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = \exp\left (M(t-t_0)\right )$$
+                $$ \exp\left (M(t - t_0)\right ) = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
 
                 A simple analysis on the local error can be made. We know from the Taylor polynomial error that:
 
@@ -154,7 +154,7 @@
                 $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
 
                 From this upper bound on the local error we can deduce that as $h \rightarrow 0$ the generated curve converges to the solution of the ODE.
-                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.
+                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.<br><br>
 
                 Now we have deduced two ways of solving (5), so let us solve a real problem.
 
