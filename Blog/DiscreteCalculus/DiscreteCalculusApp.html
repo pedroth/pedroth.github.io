@@ -19,7 +19,7 @@
                 \mathbb{N}\rightarrow s \in \mathbb{R}$, since $\mathbb{N}$ is a discrete space we can't apply the same
                 rules of differential calculus to sequences.
                 Here we will try to build a discrete version of the continuous calculus using the same principles. We
-                will follow the same ideas of previous posts, namely the <a
+                will follow the same ideas of the previous posts, namely the <a
                     href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html"
                     target="_blank">intuition of calculus</a> and the <a
                     href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html"
@@ -64,7 +64,7 @@
 
                 The discrete derivative defined here is just the forward difference. We could have defined any other
                 difference as a derivative, like the backward difference or the weighted difference.
-                In the continuous case all those generalizations of differences would converge to the derivative under
+                In the continuous case, all those generalizations of differences would converge to the derivative under
                 the limit procedure, but in the discrete case we don't have such procedure, hence I will stick with this
                 definition.<br><br>
 
@@ -92,7 +92,7 @@
                 $$f(n) = f(0) +\sum _{i= 0}^{n-1} \Delta f(i) \simeq f(0) +\sum_{i= 0}^{n-1} \Delta f(0) = f(0) + \Delta
                 f(0) n$$
 
-                This approximation would be great for the first few numbers but then it would collapse under it's error
+                This approximation would be great for the first few numbers but then it would collapse under its error
                 as $n \rightarrow \infty$.<br><br>
 
                 <h2> Discrete Taylor/Newton series </h2>
@@ -162,7 +162,7 @@
                 $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]=
                 \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
 
-                Then by the fundamental theorem of discrete calculus and knowing that $\Psi(0,k) = 0$ we get:
+                Then by the fundamental theorem of discrete calculus and knowing that $\Psi(0,k) = 0, k > 0$ we get:
                 $$\Psi(n,k) = \sum_{i_1=0}^{n-1} \Delta \Psi(i_1, k) = \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$
                 Hence,
                 $$\Delta \Psi(n,k) = \Psi(n,k-1)\;\;\;\;(5)$$
@@ -172,10 +172,7 @@
                 $$ \Psi(n+ 1, k) = \Psi(n,k) + \Psi(n,k-1)$$
 
                 Note that $\Psi(n,1) = \sum_{i_1=0}^{n-1}1 = \sum_{i_1=0}^{n-1} \Psi(n,0)$, hence $\Psi(n,0) = 1 \;
-                \forall n\geq 0$.
-                Also we can check by definition that $\Psi(0,k) = 0 \;\forall k > 0 $
-
-                With recursion (6) we know how to compute $\Psi(n,k)$
+                \forall n\geq 0$. We can also check that $\Psi(0,k) = 0 \;\forall k > 0$, by its definition. So using the recursion (6) and all of these facts we can compute $\Psi$ as follows:
 
                 $$\Psi(n,k) = \begin{cases}
                 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n = 0
@@ -250,7 +247,7 @@
                 Substituting with our conjecture:
                 $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k)}{k!} + \frac{(n-1)(n-2)...(n-k+1)}{(k-1)!}$$
                 $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k)}{k!} + \frac{k(n-1)(n-2)...(n-k+1)}{k(k-1)!}$$
-                $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k) + k(n-1)(n-2)...(n-k+1)}{k!}$$
+                $$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k+1)(n-k) + (n-1)(n-2)...(n-k+1)k}{k!}$$
                 $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]((n-k)+ k)}{k!}$$
                 $$\Leftrightarrow \Psi(n,k) = \frac{\left [(n-1)(n-2)...(n-k+1)\right]n}{k!} = \Psi(n,k)$$
 
@@ -264,7 +261,7 @@
 
                 Just to be completely sure (that we didn't make any mistake in the derivation of $\Psi$), I will make a
                 little program that compute $\Psi$ using their three definitions, $\Psi_{\text{sum}}$,
-                $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$.
+                $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$. If they are equal then we didn't make a mistake (probably :D)
 
                 <br><br>$n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0"
                                                                                                  id="kPsi" value="3">
@@ -295,13 +292,13 @@
                 $$f(n) = \sum_{k = 0}^\infty \Delta^k f(0) \frac{n^{\underline{k}}}{k!}, f(x) = \sum_{n=0}^\infty
                 \frac{d^n f(0)}{dx^n} \frac{x^n}{n!}$$
 
-                They are very similar their major difference lies on the derivative they use. I would say that $\Delta^k
+                They are very similar, their major difference lies on the derivative they use. I would say that $\Delta^k
                 f(0) \equiv \frac{d^n f}{dx^n}(0)$ and $\Psi \equiv \Omega$. Note that $\Psi$ and $\Omega$ are
                 equivalent since both of them have the following property:
 
                 $$\Delta \Psi(n, k) = \Psi(n, k - 1) \text{ and } \Omega'(x, k) = \Omega(x, k - 1)$$
 
-                This similarities are amazing, but the infinity symbol on the discrete series is troubling me, I would
+                These similarities are amazing, but the infinity symbol on the discrete series is troubling me, I would
                 expect the continuous version to have that but not the discrete. Fortunately there is one property about
                 $\Psi$ that solves our issue, this property is $\Psi(n, k) = 0, k > n$. Thus (7) becomes:
 
@@ -346,10 +343,27 @@
                 </div>
                 <br><br>
 
+                <h2> Series Error </h2>
+
+                The error of the series is $R_N(n) = \left |f(n) - \sum_{k=0}^N \Delta^k f(0) \Psi(n,k) \right|$, $N < n$. Following the same idea as the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial</a>, we get:
+
+                $$R_N(n) = \left |f(n) - \sum_{k=0}^N \Delta^k f(0) \Psi(n,k) \right| = \left |\sum_{i_1 = 0}^{n - 1} \dots \sum_{i_{N+1}=0}^{i_{N}-1} \Delta^{N+1} f(i_{N+1})\right |$$
+
+                We proceed as the other post and get an upper bound on the error:
+                $$R_N(n) \leq \left |\sum_{i_1 = 0}^{n - 1} \dots \sum_{i_{N+1}=0}^{i_{N}-1} \Delta^{N+1} f(i_{N+1})\right | \leq \sum_{i_1 = 0}^{n - 1} \dots \sum_{i_{N+1}=0}^{i_{N}-1} |\Delta^{N+1} f(i_{N+1})| $$
+
+                $$R_N(n) \leq \sum_{i_1 = 0}^{n - 1} \dots \sum_{i_{N+1}=0}^{i_{N}-1} |\Delta^{N+1} f(i_{N+1})| \leq \max_{c} |\Delta^{N+1} f(c)| \sum_{i_1 = 0}^{n - 1} \dots  \sum_{i_{N+1}=0}^{i_{N}-1} 1$$
+
+                $$R_N(n) \leq \max_{c} |\Delta^{N+1} f(c)| \sum_{i_1 = 0}^{n - 1} \dots  \sum_{i_{N+1}=0}^{i_{N}-1} 1 \leq  \max_{c} |\Delta^{N+1} f(c)| \Psi(n,N+1)$$
+
+                The formula is pretty similar to the continuous formula, thus we can infer some of the same conclusions of the continuous version. Now let us look at some applications.
+
                 <h2> Applications </h2>
 
+                <h3>Difference Equations</h3>
+
                 Let us look into some applications, the simplest one is to solve a discrete differential equation also
-                know as difference equation. The one equation I will show is the discrete exponential equation:
+                known as a difference equation. The one equation I will show is the discrete exponential equation:
 
                 $$\Delta u = u, \; u(0) = 1$$
 
@@ -389,21 +403,23 @@
 
                 $$u(n) = 2^n = \sum_{k=0}^n \binom{n}{k} $$
 
-                Which is the number of all subsets of a set of size $n$ ( see <a target="_blank"
-                                                                                 href="https://en.wikipedia.org/wiki/Power_set">power
-                set </a> for more).<br><br>
+                The combinatorial fact is that, the number of all subsets of a set of size $n$ ( given by the formula $\sum_{k=0}^n \binom{n}{k}$)  is equal to $2^n$ ( see <a target="_blank" href="https://en.wikipedia.org/wiki/Power_set"> power set </a> for a different derivation).
 
-                Other application is interpolation of sequences. Imagine a sequence $f_0, \dots, f_n$, then we can make
+                <h3>Interpolation of sequences</h3>
+
+                Other application is interpolation of sequences. Imagine a sequence $f_0, \dots, f_{N-1}$, then we can make
                 the Newton polynomial of this sequence:
 
                 $$f(n) = \sum_{k=0}^n \Delta ^k f(0) \Psi(n, k)$$
 
-                By extending $\Psi$ to real values, we automatically interpolate the sequence over $\mathbb{R}_+$. In
-                simulation 1 we can see a demo. You will see that as the sequence increases it's size the interpolation
-                will become more and more unstable, but interpolation is a topic for a future post.
+                Since the $n$ in $\Psi$ doesn't need to be a integer, if we substitute $n \in {0, \dots, N-1}$ with $x \in [0, N-1]$, we automatically interpolate the sequence over $\mathbb{R}_+$.
+                But there is still one problem here, we can't simply substitute $n$ by $x$ everywhere, at least not in the sum. If you remember, in (7) the sum was infinite, we simply reduced to $n$, because $\Psi(n,k) = 0, k > n$, thus in order to make this formula to work we will substitute the $\infty$ to something constant like $N-1$. The interpolating formula is:
 
-                $$f(x \in \mathbb{R}) = \sum_{k=0}^n \Delta ^k f(0) \Psi(x, k)$$
+                $$f(x \in \mathbb{R}) = \sum_{k=0}^{N-1} \Delta ^k f(0) \Psi(x, k)$$
 
+                Remember that when $x < k$, $\Psi(x,k) = 0$, so the formula does work. Check simulation 1 for a demo.
+
+                <br><br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Simulation 1</h4></button>
                 <div id="sim1" style="display:none; text-align: center">
                     <canvas id="interpolation" width="650" height="500"></canvas>
@@ -415,7 +431,54 @@
                         <p>Simulation.1 Interpolate a sequence using the method above. You can interact with the canvas
                             (mouse | touch).</p>
                     </div>
-                </div>
+                </div><br><br>
+
+                If you played with simulation 1, you will notice that the polynomial becomes unstable as the number of samples increases, although the curve passes through the sequence points.
+                It turns outs that interpolation of a function is a field on its own and thus needs to be handled in a different post.
+
+                <h3>Taylor series from the Newton series</h3>
+
+                My final application is to show that using the discrete Taylor series, we can deduce the continuous one.
+                Suppose we have a function $f:x \in [a,b]\rightarrow\mathbb{R}$. Let $u:\{0, \dots, N-1\}\rightarrow\mathbb{R}$ be a sampling of $f$. Therefore $u$ is defined as $u(n) = f(a + hn)$ , where $h = \frac{b-a}{N-1}$ and $N$ is the number of samples.
+                We know:
+
+                $$u(n) = \sum_{k=0}^{N-1} \Delta^{k} u(0) \frac{n \dots (n-k+1)}{k!}$$
+
+                Notice that here, the summation goes until $N-1$ instead of $n$, but this is a valid move since $n \leq N-1$ and $\Psi(n, k) = 0, k > n$ as said before. The $N-1$ is used in the sum because we want the sum to be independent of $n$ since we will substitute $n$ by $x$. But before that let us substitute $u$ by $f$.
+                This is simple just notice that $u(n) = f(a + hn)$, hence:
+
+                $$\Delta u(0) = u(1) - u(0) = f(a + h) - f(a) = \Delta_h f(a)$$
+
+                Then we can derive that:
+
+                $$\Delta^k u(0) = \Delta_h^k f(a) = \Delta_h^{k-1} f(a + h) - \Delta_h^{k-1} f(a)$$
+
+                Now the formula becomes:
+
+                $$u(n) = \sum_{k=0}^{N-1} \Delta_h^{k} f(a) \frac{n \dots (n-k+1)}{k!}$$
+
+                The closest sample $n$ to some $x$ is given by solving $a + hn = x$, so:
+
+                $$x = a + hn \Leftrightarrow n = \frac{x-a}{h}$$
+
+                Substituting $n$ we get:
+
+                $$u(x) = \sum_{k=0}^{N-1} \Delta_h^{k} f(a) \frac{\frac{x-a}{h} \dots \left( \frac{x - a}{h}-k+1 \right)}{k!}$$
+                $$u(x) = \sum_{k=0}^{N-1} \Delta_h^{k} f(a) \frac{\frac{x-a}{h} \dots \left( \frac{x - a - h(k-1)}{h} \right)}{k!}$$
+                $$u(x) = \sum_{k=0}^{N-1} \frac{\Delta_h^{k} f(a)}{h^k} \frac{(x-a) \dots (x - a - h(k - 1))}{k!}$$
+
+                Now if we increase the number of samples to infinity ($N \rightarrow \infty$), $h$ will tend to zero since $h = \frac{b-a}{N-1}$ and $u(x)$ will become $f(x)$:
+
+                $$f(x) = \lim_{N \rightarrow \infty}\sum_{k=0}^{N-1} \frac{\Delta_h^{k} f(a)}{h^k} \frac{(x-a) \dots (x - a - h(k - 1))}{k!} = \sum_{k=0}^{\infty} \frac{d^k f(a)}{dx^k} \frac{(x - a)^k}{k!} \;\;\;(9)$$
+
+                This last equation (9) is the famous continuous Taylor polynomial.
+
+                <h2> Conclusion </h2>
+
+                In this post we found out a discrete calculus. While doing it we discovered the discrete analogues of the fundamental theorem of calculus, the Taylor polynomial and the exponential function.
+                We also saw how the Newton series could be applied to interpolation and to derive the continuous Taylor polynomial, which let me thinking if all calculus could be derived using a finite/discrete calculus then this calculus could be a more fundamental tool, than its continuous counterpart.
+                In future posts I would like to continue this adventure on discrete calculus, by exploring a multivariate discrete calculus and a discrete differential geometry and so one.
+
             </div>
         </div>
     </div>
