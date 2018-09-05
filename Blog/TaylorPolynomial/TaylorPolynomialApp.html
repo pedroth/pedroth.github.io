@@ -272,21 +272,21 @@
                 $$\lim_{N \rightarrow \infty} M \frac{(x-x_0)^{N+1}}{(N+1)!} = 0$$
 
                 Let $x = x_0 + h$, then we just have to proof that:
-                $$\lim_{N \rightarrow \infty} \frac{h^N}{N!} = 0$$
+                $$\lim_{N \rightarrow \infty} \frac{h^{N+1}}{(N+1)!} = 0$$
 
                 This is simple to prove since $h$ is finite. Let $k = \lfloor h \rfloor$:
 
-                $$\frac{h^N}{N!} = \frac{h^k}{1 \dots k} \cdot \frac{h^{N-k}}{(k+1) \dots N}$$
+                $$\frac{h^{N+1}}{(N+1)!} = \frac{h^k}{1 \dots k} \cdot \frac{h^{N+1-k}}{(k+1) \dots (N+1)}$$
 
-                Let $C = \frac{h^k}{1 \dots k}$, is easy to see that $C > 1$,
+                Let $C = \frac{h^k}{1 \dots k}$, is easy to see that $C$ is finite and doesn't depends on $N$, so:
 
-                $$C\frac{h^{N-k}}{(k+1) \dots N} < C \frac{h^{N-k}}{(k+1)^{N-k}} = C \left ( \frac{h}{k+1} \right
-                )^{N-k}$$
+                $$C \frac{h^{N+1-k}}{(k+1) \dots (N+1)} < C \frac{h^{N+1-k}}{(k+1)^{N+1-k}} = C \left ( \frac{h}{k+1} \right
+                )^{N+1-k}$$
 
                 Since $h < k+1$ by definition:
 
-                $$\lim_{N\rightarrow 0} C \left ( \frac{h}{k+1} \right )^{N-k} = 0 \Rightarrow \lim_{N \rightarrow
-                \infty} \frac{h^N}{N!} = 0$$
+                $$\lim_{N\rightarrow 0} C \left ( \frac{h}{k+1} \right )^{N+1-k} = 0 \Rightarrow \lim_{N \rightarrow
+                \infty} \frac{h^{N+1}}{(N+1)!} = 0$$
 
                 End proof.
 
