@@ -34,13 +34,18 @@
 
                 <h2> Solving the equation </h2>
 
-                Is very difficult to solve (1) since $\mathbf{g}$ depends on $\mathbf{x}$. If we remove this dependency we can easily solve it. Suppose we have the following equation:
+                Is very difficult to solve (1) since $\mathbf{g}$ depends on $\mathbf{x}$ and $t$. If we remove the dependency of $\mathbf{x}$, it will become easier. Suppose we have the following equation:
+
                 $$\dot{\mathbf{x}}(t) = \mathbf{g}(t)\,\,\;\;\;\;(2)$$
+
                 To solve it you just need to use the fundamental theorem of calculus, like this:
+
                 $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau\;\;\;\;(3)$$
 
                 We can solve this numerically, but if we want a more analytic expression we need to use the same approach as <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> polynomial post.
+
                 Suppose we could compute all the derivatives at $t = 0$. Also note that:
+
                 $$
                 \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau = \begin{bmatrix}
                 \int_0^t \dot{g_1}(\tau)d\tau\\
@@ -57,12 +62,13 @@
 
                 <h2>Ordinary differential equation(ODE)</h2>
 
-                This problem of solving an ODE is also called the initial value problem, since the initial conditions must be specified in order to have a concrete solution. It is described as follows:
+                In this blog post we refer to a ordinary differential equation to the following problem:
 
                 $$\dot{\mathbf{x}} = M \mathbf{x}\;\;,\;\mathbf{x}(0) = \mathbf{x}_0\;\;\;\;(5)$$
 
-                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. To solve (5) we will use the Taylor polynomial approach since we can't use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.
+                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. To solve (5) we will use the Taylor polynomial approach since we can't use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.<br><br>
 
+                Since $\mathbf{g(x)}$ has a simple form, we can compute all the derivatives at one point:
                 $$\frac{d\mathbf{x}}{dt} = M \mathbf{x}$$
                 $$\frac{d^2\mathbf{x}}{dt^2} = M \frac{d\mathbf{x}}{dt} = M^2 \mathbf{x}$$
                 $$...$$
@@ -76,9 +82,9 @@
 
                 $$ \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
 
-                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound ($|\hat{R}_N(t)|$) on the error:
+                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound on the error ($|R_N(t)|$):
 
-                $$|\hat{R}_N(t)| = \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
+                $$|R_N(t)| \leq \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
 
                 We will see, maybe in a future post, that we can define a better computational bound( that maximum is difficult to compute ). Using this error estimate we can choose the proper $N$ for a specified error.<br><br>
 
@@ -133,7 +139,11 @@
                 Let $t = t_0 + Nh$, where $N$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
                 From (9) and substituting $h$:
 
-                $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0\;\;\;(10)$$
+                $$\mathbf{x}(t) \simeq \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0$$
+
+                As $h \rightarrow 0$, the better the approximation in (8) becomes, also $N \rightarrow \infty$, therefore if we take the limit of $N$ to infinity, we will get $\mathbf{x}(t)$ exactly:
+
+                $$\mathbf{x}(t) = \lim_{N \rightarrow \infty} \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0 \;\;\; (10)$$
 
                 From (7) and (10) we can conclude that solution of (5) is:
                 $$\mathbf{x}(t) = \left( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!}\right)\mathbf{x}_0$$
@@ -146,7 +156,7 @@
 
                 $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t)h + \int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$$
 
-                Then the local error is given by $\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) + \dot{\mathbf{x}}(t)h|$, thus:
+                Then the local error is given by $\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) - \dot{\mathbf{x}}(t)h|$, thus:
 
                 $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right | \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
 
