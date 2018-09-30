@@ -72,6 +72,23 @@ ArrayUtils.unpackJsArray = function(array) {
     }
 }
 
+ArrayUtils.map = function(array, f) {
+    var ans = [];
+    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
+    return ans;
+}
+
+ArrayUtils.range = function(xmin, xmax, step) {
+    var ans = [];
+    for(var i = xmin; i < xmax; i += step) ans.push(i);
+    return ans;
+}
+
+ArrayUtils.reduce = function(array, identity, binaryOperator) {
+    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
+    return identity;
+}
+
 module.exports = ArrayUtils;
 },{}],2:[function(require,module,exports){
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
@@ -120,6 +137,24 @@ var testUnpackJsArray = function() {
     assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.unpackJsArray(a1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
 }
 
+var testArrayMap = function() {
+    var assert = UnitTest.Assert(this);
+    var s = [1, 2, 3, 4, 5];
+    var sMap = ArrayUtils.map(s, x => x*x);
+    assert.assertTrue(ArrayUtils.arrayEquals(s, ArrayUtils.map(sMap, x => Math.sqrt(x))));
+}
+
+var testArrayRange = function() {
+    var assert = UnitTest.Assert(this);
+    var control = [0, 2, 4, 6, 8];
+    assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0, 10, 2), control));
+}
+
+var testArrayReduce = function() {
+    var n = 10;
+    UnitTest.Assert(this).assertTrue(ArrayUtils.reduce(ArrayUtils.range(0, n, 1), 0, (x, y) => x + y) == (n * (n - 1) / 2));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testJoinArray)
@@ -128,6 +163,9 @@ UnitTest.builder()
         .push(testArraySwap)
         .push(testFindArrayDim)
         .push(testUnpackJsArray)
+        .push(testArrayMap)
+        .push(testArrayRange)
+        .push(testArrayReduce)
         .test()
 },{"../../UnitTest/main/UnitTest.js":3,"../main/ArrayUtils.js":1}],3:[function(require,module,exports){
 var UnitTest = {};

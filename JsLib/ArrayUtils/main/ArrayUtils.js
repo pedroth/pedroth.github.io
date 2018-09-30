@@ -71,4 +71,21 @@ ArrayUtils.unpackJsArray = function(array) {
     }
 }
 
+ArrayUtils.map = function(array, f) {
+    var ans = [];
+    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
+    return ans;
+}
+
+ArrayUtils.range = function(xmin, xmax, step) {
+    var ans = [];
+    for(var i = xmin; i < xmax; i += step) ans.push(i);
+    return ans;
+}
+
+ArrayUtils.reduce = function(array, identity, binaryOperator) {
+    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
+    return identity;
+}
+
 module.exports = ArrayUtils;

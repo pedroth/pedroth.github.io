@@ -65,7 +65,7 @@ DenseNDArray.prototype.get = function(x) {
         }
         return newDenseNDArray;
     } else {
-        throw "get only accepts strings and integer arrays";
+        throw "method 'get' only accepts strings and integer arrays";
     }
 }
 
@@ -118,10 +118,18 @@ DenseNDArray.prototype.reduce = function(identity, binaryOperator) {
 }
 
 DenseNDArray.prototype.forEach = function(f) {
+    this.denseNDArray.forEach(f);
+}
+
+/**
+ * Transforms the same denseNDArray
+ */
+DenseNDArray.prototype.transform = function(f) {
     var size = this.size();
     for (var i = 0; i < size; i++) {
-        f(this.denseNDArray[i]);
+        this.denseNDArray[i] = f(this.denseNDArray[i]);
     }
+    return this;
 }
 
 /**

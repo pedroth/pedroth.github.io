@@ -60,14 +60,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	    },
 	    "HTML-CSS": { availableFonts: ["TeX"] }
 	  });
-
     </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <!-- MathJax -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
             type='text/javascript'></script>
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 </head>
@@ -239,7 +244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\dots$$
                 $$\mathbf{x}(t_0 + kh) = (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
 
-                Let $t = t_0 + Nh$, where $N$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
+                Let $t = t_0 + Nh$, where $N+1$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
                 From (9) and substituting $h$:
 
                 $$\mathbf{x}(t) \simeq \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0$$
@@ -253,7 +258,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right )^{N}\mathbf{x}_0$$
 
                 Finally we can define the matrix exponential as:
-                $$e^{M(t-t_0)} = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = \exp\left (M(t-t_0)\right )$$
+                $$ \exp\left (M(t - t_0)\right ) = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
 
                 A simple analysis on the local error can be made. We know from the Taylor polynomial error that:
 
@@ -267,7 +272,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
 
                 From this upper bound on the local error we can deduce that as $h \rightarrow 0$ the generated curve converges to the solution of the ODE.
-                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.
+                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.<br><br>
 
                 Now we have deduced two ways of solving (5), so let us solve a real problem.
 

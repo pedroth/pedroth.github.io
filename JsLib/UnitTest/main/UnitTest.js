@@ -1,5 +1,12 @@
 var UnitTest = {};
 
+function countFieldsInObj(objFunction) {
+    var count = 0;
+    for (var key in objFunction)
+        if (objFunction.hasOwnProperty(key)) count++;
+    return count;
+}
+
 UnitTest.Assert = function(test) {
     return new function() {
         this.testFunction = test;
@@ -30,19 +37,19 @@ UnitTest.UnitTestBuilder = function(){
 
     this.push = function(test){
         var types = [
-                     ["Function", Function],
-                     ["Object", Object]
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 1},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 1}
                     ];
         var map  = {
             "Function": () => this.tests.push(test),
             "Object": () => {
                 for(var f in test) {
-                    if(f instanceof Function) this.tests.push(f);
+                    if(typeof test[f] == "function") this.tests.push(test[f]);
                 }
             }
         }
-        types.forEach(x => {
-            if(test instanceof x[1]) map[x[0]]();
+        types.forEach(type => {
+            if(type.predicate(test)) map[type.name]();
         });
         return this;
     }

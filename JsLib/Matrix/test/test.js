@@ -52,6 +52,43 @@ ArrayUtils.swap = function(array, i, j) {
     return array;
 }
 
+ArrayUtils.findJsArrayDim = function(array) {
+    if(array instanceof Array) {
+        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
+    } else {
+        return [];
+    }
+}
+
+ArrayUtils.unpackJsArray = function(array) {
+    if(array instanceof Array) {
+        var joinIdentity = []
+        for(var i = 0; i < array.length; i++) {
+            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
+        }
+        return joinIdentity;
+    } else {
+        return [array];
+    }
+}
+
+ArrayUtils.map = function(array, f) {
+    var ans = [];
+    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
+    return ans;
+}
+
+ArrayUtils.range = function(xmin, xmax, step) {
+    var ans = [];
+    for(var i = xmin; i < xmax; i += step) ans.push(i);
+    return ans;
+}
+
+ArrayUtils.reduce = function(array, identity, binaryOperator) {
+    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
+    return identity;
+}
+
 module.exports = ArrayUtils;
 },{}],2:[function(require,module,exports){
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
@@ -121,7 +158,7 @@ DenseNDArray.prototype.get = function(x) {
         }
         return newDenseNDArray;
     } else {
-        throw "get only accepts strings and integer arrays";
+        throw "method 'get' only accepts strings and integer arrays";
     }
 }
 
@@ -178,6 +215,17 @@ DenseNDArray.prototype.forEach = function(f) {
     for (var i = 0; i < size; i++) {
         f(this.denseNDArray[i]);
     }
+}
+
+/**
+ * Transforms the same denseNDArray
+ */
+DenseNDArray.prototype.transform = function(f) {
+    var size = this.size();
+    for (var i = 0; i < size; i++) {
+        this.denseNDArray[i] = f(this.denseNDArray[i]);
+    }
+    return this;
 }
 
 /**
@@ -290,10 +338,13 @@ DenseNDArray.prototype.checkIndexDimension = function(d) {
     }
 }
 
+DenseNDArray.prototype.reshape = function(newShape) {
+    return DenseNDArray.of(this, newShape);
+}
+
 /**
  * Static functions
  */
-
 /**
  * Create DenseArray from old DenseArray or JsArray, it can also reshape
  */
@@ -313,30 +364,10 @@ function checkIfArrayIsLinear(array) {
     return array.length > 0 && array[0].length === undefined;
 }
 
-function findJsArrayDim(array) {
-    var dim = [];
-    if(array instanceof Array) {
-        return ArrayUtils.join(findJsArrayDim(array[0]), [array.length]); 
-    } else {
-        return [];
-    }
-}
-
-function unpackJsArray(array) {
-    if(array instanceof Array) {
-        var joinIdentity = []
-        for(var i = 0; i < array.length; i++) {
-            joinIdentity = ArrayUtils.join(joinIdentity, unpackJsArray(array[i]));
-        }
-        return joinIdentity;
-    } else {
-        return [array];
-    }
-}
 
 function buildDenseFromJsArray(array) {
-    var dim = findJsArrayDim(array);
-    var ans = unpackJsArray(array);
+    var dim = ArrayUtils.findJsArrayDim(array);
+    var ans = ArrayUtils.unpackJsArray(array);
     return DenseNDArray.of(ans, dim);
 }
 
@@ -353,126 +384,98 @@ function computePowers(dim) {
 
 module.exports = DenseNDArray;
 },{"../../ArrayUtils/main/ArrayUtils.js":1}],3:[function(require,module,exports){
+var DenseNDArray = require('../../DenseNDArray/main/DenseNDArray.js');
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
+
+var Matrix = function(array) {
+    this.matrix = DenseNDArray.of(array);
+    if (this.matrix.shape().length > 2) throw `Matrix must have dimension below 3, your array as dimension ${this.matrix.shape.length}`
+}
+/**
+ * Creates new identity matrix with size n
+ * 
+ * @param {*} n size of the n times n identity matrix 
+ */
+Matrix.identity = function(n) {
+    var dense = new DenseNDArray([n, n]);
+    dense.transform(e => 0);
+    for(var i = 0; i < n; i++) {
+        dense.set([i, i], 1);
+    }
+    return new Matrix(dense);
+}
+
+Matrix.prototype.shape = function() {
+    return this.matrix.shape(); 
+}
+
+Matrix.prototype.dim = function() {
+    return this.matrix.dim();
+}
+
+Matrix.prototype.equals = function (o) {
+        if (this == o) return true;
+        if (o == null || this.prototype != o.prototype) return false;
+        return this.matrix.equals(o.matrix);
+}
+
+/**
+ * Returns a copy of the selection 
+ * @param {*} x 
+ */
+Matrix.prototype.get = function(x) {
+    var ans = this.matrix.get(x);
+    if(ans instanceof DenseNDArray) return new Matrix(ans);
+    return ans;
+}
+
+module.exports = Matrix;
+},{"../../ArrayUtils/main/ArrayUtils.js":1,"../../DenseNDArray/main/DenseNDArray.js":2}],4:[function(require,module,exports){
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
-var DenseNDArray = require('../main/DenseNDArray.js');
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
+var Matrix = require('../main/Matrix.js');
 
-var testBasic = function() {
-    var assert = UnitTest.Assert(this);
+var MatrixTest = function() {
     
-    var denseNDArray = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    assert.assertTrue(denseNDArray.get([0,0]) == 1);
-    assert.assertTrue(denseNDArray.get([1,2]) == 8);
-    assert.assertTrue(denseNDArray.get([0,2]) == 7);
-    assert.assertTrue(denseNDArray.get([2,1]) == 6);
-    assert.assertTrue(denseNDArray.get([1,1]) == 5);
+    this.testMatrixCreation = function() {
+        var assert = UnitTest.Assert(this);
+        var matrix = new Matrix([1, 2, 3]);
+        assert.assertTrue(ArrayUtils.arrayEquals(matrix.shape(), [3]));
+        assert.assertTrue(matrix.get([1]) == 2);
 
-    var denseNDArray1 = DenseNDArray.of(denseNDArray, [9,1]);
-    assert.assertTrue(denseNDArray1.get([0,0]) == 1);
-    assert.assertTrue(denseNDArray1.get([4,0]) == 5);
-    assert.assertTrue(denseNDArray1.get([8,0]) == 9);
+        matrix = new Matrix([[1, 0], [0, 1]]);
+        assert.assertTrue(ArrayUtils.arrayEquals(matrix.shape(), [2, 2]));
+        assert.assertTrue(matrix.get("1, 1") == 1);
+        assert.assertTrue(matrix.get([0, 0]) == 1);
 
-    var denseNDArray2 = DenseNDArray.of(denseNDArray, [9]);
-    assert.assertTrue(denseNDArray2.get([0]) == 1);
-    assert.assertTrue(denseNDArray2.get([4]) == 5);
-    assert.assertTrue(denseNDArray2.get([8]) == 9);
-    
-    assert.assertTrue(denseNDArray.get("1,2") == 8.0);
-    assert.assertTrue(denseNDArray.get("1,1") == 5.0);
-
-    assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([0,1]) == 3);
-    assert.assertTrue(DenseNDArray.of([[1,2],[3,4],[5,6]]).get([1,2]) == 6);
-    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get([1,2,2]) == 18);
-    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("1,1,1") == 10);
-    assert.assertTrue(DenseNDArray.of([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]], [[13, 14], [15, 16], [17, 18]]]).get("0,1,0") == 3); 
-}
-
-var testDense = function() {
-    var assert = UnitTest.Assert(this);
-    var table = new DenseNDArray([3, 3, 3]);
-    for (var i = 0; i < 3; i++) {
-        for (var j = 0; j < 3; j++) {
-            for (var k = 0; k < 3; k++) {
-                table.set([i, j, k], i + 3 * j + 9 * k);
-            }
-        }
-    }
-    console.log(`table : ${table.toString()}`);
-
-    assert.assertTrue(table.get("1,:,:").get([0, 0]) === 1);
-    assert.assertTrue(table.get("1,:,:").get([1, 1]) === 13);
-    assert.assertTrue(table.get("1,:,:").get([2, 2]) === 25);
-    assert.assertTrue(table.get("1,:,:").get([2, 1]) === 16);
-
-    var secondTable = table.get("0 : 1, 1 : 2, : ");
-    console.log(`secondTable : ${secondTable.toString()}`);
-
-    assert.assertTrue(secondTable.get([1, 1, 0]) === 7);
-    assert.assertTrue(secondTable.get([1, 1, 1]) === 16);
-    assert.assertTrue(secondTable.get([1, 1, 2]) === 25);
-
-    var thirdTable = new DenseNDArray([3, 3]);
-    for (var j = 0; j < 3; j++) {
-        for (var i = 0; i < 3; i++) {
-            thirdTable.set([i, j], 100);
-        }
+        var eye = Matrix.identity(3);
+        assert.assertTrue(eye.get("0:1, 0:1").equals(matrix));
     }
 
-    table.set("1,:,:", thirdTable);
-
-    assert.assertTrue(table.get( [1, 0, 0]) === 100);
-    assert.assertTrue(table.get( [1, 1, 1]) === 100);
-    assert.assertTrue(table.get( [1, 1, 2]) === 100);
-    assert.assertTrue(table.get( [1, 2, 2]) === 100);
-    assert.assertTrue(table.get( [0, 2, 2]) === 24 );
-
-    var denseNDArray = table.get("1:,0:,:1");
-    
-    console.log(table.toArray());
-    console.log(table.toString());
-    
-    assert.assertTrue(denseNDArray.dim[0] == 2 && denseNDArray.dim[1] == 3 && denseNDArray.dim[2] == 2);
-    assert.assertTrue(denseNDArray.get([0, 0, 1]) == 100);
-    assert.assertTrue(denseNDArray.get([1, 1, 0]) == 5  );
-    assert.assertTrue(denseNDArray.get([1, 2, 1]) == 17 );
-}
-
-var testDenseCreation = function() {
-    var assert = UnitTest.Assert(this);
-    var d1 = new DenseNDArray([2, 3], [1, 2, 3, 4, 5, 6]);
-    var d2 = DenseNDArray.of([[1, 2], [3, 4], [5, 6]]);
-    assert.assertTrue(d1.equals(d2));
-    assert.assertTrue(d1.equals(DenseNDArray.of(d1.toArray())));
-}
-
-var testMap = function() {
-    var assert = UnitTest.Assert(this);
-    var array = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    var arraySq = new DenseNDArray([3, 3], [1, 4, 9, 16, 25, 36, 49, 64, 81]);
-    assert.assertTrue(array.map(x => x * x).equals(arraySq));
-}
-
-var testReduce = function() {
-    var assert = UnitTest.Assert(this);
-    var n = 10;
-    var sum = n * (n - 1) / 2.0;
-    var array = new DenseNDArray([3, 3], [1, 2, 3, 4, 5, 6, 7, 8, 9]);
-    assert.assertTrue(array.reduce(0.0, (x, y) => x + y) == sum);
-    var acc = 0;
-    array.forEach(x => acc += x);
-    assert.assertTrue(acc == sum);
+    this.testFailMatrixCreation = function(){
+        var assert = UnitTest.Assert(this);
+        try {
+            var matrix = new Matrix([[[1,1]],[[1,1]]]);
+        } catch (error) {
+            assert.assertTrue(true);
+        }
+    }
 }
 
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
-        .push(testBasic)
-        .push(testDense)
-        .push(testDenseCreation)
-        .push(testMap)
-        .push(testReduce)
+        .push(new MatrixTest())
         .test()
-
-},{"../../UnitTest/main/UnitTest.js":4,"../main/DenseNDArray.js":2}],4:[function(require,module,exports){
+ 
+},{"../../ArrayUtils/main/ArrayUtils.js":1,"../../UnitTest/main/UnitTest.js":5,"../main/Matrix.js":3}],5:[function(require,module,exports){
 var UnitTest = {};
+
+function countFieldsInObj(objFunction) {
+    var count = 0;
+    for (var key in objFunction)
+        if (objFunction.hasOwnProperty(key)) count++;
+    return count;
+}
 
 UnitTest.Assert = function(test) {
     return new function() {
@@ -503,7 +506,21 @@ UnitTest.UnitTestBuilder = function(){
     }
 
     this.push = function(test){
-        this.tests.push(test);
+        var types = [
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 1},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 1}
+                    ];
+        var map  = {
+            "Function": () => this.tests.push(test),
+            "Object": () => {
+                for(var f in test) {
+                    if(typeof test[f] == "function") this.tests.push(test[f]);
+                }
+            }
+        }
+        types.forEach(type => {
+            if(type.predicate(test)) map[type.name]();
+        });
         return this;
     }
 
@@ -533,4 +550,4 @@ UnitTest.UnitTestBuilder = function(){
 }
 
 module.exports = UnitTest;
-},{}]},{},[3]);
+},{}]},{},[4]);
