@@ -117,7 +117,28 @@
                 The Euler method works by starting with $\mathbf{x}_0$, then compute the tangent/velocity vector using $\mathbf{g}(\mathbf{x})$, hence compute the next position by moving this point towards the direction of the calculated vector.
                 This algorithm can also be derived in a more analytic way. Take into consideration the fundamental theorem of calculus:
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t + \tau) d\tau \simeq \mathbf{x}(t) + h \dot{\mathbf{x}}(t) = \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))$$
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t + \tau) d\tau $$
+
+                Doing the same for $\dot{\mathbf{x}}$,
+
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \left [ \dot{\mathbf{x}}(t) +  \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu \right ] d\tau $$
+
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t) d\tau +  \int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
+
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h  +  \int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
+
+                This method works by noticing that the term $\int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$ can be ignored when $h \rightarrow 0$. In order to see that, let us define the error of the approximation:
+
+                $$\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) - \dot{\mathbf{x}}(t)h|$$
+
+                We can expand the error, by computing an upper bound of the error:
+
+                $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right | \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
+
+                $$\mathcal{E}(h) \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau} 1 d\mu d\tau,\;\;\; c\in[t, t+h]$$
+                $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
+
+                From this upper bound on the error we can deduce that as $h \rightarrow 0$, the double integral term decreases quadratically to 0, hence we can ignore it. We can also deduce, that if second derivative is zero then the method follows perfectly the flow (which is a obvious statement if think geometrically).<br><br>
 
                 In summary this method translates into the following iteration:
 
@@ -137,7 +158,7 @@
                 $$\mathbf{x}(t_0 + kh) = (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
 
                 Let $t = t_0 + Nh$, where $N+1$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
-                From (9) and substituting $h$:
+                From (9) and substituting $h$, we get:
 
                 $$\mathbf{x}(t) \simeq \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0$$
 
@@ -150,21 +171,8 @@
                 $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right )^{N}\mathbf{x}_0$$
 
                 Finally we can define the matrix exponential as:
+
                 $$ \exp\left (M(t - t_0)\right ) = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
-
-                A simple analysis on the local error can be made. We know from the Taylor polynomial error that:
-
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t)h + \int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$$
-
-                Then the local error is given by $\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) - \dot{\mathbf{x}}(t)h|$, thus:
-
-                $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right | \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
-
-                $$\mathcal{E}(h) \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau} 1 d\mu d\tau,\;\;\; c\in[t, t+h]$$
-                $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
-
-                From this upper bound on the local error we can deduce that as $h \rightarrow 0$ the generated curve converges to the solution of the ODE.
-                Also locally the curve error decreases in a quadratic order and if the second derivative is zero then the method follows perfectly the flow.<br><br>
 
                 Now we have deduced two ways of solving (5), so let us solve a real problem.
 

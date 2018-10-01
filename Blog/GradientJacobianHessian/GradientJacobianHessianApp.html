@@ -1,9 +1,114 @@
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                <div class="post-heading">
+                    <h1>Gradient, Jacobian and Hessian</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                <h2> Intro </h2>
+
+                One variable differential calculus is a essential tool to study non-linear functions. Why ? Because the differential framework provides a local linear approximation to the function (tangent line to the function graph), these approximations are important since linear functions are easy to understand.
+                Thus this framework enables us to study non-linear functions by studying local linear approximations. These linear approximations determines properties of the function locally, such as rates of growth of a function. Also because we can find closed form expressions of the first order derivatives, we can study non-linear function in the entire domain.
+                We can also apply differential calculus to the derivative function, giving us better local approximations of the functions in terms of easy to understand functions like polynomials (check <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor series</a>).
+                One variable differential calculus is essential to many areas such as differential equations and optimization theory (and these are super useful in science and engineering). In this post we will study how to extend the differential calculus with more than one derivative, using just one-dimensional calculus.<br><br>
+
+
+                <h2> Multi-variable functions </h2>
+
+                A general multi-variable function is just a map $\mathbf{f}: \mathbb{R}^n\rightarrow \mathbb{R}^m$.
+                Functions like function $\mathbf{f}$ can be seen as a vector where each coordinate is just a function $f_i:\mathbb{R}^n\rightarrow\mathbb{R}$.
+
+                $$\mathbf{f}(\mathbf{x}) = \begin{bmatrix}f_1(\mathbf{x})\\\dots\\f_m(\mathbf{x})\end{bmatrix}$$
+
+                There are multiple ways of visualizing such functions, but most of those require higher dimensional eyes, something that we don't have.
+                Still we can built an intuition by looking for lower values of $n$ and $m$. If $n=2=m$ then we can visualize this function as a vector field, where for each $\mathbf{x}$ we stick a arrow $\mathbf{f(x)}$. We can also see this functions as a deformations of an original space of inputs to the space of outputs (imagine a grid being deformed).
+                You can try to generalize these two visualizations for different values of $n$ and $m$. There is still the more classic graph of a function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ where we add one more perpendicular axis to the original n-dimensional space and then deform the space through this new dimension according to $f$ (using the deformation given by the pair $(\mathbf{x}, f(\mathbf{x}))$.
+                Below you can visualize most of these visualizations of functions for low dimensions:
+
+                <br><br>
+                <button class="btn btn-primary" onclick="app.run(0)"><h4> $f:\mathbf{R^2} \rightarrow  \mathbb{R}^3$ </h4></button>
+                <div id="sim1" style="display:none; text-align: center">
+                    <canvas id="grid" width="500" height="500"></canvas>
+                    <canvas id="surface" width="500" height="500"></canvas>
+                    <br><br>
+                    <div align="center" class="container">
+                        <button class="btn btn-primary" onclick="app.apply(0, x => {})">
+                            generate function
+                        </button>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>lero lero</p>
+                    </div>
+                </div>
+
+                <br><br>
+                <button class="btn btn-primary" onclick="app.run(1)"><h4> Vector field $f:\mathbf{R^2} \rightarrow  \mathbb{R}^2$ </h4></button>
+                <div id="sim2" style="display:none; text-align: center">
+                    <canvas id="vectorField" width="650" height="500"></canvas>
+                    <div align="center" class="container">
+                        <button class="btn btn-primary" onclick="app.apply(1, x => {})">
+                            generate function
+                        </button>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>Lero Lero.</p>
+                    </div>
+                </div>
+
+                <br><br>
+                <button class="btn btn-primary" onclick="app.run(1)"><h4> Graph $f:\mathbf{R^2} \rightarrow  \mathbb{R}$ </h4></button>
+                <div id="sim3" style="display:none; text-align: center">
+                    <canvas id="grid2" width="500" height="500"></canvas>
+                    <canvas id="graph" width="500" height="500"></canvas>
+                    <br><br>
+                    <div align="center" class="container">
+                        <button class="btn btn-primary" onclick="app.apply(2, x => {})">
+                            generate function
+                        </button>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>lero lero</p>
+                    </div>
+                </div>
+
+                <br><br>
+                <button class="btn btn-primary" onclick="app.run(1)"><h4> Graph $f:\mathbf{R^2} \rightarrow  \mathbb{R}$ </h4></button>
+                <div id="sim4" style="display:none; text-align: center">
+                    <canvas id="grid3" width="500" height="500"></canvas>
+                    <canvas id="line" width="500" height="500"></canvas>
+                    <br><br>
+                    <div align="center" class="container">
+                        <button class="btn btn-primary" onclick="app.apply(3, x => {})">
+                            generate function
+                        </button>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>lero lero</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</article>
+<script src="GradientJacobianHessian.js"></script>
+
+
+
+
+
+
 <h2>
-Gradient, Jacobian and Hessian</h2>
-<span style="font-size: small;">One variable differential calculus is a essential tool to study non-linear functions. Why ? Because the differential framework provides a local linear approximation to the function (tangent line to the function graph), these approximations are important since linear functions are easy to understand. This framework enables us to study non-linear functions by studying local linear approximations. These linear approximations determines properties of the function locally, such as rates of growth of a function. Also because we can find closed form expressions of the first order derivatives, we can study non-linear function in the entire domain. We can also apply differential calculus to the derivative function, giving us better local approximations of the functions in terms of easy to understand functions like polynomials (check <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor series</a>). One variable differential calculus is essential to many areas such as differential equations and optimization theory (and these are super useful in science and engineering).</span><br />
-<span style="font-size: small;"><br /></span>
-<span style="font-size: small;">We would like to have the same framework for multiple variables. To simplify calculations and to get the intuition we will just write about 2 variables functions. A multivariate functions is just a map $\mathbf{f}: \mathbb{R}^n\rightarrow \mathbb{R}^m$, as we explained before we will just consider functions of $n=2$. Functions like function $\mathbf{f}$ can be seen as vector functions where each coordinate is just a function $f_i:\mathbb{R}^n\rightarrow\mathbb{R}$.&nbsp;</span><br />
-<span style="font-size: small;">$$\mathbf{f}(\mathbf{x}) = \begin{bmatrix}f_1(\mathbf{x})\\\dots\\f_m(\mathbf{x})\end{bmatrix}$$ </span><br />
+<span style="font-size: small;">&nbsp;</span><br />
+<span style="font-size: small;"> </span><br />
 <span style="font-size: small;"><br /></span>
 <span style="font-size: small;">Let $f(x,y):\mathbb{R}^2\rightarrow\mathbb{R}$ be a multivariate function and $\mathbf{g}(t):\mathbb{R}\rightarrow\mathbb{R}^2$&nbsp; a curve in $\mathbb{R}^2$, then we can study $f$ using one variable calculus by constraining the domain of $f$ to $\mathbf{g}$ curve, using function composition $f\left ( g(t) \right )$. For simplification, let $\mathbf{g}(t) = \mathbf{a} + \mathbf{v}t$ be a line starting at $\mathbf{a}$ with $\mathbf{v}$ direction ($\mathbf{a,v}\in \mathbb{R}^2$). With $f(\mathbf{g}(t))$ we can take the usual one variable derivative.</span><br />
 <span style="font-size: small;">$$\frac{d}{dt}f(\mathbf{g}(0)) = \lim_{t\rightarrow0}\frac{f(\mathbf{g}(\mathbf{a+v}t))-f(\mathbf{g}(\mathbf{a}))}{t}\;\;\;\;(1)$$</span><br />

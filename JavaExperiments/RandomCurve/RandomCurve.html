@@ -106,198 +106,202 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <h1>RandomCurve</h1>
-<div>
-<p>
-Random Curve is a simple application that generates a "random" curve in time.
-</br>
-The "random" curve $\gamma$ is generated as follows :
-</br>
-<center>
-$X\sim \text{Uniform}(0,1)$
-</br></br>
-$\ddot{\theta}  = 100X - 50 -\dot \theta$
-</br></br>
-$\dot \gamma = \mathbf{e_r}(\theta)$
-</br></br>
-$\mathbf{e_r}(\theta) =\begin{bmatrix}
-\cos (\theta)\\
-\sin(\theta) 
-\end{bmatrix}$
-</br></br>   
-</center>
-Below you will find a javascript port of the java version.
-</br>
-Press "h" for help. Feel free to download the program below.
-</p>
-</div>
-<center>
-<canvas id="canvas" width="560" height="400"></canvas>    
-</center>
-</br>
-</br>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
-<script>
-    var canvas = document.getElementById("canvas");
-    var processing = new Processing(canvas, function(processing) {
-        processing.size(canvas.width, canvas.height);
-        processing.background(0xFFF);
-        var mouseIsPressed = false;
-        processing.mousePressed = function () { mouseIsPressed = true; };
-        processing.mouseReleased = function () { mouseIsPressed = false; };
-        var keyIsPressed = false;
-        processing.keyPressed = function () { keyIsPressed = true; };
-        processing.keyReleased = function () { keyIsPressed = false; };
-        function getImage(s) {
-            var url = "https://www.kasandbox.org/programming-images/" + s + ".png";
-            processing.externals.sketch.imageCache.add(url);
-            return processing.loadImage(url);
-        }
-        // use degrees rather than radians in rotate function
-        var rotateFn = processing.rotate;
-        processing.rotate = function (angle) {
-            rotateFn(processing.radians(angle));
-        };
-        with (processing) {
-            /**
-            * go to https://sites.google.com/site/visualexponetial/home/randomcurve
-            * for the original.
-            */
-            var gamma;
-            var omega;
-            var theta;
-            var oldPoint;  //oldPoint[0] = x, oldPoint[1] = y;
-            var newPoint;  //newPoint[0] = x, newPoint[1] = y;
-            var time;
-            var isInit = true;
-            var currentTime;
-            var oldTime;
-            var speed;
-            var timeColor;
-            /**
-             * do not change this
-             * */
-            var xmin = -5;
-            var xmax = 5;
-            var ymin = -5;
-            var ymax = 5;
-            var w= canvas.width;
-            var h = canvas.height;
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                Random Curve is a simple application that generates a "random" curve in time.
+                </br>
+                The "random" curve $\gamma$ is generated as follows :
+                </br>
+                <center>
+                    $X\sim \text{Uniform}(0,1)$
+                    </br></br>
+                    $\ddot{\theta} = 100X - 50 -\dot \theta$
+                    </br></br>
+                    $\dot \gamma = \mathbf{e_r}(\theta)$
+                    </br></br>
+                    $\mathbf{e_r}(\theta) =\begin{bmatrix}
+                    \cos (\theta)\\
+                    \sin(\theta)
+                    \end{bmatrix}$
+                    </br></br>
+                </center>
+                Below you will find a javascript port of the java version. (also available on my khan academy)
+                </br>
+                Press "h" for help. Feel free to download the program below.
+                <center>
+                    <canvas id="canvas" width="560" height="400"></canvas>
+                </center>
+                </br>
+                </br>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+                <script>
+                    var canvas = document.getElementById("canvas");
+                    var processing = new Processing(canvas, function(processing) {
+                        processing.size(canvas.width, canvas.height);
+                        processing.background(0xFFF);
+                        var mouseIsPressed = false;
+                        processing.mousePressed = function () { mouseIsPressed = true; };
+                        processing.mouseReleased = function () { mouseIsPressed = false; };
+                        var keyIsPressed = false;
+                        processing.keyPressed = function () { keyIsPressed = true; };
+                        processing.keyReleased = function () { keyIsPressed = false; };
+                        function getImage(s) {
+                            var url = "https://www.kasandbox.org/programming-images/" + s + ".png";
+                            processing.externals.sketch.imageCache.add(url);
+                            return processing.loadImage(url);
+                        }
+                        // use degrees rather than radians in rotate function
+                        var rotateFn = processing.rotate;
+                        processing.rotate = function (angle) {
+                            rotateFn(processing.radians(angle));
+                        };
+                        with (processing) {
+                            /**
+                            * go to https://sites.google.com/site/visualexponetial/home/randomcurve
+                            * for the original.
+                            */
+                            var gamma;
+                            var omega;
+                            var theta;
+                            var oldPoint;  //oldPoint[0] = x, oldPoint[1] = y;
+                            var newPoint;  //newPoint[0] = x, newPoint[1] = y;
+                            var time;
+                            var isInit = true;
+                            var currentTime;
+                            var oldTime;
+                            var speed;
+                            var timeColor;
+                            /**
+                             * do not change this
+                             * */
+                            var xmin = -5;
+                            var xmax = 5;
+                            var ymin = -5;
+                            var ymax = 5;
+                            var w= canvas.width;
+                            var h = canvas.height;
 
-            var computeDxdt = function() {
-               return cos(theta);
-            };
+                            var computeDxdt = function() {
+                               return cos(theta);
+                            };
 
-            var computeDydt = function() {
-                return sin(theta);
-            };
+                            var computeDydt = function() {
+                                return sin(theta);
+                            };
 
-            var computeColor = function( t ){
-                var x = [];
-                x[0] = round(255 * sin(3*t) * sin(3*t));
-                x[1] = round(255 * sin(6*t) * sin(6*t));
-                x[2] = round(255 * sin(12*t) * sin(12*t));
-                return x;
-            };
+                            var computeColor = function( t ){
+                                var x = [];
+                                x[0] = round(255 * sin(3*t) * sin(3*t));
+                                x[1] = round(255 * sin(6*t) * sin(6*t));
+                                x[2] = round(255 * sin(12*t) * sin(12*t));
+                                return x;
+                            };
 
-            var changeXcoord = function(x){
-                return ((x - xmin) * w) / abs(xmax - xmin);
-            };
+                            var changeXcoord = function(x){
+                                return ((x - xmin) * w) / abs(xmax - xmin);
+                            };
 
-            var changeYcoord = function(y){
-                return -((y - ymax) * h) / abs(ymax - ymin);
-            };
+                            var changeYcoord = function(y){
+                                return -((y - ymax) * h) / abs(ymax - ymin);
+                            };
 
-            var drawLine = function( x1,  y1, x2, y2){
-                var i1 = changeXcoord(x1);
-                var j1 = changeYcoord(y1);
-                var i2 = changeXcoord(x2);
-                var j2 = changeYcoord(y2);
-                line(i1,j1,i2,j2);
-            };
+                            var drawLine = function( x1,  y1, x2, y2){
+                                var i1 = changeXcoord(x1);
+                                var j1 = changeYcoord(y1);
+                                var i2 = changeXcoord(x2);
+                                var j2 = changeYcoord(y2);
+                                line(i1,j1,i2,j2);
+                            };
 
-            var euler = function() {
-                currentTime = millis() * 1E-3;
-                var dt = currentTime - oldTime;
-                /**
-                 * time in seconds
-                 */
-                oldTime = currentTime;
-                time += dt;
-                
-                if (oldPoint[0] > 5){
-                    oldPoint[0] = -5;    
-                } else if (oldPoint[0] < -5) {
-                    oldPoint[0] = 5;
-                } else if (oldPoint[1] > 5) {
-                    oldPoint[1] = -5;
-                } else if (oldPoint[1] < -5) {
-                    oldPoint[1] = 5;
-                }
-                var initX = oldPoint[0];
-                var initY = oldPoint[1];
-                
-                // full around with these parameters
-                gamma = 100 * random(0,1) - 50 - omega;
-                omega = omega + gamma * dt * speed;
-                theta = theta + omega * dt * speed;
+                            var euler = function() {
+                                currentTime = millis() * 1E-3;
+                                var dt = currentTime - oldTime;
+                                /**
+                                 * time in seconds
+                                 */
+                                oldTime = currentTime;
+                                time += dt;
 
-                var dxdt = computeDxdt();
-                var dydt = computeDydt();  
-                
-                /*
-                * x(n+1) = x(n) + dx/dt * dt | where dx/dt = er(theta); 
-                * er(theta) = {cos(theta),sin(theta)};
-                * theta is solution of alfa = 100 * X - 50 - omega;
-                * alfa = theta'' and omega = theta'
-                * 
-                * X ~ Uniform(0,1);
-                */
-                newPoint[0] = initX + dt * dxdt * speed;
-                newPoint[1] = initY + dt * dydt * speed;
-                
-                timeColor = computeColor(time);
-                stroke(timeColor[0],255,255);
-                drawLine(oldPoint[0], oldPoint[1], newPoint[0], newPoint[1]);
-                oldPoint[0] = newPoint[0];
-                oldPoint[1] = newPoint[1];
-            };
+                                if (oldPoint[0] > 5){
+                                    oldPoint[0] = -5;
+                                } else if (oldPoint[0] < -5) {
+                                    oldPoint[0] = 5;
+                                } else if (oldPoint[1] > 5) {
+                                    oldPoint[1] = -5;
+                                } else if (oldPoint[1] < -5) {
+                                    oldPoint[1] = 5;
+                                }
+                                var initX = oldPoint[0];
+                                var initY = oldPoint[1];
 
-            var init = function() {
-                var size = 2;
-                oldPoint = [];
-                newPoint = [];
-                for(var i = 0; i < size; i++) {
-                    newPoint[i] = random(-5,5);
-                    oldPoint[i] = random(-5,5);
-                }
-                theta = random(0,2*3.141592);
-                omega = random(0,2*3.141592);
-                background(0, 0, 0);
-                oldTime = millis() * 1E-3;
-                time = 0;
-                speed = 5;
-                isInit = false;
-                colorMode(HSB);
-            };
+                                // full around with these parameters
+                                gamma = 100 * random(0,1) - 50 - omega;
+                                omega = omega + gamma * dt * speed;
+                                theta = theta + omega * dt * speed;
 
-            var mouseReleased = function(){
-                oldPoint[0] = xmin + (mouseX/w) * abs(xmax-xmin);
-                oldPoint[1] = ymax - (mouseY/h) * abs(ymax-ymin);
-            };
+                                var dxdt = computeDxdt();
+                                var dydt = computeDydt();
 
-            var draw = function() {
-                 if(isInit) {
-                    init();
-                 }
-                 euler();
-            };
-        }
-        if (typeof draw !== 'undefined') processing.draw = draw;
-    });
-  </script>
-<center>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/gOz2MV5Z-D0" frameborder="0" allowfullscreen></iframe>
-</center>
+                                /*
+                                * x(n+1) = x(n) + dx/dt * dt | where dx/dt = er(theta);
+                                * er(theta) = {cos(theta),sin(theta)};
+                                * theta is solution of alfa = 100 * X - 50 - omega;
+                                * alfa = theta'' and omega = theta'
+                                *
+                                * X ~ Uniform(0,1);
+                                */
+                                newPoint[0] = initX + dt * dxdt * speed;
+                                newPoint[1] = initY + dt * dydt * speed;
+
+                                timeColor = computeColor(time);
+                                stroke(timeColor[0],255,255);
+                                drawLine(oldPoint[0], oldPoint[1], newPoint[0], newPoint[1]);
+                                oldPoint[0] = newPoint[0];
+                                oldPoint[1] = newPoint[1];
+                            };
+
+                            var init = function() {
+                                var size = 2;
+                                oldPoint = [];
+                                newPoint = [];
+                                for(var i = 0; i < size; i++) {
+                                    newPoint[i] = random(-5,5);
+                                    oldPoint[i] = random(-5,5);
+                                }
+                                theta = random(0,2*3.141592);
+                                omega = random(0,2*3.141592);
+                                background(0, 0, 0);
+                                oldTime = millis() * 1E-3;
+                                time = 0;
+                                speed = 5;
+                                isInit = false;
+                                colorMode(HSB);
+                            };
+
+                            var mouseReleased = function(){
+                                oldPoint[0] = xmin + (mouseX/w) * abs(xmax-xmin);
+                                oldPoint[1] = ymax - (mouseY/h) * abs(ymax-ymin);
+                            };
+
+                            var draw = function() {
+                                 if(isInit) {
+                                    init();
+                                 }
+                                 euler();
+                            };
+                        }
+                        if (typeof draw !== 'undefined') processing.draw = draw;
+                    });
+                </script>
+                <iframe style="text-align:center" width="560" height="315"
+                        src="https://www.youtube.com/embed/gOz2MV5Z-D0"
+                        frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</article>
 </br></br></br><p>Download app here :<a href='RandomCurve.zip'>RandomCurve.zip</a></p><!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">

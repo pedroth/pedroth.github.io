@@ -106,24 +106,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <h1>SimpleRobot</h1>
-<div>
-<p>
-Simple Robot is a simple application that let you see a robotic arm following a ball. It works by doing a <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html">gradient descend</a> (check also <a href="http://pedroth.github.io/visualExperiments/Blog/OptimizationI/OptimizationI.html">OptimizationI</a>) on a cost function. This cost function is defined as following :
-</br>
- Let $\mathbf{x} \in \mathbb{R^3}$ be the position of the ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives as input the degrees of freedom of the robot and outputs $\mathbf{y}$ which is the end position of the Robot (Usually this function is called the <a href="https://en.wikipedia.org/wiki/Forward_kinematics">direct kinematics</a> function). Then the cost function is :
- $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
- $$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
-</br>
-Where $C_i$ are functions that constraint the degrees of freedom such as $\theta_1 > 0 \wedge \theta_1 < 2 \pi$. 
-</br>
-Press "h" for help. Feel free to download the program below.
-</p>
-</div>
-<p>
-<center>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/rb4BLRtzkJ8" frameborder="0" allowfullscreen></iframe>
-</center>
-</p>
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-auto col-md-auto mx-auto">
+                Simple Robot is a simple application that let you see a robotic arm following a ball. It works by doing a <a href="http://pedroth.github.io/visualExperiments/Blog/GradientDescend/GradientDescend.html">gradient descend</a> (check also <a href="http://pedroth.github.io/visualExperiments/Blog/OptimizationI/OptimizationI.html">OptimizationI</a>) on a cost function. This cost function is defined as following :
+                </br>
+                Let $\mathbf{x} \in \mathbb{R^3}$ be the position of the ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives as input the degrees of freedom of the robot and outputs $\mathbf{y}$ which is the end position of the Robot (Usually this function is called the <a href="https://en.wikipedia.org/wiki/Forward_kinematics">direct kinematics</a> function). Then the cost function is :
+                $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
+                $$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
+                </br>
+                Where $C_i$ are functions that constraint the degrees of freedom such as $\theta_1 > 0 \wedge \theta_1 < 2 \pi$.
+                </br>
+                Press "h" for help. Feel free to download the program below.
+                <iframe style="text-align:center" width="560" height="315" src="https://www.youtube.com/embed/rb4BLRtzkJ8" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</article>
 </br></br></br><p>Download app here :<a href='SimpleRobot.zip'>SimpleRobot.zip</a></p><!-- Disqus -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
