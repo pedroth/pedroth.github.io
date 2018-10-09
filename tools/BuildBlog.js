@@ -56,7 +56,7 @@ function buildList(app, w, h) {
     var divBelow = $('<div class="form-group row"></div>')
     
     // create image link
-    var linkImage = $('<a class="col-sm-3" href="' + app[0] + '/' + app[0] + '.html"></a>');
+    var linkImage = $('<a class="col-sm-auto" href="' + app[0] + '/' + app[0] + '.html"></a>');
     var img = $('<img src="' + app[0] + '/' + app[0] + '.gif"></img>');
     img.attr("width", w);
     img.attr("height", h);
