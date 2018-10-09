@@ -1,4 +1,5 @@
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
+var ArrayUtils = require('../../Choice/main/Choice.js');
 /**
  * N-dimensional array implementation in column major order
  */
@@ -244,6 +245,35 @@ DenseNDArray.prototype.checkIndexDimension = function(d) {
 
 DenseNDArray.prototype.reshape = function(newShape) {
     return DenseNDArray.of(this, newShape);
+}
+
+/**
+ * Binary operation between two dense arrays with broadcasting.
+ * @param {*} denseNDArray 
+ * @param {*} binaryOperator 
+ */
+DenseNDArray.prototype.binaryOp =function(denseNDArray, binaryOperator) {
+    var s1 = this.shape();
+    // if denseNDArray is a number 
+    var dense = !isNaN(denseNDArray) ? DenseNDArray.of(denseNDArray) : denseNDArray; 
+    var s2 = dense.shape();
+    
+    var small, large;
+    if(s1.length < s2.length) small = s1;
+    if(s1.length > s2.length) large = s1;
+
+    var small = Choice(s1, s2).chooseFirstIf((a, b) => a.length < b.length).get();
+    var large = Choice(s1, s2).chooseFirstIf((a, b) => a.length >= b.length).get();
+    
+    var newShape = [];
+    for(let i = 0; i < small.length; i++) {
+        newShape.push(small[i] == 1 ? large[i] : (large));
+    }
+    for(let i = small.length; i < large.length; i++) {
+        newShape.push(large[i]);
+    }
+    return 1;
+    
 }
 
 /**

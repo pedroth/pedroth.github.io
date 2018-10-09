@@ -37,8 +37,8 @@ UnitTest.UnitTestBuilder = function(){
 
     this.push = function(test){
         var types = [
-                     {name : "Function", predicate: x => countFieldsInObj(x) == 1},
-                     {name : "Object", predicate: x => countFieldsInObj(x) > 1}
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 0},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 0}
                     ];
         var map  = {
             "Function": () => this.tests.push(test),

@@ -72,6 +72,23 @@ ArrayUtils.unpackJsArray = function(array) {
     }
 }
 
+ArrayUtils.map = function(array, f) {
+    var ans = [];
+    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
+    return ans;
+}
+
+ArrayUtils.range = function(xmin, xmax, step) {
+    var ans = [];
+    for(var i = xmin; i < xmax; i += step) ans.push(i);
+    return ans;
+}
+
+ArrayUtils.reduce = function(array, identity, binaryOperator) {
+    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
+    return identity;
+}
+
 module.exports = ArrayUtils;
 },{}],2:[function(require,module,exports){
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
@@ -141,7 +158,7 @@ DenseNDArray.prototype.get = function(x) {
         }
         return newDenseNDArray;
     } else {
-        throw "get only accepts strings and integer arrays";
+        throw "method 'get' only accepts strings and integer arrays";
     }
 }
 
@@ -194,10 +211,18 @@ DenseNDArray.prototype.reduce = function(identity, binaryOperator) {
 }
 
 DenseNDArray.prototype.forEach = function(f) {
+    this.denseNDArray.forEach(f);
+}
+
+/**
+ * Transforms the same denseNDArray
+ */
+DenseNDArray.prototype.transform = function(f) {
     var size = this.size();
     for (var i = 0; i < size; i++) {
-        f(this.denseNDArray[i]);
+        this.denseNDArray[i] = f(this.denseNDArray[i]);
     }
+    return this;
 }
 
 /**
@@ -315,6 +340,28 @@ DenseNDArray.prototype.reshape = function(newShape) {
 }
 
 /**
+ * Binary operation between two dense arrays with broadcasting.
+ * @param {*} denseNDArray 
+ * @param {*} binaryOperator 
+ */
+DenseNDArray.prototype.binaryOp =function(denseNDArray, binaryOperator) {
+    var s1 = this.shape();
+    
+    // if is a number 
+    var dense = !isNaN(denseNDArray) ? DenseNDArray.of(denseNDArray) : denseNDArray; 
+    
+    var s2 = dense.shape();
+    
+    var maxShapeLength = Math.max(s1.length, s2.length);
+    var newShape = [];
+    for(let i = 0; i < maxShapeLength; i++) {
+
+    } 
+    return 1;
+    
+}
+
+/**
  * Static functions
  */
 /**
@@ -358,6 +405,7 @@ module.exports = DenseNDArray;
 },{"../../ArrayUtils/main/ArrayUtils.js":1}],3:[function(require,module,exports){
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var DenseNDArray = require('../main/DenseNDArray.js');
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 
 var testBasic = function() {
     var assert = UnitTest.Assert(this);
@@ -472,6 +520,18 @@ var testReshape = function() {
     assert.assertTrue(dense.reshape([2, 3]).equals(denseReshape));
 }
 
+var testBroadcast = function() {
+    var assert = UnitTest.Assert(this);
+    
+    var dense = DenseNDArray.of([[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]]);
+    var out = dense.binaryOp(DenseNDArray.of([1, 2, 3]), (x, y) => x * y);
+
+    var denseExpected = DenseNDArray.of([[[1, 2], [3, 4]], [[10, 12], [14, 16]], [[27, 30], [33, 36]]]);
+    
+    assert.assertTrue(ArrayUtils.equals([2, 2, 3], out.shape()))
+    assert.assertTrue(denseOut.equals(out));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testBasic)
@@ -480,10 +540,18 @@ UnitTest.builder()
         .push(testMap)
         .push(testReduce)
         .push(testReshape)
+        .push(testBroadcast)
         .test()
 
-},{"../../UnitTest/main/UnitTest.js":4,"../main/DenseNDArray.js":2}],4:[function(require,module,exports){
+},{"../../ArrayUtils/main/ArrayUtils.js":1,"../../UnitTest/main/UnitTest.js":4,"../main/DenseNDArray.js":2}],4:[function(require,module,exports){
 var UnitTest = {};
+
+function countFieldsInObj(objFunction) {
+    var count = 0;
+    for (var key in objFunction)
+        if (objFunction.hasOwnProperty(key)) count++;
+    return count;
+}
 
 UnitTest.Assert = function(test) {
     return new function() {
@@ -515,19 +583,19 @@ UnitTest.UnitTestBuilder = function(){
 
     this.push = function(test){
         var types = [
-                     ["Function", Function],
-                     ["Object", Object]
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 0},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 0}
                     ];
         var map  = {
             "Function": () => this.tests.push(test),
             "Object": () => {
                 for(var f in test) {
-                    if(f instanceof Function) this.tests.push(f);
+                    if(typeof test[f] == "function") this.tests.push(test[f]);
                 }
             }
         }
-        types.forEach(x => {
-            if(test instanceof x[1]) map[x[0]]();
+        types.forEach(type => {
+            if(type.predicate(test)) map[type.name]();
         });
         return this;
     }

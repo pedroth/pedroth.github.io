@@ -1,5 +1,6 @@
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var DenseNDArray = require('../main/DenseNDArray.js');
+var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 
 var testBasic = function() {
     var assert = UnitTest.Assert(this);
@@ -114,6 +115,18 @@ var testReshape = function() {
     assert.assertTrue(dense.reshape([2, 3]).equals(denseReshape));
 }
 
+var testBroadcast = function() {
+    var assert = UnitTest.Assert(this);
+    
+    var dense = DenseNDArray.of([[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]]);
+    var out = dense.binaryOp(DenseNDArray.of([1, 2, 3]), (x, y) => x * y);
+
+    var denseExpected = DenseNDArray.of([[[1, 2], [3, 4]], [[10, 12], [14, 16]], [[27, 30], [33, 36]]]);
+    
+    assert.assertTrue(ArrayUtils.equals([2, 2, 3], out.shape()))
+    assert.assertTrue(denseOut.equals(out));
+}
+
 UnitTest.builder()
         .addLogger(UnitTest.bodyLogger)
         .push(testBasic)
@@ -122,4 +135,5 @@ UnitTest.builder()
         .push(testMap)
         .push(testReduce)
         .push(testReshape)
+        .push(testBroadcast)
         .test()

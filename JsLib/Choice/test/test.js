@@ -1,12 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * 
+ * @param {*} opt1 
+ * @param {*} opt2 
+ * @param {*} predicate predicate is a function: (opt1, opt2) => {true, false}
+ */
 var Choice = function(opt1, opt2, predicate) {
     this.opt1 = opt1;
     this.opt2 = opt2;
+    this.predicate = predicate == undefined ? () => true : predicate;
+
+    this.chooseFirstIf = function(predicate) {
+        this.predicate = predicate;
+        return this;
+    }
 
     this.get = function() {
-        if(predicate()) return this.opt1;
+        if(this.predicate(this.opt1, this.opt2)) return this.opt1;
         return this.opt2;
     }
+}
+
+Choice.of = function(opt1, opt2) {
+    return new Choice(opt1, opt2);
 }
 
 module.exports = Choice;
@@ -14,7 +30,7 @@ module.exports = Choice;
 var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var Choice = require("../main/Choice.js");
 
-testChoice = function() {
+var testChoice = function() {
     var assertion = UnitTest.Assert(this);
     var samples = 100;
     var i = 0;
@@ -22,7 +38,7 @@ testChoice = function() {
     var opt1 = "choice_1";
     var opt2 = "choice_2";
 
-    var choice = new Choice(opt1, opt2, function() { return i % 2 == 0; });
+    var choice = new Choice(opt1, opt2, () => i % 2 == 0);
     for(; i < samples; i++) {
         if(i % 2 == 0) {
             assertion.assertTrue(opt1 === choice.get());
@@ -30,6 +46,11 @@ testChoice = function() {
             assertion.assertTrue(opt2 === choice.get());
         }
     }
+
+    var small = Choice.of("small", "large").chooseFirstIf(() => true).get();
+    var large = Choice.of("small", "large").chooseFirstIf(() => false).get();
+    assertion.assertTrue(small == "small");
+    assertion.assertTrue(large == "large");
 }
 
 
@@ -39,6 +60,13 @@ UnitTest.builder()
         .test()
 },{"../../UnitTest/main/UnitTest.js":3,"../main/Choice.js":1}],3:[function(require,module,exports){
 var UnitTest = {};
+
+function countFieldsInObj(objFunction) {
+    var count = 0;
+    for (var key in objFunction)
+        if (objFunction.hasOwnProperty(key)) count++;
+    return count;
+}
 
 UnitTest.Assert = function(test) {
     return new function() {
@@ -69,7 +97,21 @@ UnitTest.UnitTestBuilder = function(){
     }
 
     this.push = function(test){
-        this.tests.push(test);
+        var types = [
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 0},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 0}
+                    ];
+        var map  = {
+            "Function": () => this.tests.push(test),
+            "Object": () => {
+                for(var f in test) {
+                    if(typeof test[f] == "function") this.tests.push(test[f]);
+                }
+            }
+        }
+        types.forEach(type => {
+            if(type.predicate(test)) map[type.name]();
+        });
         return this;
     }
 
@@ -93,7 +135,7 @@ UnitTest.UnitTestBuilder = function(){
         this.log(`Failed Test: ${failedTests} / ${this.tests.length}`)
         for(var i = 0; i < this.asserts.length; i++) {
             this.log(`Test ${i}, ${this.asserts[i][0] ? "Passed" : "Failed"}`);
-            if(!this.asserts[i][0]) this.log(this.asserts[i][1]);
+            if(!this.asserts[i][0]) this.log(`\t ${this.asserts[i][1]}`);
         }
     }
 }

@@ -9,7 +9,7 @@ var testChoice = function() {
     var opt1 = "choice_1";
     var opt2 = "choice_2";
 
-    var choice = new Choice(opt1, opt2, function() { return i % 2 == 0; });
+    var choice = new Choice(opt1, opt2, () => i % 2 == 0);
     for(; i < samples; i++) {
         if(i % 2 == 0) {
             assertion.assertTrue(opt1 === choice.get());
@@ -17,6 +17,11 @@ var testChoice = function() {
             assertion.assertTrue(opt2 === choice.get());
         }
     }
+
+    var small = Choice.of("small", "large").chooseFirstIf(() => true).get();
+    var large = Choice.of("small", "large").chooseFirstIf(() => false).get();
+    assertion.assertTrue(small == "small");
+    assertion.assertTrue(large == "large");
 }
 
 
