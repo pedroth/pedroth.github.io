@@ -248,22 +248,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 From this upper bound on the error we can deduce that as $h \rightarrow 0$, the double integral term decreases quadratically to 0, hence we can ignore it. We can also deduce, that if second derivative is zero then the method follows perfectly the flow (which is a obvious statement if think geometrically).<br><br>
 
-                In summary this method translates into the following iteration:
+                In summary, this method ignores the quadratic error. This translates into the following iteration:
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))\;\;\;\;(8)$$
+                $$\mathbf{x}(t + h) \simeq \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))\;\;\;\;(8)$$
 
                 Using (8) in our simple ODE (5), we get:
 
-                $$ \mathbf{x}(t + h) = \mathbf{x}(t) + h M\mathbf{x}(t)$$
-                $$ \mathbf{x}(t + h) = (I + h M)\mathbf{x}(t)$$
+                $$ \mathbf{x}(t + h) \simeq \mathbf{x}(t) + h M\mathbf{x}(t)$$
+                $$ \mathbf{x}(t + h) \simeq (I + h M)\mathbf{x}(t)$$
 
                 Starting from $t_0$:
 
-                $$\mathbf{x}(t_0) = \mathbf{x}_0$$
-                $$\mathbf{x}(t_0 + h) = (I + h M)\mathbf{x}_0$$
-                $$\mathbf{x}(t_0 + 2h) = (I + h M)\mathbf{x}(t_0+h) = (I + h M)^2\mathbf{x}_0$$
+                $$\mathbf{x}(t_0) \simeq \mathbf{x}_0$$
+                $$\mathbf{x}(t_0 + h) \simeq (I + h M)\mathbf{x}_0$$
+                $$\mathbf{x}(t_0 + 2h) \simeq (I + h M)\mathbf{x}(t_0+h) = (I + h M)^2\mathbf{x}_0$$
                 $$\dots$$
-                $$\mathbf{x}(t_0 + kh) = (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
+                $$\mathbf{x}(t_0 + kh) \simeq (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
 
                 Let $t = t_0 + Nh$, where $N+1$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
                 From (9) and substituting $h$, we get:
@@ -280,7 +280,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 Finally we can define the matrix exponential as:
 
-                $$ \exp\left (M(t - t_0)\right ) = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
+                $$ \exp\left (M(t - t_0)\right )\mathbf{x}_0 = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
 
                 Now we have deduced two ways of solving (5), so let us solve a real problem.
 
@@ -406,8 +406,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 $\mathbf{x}(t)$ is the circle as the fig 1 suggested.
 
                 <h2> Conclusion </h2>
-                In this post, we solved the basic n-dimensional ODE using the basics of calculus. There are still a few loose ends in this post such as how to compute the global error in the Euler method, and to compare the Taylor polynomial with the Euler method.
-                To finish, I leave you with a linear ODE solver.
+                In this post, we solved the basic n-dimensional ODE using the basics of calculus. We derived two ways of solving this problem, the Taylor series method and the Euler method.
+                We also derived the errors from the Taylor and Euler methods. We also defined that the solution of these ODE's are called the matrix exponential function.
 
                 <br><br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Linear ODE Solver </h4></button>
@@ -433,6 +433,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <p>Simulation.1 Visualization of the Euler algorithm on ODE's. You can interact with the canvas (mouse | touch).</p>
                     </div>
                 </div>
+                <h2>Appendix A</h2>
+                <h3>The global error of the Euler's method</h3>
+
+                Above we discussed a little bit about the local error of the Euler method. We saw that the error $\mathcal{E}(h)$ was bounded by $Mh^2$, where $M$ is a constant. Now we want to derive the global error.
+                We know that:
+                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$$
+
+                And:
+                $$\mathbf{x}(t + 2h) = \mathbf{x}(t + h) + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
+
+                Substituting $\mathbf{x}(t + h)$:
+
+                $$\mathbf{x}(t + 2h) = \left[ \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right] + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
+
+                We can continue to do this until $T = t + nh$:
+
+                $$\mathbf{x}(t + nh) = \mathbf{x}(t) + h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t + kh) + \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau$$
+
+                From the claim above, we can define the global error as:
+                $$\mathcal{E}_n(h) = \left | \mathbf{x}(t + nh) - \mathbf{x}(t) - h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t + kh) \right | = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau \right |$$
+
+                Finally we can find an upper bound of $\mathcal{E}_n(h)$ and take some conclusions:
+
+                $$\mathcal{E}_n(h) = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau \right | \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu) \right| d\mu d\tau$$
+
+                $$\mathcal{E}_n(h) \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu) \right | d\mu d\tau  \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1 d\mu d\tau \;\;, \forall c \in [t, t + nh]$$
+
+                Most of this argument is explained on the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor series</a> post.
+
+                $$\mathcal{E}_n(h) \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1 d\mu d\tau \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \frac{h^2}{2}$$
+
+                Let $C = \max \left| \ddot{\mathbf{x}}(c) \right|$, then:
+
+                $$\mathcal{E}_n(h) \leq C \sum_{k=0}^{n-1} \frac{h^2}{2} = C n\frac{h^2}{2}$$
+
+                Since $T = t + nh$, then $n = \frac{T - t}{h}$, therefore:
+
+                $$\mathcal{E}_n(h) \leq C \frac{(T - t) h}{2}$$
+
+                This upper bound demonstrates that the Euler method is a first order method since the global error is bounded by a linear function of $h$.
+
+                <br><br>
             </div>
         </div>
     </div>
