@@ -252,7 +252,7 @@ DenseNDArray.prototype.reshape = function(newShape) {
  * @param {*} denseNDArray 
  * @param {*} binaryOperator 
  */
-DenseNDArray.prototype.binaryOp =function(denseNDArray, binaryOperator) {
+DenseNDArray.prototype.binaryOp = function(denseNDArray, binaryOperator) {
     var s1 = this.shape();
     // if denseNDArray is a number 
     var dense = !isNaN(denseNDArray) ? DenseNDArray.of(denseNDArray) : denseNDArray; 

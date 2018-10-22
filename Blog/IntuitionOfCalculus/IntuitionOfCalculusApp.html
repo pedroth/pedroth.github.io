@@ -442,24 +442,24 @@
                 </div>
                 <br><br>
 
-                Note that as $\tau$ increases the worst our estimate become. To solve our minimization problem let's notice that it fulfills our assumptions and then we find $\mu$ by solving $C'(\mu) = 0$.
-                We must show that first the function has just one minimum and second that the function is differentiable. Notice that :
+                Note that as $\tau$ increases the worst our estimate become. To solve our minimization problem let's notice that it fulfills our assumptions, and then we find the minimal $\mu$ by solving $C'(\mu) = 0$.
+                We must show that first the function has just one minimum, and second that the function is differentiable. First Note that :
                 $$C(\mu) = \sum_{i=1}^n(\mu - \phi_i)^2 = \sum_{i=1}^n\mu^2 -2\mu\phi_i + \phi_i^2$$
                 $$C(\mu) =\mu^2 n-2\mu\sum_{i=1}^n\phi_i + \sum_{i=1}^n\phi_i^2$$
 
-                We see that $C(\mu)$ has just one minimum since it is a parabola with positive coefficient in the squared term, also we see that this function has a derivative everywhere :
+                We see that $C(\mu)$ has just one minimum since it is a parabola with positive coefficient in the squared term, also we see that this function has a derivative everywhere:
 
                 $$C'(\mu) = \left (\mu^2 n-2\mu\sum_{i=1}^n\phi_i + \sum_{i=1}^n\phi_i^2 \right )'$$
 
                 By applying the sum property of derivatives :
 
-                $$C'(\mu) = \left ( \mu^2 n \right )-\left ( 2\mu\sum_{i=1}^n\phi_i \right) + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
+                $$C'(\mu) = \left ( \mu^2 n \right )'-\left ( 2\mu\sum_{i=1}^n\phi_i \right)' + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
 
                 By applying constant multiplication property of derivatives :
 
                 $$C'(\mu) = n\left ( \mu^2 \right )'- \left ( 2\sum_{i=1}^n\phi_i \right )\mu' + \left (\sum_{i=1}^n\phi_i^2 \right )'$$
 
-                Applying the rule for the derivative of the quadratic function, linear function, and constant function.
+                Applying the rule for the derivative of the quadratic function, linear function, and constant function, we get:
 
                 $$C'(\mu) = 2n\mu - 2\sum_{i=1}^n\phi_i$$
 
