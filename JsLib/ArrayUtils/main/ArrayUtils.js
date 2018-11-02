@@ -5,7 +5,7 @@ var ArrayUtils = {};
  * @param {*} a1 
  * @param {*} a2 
  */
-ArrayUtils.join = function(a1, a2) {
+ArrayUtils.concat = function(a1, a2) {
     var copy = [];
     for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
     for(var i = 0; i < a2.length; i++) copy.push(a2[i]);
@@ -53,7 +53,7 @@ ArrayUtils.swap = function(array, i, j) {
 
 ArrayUtils.findJsArrayDim = function(array) {
     if(array instanceof Array) {
-        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
+        return ArrayUtils.concat(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
     } else {
         return [];
     }
@@ -63,18 +63,12 @@ ArrayUtils.unpackJsArray = function(array) {
     if(array instanceof Array) {
         var joinIdentity = []
         for(var i = 0; i < array.length; i++) {
-            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
+            joinIdentity = ArrayUtils.concat(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
         }
         return joinIdentity;
     } else {
         return [array];
     }
-}
-
-ArrayUtils.map = function(array, f) {
-    var ans = [];
-    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
-    return ans;
 }
 
 ArrayUtils.range = function(xmin, xmax, step) {
@@ -83,9 +77,10 @@ ArrayUtils.range = function(xmin, xmax, step) {
     return ans;
 }
 
-ArrayUtils.reduce = function(array, identity, binaryOperator) {
-    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
-    return identity;
+ArrayUtils.binaryOp = function(array1, array2, binaryOp) {
+    var smaller = array1.length < array2.length ? array1.slice() : array2.slice();
+    for(let i = 0; i < smaller.length; i++) smaller[i] = binaryOp(array1[i], array2[i]);
+    return smaller;
 }
 
 module.exports = ArrayUtils;

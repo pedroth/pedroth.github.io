@@ -1,12 +1,28 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.test = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/**
+ * 
+ * @param {*} opt1 
+ * @param {*} opt2 
+ * @param {*} predicate predicate is a function: (opt1, opt2) => {true, false}
+ */
 var Choice = function(opt1, opt2, predicate) {
     this.opt1 = opt1;
     this.opt2 = opt2;
+    this.predicate = predicate == undefined ? () => true : predicate;
+
+    this.chooseFirstIf = function(predicate) {
+        this.predicate = predicate;
+        return this;
+    }
 
     this.get = function() {
-        if(predicate()) return this.opt1;
+        if(this.predicate(this.opt1, this.opt2)) return this.opt1;
         return this.opt2;
     }
+}
+
+Choice.of = function(opt1, opt2) {
+    return new Choice(opt1, opt2);
 }
 
 module.exports = Choice;
@@ -888,7 +904,6 @@ var tests = [
              new Test4("test4")
 ];
 
-// TODO find a way to use this!!
 var simManagerBuilder = SimManager.builder();
 for(var i = 0; i < tests.length; i++){
     simManagerBuilder.push(
@@ -917,7 +932,6 @@ var SimManager = {}
 /**
  * Tried to put private methods and variables but it didn´t work!!
  */
-
 SimManager.builder = function() {
     return new function() {
         this.simulations = [];

@@ -6,7 +6,7 @@ var ArrayUtils = {};
  * @param {*} a1 
  * @param {*} a2 
  */
-ArrayUtils.join = function(a1, a2) {
+ArrayUtils.concat = function(a1, a2) {
     var copy = [];
     for(var i = 0; i < a1.length; i++) copy.push(a1[i]);
     for(var i = 0; i < a2.length; i++) copy.push(a2[i]);
@@ -54,7 +54,7 @@ ArrayUtils.swap = function(array, i, j) {
 
 ArrayUtils.findJsArrayDim = function(array) {
     if(array instanceof Array) {
-        return ArrayUtils.join(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
+        return ArrayUtils.concat(ArrayUtils.findJsArrayDim(array[0]), [array.length]); 
     } else {
         return [];
     }
@@ -64,7 +64,7 @@ ArrayUtils.unpackJsArray = function(array) {
     if(array instanceof Array) {
         var joinIdentity = []
         for(var i = 0; i < array.length; i++) {
-            joinIdentity = ArrayUtils.join(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
+            joinIdentity = ArrayUtils.concat(joinIdentity, ArrayUtils.unpackJsArray(array[i]));
         }
         return joinIdentity;
     } else {
@@ -211,10 +211,7 @@ DenseNDArray.prototype.reduce = function(identity, binaryOperator) {
 }
 
 DenseNDArray.prototype.forEach = function(f) {
-    var size = this.size();
-    for (var i = 0; i < size; i++) {
-        f(this.denseNDArray[i]);
-    }
+    this.denseNDArray.forEach(f);
 }
 
 /**
@@ -240,7 +237,7 @@ DenseNDArray.prototype.toArrayRecursive = function(coord) {
     var size = coord.length;
     if(size != this.dim.length) {
         for (var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            array.push(this.toArrayRecursive(ArrayUtils.join([j], coord)));
+            array.push(this.toArrayRecursive(ArrayUtils.concat([j], coord)));
         }
         return array;
     } else  {
@@ -258,7 +255,7 @@ DenseNDArray.prototype.toStringRecursive = function(coord) {
     if(size != this.dim.length) {
         stringBuilder.push("[");
         for(var j = 0; j < this.dim[this.dim.length - 1 - size]; j++) {
-            stringBuilder.push(this.toStringRecursive(ArrayUtils.join([j], coord)));
+            stringBuilder.push(this.toStringRecursive(ArrayUtils.concat([j], coord)));
         }
         stringBuilder.push("]");
     } else {
@@ -343,6 +340,32 @@ DenseNDArray.prototype.reshape = function(newShape) {
 }
 
 /**
+ * Binary operation between two dense arrays with broadcasting.
+ * @param {*} denseNDArray 
+ * @param {*} binaryOperator 
+ */
+DenseNDArray.prototype.binaryOp =function(denseNDArray, binaryOperator) {
+    var s1 = this.shape();
+
+    // if denseNDArray is a number 
+    var dense = !isNaN(denseNDArray) ? DenseNDArray.of(denseNDArray) : denseNDArray; 
+    var s2 = dense.shape();
+
+    var small = s1.length < s2.length ? s1 : s2;
+    var large = s1.length < s2.length ? s2 : s1;
+    
+    var newShape = [];
+    for(let i = 0; i < small.length; i++) {
+        newShape.push(small[i] == 1 ? large[i] : (large[i]  ));
+    }
+    for(let i = small.length; i < large.length; i++) {
+        newShape.push(large[i]);
+    }
+    return 1;
+    
+}
+
+/**
  * Static functions
  */
 /**
@@ -388,7 +411,7 @@ var DenseNDArray = require('../../DenseNDArray/main/DenseNDArray.js');
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 
 var Matrix = function(array) {
-    this.matrix = DenseNDArray.of(array);
+    this.matrix = array instanceof Matrix ? array.matrix : DenseNDArray.of(array);
     if (this.matrix.shape().length > 2) throw `Matrix must have dimension below 3, your array as dimension ${this.matrix.shape.length}`
 }
 /**
@@ -427,6 +450,67 @@ Matrix.prototype.get = function(x) {
     var ans = this.matrix.get(x);
     if(ans instanceof DenseNDArray) return new Matrix(ans);
     return ans;
+}
+
+Matrix.prototype.copy = function() {
+    return new Matrix(this);
+}
+
+Matrix.prototype.map = function(f) {
+    return new Matrix(this.matrix.map(f));
+}
+
+Matrix.prototype.forEach = function (f) {
+    this.matrix.forEach(f);
+}
+
+Matrix.prototype.transform = function(f) {
+    this.matrix.transform(f);
+}
+
+Matrix.prototype.reduce = function (identity, binaryOperator) {
+    return this.matrix.reduce(identity, binaryOperation);
+}
+
+Matrix.prototype.binaryOperation = function (matrix, operation) {
+    
+    var ans = this.matrix.denseNDArray.slice();
+    for (let i = 0; i < ans.length; i++) {
+        ans[i] = operation(ans[i], matrix.matrix.denseNDArray[i]);
+    }
+    return new Matrix(ans);
+}
+
+Matrix.prototype.sum = function (matrix) {
+    
+}
+
+Matrix.prototype.sub = function (matrix) {
+
+}
+
+Matrix.prototype.mult = function (matrix) {
+
+}
+
+Matrix.prototype.div = function (matrix) {
+
+}
+
+Matrix.prototype.prod = function (matrix) {
+
+}
+
+Matrix.prototype.inner = function (matrix) {
+
+}
+
+Matrix.prototype.solve = function(b) {
+
+}
+
+Matrix.prototype.T = function () {
+
 }
 
 module.exports = Matrix;
@@ -507,8 +591,8 @@ UnitTest.UnitTestBuilder = function(){
 
     this.push = function(test){
         var types = [
-                     {name : "Function", predicate: x => countFieldsInObj(x) == 1},
-                     {name : "Object", predicate: x => countFieldsInObj(x) > 1}
+                     {name : "Function", predicate: x => countFieldsInObj(x) == 0},
+                     {name : "Object", predicate: x => countFieldsInObj(x) > 0}
                     ];
         var map  = {
             "Function": () => this.tests.push(test),

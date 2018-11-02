@@ -1,0 +1,1 @@
+browserify TestFunction.js > test.js

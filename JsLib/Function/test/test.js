@@ -1,3 +1,49 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Function = function(f) {
+    this.f = f;
+}
+
+Function.prototype.compose = function(g) {
+    return new Function(x => this.f(g(x)));
+}
+
+Function.prototype.leftCompose = function(g) {
+    return new Function(x => g(this.f(x)))
+}
+
+Function.prototype.apply = function(x) {
+    return this.f(x);
+}
+
+Function.prototype.get = function() {
+    return this.f;
+}
+
+Function.of = function(f) {
+    return new Function(f);
+}
+
+module.exports = Function;
+},{}],2:[function(require,module,exports){
+var UnitTest = require('../../UnitTest/main/UnitTest.js');
+var Function = require("../main/Function.js");
+
+var FunctionTest = function() {
+    this.testComposition = function() {
+        var assert = UnitTest.Assert(this);
+        var h = Function.of(x=> x * x).compose(Math.sqrt);
+        var j = Function.of(Math.sqrt).compose(x => x * x);
+        assert.assertTrue(Math.abs(h.f(2) - 2) < 1E-6);
+        assert.assertTrue(Math.abs(j.apply(2) - 2) < 1E-6);
+        assert.assertTrue(Math.abs(j.get()(2) - 2) < 1E-6);
+    }
+}
+
+UnitTest.builder()
+        .addLogger(UnitTest.bodyLogger)
+        .push(new FunctionTest)
+        .test()
+},{"../../UnitTest/main/UnitTest.js":3,"../main/Function.js":1}],3:[function(require,module,exports){
 var UnitTest = {};
 
 function countFieldsInObj(objFunction) {
@@ -13,7 +59,7 @@ UnitTest.Assert = function(test) {
         this.index = 0;
     
         this.assertTrue = function(boolean) {
-            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.testFunction.name, this.index];
+            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
             this.index++;
         }
     }
@@ -80,3 +126,4 @@ UnitTest.UnitTestBuilder = function(){
 }
 
 module.exports = UnitTest;
+},{}]},{},[2]);
