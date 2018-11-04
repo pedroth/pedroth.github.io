@@ -409,7 +409,7 @@ function draw3DLine(line, rgb, data) {
  * Main program
  */
 
-function preventScroolingMobile() {
+function preventScrollingMobile() {
     document.body.addEventListener("touchstart", function (e) {
       if (e.target == canvas) {
         e.preventDefault();
@@ -463,19 +463,18 @@ function init() {
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined && isMobile) {
 		window.ondevicemotion = e => {
+		    var dt = 1E-3 * (new Date().getTime() - startTime);
 			accelerationFifo.push([-e.acceleration.y, -e.acceleration.x, -e.acceleration.z]);
+			eulerSpeedFifo.push(scalarMult(1 / dt, diff([e.alpha, e.beta, e.gamma], myDevice.euler)));
 			document.getElementById("accelerationX").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][0];
 			document.getElementById("accelerationY").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][1];
 			document.getElementById("accelerationZ").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][2];
+			document.getElementById("alpha").innerHTML = e.alpha.toFixed(2);
+			document.getElementById("beta").innerHTML  = e.beta.toFixed(2);
+			document.getElementById("gamma").innerHTML = e.gamma.toFixed(2);
 		};
-		window.ondeviceorientation = e => {
-		    eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
-		    document.getElementById("alpha").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][0].toFixed(2);
-            document.getElementById("beta").innerHTML  = eulerSpeedFifo.buffer[eulerSpeedFifo.index][1].toFixed(2);
-            document.getElementById("gamma").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][2].toFixed(2);
-		}
 	}
-    preventScroolingMobile();
+    preventScrollingMobile();
 }
 
 
