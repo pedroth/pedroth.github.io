@@ -593,7 +593,7 @@ function updateCurve(dt) {
 	if(!isMobile) {
 	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1,1,1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
 		accelerationFifo.push(newAcc);
-		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
+		eulerSpeedFifo.push([ 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
@@ -607,7 +607,7 @@ function updateCurve(dt) {
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
-	var eulerSpeedRad = scalarMult(Math.PI / 180, averageEulerSpeed);
+	var eulerSpeedRad = averageEulerSpeed;
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
