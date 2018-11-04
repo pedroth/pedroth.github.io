@@ -471,11 +471,11 @@ function init() {
 
 		 window.addEventListener('deviceorientation', e => {
 			var euler = [Math.round(e.alpha), Math.round(e.beta), Math.round(e.gamma)];
-			euler = scalarMult(Math.PI / 180, euler);
+			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
 			eulerSpeedFifo.push(scalarMult(1 / (1E-3), diff(euler, myDevice.euler)));
-		    document.getElementById("alpha").innerHTML = e.alpha.toFixed(2);
-            document.getElementById("beta").innerHTML  = e.beta.toFixed(2);
-            document.getElementById("gamma").innerHTML = e.gamma.toFixed(2);
+		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
+            document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
+            document.getElementById("gamma").innerHTML = euler[2].toFixed(2);
 		});
 	}
     preventScrollingMobile();
@@ -593,7 +593,7 @@ function updateCurve(dt) {
 	if(!isMobile) {
 	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1,1,1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
 		accelerationFifo.push(newAcc);
-		eulerSpeedFifo.push([ 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random(), 2 * Math.PI * Math.random()]);
+		eulerSpeedFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI/2 + Math.PI * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
