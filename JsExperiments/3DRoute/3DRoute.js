@@ -201,8 +201,6 @@ var Device = function() {
 		this.basis[0] = [ca * cg + sa * sb * sg, cb * sg, ca * sb * sg - sa * cg];
 		this.basis[1] = [sa * sb * cg - ca * sg, cb * cg, sa * sg + ca * sb * cg];
 		this.basis[2] = [sa * cb               , -sb    , ca * cb               ];
-
-
 	}
 }
 
@@ -464,7 +462,7 @@ function init() {
 
     //add device accelerometer  callback ?
     if (window.DeviceMotionEvent != undefined && isMobile) {
-		window.ondevicemotion = function(e) {
+		window.ondevicemotion = e => {
 			accelerationFifo.push([-e.acceleration.y, -e.acceleration.x, -e.acceleration.z]);
 			eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
 			document.getElementById("accelerationX").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][0];
@@ -588,20 +586,15 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-		var coin = Math.random();
-		coin = coin > 0.75 ? 0 : 1;
-		var p1   = Math.random();
-		var p2   = Math.random() * (1 - p1);
-		var p3   = 1 - p1 - p2;
-		
-		accelerationFifo.push([1, 1, 1]);
+	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1,1,1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
+		accelerationFifo.push(newAcc);
 		eulerSpeedFifo.push([-90 + 2 * Math.random(), -90 + 2 * Math.random(), -90 + 2 * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
 	var averageEulerSpeed = diff(averageVectorFifo(eulerSpeedFifo), eulerSpeedCalibration);
 
-	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
