@@ -464,14 +464,16 @@ function init() {
     if (window.DeviceMotionEvent != undefined && isMobile) {
 		window.ondevicemotion = e => {
 			accelerationFifo.push([-e.acceleration.y, -e.acceleration.x, -e.acceleration.z]);
-			eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
 			document.getElementById("accelerationX").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][0];
 			document.getElementById("accelerationY").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][1];
 			document.getElementById("accelerationZ").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][2];
-			document.getElementById("alpha").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][0].toFixed(2);
-			document.getElementById("beta").innerHTML  = eulerSpeedFifo.buffer[eulerSpeedFifo.index][1].toFixed(2);
-			document.getElementById("gamma").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][2].toFixed(2);
 		};
+		window.ondeviceorientation = e => {
+		    eulerSpeedFifo.push([e.rotationRate.alpha, e.rotationRate.beta, e.rotationRate.gamma]);
+		    document.getElementById("alpha").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][0].toFixed(2);
+            document.getElementById("beta").innerHTML  = eulerSpeedFifo.buffer[eulerSpeedFifo.index][1].toFixed(2);
+            document.getElementById("gamma").innerHTML = eulerSpeedFifo.buffer[eulerSpeedFifo.index][2].toFixed(2);
+		}
 	}
     preventScroolingMobile();
 }
