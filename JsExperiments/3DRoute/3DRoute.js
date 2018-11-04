@@ -474,8 +474,12 @@ function init() {
 		 window.addEventListener('deviceorientation', e => {
 			var euler = [Math.round(e.alpha), Math.round(e.beta), Math.round(e.gamma)];
 			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
-
-			if(!isFirstIte) eulerSpeedFifo.push(scalarMult(1 / (1E-3), diff(euler, myDevice.euler)));
+			
+			if(!isFirstIte) {
+				eulerSpeed = scalarMult(1 / (1E-3), diff(euler, myDevice.euler));
+				eulerSpeedFifo.push(eulerSpeed);
+				document.getElementById("euler").innerHTML = `${eulerSpeed}`;
+			} 
 
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
             document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
