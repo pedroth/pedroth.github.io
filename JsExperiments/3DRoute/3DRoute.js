@@ -469,13 +469,13 @@ function init() {
 			document.getElementById("accelerationZ").innerHTML = accelerationFifo.buffer[accelerationFifo.buffer.length-1][2];
 		};
 
-		window.deviceorientation = e => {
+		 window.addEventListener('deviceorientation', e => {
 		    var dt = 1E-3 * (new Date().getTime() - startTime);
 		    eulerSpeedFifo.push(scalarMult(1 / (dt + 1E-6), diff([e.alpha, e.beta, e.gamma], myDevice.euler)));
 		    document.getElementById("alpha").innerHTML = e.alpha.toFixed(2);
             document.getElementById("beta").innerHTML  = e.beta.toFixed(2);
             document.getElementById("gamma").innerHTML = e.gamma.toFixed(2);
-		}
+		});
 	}
     preventScrollingMobile();
 }
