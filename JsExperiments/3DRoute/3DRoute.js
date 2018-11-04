@@ -50,6 +50,8 @@ var maxCurve = [ 3,  3,  3];
 var cam;
 var myDevice;
 
+var isFirstIte = true;
+
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 /**
@@ -472,7 +474,9 @@ function init() {
 		 window.addEventListener('deviceorientation', e => {
 			var euler = [Math.round(e.alpha), Math.round(e.beta), Math.round(e.gamma)];
 			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
-			eulerSpeedFifo.push(scalarMult(1 / (1E-3), diff(euler, myDevice.euler)));
+
+			if(!isFirstIte) eulerSpeedFifo.push(scalarMult(1 / (1E-3), diff(euler, myDevice.euler)));
+
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
             document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
             document.getElementById("gamma").innerHTML = euler[2].toFixed(2);
@@ -619,7 +623,7 @@ function updateCurve(dt) {
 	center = scalarMult(0.5, center);
 	var radius = myNorm(diff(maxCurve, center));
 	cam.param[0] = radius;
-
+	isFirstIte = false;
 }
 
 function drawDeviceAxis(data) {
