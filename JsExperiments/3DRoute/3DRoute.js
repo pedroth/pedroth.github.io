@@ -479,7 +479,11 @@ function init() {
 				eulerSpeed = scalarMult(1 / (1E-3), diff(euler, myDevice.euler));
 				eulerSpeedFifo.push(eulerSpeed);
 				document.getElementById("euler").innerHTML = `${eulerSpeed}`;
-			} 
+			} else {
+				eulerSpeed = [0,0,0];
+				eulerSpeedFifo.push(eulerSpeed);
+				document.getElementById("euler").innerHTML = `${eulerSpeed}`;
+			}
 
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
             document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
