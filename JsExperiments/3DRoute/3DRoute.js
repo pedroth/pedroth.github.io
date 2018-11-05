@@ -32,12 +32,12 @@ var xmin, xmax;
 
 //error correcting variables
 var accelerationFifo;
-var eulerSpeedFifo;
+var eulerFifo;
 var samples = 20;
 
 // calibration variables
 var accelerationCalibration = [0, 0, 0];
-var eulerSpeedCalibration = [0, 0, 0];
+var eulerCalibration = [0, 0, 0];
 var calibrationIte = 1;
 var isCalibrating = true;
 var maxCalibrationTimeInSeconds = 10;
@@ -458,7 +458,7 @@ function init() {
     myDevice = new Device();
 
     accelerationFifo = new Fifo(samples);
-    eulerSpeedFifo = new Fifo(samples);
+    eulerFifo = new Fifo(samples);
 
     calibrationLoadingUI = new LoadingBar([canvas.width / 4, canvas.height / 3], [canvas.width / 2, 25]);
 
@@ -472,16 +472,11 @@ function init() {
 		};
 
 		 window.addEventListener('deviceorientation', e => {
-			var dt = 1E-3 * (new Date().getTime() - startTime);
 			var euler = [Math.round(e.alpha), Math.round(e.beta), Math.round(e.gamma)];
 			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
-			
-			myDevice.euler = isFirstIte ? euler : myDevice.euler;
 
-            eulerSpeed = scalarMult(1.0 , diff(euler, myDevice.euler));
-            eulerSpeedFifo.push([0,0,0]);
-            document.getElementById("euler").innerHTML = `${eulerSpeed}`;
-
+            eulerFifo.push(euler);
+            document.getElementById("euler").innerHTML = `${euler}`;
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
             document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
             document.getElementById("gamma").innerHTML = euler[2].toFixed(2);
@@ -572,8 +567,8 @@ function drawAxis(data) {
     draw3DLine([[0, 0, 0], [0, 0, 1]],[255, 255, 255, 255], data);
 }
 
-function sendData2PublicChat(accelerationFifo, eulerSpeedFifo) {
-	var text = accelerationFifo + " : " + eulerSpeedFifo;
+function sendData2PublicChat(accelerationFifo, eulerFifo) {
+	var text = accelerationFifo + " : " + eulerFifo;
     //send request to server
     $.ajax({
             method:"POST",
@@ -600,15 +595,15 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile) {
-	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1,1,1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
+	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1, 1, 1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
 		accelerationFifo.push(newAcc);
-		eulerSpeedFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI/2 + Math.PI * Math.random()]);
+		eulerFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI/2 + Math.PI * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
-	var averageEulerSpeed = diff(averageVectorFifo(eulerSpeedFifo), eulerSpeedCalibration);
+	var averageEuler = diff(averageVectorFifo(eulerFifo), eulerCalibration);
 
-	sendData2PublicChat(averageAcceleration, averageEulerSpeed);
+	sendData2PublicChat(averageAcceleration, averageEuler);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
@@ -616,7 +611,7 @@ function updateCurve(dt) {
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
-	var eulerSpeedRad = averageEulerSpeed;
+	var eulerSpeedRad = (1 / dt) * diff(averageEuler, myDevice.euler);
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
@@ -643,9 +638,9 @@ function drawDeviceAxis(data) {
 function calibration(dt, data) {
 	// calibration 
 	var averageAcceleration = averageVectorFifo(accelerationFifo);
-	var averageEulerSpeed = averageVectorFifo(eulerSpeedFifo);
+	var averageEulerSpeed = averageVectorFifo(eulerFifo);
 	accelerationCalibration = add(accelerationCalibration, scalarMult(1.0 / calibrationIte, diff(averageAcceleration, accelerationCalibration)));
-	eulerSpeedCalibration = add(eulerSpeedCalibration, scalarMult(1.0 / calibrationIte, diff(averageEulerSpeed, eulerSpeedCalibration)));
+	eulerCalibration = add(eulerCalibration, scalarMult(1.0 / calibrationIte, diff(averageEulerSpeed, eulerCalibration)));
 	calibrationIte++;
 
 	//sendData2PublicChat(averageAcceleration, averageEulerSpeed);
