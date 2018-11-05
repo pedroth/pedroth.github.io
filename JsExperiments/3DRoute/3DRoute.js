@@ -611,7 +611,7 @@ function updateCurve(dt) {
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
-	var eulerSpeedRad = (1 / dt) * diff(averageEuler, myDevice.euler);
+	var eulerSpeedRad = (1 / (dt + 1E-6)) * diff(averageEuler, myDevice.euler);
 	myDevice.euler = add(myDevice.euler, scalarMult(dt, eulerSpeedRad));
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
