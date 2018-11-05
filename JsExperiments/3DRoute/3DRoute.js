@@ -479,7 +479,7 @@ function init() {
 			myDevice.euler = isFirstIte ? euler : myDevice.euler;
 
             eulerSpeed = scalarMult(1.0 , diff(euler, myDevice.euler));
-            eulerSpeedFifo.push(eulerSpeed);
+            eulerSpeedFifo.push(myDevice.euler);
             document.getElementById("euler").innerHTML = `${eulerSpeed}`;
 
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
