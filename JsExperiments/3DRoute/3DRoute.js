@@ -477,8 +477,8 @@ function init() {
 			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
 			
 			myDevice.euler = isFirstIte ? euler : myDevice.euler;
-			
-            eulerSpeed = scalarMult(1.0 / (dt + 1E-6), diff(euler, myDevice.euler));
+
+            eulerSpeed = scalarMult(1.0 , diff(euler, myDevice.euler));
             eulerSpeedFifo.push(eulerSpeed);
             document.getElementById("euler").innerHTML = `${eulerSpeed}`;
 
