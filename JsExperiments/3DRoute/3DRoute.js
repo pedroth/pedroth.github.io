@@ -50,7 +50,7 @@ var maxCurve = [ 3,  3,  3];
 var cam;
 var myDevice;
 
-var isFirstIte = true;
+var isManual = false;
 
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -476,7 +476,6 @@ function init() {
 			euler = add(scalarMult(Math.PI / 180, diff(euler, [0, -180, -90])), [0, -Math.PI, -Math.PI / 2]);
 
             eulerFifo.push(euler);
-            document.getElementById("euler").innerHTML = `${euler}`;
 		    document.getElementById("alpha").innerHTML = euler[0].toFixed(2);
             document.getElementById("beta").innerHTML  = euler[1].toFixed(2);
             document.getElementById("gamma").innerHTML = euler[2].toFixed(2);
@@ -487,16 +486,23 @@ function init() {
 
 
 function keyDown(e) {
-    if (e.keyCode == 87) {
-    }
-
-    if (e.keyCode == 83) {
-    }
-
-    if (e.keyCode == 65) {
-    }
-
-    if (e.keyCode == 68) {
+    isManual = true;
+    switch(e.keyCode) {
+        case 65:
+            eulerFifo.push(add(averageVectorFifo(eulerFifo), [-0.1, 0, 0]));
+        break;
+        case 87:
+            eulerFifo.push(add(averageVectorFifo(eulerFifo), [0, 0.1, 0]));
+        break;
+        case 68:
+            eulerFifo.push(add(averageVectorFifo(eulerFifo), [0.1, 0, 0]));
+        break;
+        case 81:
+            eulerFifo.push(add(averageVectorFifo(eulerFifo), [0, 0, 0.1]));
+        break;
+        case 69:
+            eulerFifo.push(add(averageVectorFifo(eulerFifo), [0, 0, -0.1]));
+        break;
     }
 }
 
@@ -594,10 +600,10 @@ function updateCurve(dt) {
 		curve[0] = [0, 0, 0];
 	}
 
-	if(!isMobile) {
+	if(!isMobile && !isManual) {
 	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1, 1, 1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
 		accelerationFifo.push(newAcc);
-		eulerFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI/2 + Math.PI * Math.random()]);
+		eulerFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI / 2 + Math.PI * Math.random()]);
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
@@ -611,7 +617,7 @@ function updateCurve(dt) {
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 
-	myDevice.euler = averageEuler
+	myDevice.euler = averageEuler;
 
 	curve.push(vec3(myDevice.pos[0], myDevice.pos[1], myDevice.pos[2]));
 	
@@ -622,16 +628,12 @@ function updateCurve(dt) {
 	center = scalarMult(0.5, center);
 	var radius = myNorm(diff(maxCurve, center));
 	cam.param[0] = radius;
-	isFirstIte = false;
 }
 
 function drawDeviceAxis(data) {
 	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[0])], [255, 0, 0, 255], data);
 	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[1])], [0, 255, 0, 255], data);
 	draw3DLine([myDevice.pos, add(myDevice.pos, myDevice.basis[2])], [0, 0, 255, 255], data);
-	//draw3DLine([[0,0,0], myDevice.basis[0]], [255, 0, 0, 255], data);
-	//draw3DLine([[0,0,0], myDevice.basis[1]], [0, 255, 0, 255], data);
-	//draw3DLine([[0,0,0], myDevice.basis[2]], [0, 0, 255, 255], data);
 }
 
 function calibration(dt, data) {
