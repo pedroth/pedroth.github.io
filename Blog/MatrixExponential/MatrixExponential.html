@@ -148,23 +148,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 To solve it you just need to use the fundamental theorem of calculus, like this:
 
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau\;\;\;\;(3)$$
+                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(\tau) \,d\tau\;\;\;\;(3)$$
 
                 We can solve this numerically, but if we want a more analytic expression we need to use the same approach as <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> polynomial post.
 
                 Suppose we could compute all the derivatives at $t = 0$. Also note that:
 
                 $$
-                \int_0^{t} \dot{\mathbf{g}}(\tau) \,d\tau = \begin{bmatrix}
-                \int_0^t \dot{g_1}(\tau)d\tau\\
+                \int_0^{t} \mathbf{g}(\tau) \,d\tau = \begin{bmatrix}
+                \int_0^t g_1(\tau)d\tau\\
                 ...\\
-                \int_0^t \dot{g_n}(\tau)d\tau
+                \int_0^t g_n(\tau)d\tau
                 \end{bmatrix}
                 $$
 
                 Then using the Taylor polynomial trick we get:
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \dot{\mathbf{g}}(0) \,d\tau + \int_0^t\int_0^\tau\ddot{\mathbf{g}}(0) d\tau_2 d\tau + \dots$$
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \sum_{k=1}^{\infty} \frac{d^{k}\mathbf{g}(0)}{dt^k} \frac{t^k}{k!}\;\;\;\;(4)$$
+                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(0) \,d\tau + \int_0^t\int_0^\tau\dot{\mathbf{g}}(0) d\tau_2 d\tau + \dots$$
+                $$\mathbf{x}(t) = \mathbf{x}(0) + \sum_{k=1}^{\infty} \frac{d^{k-1}\mathbf{g}(0)}{dt^{k-1}} \frac{t^k}{k!}\;\;\;\;(4)$$
 
                 We solved our basic problem, now using this tool we can solve others.
 
