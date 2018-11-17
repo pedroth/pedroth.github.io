@@ -14,88 +14,134 @@
         <div class="row">
             <div class="col-lg-auto col-md-auto mx-auto">
                 <h2> Intro </h2>
-                In this post I would like to talk about simple differential equations (DE) in the euclidean space. This is the problem of finding a function $ \mathbf{x}(t):\mathbb{R}\rightarrow\mathbb{R}^n$ such that $\dot{\mathbf{x}}(t) = \frac{d \mathbf{x}}{dt} = \mathbf{g}(t,\mathbf{x})$.
-                Which is the same as :
-                $$
-                \dot{\mathbf{x}} = \begin{bmatrix}\dot{x}_1\\ ...\\ \dot{x}_n\end{bmatrix} =
-                \begin{bmatrix}
-                g_1(t,x_1,...,x_n)\\
-                ...\\
-                g_n(t,x_1,...,x_n)
-                \end{bmatrix} \;\;\;\;(1)
-                $$
+                <p>
+                    In this post I would like to talk about simple differential equations (DE) in the euclidean space.
+                    This is the problem of finding a function $ \mathbf{x}(t):\mathbb{R}\rightarrow\mathbb{R}^n$ such
+                    that $\dot{\mathbf{x}}(t) = \frac{d \mathbf{x}}{dt} = \mathbf{g}(t,\mathbf{x})$.
+                    Which is the same as :
+                    $$
+                    \dot{\mathbf{x}} = \begin{bmatrix}\dot{x}_1\\ ...\\ \dot{x}_n\end{bmatrix} =
+                    \begin{bmatrix}
+                    g_1(t,x_1,...,x_n)\\
+                    ...\\
+                    g_n(t,x_1,...,x_n)
+                    \end{bmatrix} \;\;\;\;(1)
+                    $$
 
-                We have already seen some differential equations in the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> and <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition calculus</a> posts, but here we will solve a general class of DE's using what we learned from the previous posts.
-                <br>
-                We can visualize this problem as time-varying vector field in $\mathbb{R}^n$. For each $\mathbf{x} \in \mathbb{R}^n$ and $t \in \mathbb{R}$ we compute $\mathbf{g}(t, \mathbf{x})$ which is the vector quantity. Then for a particular $\mathbf{x}_0$ we want to find $\mathbf{x}(t)$, such that $\mathbf{x}(0) = \mathbf{x}_0$ and $ \dot{\mathbf{x}}(t) = \mathbf{g}(t, \mathbf{x}(t))$.
-                Basically, we want to find the curve that follows the vector field, or to find the path of a particle in a velocity field.<br><br>
+                    We have already seen some differential equations in the <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a>
+                    and <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition
+                    calculus</a> posts, but here we will solve a general class of DE's using what we learned from the
+                    previous posts.
+                    We can apply everything from one-variable functions to a one-dimensional vector value function like
+                    $\mathbf{x}$. This function may be thought as a deformation of the real line to the $\mathbb{R}^n$
+                    space (a.k.a a curve). For a small step $h>0$ in the domain we have a small change in the curve:
 
-                Throughout this post, we use $n,m,k,N$ as integers.
+                    $$\mathbf{x}(t+h) - \mathbf{x}(t) \approx \mathbf{x}(t) + \dot{\mathbf{x}}(t)h - \mathbf{x}(t) =
+                    \dot{\mathbf{x}}(t)h$$
+
+                    From the formula above we find that $\dot{\mathbf{x}}(t)$ is a tangent vector of the curve. Using
+                    this linear approximation we can derive the fundamental theorems of calculus using <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition
+                    calculus</a> ideas.
+                </p>
+                <p>
+                    We can visualize this problem as a path of a particle whose velocity is given by a time-varying vector field in $\mathbb{R}^n$.
+                    Other way of seeing this problem, is to find a curve, such that it's tangent vectors is given by the vector field $\mathbf{g}(t, \mathbf{x})$.
+                    With these ideas in mind let's solve the equations.
+                </p>
 
                 <h2> Solving the equation </h2>
+                <p>
+                    Is very difficult to solve (1) since $\mathbf{g}$ depends on $\mathbf{x}$ and $t$. If we remove the
+                    dependency of $\mathbf{x}$, it will become easier. Suppose we have the following equation:
 
-                Is very difficult to solve (1) since $\mathbf{g}$ depends on $\mathbf{x}$ and $t$. If we remove the dependency of $\mathbf{x}$, it will become easier. Suppose we have the following equation:
+                    $$\dot{\mathbf{x}}(t) = \mathbf{g}(t)\,\,\;\;\;\;(2)$$
 
-                $$\dot{\mathbf{x}}(t) = \mathbf{g}(t)\,\,\;\;\;\;(2)$$
+                    To solve it you just need to use the fundamental theorem of calculus, like this:
 
-                To solve it you just need to use the fundamental theorem of calculus, like this:
+                    $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(\tau) \,d\tau\;\;\;\;(3)$$
 
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(\tau) \,d\tau\;\;\;\;(3)$$
+                    We can solve this numerically, but if we want a more analytic expression we need to use the same
+                    approach as <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a>
+                    polynomial post.
+                    Suppose we could compute all the derivatives at $t = 0$. Also note that:
 
-                We can solve this numerically, but if we want a more analytic expression we need to use the same approach as <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor</a> polynomial post.
+                    $$
+                    \int_0^{t} \mathbf{g}(\tau) \,d\tau = \begin{bmatrix}
+                    \int_0^t g_1(\tau)d\tau\\
+                    ...\\
+                    \int_0^t g_n(\tau)d\tau
+                    \end{bmatrix}
+                    $$
 
-                Suppose we could compute all the derivatives at $t = 0$. Also note that:
+                    Then using the Taylor polynomial trick we get:
+                    $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(0) \,d\tau +
+                    \int_0^t\int_0^\tau\dot{\mathbf{g}}(0) d\tau_2 d\tau + \dots$$
+                    $$\mathbf{x}(t) = \mathbf{x}(0) + \sum_{k=1}^{\infty} \frac{d^{k-1}\mathbf{g}(0)}{dt^{k-1}}
+                    \frac{t^k}{k!}\;\;\;\;(4)$$
+                    We solved our basic problem, now using this tool we can solve others.
+                </p>
 
-                $$
-                \int_0^{t} \mathbf{g}(\tau) \,d\tau = \begin{bmatrix}
-                \int_0^t g_1(\tau)d\tau\\
-                ...\\
-                \int_0^t g_n(\tau)d\tau
-                \end{bmatrix}
-                $$
-
-                Then using the Taylor polynomial trick we get:
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \int_0^{t} \mathbf{g}(0) \,d\tau + \int_0^t\int_0^\tau\dot{\mathbf{g}}(0) d\tau_2 d\tau + \dots$$
-                $$\mathbf{x}(t) = \mathbf{x}(0) + \sum_{k=1}^{\infty} \frac{d^{k-1}\mathbf{g}(0)}{dt^{k-1}} \frac{t^k}{k!}\;\;\;\;(4)$$
-
-                We solved our basic problem, now using this tool we can solve others.
 
                 <h2>Ordinary differential equation(ODE)</h2>
 
-                In this blog post we refer to a ordinary differential equation to the following problem:
+                <p>
+                    In this blog post we refer to a ordinary differential equation to the following problem:
 
-                $$\dot{\mathbf{x}} = M \mathbf{x}\;\;,\;\mathbf{x}(0) = \mathbf{x}_0\;\;\;\;(5)$$
+                    $$\dot{\mathbf{x}} = M \mathbf{x}\;\;,\;\mathbf{x}(0) = \mathbf{x}_0\;\;\;\;(5)$$
 
-                Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. To solve (5) we will use the Taylor polynomial approach since we can't use (3) because the problem has the form $\dot{\mathbf{x}}(t) = \mathbf{g}(\mathbf{x})$.<br><br>
+                    Where $M \in \mathbb{R}^{n\times n}$ is a n by n matrix. To solve (5) we will use the Taylor
+                    polynomial approach since we can't use (3) because the problem has the form $\dot{\mathbf{x}}(t) =
+                    \mathbf{g}(\mathbf{x})$.<br><br>
 
-                Since $\mathbf{g(x)}$ has a simple form, we can compute all the derivatives at one point:
-                $$\frac{d\mathbf{x}}{dt} = M \mathbf{x}$$
-                $$\frac{d^2\mathbf{x}}{dt^2} = M \frac{d\mathbf{x}}{dt} = M^2 \mathbf{x}$$
-                $$...$$
-                $$\frac{d^k\mathbf{x}}{dt^k} = M^k \mathbf{x}\;\;\;\;(6)$$
+                    Since $\mathbf{g(x)}$ has a simple form, we can compute all the derivatives at one point:
+                    $$\frac{d\mathbf{x}}{dt} = M \mathbf{x}$$
+                    $$\frac{d^2\mathbf{x}}{dt^2} = M \frac{d\mathbf{x}}{dt} = M^2 \mathbf{x}$$
+                    $$...$$
+                    $$\frac{d^k\mathbf{x}}{dt^k} = M^k \mathbf{x}\;\;\;\;(6)$$
 
-                Using the initial condition $\mathbf{x}(0) = \mathbf{x}_0$, (6) and (4) we get the solution:
+                    Using the initial condition $\mathbf{x}(0) = \mathbf{x}_0$, (6) and (4) we get the solution:
 
-                $$\mathbf{x}(t) =\sum_{k=0}^{\infty} \frac{d^{(k)}\mathbf{x}(0)}{dt^k} \frac{t^k}{k!}$$
+                    $$\mathbf{x}(t) =\sum_{k=0}^{\infty} \frac{d^{(k)}\mathbf{x}(0)}{dt^k} \frac{t^k}{k!}$$
 
-                $$ \mathbf{x}(t) = \sum_{k=0}^{\infty} M^k \mathbf{x}_0 \frac{t^k}{k!}$$
+                    $$ \mathbf{x}(t) = \sum_{k=0}^{\infty} M^k \mathbf{x}_0 \frac{t^k}{k!}$$
 
-                $$ \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
+                    $$ \mathbf{x}(t) = \left ( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M t)^k}{k!}\right
+                    )\mathbf{x}_0 = \exp\left( Mt\right)\mathbf{x}_0\;\;\;\;(7)$$
 
-                The solution of this problem is what it's called the matrix exponential. In order to compute numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$. From the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's polynomial</a> post we know how to compute the upper bound on the error ($|R_N(t)|$):
+                    The solution of this problem is what it's called the matrix exponential. In order to compute
+                    numerically the matrix $\exp\left( Mt\right)$ we must truncate the sum to a sufficient high $N$.
+                    From the <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor's
+                    polynomial</a> post we know how to compute the upper bound on the error ($|R_N(t)|$):
 
-                $$|R_N(t)| \leq \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
+                    $$|R_N(t)| \leq \max \left | M^{N+1} \mathbf{x}(t)\right | \frac{t^{N+1}}{(N+1)!}$$
 
-                We will see, maybe in a future post, that we can define a better computational bound( that maximum is difficult to compute ). Using this error estimate we can choose the proper $N$ for a specified error.<br><br>
+                    We will see, maybe in a future post, that we can define a better computational bound( that maximum
+                    is difficult to compute ). Using this error estimate we can choose the proper $N$ for a specified
+                    error.<br><br>
 
-                Another way to solve this problem is to use the <a href="http://en.wikipedia.org/wiki/Euler_method?oldformat=true">Euler method</a> for ODE's. We have seen this technique before in the <a href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition of calculus</a> post.
-                To explain the Euler method we need visualize the problem as a vector field, like it was said in the beginning of this article( please check fig.1 and fig.2 ).
+                    Another way to solve this problem is to use the <a
+                        href="http://en.wikipedia.org/wiki/Euler_method?oldformat=true">Euler method</a> for ODE's. We
+                    have seen this technique before in the <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/IntuitionOfCalculus/IntuitionOfCalculus.html">intuition
+                    of calculus</a> post.
+                    To explain the Euler method we need visualize the problem as a vector field, like it was said in the
+                    beginning of this article( please check fig.1 and fig.2 ).
+                </p>
+
 
                 <br>
                 <br>
                 <div style="text-align: center;">
-                    <img border="0" src="https://4.bp.blogspot.com/-xyzfeDckAgk/VQQ2I5zCTfI/AAAAAAAAATg/W1zQVV0efIU/s640/Numerozinho_15.jpg" height="400" width="600"/>
-                    <p>Fig.1 Example of a vector field, blue line is an integral curve for the vector field (also known as a solution to the ODE)</p>
+                    <img border="0"
+                         src="https://4.bp.blogspot.com/-xyzfeDckAgk/VQQ2I5zCTfI/AAAAAAAAATg/W1zQVV0efIU/s640/Numerozinho_15.jpg"
+                         height="400" width="600"/>
+                    <p>Fig.1 Example of a vector field, blue line is an integral curve for the vector field (also known
+                        as a solution to the ODE)</p>
                 </div>
                 <br>
                 <br>
@@ -103,203 +149,239 @@
                 <br>
                 <br>
                 <div style="text-align: center;">
-                    <img border="0" src="https://3.bp.blogspot.com/-A__n89eCuFY/VQQ2M3-qs7I/AAAAAAAAATo/e1Ig2WMwfw0/s640/Numerozinho_16.jpg" height="400" width="600"/>
-                    <p>Fig.2 Other example of a vector field, blue line is the true integral curve, and the red curve is the approximation curve given by the Euler method</p>
+                    <img border="0"
+                         src="https://3.bp.blogspot.com/-A__n89eCuFY/VQQ2M3-qs7I/AAAAAAAAATo/e1Ig2WMwfw0/s640/Numerozinho_16.jpg"
+                         height="400" width="600"/>
+                    <p>Fig.2 Other example of a vector field, blue line is the true integral curve, and the red curve is
+                        the approximation curve given by the Euler method</p>
                 </div>
                 <br>
                 <br>
 
-                We can imagine that, a particle $\mathbf{x}(t)$ moving through $\mathbb{R}^n$, with velocity given by $\mathbf{g}(\mathbf{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$.
-                For the more geometrical minds, you can imagine a curve that starts at $\mathbf{x}_0$ and for all points on the curve $\mathbf{x}(t)$, it's tangent vectors are given by $\mathbf{g}(\mathbf{x})$. The general problem we are trying to solve is:
+                <p>
+                    We can imagine that, a particle $\mathbf{x}(t)$ moving through $\mathbb{R}^n$, with velocity given
+                    by $\mathbf{g}(\mathbf{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$.
+                    For the more geometrical minds, you can imagine a curve that starts at $\mathbf{x}_0$ and for all
+                    points on the curve $\mathbf{x}(t)$, it's tangent vectors are given by $\mathbf{g}(\mathbf{x})$. The
+                    general problem we are trying to solve is:
 
-                $$\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x})\;\;,\;\mathbf{x}(0) = \mathbf{x}_0$$
+                    $$\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x})\;\;,\;\mathbf{x}(0) = \mathbf{x}_0$$
 
-                The Euler method works by starting with $\mathbf{x}_0$, then compute the tangent/velocity vector using $\mathbf{g}(\mathbf{x})$, hence compute the next position by moving this point towards the direction of the calculated vector.
-                This algorithm can also be derived in a more analytic way. Take into consideration the fundamental theorem of calculus:
+                    The Euler method works by starting with $\mathbf{x}_0$, then compute the tangent/velocity vector
+                    using $\mathbf{g}(\mathbf{x})$, hence compute the next position by moving this point towards the
+                    direction of the calculated vector.
+                    This algorithm can also be derived in a more analytic way. Take into consideration the fundamental
+                    theorem of calculus:
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t + \tau) d\tau $$
+                    $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t + \tau) d\tau $$
 
-                Doing the same for $\dot{\mathbf{x}}$,
+                    Doing the same for $\dot{\mathbf{x}}$,
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \left [ \dot{\mathbf{x}}(t) +  \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu \right ] d\tau $$
+                    $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \left [ \dot{\mathbf{x}}(t) + \int_0^{\tau}
+                    \ddot{\mathbf{x}}(t + \mu) d\mu \right ] d\tau $$
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t) d\tau +  \int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
+                    $$\mathbf{x}(t + h) = \mathbf{x}(t) + \int_{0}^{h} \dot{\mathbf{x}}(t) d\tau + \int_0^h
+                    \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
 
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h  +  \int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
+                    $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h \int_0^{\tau}
+                    \ddot{\mathbf{x}}(t + \mu) d\mu d\tau $$
 
-                This method works by noticing that the term $\int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$ can be ignored when $h \rightarrow 0$. In order to see that, let us define the error of the approximation:
+                    This method works by noticing that the term $\int_0^h \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu
+                    d\tau$ can be ignored when $h \rightarrow 0$. In order to see that, let us define the error of the
+                    approximation:
 
-                $$\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) - \dot{\mathbf{x}}(t)h|$$
+                    $$\mathcal{E}(h) = |\mathbf{x}(t + h) - \mathbf{x}(t) - \dot{\mathbf{x}}(t)h|$$
 
-                We can expand the error, by computing an upper bound of the error:
+                    We can expand the error, by computing an upper bound of the error:
 
-                $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right | \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
+                    $$\mathcal{E}(h) = \left |\int_0^{h} \int_0^{\tau} \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right |
+                    \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau$$
 
-                $$\mathcal{E}(h) \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau} 1 d\mu d\tau,\;\;\; c\in[t, t+h]$$
-                $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
+                    $$\mathcal{E}(h) \leq \int_0^{h} \int_0^{\tau} |\ddot{\mathbf{x}}(t + \mu)| d\mu d\tau \leq \max
+                    |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau} 1 d\mu d\tau,\;\;\; c\in[t, t+h]$$
+                    $$\mathcal{E}(h) \leq \max |\ddot{\mathbf{x}}(c)| \int_0^{h} \int_0^{\tau } 1 d\mu d\tau = \max
+                    |\ddot{\mathbf{x}}(c)| \frac{h^2}{2}$$
 
-                From this upper bound on the error we can deduce that as $h \rightarrow 0$, the double integral term decreases quadratically to 0, hence we can ignore it. We can also deduce, that if second derivative is zero then the method follows perfectly the flow (which is a obvious statement if think geometrically).<br><br>
+                    From this upper bound on the error we can deduce that as $h \rightarrow 0$, the double integral term
+                    decreases quadratically to 0, hence we can ignore it. We can also deduce, that if second derivative
+                    is zero then the method follows perfectly the flow (which is a obvious statement if think
+                    geometrically).<br><br>
 
-                In summary, this method ignores the quadratic error. This translates into the following iteration:
+                    In summary, this method ignores the quadratic error. This translates into the following iteration:
 
-                $$\mathbf{x}(t + h) \simeq \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))\;\;\;\;(8)$$
+                    $$\mathbf{x}(t + h) \simeq \mathbf{x}(t) + h \mathbf{g}(\mathbf{x}(t))\;\;\;\;(8)$$
 
-                Using (8) in our simple ODE (5), we get:
+                    Using (8) in our simple ODE (5), we get:
 
-                $$ \mathbf{x}(t + h) \simeq \mathbf{x}(t) + h M\mathbf{x}(t)$$
-                $$ \mathbf{x}(t + h) \simeq (I + h M)\mathbf{x}(t)$$
+                    $$ \mathbf{x}(t + h) \simeq \mathbf{x}(t) + h M\mathbf{x}(t)$$
+                    $$ \mathbf{x}(t + h) \simeq (I + h M)\mathbf{x}(t)$$
 
-                Starting from $t_0$:
+                    Starting from $t_0$:
 
-                $$\mathbf{x}(t_0) \simeq \mathbf{x}_0$$
-                $$\mathbf{x}(t_0 + h) \simeq (I + h M)\mathbf{x}_0$$
-                $$\mathbf{x}(t_0 + 2h) \simeq (I + h M)\mathbf{x}(t_0+h) = (I + h M)^2\mathbf{x}_0$$
-                $$\dots$$
-                $$\mathbf{x}(t_0 + kh) \simeq (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
+                    $$\mathbf{x}(t_0) \simeq \mathbf{x}_0$$
+                    $$\mathbf{x}(t_0 + h) \simeq (I + h M)\mathbf{x}_0$$
+                    $$\mathbf{x}(t_0 + 2h) \simeq (I + h M)\mathbf{x}(t_0+h) = (I + h M)^2\mathbf{x}_0$$
+                    $$\dots$$
+                    $$\mathbf{x}(t_0 + kh) \simeq (I + h M)^k\mathbf{x}_0\;\;\;(9)$$
 
-                Let $t = t_0 + Nh$, where $N+1$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
-                From (9) and substituting $h$, we get:
+                    Let $t = t_0 + Nh$, where $N+1$ is the number of samples. Then $h = \frac{t - t_0}{N}$.
+                    From (9) and substituting $h$, we get:
 
-                $$\mathbf{x}(t) \simeq \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0$$
+                    $$\mathbf{x}(t) \simeq \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0$$
 
-                As $h \rightarrow 0$, the better the approximation in (8) becomes, also $N \rightarrow \infty$, therefore if we take the limit of $N$ to infinity, we will get $\mathbf{x}(t)$ exactly:
+                    As $h \rightarrow 0$, the better the approximation in (8) becomes, also $N \rightarrow \infty$,
+                    therefore if we take the limit of $N$ to infinity, we will get $\mathbf{x}(t)$ exactly:
 
-                $$\mathbf{x}(t) = \lim_{N \rightarrow \infty} \left (I + \left (\frac{t-t_0}{N}\right )M \right )^{N}\mathbf{x}_0 \;\;\; (10)$$
+                    $$\mathbf{x}(t) = \lim_{N \rightarrow \infty} \left (I + \left (\frac{t-t_0}{N}\right )M \right
+                    )^{N}\mathbf{x}_0 \;\;\; (10)$$
 
-                From (7) and (10) we can conclude that solution of (5) is:
-                $$\mathbf{x}(t) = \left( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!}\right)\mathbf{x}_0$$
-                $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right )^{N}\mathbf{x}_0$$
+                    From (7) and (10) we can conclude that solution of (5) is:
+                    $$\mathbf{x}(t) = \left( \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M
+                    (t-t_0))^k}{k!}\right)\mathbf{x}_0$$
+                    $$\mathbf{x}(t) = \lim_{N \to \infty}\left (I + \left (\frac{t-t_0}{N}\right )M\right
+                    )^{N}\mathbf{x}_0$$
 
-                Finally we can define the matrix exponential as:
+                    Finally we can define the matrix exponential as:
 
-                $$ \exp\left (M(t - t_0)\right )\mathbf{x}_0 = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
+                    $$ \exp\left (M(t - t_0)\right )\mathbf{x}_0 = \lim_{N\to \infty}\left (I + \frac{t-t_0}{N} M \right
+                    )^N = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{(M (t-t_0))^k}{k!} = e^{Mt}\mathbf{x}_0$$
 
-                Now we have deduced two ways of solving (5), so let us solve a real problem.
-
+                    Now we have deduced two ways of solving (5), so let us solve a real problem.
+                </p>
                 <h2> Worked example </h2>
 
-                Let us solve:
+                <p>
+                    Let us solve:
 
-                $$
-                \dot{\mathbf{x}} = \begin{bmatrix} 0 & -1\\ 1 & 0\end{bmatrix}
-                \mathbf{x},\;\;\;\mathbf{x}(0) = \begin{bmatrix} 1\\0\end{bmatrix}
-                $$
+                    $$
+                    \dot{\mathbf{x}} = \begin{bmatrix} 0 & -1\\ 1 & 0\end{bmatrix}
+                    \mathbf{x},\;\;\;\mathbf{x}(0) = \begin{bmatrix} 1\\0\end{bmatrix}
+                    $$
 
-                We know that the solution is:
-                $$
-                \mathbf{x}(t) = e^{\left (\begin{bmatrix} 0 & -1\\ 1 & 0 \end{bmatrix} t \right)}\begin{bmatrix}
-                1\\
-                0
-                \end{bmatrix} = \exp\left (\begin{bmatrix} 0 & -1\\
-                1 & 0
-                \end{bmatrix} t \right)\begin{bmatrix}
-                1\\ 0
-                \end{bmatrix}
-                $$
+                    We know that the solution is:
+                    $$
+                    \mathbf{x}(t) = e^{\left (\begin{bmatrix} 0 & -1\\ 1 & 0 \end{bmatrix} t \right)}\begin{bmatrix}
+                    1\\
+                    0
+                    \end{bmatrix} = \exp\left (\begin{bmatrix} 0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t \right)\begin{bmatrix}
+                    1\\ 0
+                    \end{bmatrix}
+                    $$
 
-                We just need to compute $
-                \exp\left (\begin{bmatrix}
-                0 &-1\\
-                1 & 0
-                \end{bmatrix} t \right)$
-                $$\exp\left (\begin{bmatrix}
-                0 &-1\\
-                1 & 0
-                \end{bmatrix} t \right) = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{\left(\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} t\right)^k}{k!}\\
-                \exp\left (\begin{bmatrix}
-                0 & -1\\
-                1 &  0
-                \end{bmatrix} t \right) = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \left(\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} \right)^k \frac{t^k}{k!}$$
-                Note that $$\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} ^k =\left\{\begin{matrix}
-                \begin{bmatrix}
-                1 & 0\\
-                0 & 1
-                \end{bmatrix} , \text{if } k \mod{4} = 0\\\\
-                \begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} , \text{if }k \mod{4}=1\\
-                \\
-                \begin{bmatrix}
-                -1 & 0\\
-                 0 & -1
-                \end{bmatrix}, \text{if } k \mod{4}=2\\\\
-                \begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} , \text{if } k \mod{4} = 3
-                \end{matrix}\right.$$
-                Where $n \mod k$ is the <a href="http://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a>.
+                    We just need to compute $
+                    \exp\left (\begin{bmatrix}
+                    0 &-1\\
+                    1 & 0
+                    \end{bmatrix} t \right)$
+                    $$\exp\left (\begin{bmatrix}
+                    0 &-1\\
+                    1 & 0
+                    \end{bmatrix} t \right) = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \frac{\left(\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t\right)^k}{k!}\\
+                    \exp\left (\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t \right) = \lim_{N \rightarrow \infty} \sum_{k=0}^{N} \left(\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} \right)^k \frac{t^k}{k!}$$
+                    Note that $$\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} ^k =\left\{\begin{matrix}
+                    \begin{bmatrix}
+                    1 & 0\\
+                    0 & 1
+                    \end{bmatrix} , \text{if } k \mod{4} = 0\\\\
+                    \begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} , \text{if }k \mod{4}=1\\
+                    \\
+                    \begin{bmatrix}
+                    -1 & 0\\
+                    0 & -1
+                    \end{bmatrix}, \text{if } k \mod{4}=2\\\\
+                    \begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} , \text{if } k \mod{4} = 3
+                    \end{matrix}\right.$$
+                    Where $n \mod k$ is the <a href="http://en.wikipedia.org/wiki/Modulo_operation">modulo operation</a>.
 
-                Thus $$\exp\left (\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} t \right) = \begin{bmatrix}
-                1 & 0\\
-                0 & 1
-                \end{bmatrix} + \begin{bmatrix}
-                0 & -t\\
-                t & 0
-                \end{bmatrix} + \begin{bmatrix}
-                -\frac{t^2}{2} & 0\\
-                0  & -\frac{t^2}{2}
-                \end{bmatrix} + \begin{bmatrix}
-                0 & \frac{t^3}{3!}\\
-                -\frac{t^3}{3!} & 0
-                \end{bmatrix} + \begin{bmatrix}
-                \frac{t^4}{4!} & 0\\
-                0 & \frac{t^4}{4!}
-                \end{bmatrix}+\begin{bmatrix}
-                0 & -\frac{t^4}{4!}\\
-                \frac{t^5}{5!} & 0
-                \end{bmatrix} + \dots$$
+                    Thus $$\exp\left (\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t \right) = \begin{bmatrix}
+                    1 & 0\\
+                    0 & 1
+                    \end{bmatrix} + \begin{bmatrix}
+                    0 & -t\\
+                    t & 0
+                    \end{bmatrix} + \begin{bmatrix}
+                    -\frac{t^2}{2} & 0\\
+                    0 & -\frac{t^2}{2}
+                    \end{bmatrix} + \begin{bmatrix}
+                    0 & \frac{t^3}{3!}\\
+                    -\frac{t^3}{3!} & 0
+                    \end{bmatrix} + \begin{bmatrix}
+                    \frac{t^4}{4!} & 0\\
+                    0 & \frac{t^4}{4!}
+                    \end{bmatrix}+\begin{bmatrix}
+                    0 & -\frac{t^4}{4!}\\
+                    \frac{t^5}{5!} & 0
+                    \end{bmatrix} + \dots$$
 
-                $$\exp\left (\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} t \right) = \begin{bmatrix}
-                1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots & -t+\frac{t^3}{3!}-\frac{t^5}{5!}+ \dots\\\\
-                t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots & 1-\frac{t^2}{2} + \frac{t^4}{4!} + \dots
-                \end{bmatrix} $$
+                    $$\exp\left (\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t \right) = \begin{bmatrix}
+                    1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots & -t+\frac{t^3}{3!}-\frac{t^5}{5!}+ \dots\\\\
+                    t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots & 1-\frac{t^2}{2} + \frac{t^4}{4!} + \dots
+                    \end{bmatrix} $$
 
-                With a little effort you can recognize that:
+                    With a little effort you can recognize that:
 
-                $$\cos(t) = 1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots$$
-                $$\sin(t) = t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots$$
-                are the Taylor expansion of $\cos$ and $\sin$ function.Therefore we conclude that:
-                $$\exp\left (\begin{bmatrix}
-                0 & -1\\
-                1 & 0
-                \end{bmatrix} t \right) = \begin{bmatrix}
-                \cos(t) & -\sin(t)\\\\
-                \sin(t) & \cos(t)
-                \end{bmatrix} \\$$
+                    $$\cos(t) = 1-\frac{t^2}{2}+\frac{t^4}{4!} + \dots$$
+                    $$\sin(t) = t-\frac{t^3}{3!}+\frac{t^5}{5!} + \dots$$
+                    are the Taylor expansion of $\cos$ and $\sin$ function.Therefore we conclude that:
+                    $$\exp\left (\begin{bmatrix}
+                    0 & -1\\
+                    1 & 0
+                    \end{bmatrix} t \right) = \begin{bmatrix}
+                    \cos(t) & -\sin(t)\\\\
+                    \sin(t) & \cos(t)
+                    \end{bmatrix} \\$$
 
-                $$\mathbf{x}(t) = \begin{bmatrix}
-                \cos(t) & -\sin(t)\\\\
-                \sin(t) & \cos(t)
-                \end{bmatrix}\begin{bmatrix}
-                1\\
-                0
-                \end{bmatrix} = \begin{bmatrix}
-                \cos(t)\\
-                \sin(t)
-                \end{bmatrix}$$
+                    $$\mathbf{x}(t) = \begin{bmatrix}
+                    \cos(t) & -\sin(t)\\\\
+                    \sin(t) & \cos(t)
+                    \end{bmatrix}\begin{bmatrix}
+                    1\\
+                    0
+                    \end{bmatrix} = \begin{bmatrix}
+                    \cos(t)\\
+                    \sin(t)
+                    \end{bmatrix}$$
 
-                $\mathbf{x}(t)$ is the circle as the fig 1 suggested.
+                    $\mathbf{x}(t)$ is the circle as the fig 1 suggested.
+                </p>
 
                 <h2> Conclusion </h2>
-                In this post, we solved the basic n-dimensional ODE using the basics of calculus. We derived two ways of solving this problem, the Taylor series method and the Euler method.
-                We also derived the errors from the Taylor and Euler methods. We also defined that the solution of these ODE's are called the matrix exponential function.
+
+                <p>
+                    In this post, we solved the basic n-dimensional ODE using the basics of calculus. We derived two
+                    ways of
+                    solving this problem, the Taylor series method and the Euler method.
+                    We also derived the errors from the Taylor and Euler methods. We also defined that the solution of
+                    these
+                    ODE's are called the matrix exponential function.
+                </p>
+
 
                 <br><br>
                 <button class="btn btn-primary" onclick="app.run(0)"><h4> Linear ODE Solver </h4></button>
@@ -308,65 +390,87 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-2 col-md-offset-2">
-                                <input id="euler_slider" type="range" min="1" max="100" value="20" onchange="app.apply(0, function(x) {x.sliderUpdate();})">
+                                <input id="euler_slider" type="range" min="1" max="100" value="20"
+                                       onchange="app.apply(0, function(x) {x.sliderUpdate();})">
                             </div>
                             <div class="col-md-2">
                                 <div id="euler_step">$\h = $ 1</div>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary" onclick="app.apply(0, function(x) {x.generateNewField();})">generate field</button>
+                                <button class="btn btn-primary"
+                                        onclick="app.apply(0, function(x) {x.generateNewField();})">generate field
+                                </button>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary" onclick="app.apply(0, function(x) {x.clearIntegralCurves();})">clear</button>
+                                <button class="btn btn-primary"
+                                        onclick="app.apply(0, function(x) {x.clearIntegralCurves();})">clear
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div style="text-align: center;">
-                        <p>Simulation.1 Visualization of the Euler algorithm on ODE's. You can interact with the canvas (mouse | touch).</p>
+                        <p>Simulation.1 Visualization of the Euler algorithm on ODE's. You can interact with the canvas
+                            (mouse | touch).</p>
                     </div>
                 </div>
+
                 <h2>Appendix A</h2>
                 <h3>The global error of the Euler's method</h3>
+                <p>
+                    Above we discussed a little bit about the local error of the Euler method. We saw that the error
+                    $\mathcal{E}(h)$ was bounded by $Mh^2$, where $M$ is a constant. Now we want to derive the global error.
+                    We know that:
+                    $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t +
+                    \mu) d\mu d\tau$$
 
-                Above we discussed a little bit about the local error of the Euler method. We saw that the error $\mathcal{E}(h)$ was bounded by $Mh^2$, where $M$ is a constant. Now we want to derive the global error.
-                We know that:
-                $$\mathbf{x}(t + h) = \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + \mu) d\mu d\tau$$
+                    And:
+                    $$\mathbf{x}(t + 2h) = \mathbf{x}(t + h) + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau
+                    \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
 
-                And:
-                $$\mathbf{x}(t + 2h) = \mathbf{x}(t + h) + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
+                    Substituting $\mathbf{x}(t + h)$:
 
-                Substituting $\mathbf{x}(t + h)$:
+                    $$\mathbf{x}(t + 2h) = \left[ \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau
+                    \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right] + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau
+                    \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
 
-                $$\mathbf{x}(t + 2h) = \left[ \mathbf{x}(t) + \dot{\mathbf{x}}(t) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + \mu) d\mu d\tau \right] + \dot{\mathbf{x}}(t + h) h + \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + h + \mu) d\mu d\tau$$
+                    We can continue to do this until $T = t + nh$:
 
-                We can continue to do this until $T = t + nh$:
+                    $$\mathbf{x}(t + nh) = \mathbf{x}(t) + h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t + kh) + \sum_{k=0}^{n-1}
+                    \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau$$
 
-                $$\mathbf{x}(t + nh) = \mathbf{x}(t) + h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t + kh) + \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau$$
+                    From the claim above, we can define the global error as:
+                    $$\mathcal{E}_n(h) = \left | \mathbf{x}(t + nh) - \mathbf{x}(t) - h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t
+                    + kh) \right | = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau
+                    \right |$$
 
-                From the claim above, we can define the global error as:
-                $$\mathcal{E}_n(h) = \left | \mathbf{x}(t + nh) - \mathbf{x}(t) - h \sum_{k=0}^{n-1} \dot{\mathbf{x}}(t + kh) \right | = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau \right |$$
+                    Finally we can find an upper bound of $\mathcal{E}_n(h)$ and take some conclusions:
 
-                Finally we can find an upper bound of $\mathcal{E}_n(h)$ and take some conclusions:
+                    $$\mathcal{E}_n(h) = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu
+                    d\tau \right | \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu) \right|
+                    d\mu d\tau$$
 
-                $$\mathcal{E}_n(h) = \left | \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \ddot{\mathbf{x}}(t + kh + \mu) d\mu d\tau \right | \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu) \right| d\mu d\tau$$
+                    $$\mathcal{E}_n(h) \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu)
+                    \right | d\mu d\tau \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1
+                    d\mu d\tau \;\;, \forall c \in [t, t + nh]$$
 
-                $$\mathcal{E}_n(h) \leq \sum_{k=0}^{n-1} \int_0^h\int_0^\tau \left |\ddot{\mathbf{x}}(t + kh + \mu) \right | d\mu d\tau  \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1 d\mu d\tau \;\;, \forall c \in [t, t + nh]$$
+                    Most of this argument is explained on the <a
+                        href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor
+                    series</a> post.
 
-                Most of this argument is explained on the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor series</a> post.
+                    $$\mathcal{E}_n(h) \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1
+                    d\mu d\tau \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \frac{h^2}{2}$$
 
-                $$\mathcal{E}_n(h) \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \int_0^h\int_0^\tau 1 d\mu d\tau \leq \max \left| \ddot{\mathbf{x}}(c) \right| \sum_{k=0}^{n-1} \frac{h^2}{2}$$
+                    Let $C = \max \left| \ddot{\mathbf{x}}(c) \right|$, then:
 
-                Let $C = \max \left| \ddot{\mathbf{x}}(c) \right|$, then:
+                    $$\mathcal{E}_n(h) \leq C \sum_{k=0}^{n-1} \frac{h^2}{2} = C n\frac{h^2}{2}$$
 
-                $$\mathcal{E}_n(h) \leq C \sum_{k=0}^{n-1} \frac{h^2}{2} = C n\frac{h^2}{2}$$
+                    Since $T = t + nh$, then $n = \frac{T - t}{h}$, therefore:
 
-                Since $T = t + nh$, then $n = \frac{T - t}{h}$, therefore:
+                    $$\mathcal{E}_n(h) \leq C \frac{(T - t) h}{2}$$
 
-                $$\mathcal{E}_n(h) \leq C \frac{(T - t) h}{2}$$
-
-                This upper bound demonstrates that the Euler method is a first order method since the global error is bounded by a linear function of $h$.
-
-                <br><br>
+                    This upper bound demonstrates that the Euler method is a first order method since the global error is
+                    bounded by a linear function of $h$.
+                </p>
             </div>
         </div>
     </div>
