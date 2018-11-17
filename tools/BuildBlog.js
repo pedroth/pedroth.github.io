@@ -143,6 +143,7 @@ function build(address, buildMethod, buildMegaDiv, imageSize) {
     var appsName = text.split("\n");
     var apps = [];
     for (var i = 0; i < appsName.length; i++) {
+        if("" === appsName[i]) continue;
         apps[i] = appsName[i].split(";");
         apps[i][1] = date2int(apps[i][1]);
     }
