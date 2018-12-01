@@ -126,7 +126,7 @@ function bilinearInterpolation(values, x) {
 }
 
 
-var MyCanvas = function (canvas) {
+var Canvas = function (canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.image = this.ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -137,18 +137,18 @@ var MyCanvas = function (canvas) {
 /**
  * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
-MyCanvas.prototype.getSize = function () {
+Canvas.prototype.getSize = function () {
     return [this.canvas.height, this.canvas.width];
 };
 
 /**
  *  Draw update image on canvas.
  */
-MyCanvas.prototype.paintImage = function () {
+Canvas.prototype.paintImage = function () {
     this.ctx.putImageData(this.image, 0, 0);
 };
 
-MyCanvas.prototype.getCanvas = function() {
+Canvas.prototype.getCanvas = function() {
     return this.canvas;
 }
 
@@ -157,7 +157,7 @@ MyCanvas.prototype.getCanvas = function() {
  *
  * @param rgba
  */
-MyCanvas.prototype.clearImage = function (rgba) {
+Canvas.prototype.clearImage = function (rgba) {
     this.useCanvasCtx(function (canvas) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
@@ -166,7 +166,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
     }, true);
 };
 
-MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
+Canvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     if (isClearImage == null || !isClearImage) {
         this.ctx.putImageData(this.image, 0, 0);
     }
@@ -175,16 +175,16 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     this.imageData = this.image.data;
 };
 
-MyCanvas.prototype.getImageIndex = function (x) {
+Canvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
 
-MyCanvas.prototype.getPxl = function(x) {
+Canvas.prototype.getPxl = function(x) {
     var index = this.getImageIndex(x);
     return [this.imageData[index], this.imageData[index + 1], this.imageData[index + 2], this.imageData[index + 3]];
 }
 
-MyCanvas.prototype.drawPxl = function (x, rgb) {
+Canvas.prototype.drawPxl = function (x, rgb) {
     var index = this.getImageIndex(x);
     this.imageData[index] = rgb[0];
     this.imageData[index + 1] = rgb[1];
@@ -197,7 +197,7 @@ MyCanvas.prototype.drawPxl = function (x, rgb) {
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and a line (array with 2 points) and returns a rgba 4-dim array
  */
-MyCanvas.prototype.drawLine = function (x1, x2, shader) {
+Canvas.prototype.drawLine = function (x1, x2, shader) {
     // add points before clip
     shader.points = [x1, x2];
 
@@ -262,7 +262,7 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     this.drawLineInt(p0, p0, shader);
 };
 
-MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
+Canvas.prototype.drawLineInt = function (x1, x2, shader) {
     x1 = floor(x1);
     x2 = floor(x2);
 
@@ -306,7 +306,8 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
 
 };
 
-MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
+Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
+    isInsidePoly = isInsidePoly == null ? this.isInsidePolygon : isInsidePoly;
     var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
     for(var i = 0; i < array.length; i++) {
       upperBox[0] = min(array[i], upperBox[0]);
@@ -332,7 +333,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
  */
-MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
+Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
       this.drawPolygon(array, shader, this.isInsideConvex);
 };
@@ -343,12 +344,12 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
-MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
+Canvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
     this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
 };
 
 // slower than the method below
-MyCanvas.prototype.isInsidePolygon = function(x, array) {
+Canvas.prototype.isInsidePolygon = function(x, array) {
     var v = [];
     var theta = 0;
     var length = array.length;
@@ -360,7 +361,7 @@ MyCanvas.prototype.isInsidePolygon = function(x, array) {
     return Math.abs(theta -  2 * Math.PI) < 1E-3;
 }
 
-MyCanvas.prototype.isInsideConvex = function(x, array) {
+Canvas.prototype.isInsideConvex = function(x, array) {
     var length = array.length;
     var v = [];
     var vDotN = [];
@@ -380,7 +381,7 @@ MyCanvas.prototype.isInsideConvex = function(x, array) {
     return true;
 }
 
-MyCanvas.prototype.drawImage = function (img, x, shader) {
+Canvas.prototype.drawImage = function (img, x, shader) {
     if("isReady" in img) {
         if(!img.isReady) {
             return;
@@ -394,7 +395,7 @@ MyCanvas.prototype.drawImage = function (img, x, shader) {
 };
 
 
-MyCanvas.prototype.drawCircle = function(x, r, shader) {
+Canvas.prototype.drawCircle = function(x, r, shader) {
     var corner = scale([1, 1], r);
     var upperBox = [diff(x, corner), add(x, corner)];
     var size = this.getSize();
@@ -410,15 +411,15 @@ MyCanvas.prototype.drawCircle = function(x, r, shader) {
     }
 }
 
-MyCanvas.prototype.isInsideCircle = function(p, x, r) {
+Canvas.prototype.isInsideCircle = function(p, x, r) {
     return squareNorm(diff(p, x)) <= r * r;
 }
 
-MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
+Canvas.prototype.addEventListener = function(key, lambda, useCapture) {
     this.canvas.addEventListener(key, lambda, useCapture);
 };
 
-MyCanvas.prototype.drawString = function(x, string, contextShader) {
+Canvas.prototype.drawString = function(x, string, contextShader) {
     this.useCanvasCtx(
         function (canvas) {
             contextShader(canvas.ctx);
@@ -428,13 +429,13 @@ MyCanvas.prototype.drawString = function(x, string, contextShader) {
 };
 
 
-MyCanvas.simpleShader = function (color) {
+Canvas.simpleShader = function (color) {
     return function (x, element, canvas) {
         canvas.drawPxl(x, color);
     };
 };
 
-MyCanvas.colorShader = function(colors) {
+Canvas.colorShader = function(colors) {
     var auxShader = function(x, poly, canvas, alpha) {
         var interpolateColors = [0, 0, 0, 0];
         for(var i = 0; i < poly.length; i++) {
@@ -445,11 +446,11 @@ MyCanvas.colorShader = function(colors) {
         }
         canvas.drawPxl(x, interpolateColors);
     }
-    return MyCanvas.interpolateTriangleShader(auxShader);
+    return Canvas.interpolateTriangleShader(auxShader);
 }
 
 
-MyCanvas.interpolateQuadShader = function(shader) {
+Canvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
@@ -463,14 +464,14 @@ MyCanvas.interpolateQuadShader = function(shader) {
     }
 }
 
-MyCanvas.interpolateTriangleShader = function(shader) {
+Canvas.interpolateTriangleShader = function(shader) {
     return function(x, triangle, canvas) {
         alpha = triangleBaryCoord(x, triangle);
         shader(x, triangle, canvas, alpha);
     }
 }
 
-MyCanvas.interpolateLineShader = function(shader) {
+Canvas.interpolateLineShader = function(shader) {
     return function (x, line, canvas) {
         var v = diff(line[1], line[0]);
         var z = diff(x, line[0]);
@@ -485,9 +486,9 @@ MyCanvas.interpolateLineShader = function(shader) {
  * img: html loaded image.
  * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
  */
-MyCanvas.quadTextureShader = function(img, quadTexCoord) {
+Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=bilinearInterpolation) {
     var imageShader = function(x, quad, canvas, alpha) {
-        var imageCanvas = new MyCanvas(ImageIO.getImageCanvas(img));
+        var imageCanvas = new Canvas(ImageIO.getImageCanvas(img));
         var imgSize = imageCanvas.getSize();
         var interpolateTexCoord = [0, 0];
         for(var i = 0; i < quadTexCoord.length; i++) {
@@ -500,11 +501,11 @@ MyCanvas.quadTextureShader = function(img, quadTexCoord) {
         // pxl lower corner
         var j = floor(i);
         var cornerColors = [imageCanvas.getPxl(j), imageCanvas.getPxl(add(j, [1,0])), imageCanvas.getPxl(add(j, [1, 1])), imageCanvas.getPxl(add(j, [0, 1]))];
-        var bilinearColor = bilinearInterpolation(cornerColors, diff(i, j));
-        canvas.drawPxl(x, bilinearColor);
+        var finalColor = interpolation(cornerColors, diff(i, j));
+        canvas.drawPxl(x, finalColor);
     }
-    return MyCanvas.interpolateQuadShader(imageShader);
+    return Canvas.interpolateQuadShader(imageShader);
 }
 
 
-module.exports = MyCanvas;
+module.exports = Canvas;

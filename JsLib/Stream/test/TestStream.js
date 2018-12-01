@@ -23,6 +23,43 @@ var TestStreams = function() {
         assert.assertTrue(Stream.range(1,6).map(x => x * x).reduce(0, (x, y) => x + y) == ArrayUtils.range(1,6,1).map(x => x * x).reduce((x, y) => x + y, 0));
         assert.assertTrue(Stream.range(1,6,2).map(x => x * x).reduce(1, (x, y) => x * y) == ArrayUtils.range(1,6,2).map(x => x * x).reduce((x, y) => x * y, 1));
     }
+
+    this.collectTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,10).collect(Stream.Collectors.toArray()), ArrayUtils.range(0,10)));
+    }
+
+    this.headTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(Stream.range(0,100).head() == 0)
+    }
+
+    this.tailTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).tail().collect(Stream.Collectors.toArray()), ArrayUtils.range(1,100)));
+    }
+
+    this.takeTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).take(10), ArrayUtils.range(0,10)));
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).takeWhile(x => x < 10), ArrayUtils.range(0,10)));
+    }
+
+    this.filterTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0, 100)
+                                                       .filter(x => x % 2 == 0)
+                                                       .collect(Stream.Collectors.toArray()),
+                                                 ArrayUtils.range(0, 100).filter(x => x % 2 == 0)
+        ));
+    }
+
+    this.forEach = () => {
+        var assert = UnitTest.Assert(this);
+        let stack = [];
+        Stream.range(0, 10).filter(x => x % 2 == 0).forEach(x => stack.push(x));
+        assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0,10).filter(x=>x % 2 == 0), stack));
+    }
 }
 
 UnitTest.builder()

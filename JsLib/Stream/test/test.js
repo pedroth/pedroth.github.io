@@ -72,21 +72,16 @@ ArrayUtils.unpackJsArray = function(array) {
     }
 }
 
-ArrayUtils.map = function(array, f) {
-    var ans = [];
-    for(var i = 0; i < array.length; i++) ans[i] = f(array[i]);
-    return ans;
-}
-
-ArrayUtils.range = function(xmin, xmax, step) {
+ArrayUtils.range = function(xmin, xmax, step=1) {
     var ans = [];
     for(var i = xmin; i < xmax; i += step) ans.push(i);
     return ans;
 }
 
-ArrayUtils.reduce = function(array, identity, binaryOperator) {
-    for(var i = 0; i < array.length; i++) identity = binaryOperator(identity, array[i]);
-    return identity;
+ArrayUtils.binaryOp = function(array1, array2, binaryOp) {
+    var smaller = array1.length < array2.length ? array1.slice() : array2.slice();
+    for(let i = 0; i < smaller.length; i++) smaller[i] = binaryOp(array1[i], array2[i]);
+    return smaller;
 }
 
 module.exports = ArrayUtils;
@@ -123,17 +118,22 @@ var Function = require("../../Function/main/Function.js");
  * @param {*} generator is an object that implements hasNext() and next() functions
  * @param {*} mapFunction 
  */
-var Stream = function(generator, mapFunction) {
+var Stream = function(generator, mapFunction=x => x, filterPredicate=x => true) {
     this.gen = generator;
-    this.mapFunction = mapFunction == null ? x => x : mapFunction;
+    this.mapFunction = mapFunction;
+    this.filterPredicate = filterPredicate;
 }
 
 Stream.prototype.map = function(f) {
-    return new Stream(this.gen, Function.of(f).compose(this.mapFunction).get());
+    return new Stream(this.gen, Function.of(f).compose(this.mapFunction).get(), this.filterPredicate);
 }
 
 Stream.prototype.reduce = function(identity, binaryOp) {
-    while (this.gen.hasNext()) identity = binaryOp(identity, this.mapFunction(this.gen.next()));
+    while (this.gen.hasNext()) {
+        let value = this.gen.next();
+        if(this.filterPredicate(value))
+            identity = binaryOp(identity, this.mapFunction(value));
+    } 
     return identity;
 }
 /**
@@ -141,7 +141,67 @@ Stream.prototype.reduce = function(identity, binaryOp) {
  * @param {*} consumer: is a x => void function 
  */
 Stream.prototype.forEach = function(consumer) {
-    while (this.gen.hasNext()) consumer(this.gen.next());
+    while (this.gen.hasNext()) {
+        let value = this.gen.next();
+        if(this.filterPredicate(value))
+            consumer(value);
+    }
+}
+
+/**
+ * 
+ * @param {*} collector: is an object with the identity, and reduce attributes
+ * 
+ *  The collector.reduce is a \lambda (identity, acc) => identity. 
+ */
+Stream.prototype.collect = function(collector) {
+    return this.reduce(collector.identity, collector.reduce);
+}
+
+/**
+ * @param {*} predicate is a \lambda (x) => {true, false}
+ * This function choses the elementes where predicate(x) = true
+ */
+Stream.prototype.filter = function(predicate) {
+    return new Stream(this.gen, this.mapFunction, x => this.filterPredicate(x) && predicate(x));
+}
+
+/**
+ * Take first n elements
+ */
+Stream.prototype.take = function(n) {
+    return new Stream(
+        Stream.generatorOf({i: 0 , gen: this.gen}, s => {return {i: s.i + 1, gen: s.gen}}, s => s.gen.next(), s => s.gen.hasNext() && s.i < n),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.takeWhile = function(predicate) {
+    return new Stream(
+        Stream.generatorOf({gen: this.gen, val: null}, 
+                            s => s,
+                            s => s.val,
+                            s => {
+                                    if(s.gen.hasNext()){
+                                        s.val = s.gen.next();
+                                        return predicate(s.val);
+                                    }
+                                    return false;
+                            }
+        ),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.head = function() {
+    return this.gen.next();
+}
+
+Stream.prototype.tail = function() {
+    this.gen.next();
+    return new Stream(this.gen, this.mapFunction, this.filterPredicate);
 }
 
 Stream.of = function(iterable) {
@@ -164,9 +224,9 @@ Stream.of = function(iterable) {
     throw `Iterable ${iterable} does not have a stream`;
 }
 
-Stream.range = function(init, end, step) {
+Stream.range = function(init, end, step=1) {
     return new Stream(Stream.generatorOf(init, 
-                                         s => s + (step == null ? 1 : step),
+                                         s => s + step,
                                          s => s,
                                          s => s < end
                                         )
@@ -183,6 +243,10 @@ Stream.generatorOf = function(initialState, nextStateFunction, getFromStateFunct
             return ans;
         }
     };
+}
+
+Stream.Collectors = {
+    toArray: () => new function(){ this.identity = []; this.reduce = (acc, x) => { acc.push(x); return acc;}} 
 }
 module.exports = Stream;
 },{"../../Function/main/Function.js":2}],4:[function(require,module,exports){
@@ -211,6 +275,43 @@ var TestStreams = function() {
         assert.assertTrue(Stream.range(1,6).map(x => x * x).reduce(0, (x, y) => x + y) == ArrayUtils.range(1,6,1).map(x => x * x).reduce((x, y) => x + y, 0));
         assert.assertTrue(Stream.range(1,6,2).map(x => x * x).reduce(1, (x, y) => x * y) == ArrayUtils.range(1,6,2).map(x => x * x).reduce((x, y) => x * y, 1));
     }
+
+    this.collectTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,10).collect(Stream.Collectors.toArray()), ArrayUtils.range(0,10)));
+    }
+
+    this.headTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(Stream.range(0,100).head() == 0)
+    }
+
+    this.tailTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).tail().collect(Stream.Collectors.toArray()), ArrayUtils.range(1,100)));
+    }
+
+    this.takeTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).take(10), ArrayUtils.range(0,10)));
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).takeWhile(x => x < 10), ArrayUtils.range(0,10)));
+    }
+
+    this.filterTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0, 100)
+                                                       .filter(x => x % 2 == 0)
+                                                       .collect(Stream.Collectors.toArray()),
+                                                 ArrayUtils.range(0, 100).filter(x => x % 2 == 0)
+        ));
+    }
+
+    this.forEach = () => {
+        var assert = UnitTest.Assert(this);
+        let stack = [];
+        Stream.range(0, 10).filter(x => x % 2 == 0).forEach(x => stack.push(x));
+        assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0,10).filter(x=>x % 2 == 0), stack));
+    }
 }
 
 UnitTest.builder()
@@ -233,7 +334,7 @@ UnitTest.Assert = function(test) {
         this.index = 0;
     
         this.assertTrue = function(boolean) {
-            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.index];
+            if(!boolean) throw "Assertion failed : " + [this.testFunction, this.testFunction.name, this.index];
             this.index++;
         }
     }

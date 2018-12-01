@@ -1,6 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.app = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var Canvas = require('../../JsLib/Canvas/main/Canvas.js');
+var Canvas2D = require('../../JsLib/Canvas/main/Canvas2D.js');
 var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 
@@ -46,8 +46,8 @@ function HSVtoRGB(h, s, v) {
  * Simulations
  */
 function Sim1() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("graph"), [[-1.5, 1.5], [-1.5, 1.5]]);
-    this.canvasAbsolute = new CanvasSpace(document.getElementById("absoluteGraph"), [[-1.5, 1.5], [-1.5, 1.5]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("graph"), [[-1.5, 1.5], [-1.5, 1.5]]);
+    this.canvasAbsolute = new Canvas2D(document.getElementById("absoluteGraph"), [[-1.5, 1.5], [-1.5, 1.5]]);
     this.samples = 50;
     this.x = [];
     this.y1 = [];
@@ -136,22 +136,22 @@ function Sim1() {
     }
 
     this.drawCanvasGraph = function() {
-        this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasGraph.drawLine([-2.1, 0], [2.1, 0], Canvas.simpleShader([0, 0, 0, 255]));
         for(var i = 0; i < this.y1.length - 1; i++) {
            var p1 = [this.x[i], this.y1[i]];
            var p2 = [this.x[i + 1], this.y1[i + 1]];
-           this.canvasGraph.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
+           this.canvasGraph.drawLine(p1, p2, Canvas.simpleShader([0, 0, 0, 255]))
            this.canvasGraph.drawTriangle(p1, p2, [this.x[i + 1], this.y1[i + 1]], this.s1Shader);
            this.canvasGraph.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, this.s1Shader);
         }
     }
 
     this.drawCanvasAbsolute = function() {
-        this.canvasAbsolute.drawLine([-2.1, 0], [2.1, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasAbsolute.drawLine([-2.1, 0], [2.1, 0], Canvas.simpleShader([0, 0, 0, 255]));
         for(var i = 0; i < this.y2.length - 1; i++) {
             var p1 = [this.x[i], this.y2[i]];
             var p2 = [this.x[i + 1], this.y2[i + 1]];
-            this.canvasAbsolute.drawLine(p1, p2, MyCanvas.simpleShader([0, 0, 0, 255]))
+            this.canvasAbsolute.drawLine(p1, p2, Canvas.simpleShader([0, 0, 0, 255]))
             this.canvasAbsolute.drawTriangle(p1, p2, [this.x[i + 1], this.y2[i + 1]], this.s1Shader);
             this.canvasAbsolute.drawQuad([this.x[i], 0], [this.x[i + 1], 0], p2, p1, this.s1Shader);
         }
@@ -189,8 +189,8 @@ function Sim1() {
 
 
 function Sim2() {
-    this.canvasTaylor = new CanvasSpace(document.getElementById("taylor"), [[-0.1, 1], [-0.1, 1]]);
-    this.canvasRemainder = new CanvasSpace(document.getElementById("remainder"), [[-0.1, 1.1], [-0.1, 1.1]]);
+    this.canvasTaylor = new Canvas2D(document.getElementById("taylor"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasRemainder = new Canvas2D(document.getElementById("remainder"), [[-0.1, 1.1], [-0.1, 1.1]]);
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.fx = [];
@@ -356,7 +356,7 @@ function Sim2() {
               var xh = x + h;
               var y = polynomials[j](x);
               var yh = polynomials[j](xh);
-              this.canvasTaylor.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(this.colors[j]));
+              this.canvasTaylor.drawLine([x, y], [xh, yh], Canvas.simpleShader(this.colors[j]));
             }
         }
     }
@@ -365,12 +365,12 @@ function Sim2() {
         var dist = Math.abs(this.fx.min - this.fx.max);
         var percentCamera = 0.2;
         this.canvasTaylor.setCamera([[-0.1, 1],[this.fx.min - percentCamera * dist, this.fx.max + percentCamera * dist]])
-        this.canvasTaylor.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasTaylor.drawLine([-1, 0], [1.5, 0], Canvas.simpleShader([0, 0, 0, 255]));
         var h = 1.0 / this.samples;
         for(var i = 0; i < this.fx.funcSamples.length-1; i++) {
             var x = h * i;
             var y = this.fx.funcSamples[i];
-            this.canvasTaylor.drawLine([x, y], [x + h, this.fx.funcSamples[i+1]], MyCanvas.simpleShader([0, 0, 0, 255]));
+            this.canvasTaylor.drawLine([x, y], [x + h, this.fx.funcSamples[i+1]], Canvas.simpleShader([0, 0, 0, 255]));
         }
         this.drawTaylorPolynomial();
     }
@@ -379,14 +379,14 @@ function Sim2() {
         // draw legend
         for(var i = 0; i < this.taylorDegree; i++){
             var legendYCoord = 1 - 0.05 * i;
-            this.canvasRemainder.drawLine([0.0, legendYCoord], [0.2, legendYCoord], MyCanvas.simpleShader(this.colors[i]));
+            this.canvasRemainder.drawLine([0.0, legendYCoord], [0.2, legendYCoord], Canvas.simpleShader(this.colors[i]));
             this.canvasRemainder.drawString([0.2, legendYCoord], "" + i, ctx => { ctx.fillStyle = "black"; ctx.font = "bold 12px Arial"; });
         }
     }
 
     this.updateRemainderCanvas = function() {
         this.drawLegend();
-        this.canvasRemainder.drawLine([-1, 0], [1.5, 0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasRemainder.drawLine([-1, 0], [1.5, 0], Canvas.simpleShader([0, 0, 0, 255]));
         var h = 1 / (this.samples-1);
         for(var j = 0; j < this.taylorDegree; j++) {
             for(var i = 0; i < this.samples - 1; i++) {
@@ -394,7 +394,7 @@ function Sim2() {
                 var xh = x + h;
                 var y = this.restPolys[j][i]
                 var yh = this.restPolys[j][i + 1]
-                this.canvasRemainder.drawLine([x, y], [xh, yh], MyCanvas.simpleShader(this.colors[j]));
+                this.canvasRemainder.drawLine([x, y], [xh, yh], Canvas.simpleShader(this.colors[j]));
             }
         }
     }
@@ -464,147 +464,7 @@ module.exports =  {
     run : runSimulation,
     apply : apply
 }
-},{"../../JsLib/MyCanvas/main/CanvasSpace.js":2,"../../JsLib/MyCanvas/main/MyCanvas.js":4,"../../JsLib/SimManager/main/SimManager.js":5}],2:[function(require,module,exports){
-var MyCanvas = require('./MyCanvas.js');
-
-//Note that we can switch from heritage to composition, think about that
-
-// cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
-var CanvasSpace = function(canvas, cameraSpace) {
-	MyCanvas.call(this, canvas);
-	if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
-		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
-	}
-	this.cameraSpace = cameraSpace;
-}
-
-CanvasSpace.prototype = Object.create(MyCanvas.prototype);
-CanvasSpace.prototype.constructor = CanvasSpace;
-
-/* x : 2-dim array in camera space coordinates
- * returns : 2-dim array in integer coordinates
- */
-CanvasSpace.prototype.integerTransform = function(x) {
-	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
-	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
-	return [xint, yint];
-}
-
-/* x : 2-dim array in integer coordinates
- * returns : 2-dim array in camera space coordinates
- */
-CanvasSpace.prototype.inverseTransform = function(x) {
-	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
-	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
-	return [xt, yt];
-}
-
-/* x1     :   2-dim array
- * x2     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
- */
-CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
-	y1 = this.integerTransform(x1);
-	y2 = this.integerTransform(x2);
-	MyCanvas.prototype.drawLine.call(this, y1, y2, shader);
-}
-
-/* x1     :   2-dim array
- * x2     :   2-dim array
- * x3     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
- */
-CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
-	y1 = this.integerTransform(x1);
-	y2 = this.integerTransform(x2);
-	y3 = this.integerTransform(x3);
-	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
-}
-
-/* x1     :   2-dim array
- * x2     :   2-dim array
- * x3     :   2-dim array
- * x4     :   2-dim array
- * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
- */
-CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
-	y1 = this.integerTransform(x1);
-	y2 = this.integerTransform(x2);
-	y3 = this.integerTransform(x3);
-	y4 = this.integerTransform(x4);
-	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
-}
-
-CanvasSpace.prototype.drawCircle = function(x, r, shader) {
-    // it assumes squared canvas, for now ...
-    y = this.integerTransform(x);
-    z = this.integerTransform([r, 0])[1] - this.integerTransform([0, 0])[1];
-    MyCanvas.prototype.drawCircle.call(this, y, z, shader);
-}
-
-CanvasSpace.prototype.drawImage = function (img, x, shader) {
-    MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
-}
-
-CanvasSpace.prototype.drawString = function(x, string, contextShader) {
-    y = this.integerTransform(x);
-    MyCanvas.prototype.drawString.call(this, y, string, contextShader);
-};
-
-// camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
-CanvasSpace.prototype.setCamera = function(camera) {
-    if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
-		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
-	}
-	this.cameraSpace = camera;
-}
-
-
-module.exports = CanvasSpace;
-},{"./MyCanvas.js":4}],3:[function(require,module,exports){
-var ImageIO = {
-    // empty object
-};
-
-/**
- * img : html image
- */
-ImageIO.getImageCanvas = function(img) {
-    var canvasAux = document.createElement('canvas');
-    canvasAux.width = img.width;
-    canvasAux.height = img.height;
-    var contextAux = canvasAux.getContext('2d');
-    contextAux.fillStyle = 'rgba(0, 0, 0, 0)';
-    contextAux.globalCompositeOperation = 'source-over';
-    contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
-    contextAux.drawImage(img, 0 ,0);
-    return canvasAux;
-}
-
-/**
- * img : html image
- */
-ImageIO.getDataFromImage = function(img) {
-    canvas = ImageIO.getImageCanvas(img);
-    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
-};
-
-ImageIO.loadImage = function(src) {
-    var img = new Image();
-    img.src = src;
-    img.isReady = false;
-    img.onload = function() {
-        img.isReady = true;
-    };
-    return img;
-};
-
-ImageIO.generateImageReadyPredicate = function(img) {
-    return function() { return img.isReady;};
-}
-
-module.exports = ImageIO;
-},{}],4:[function(require,module,exports){
+},{"../../JsLib/Canvas/main/Canvas.js":2,"../../JsLib/Canvas/main/Canvas2D.js":3,"../../JsLib/SimManager/main/SimManager.js":5}],2:[function(require,module,exports){
 var ImageIO = require('./ImageIO.js');
 /*
  Canvas coordinates
@@ -733,7 +593,7 @@ function bilinearInterpolation(values, x) {
 }
 
 
-var MyCanvas = function (canvas) {
+var Canvas = function (canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.image = this.ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -744,18 +604,18 @@ var MyCanvas = function (canvas) {
 /**
  * Returns a two vector with Height as first coordinate and Width as second. [Height, Width].
  */
-MyCanvas.prototype.getSize = function () {
+Canvas.prototype.getSize = function () {
     return [this.canvas.height, this.canvas.width];
 };
 
 /**
  *  Draw update image on canvas.
  */
-MyCanvas.prototype.paintImage = function () {
+Canvas.prototype.paintImage = function () {
     this.ctx.putImageData(this.image, 0, 0);
 };
 
-MyCanvas.prototype.getCanvas = function() {
+Canvas.prototype.getCanvas = function() {
     return this.canvas;
 }
 
@@ -764,7 +624,7 @@ MyCanvas.prototype.getCanvas = function() {
  *
  * @param rgba
  */
-MyCanvas.prototype.clearImage = function (rgba) {
+Canvas.prototype.clearImage = function (rgba) {
     this.useCanvasCtx(function (canvas) {
         var size = canvas.getSize();
         canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
@@ -773,7 +633,7 @@ MyCanvas.prototype.clearImage = function (rgba) {
     }, true);
 };
 
-MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
+Canvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     if (isClearImage == null || !isClearImage) {
         this.ctx.putImageData(this.image, 0, 0);
     }
@@ -782,16 +642,16 @@ MyCanvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
     this.imageData = this.image.data;
 };
 
-MyCanvas.prototype.getImageIndex = function (x) {
+Canvas.prototype.getImageIndex = function (x) {
     return 4 * (this.canvas.width * x[0] + x[1]);
 };
 
-MyCanvas.prototype.getPxl = function(x) {
+Canvas.prototype.getPxl = function(x) {
     var index = this.getImageIndex(x);
     return [this.imageData[index], this.imageData[index + 1], this.imageData[index + 2], this.imageData[index + 3]];
 }
 
-MyCanvas.prototype.drawPxl = function (x, rgb) {
+Canvas.prototype.drawPxl = function (x, rgb) {
     var index = this.getImageIndex(x);
     this.imageData[index] = rgb[0];
     this.imageData[index + 1] = rgb[1];
@@ -804,7 +664,7 @@ MyCanvas.prototype.drawPxl = function (x, rgb) {
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and a line (array with 2 points) and returns a rgba 4-dim array
  */
-MyCanvas.prototype.drawLine = function (x1, x2, shader) {
+Canvas.prototype.drawLine = function (x1, x2, shader) {
     // add points before clip
     shader.points = [x1, x2];
 
@@ -869,7 +729,7 @@ MyCanvas.prototype.drawLine = function (x1, x2, shader) {
     this.drawLineInt(p0, p0, shader);
 };
 
-MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
+Canvas.prototype.drawLineInt = function (x1, x2, shader) {
     x1 = floor(x1);
     x2 = floor(x2);
 
@@ -913,7 +773,8 @@ MyCanvas.prototype.drawLineInt = function (x1, x2, shader) {
 
 };
 
-MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
+Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
+    isInsidePoly = isInsidePoly == null ? this.isInsidePolygon : isInsidePoly;
     var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
     for(var i = 0; i < array.length; i++) {
       upperBox[0] = min(array[i], upperBox[0]);
@@ -939,7 +800,7 @@ MyCanvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and a triangle (array with 3 points) and returns a rgba 4-dim array
  */
-MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
+Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
       this.drawPolygon(array, shader, this.isInsideConvex);
 };
@@ -950,12 +811,12 @@ MyCanvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
-MyCanvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
+Canvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
     this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
 };
 
 // slower than the method below
-MyCanvas.prototype.isInsidePolygon = function(x, array) {
+Canvas.prototype.isInsidePolygon = function(x, array) {
     var v = [];
     var theta = 0;
     var length = array.length;
@@ -967,7 +828,7 @@ MyCanvas.prototype.isInsidePolygon = function(x, array) {
     return Math.abs(theta -  2 * Math.PI) < 1E-3;
 }
 
-MyCanvas.prototype.isInsideConvex = function(x, array) {
+Canvas.prototype.isInsideConvex = function(x, array) {
     var length = array.length;
     var v = [];
     var vDotN = [];
@@ -987,7 +848,7 @@ MyCanvas.prototype.isInsideConvex = function(x, array) {
     return true;
 }
 
-MyCanvas.prototype.drawImage = function (img, x, shader) {
+Canvas.prototype.drawImage = function (img, x, shader) {
     if("isReady" in img) {
         if(!img.isReady) {
             return;
@@ -1001,7 +862,7 @@ MyCanvas.prototype.drawImage = function (img, x, shader) {
 };
 
 
-MyCanvas.prototype.drawCircle = function(x, r, shader) {
+Canvas.prototype.drawCircle = function(x, r, shader) {
     var corner = scale([1, 1], r);
     var upperBox = [diff(x, corner), add(x, corner)];
     var size = this.getSize();
@@ -1017,15 +878,15 @@ MyCanvas.prototype.drawCircle = function(x, r, shader) {
     }
 }
 
-MyCanvas.prototype.isInsideCircle = function(p, x, r) {
+Canvas.prototype.isInsideCircle = function(p, x, r) {
     return squareNorm(diff(p, x)) <= r * r;
 }
 
-MyCanvas.prototype.addEventListener = function(key, lambda, useCapture) {
+Canvas.prototype.addEventListener = function(key, lambda, useCapture) {
     this.canvas.addEventListener(key, lambda, useCapture);
 };
 
-MyCanvas.prototype.drawString = function(x, string, contextShader) {
+Canvas.prototype.drawString = function(x, string, contextShader) {
     this.useCanvasCtx(
         function (canvas) {
             contextShader(canvas.ctx);
@@ -1035,13 +896,13 @@ MyCanvas.prototype.drawString = function(x, string, contextShader) {
 };
 
 
-MyCanvas.simpleShader = function (color) {
+Canvas.simpleShader = function (color) {
     return function (x, element, canvas) {
         canvas.drawPxl(x, color);
     };
 };
 
-MyCanvas.colorShader = function(colors) {
+Canvas.colorShader = function(colors) {
     var auxShader = function(x, poly, canvas, alpha) {
         var interpolateColors = [0, 0, 0, 0];
         for(var i = 0; i < poly.length; i++) {
@@ -1052,11 +913,11 @@ MyCanvas.colorShader = function(colors) {
         }
         canvas.drawPxl(x, interpolateColors);
     }
-    return MyCanvas.interpolateTriangleShader(auxShader);
+    return Canvas.interpolateTriangleShader(auxShader);
 }
 
 
-MyCanvas.interpolateQuadShader = function(shader) {
+Canvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
@@ -1070,14 +931,14 @@ MyCanvas.interpolateQuadShader = function(shader) {
     }
 }
 
-MyCanvas.interpolateTriangleShader = function(shader) {
+Canvas.interpolateTriangleShader = function(shader) {
     return function(x, triangle, canvas) {
         alpha = triangleBaryCoord(x, triangle);
         shader(x, triangle, canvas, alpha);
     }
 }
 
-MyCanvas.interpolateLineShader = function(shader) {
+Canvas.interpolateLineShader = function(shader) {
     return function (x, line, canvas) {
         var v = diff(line[1], line[0]);
         var z = diff(x, line[0]);
@@ -1092,9 +953,9 @@ MyCanvas.interpolateLineShader = function(shader) {
  * img: html loaded image.
  * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
  */
-MyCanvas.quadTextureShader = function(img, quadTexCoord) {
+Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=bilinearInterpolation) {
     var imageShader = function(x, quad, canvas, alpha) {
-        var imageCanvas = new MyCanvas(ImageIO.getImageCanvas(img));
+        var imageCanvas = new Canvas(ImageIO.getImageCanvas(img));
         var imgSize = imageCanvas.getSize();
         var interpolateTexCoord = [0, 0];
         for(var i = 0; i < quadTexCoord.length; i++) {
@@ -1107,21 +968,160 @@ MyCanvas.quadTextureShader = function(img, quadTexCoord) {
         // pxl lower corner
         var j = floor(i);
         var cornerColors = [imageCanvas.getPxl(j), imageCanvas.getPxl(add(j, [1,0])), imageCanvas.getPxl(add(j, [1, 1])), imageCanvas.getPxl(add(j, [0, 1]))];
-        var bilinearColor = bilinearInterpolation(cornerColors, diff(i, j));
-        canvas.drawPxl(x, bilinearColor);
+        var finalColor = interpolation(cornerColors, diff(i, j));
+        canvas.drawPxl(x, finalColor);
     }
-    return MyCanvas.interpolateQuadShader(imageShader);
+    return Canvas.interpolateQuadShader(imageShader);
 }
 
 
-module.exports = MyCanvas;
-},{"./ImageIO.js":3}],5:[function(require,module,exports){
+module.exports = Canvas;
+},{"./ImageIO.js":4}],3:[function(require,module,exports){
+var Canvas = require('./Canvas.js');
+
+//Note that we can switch from heritage to composition, think about that
+
+// cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
+var Canvas2D = function(canvas, cameraSpace) {
+	Canvas.call(this, canvas);
+	if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
+		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
+	}
+	this.cameraSpace = cameraSpace;
+}
+
+Canvas2D.prototype = Object.create(Canvas.prototype);
+Canvas2D.prototype.constructor = Canvas2D;
+
+/* x : 2-dim array in camera space coordinates
+ * returns : 2-dim array in integer coordinates
+ */
+Canvas2D.prototype.integerTransform = function(x) {
+	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
+	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
+	return [xint, yint];
+}
+
+/* x : 2-dim array in integer coordinates
+ * returns : 2-dim array in camera space coordinates
+ */
+Canvas2D.prototype.inverseTransform = function(x) {
+	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
+	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
+	return [xt, yt];
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawLine = function(x1, x2, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	Canvas.prototype.drawLine.call(this, y1, y2, shader);
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawTriangle = function(x1, x2, x3, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	Canvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	y4 = this.integerTransform(x4);
+	Canvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
+}
+
+Canvas2D.prototype.drawCircle = function(x, r, shader) {
+    // it assumes squared canvas, for now ...
+    y = this.integerTransform(x);
+    z = this.integerTransform([r, 0])[1] - this.integerTransform([0, 0])[1];
+    Canvas.prototype.drawCircle.call(this, y, z, shader);
+}
+
+Canvas2D.prototype.drawImage = function (img, x, shader) {
+    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+}
+
+Canvas2D.prototype.drawString = function(x, string, contextShader) {
+    y = this.integerTransform(x);
+    Canvas.prototype.drawString.call(this, y, string, contextShader);
+};
+
+// camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
+Canvas2D.prototype.setCamera = function(camera) {
+    if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
+		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
+	}
+	this.cameraSpace = camera;
+}
+
+
+module.exports = Canvas2D;
+},{"./Canvas.js":2}],4:[function(require,module,exports){
+var ImageIO = {
+    // empty object
+};
+
+/**
+ * img : html image
+ */
+ImageIO.getImageCanvas = function(img) {
+    var canvasAux = document.createElement('canvas');
+    canvasAux.width = img.width;
+    canvasAux.height = img.height;
+    var contextAux = canvasAux.getContext('2d');
+    contextAux.fillStyle = 'rgba(0, 0, 0, 0)';
+    contextAux.globalCompositeOperation = 'source-over';
+    contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
+    contextAux.drawImage(img, 0 ,0);
+    return canvasAux;
+}
+
+/**
+ * img : html image
+ */
+ImageIO.getDataFromImage = function(img) {
+    canvas = ImageIO.getImageCanvas(img);
+    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
+};
+
+ImageIO.loadImage = function(src) {
+    var img = new Image();
+    img.src = src;
+    img.isReady = false;
+    img.onload = function() {
+        img.isReady = true;
+    };
+    return img;
+};
+
+ImageIO.generateImageReadyPredicate = function(img) {
+    return function() { return img.isReady;};
+}
+
+module.exports = ImageIO;
+},{}],5:[function(require,module,exports){
 var SimManager = {}
 
 /**
  * Tried to put private methods and variables but it didn´t work!!
  */
-
 SimManager.builder = function() {
     return new function() {
         this.simulations = [];

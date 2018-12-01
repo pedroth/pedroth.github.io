@@ -71,7 +71,7 @@ ArrayUtils.unpackJsArray = function(array) {
     }
 }
 
-ArrayUtils.range = function(xmin, xmax, step) {
+ArrayUtils.range = function(xmin, xmax, step=1) {
     var ans = [];
     for(var i = xmin; i < xmax; i += step) ans.push(i);
     return ans;

@@ -1,1 +1,1 @@
-browserify TestStreams.js > test.js
+browserify TestStream.js > test.js

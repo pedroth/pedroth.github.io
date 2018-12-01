@@ -1,6 +1,6 @@
 var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
-var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var Canvas = require('../../JsLib/Canvas/main/Canvas.js');
+var Canvas2D = require('../../JsLib/Canvas/main/Canvas2D.js');
 var ArrayUtils = require('../../JsLib/ArrayUtils/main/ArrayUtils.js');
 
 function showTable() {
@@ -128,7 +128,7 @@ function Sim1() {
     this.sequenceSize = 5;
     this.samples = 100;
     this.isMouseDown = false;
-    this.canvasGraph = new CanvasSpace(document.getElementById("interpolation"), [[-0.1, this.sequenceSize], [-0.1, this.maxAmp * 1.1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("interpolation"), [[-0.1, this.sequenceSize], [-0.1, this.maxAmp * 1.1]]);
     this.sequence = []
     this.mouse = [0, 0];
     this.startTime = new Date().getMilliseconds();
@@ -211,13 +211,13 @@ function Sim1() {
             this.sequence[i] = this.sequence[i] + dt * ((this.isMouseDown ? 1 : 0) * (this.mouse[1] - this.sequence[i]) * (Math.exp(-Math.abs(this.mouse[0] - i))));
         }
         ArrayUtils.range(0, this.sequenceSize, 1).forEach(i => {
-            this.canvasGraph.drawLine([i, 0], [i, this.sequence[i]], MyCanvas.simpleShader([0, 0, 0, 255]))
+            this.canvasGraph.drawLine([i, 0], [i, this.sequence[i]], Canvas.simpleShader([0, 0, 0, 255]))
         });
         var h = (this.sequenceSize - 1) / (this.samples - 1);
         for(var i = 0; i < this.samples-1; i++) {
             var x = i * h;
             var xh = x + h; 
-            this.canvasGraph.drawLine([x, seqInter(this.sequence, x)], [xh, seqInter(this.sequence, xh)], MyCanvas.simpleShader([255, 0, 0, 255]));
+            this.canvasGraph.drawLine([x, seqInter(this.sequence, x)], [xh, seqInter(this.sequence, xh)], Canvas.simpleShader([255, 0, 0, 255]));
         }
     }
 

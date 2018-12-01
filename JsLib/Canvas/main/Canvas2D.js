@@ -1,23 +1,23 @@
-var MyCanvas = require('./MyCanvas.js');
+var Canvas = require('./Canvas.js');
 
 //Note that we can switch from heritage to composition, think about that
 
 // cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
-var CanvasSpace = function(canvas, cameraSpace) {
-	MyCanvas.call(this, canvas);
+var Canvas2D = function(canvas, cameraSpace) {
+	Canvas.call(this, canvas);
 	if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
 		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
 	}
 	this.cameraSpace = cameraSpace;
 }
 
-CanvasSpace.prototype = Object.create(MyCanvas.prototype);
-CanvasSpace.prototype.constructor = CanvasSpace;
+Canvas2D.prototype = Object.create(Canvas.prototype);
+Canvas2D.prototype.constructor = Canvas2D;
 
 /* x : 2-dim array in camera space coordinates
  * returns : 2-dim array in integer coordinates
  */
-CanvasSpace.prototype.integerTransform = function(x) {
+Canvas2D.prototype.integerTransform = function(x) {
 	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
 	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
 	return [xint, yint];
@@ -26,7 +26,7 @@ CanvasSpace.prototype.integerTransform = function(x) {
 /* x : 2-dim array in integer coordinates
  * returns : 2-dim array in camera space coordinates
  */
-CanvasSpace.prototype.inverseTransform = function(x) {
+Canvas2D.prototype.inverseTransform = function(x) {
 	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
 	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
 	return [xt, yt];
@@ -36,10 +36,10 @@ CanvasSpace.prototype.inverseTransform = function(x) {
  * x2     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
  */
-CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
+Canvas2D.prototype.drawLine = function(x1, x2, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
-	MyCanvas.prototype.drawLine.call(this, y1, y2, shader);
+	Canvas.prototype.drawLine.call(this, y1, y2, shader);
 }
 
 /* x1     :   2-dim array
@@ -47,11 +47,11 @@ CanvasSpace.prototype.drawLine = function(x1, x2, shader) {
  * x3     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
  */
-CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
+Canvas2D.prototype.drawTriangle = function(x1, x2, x3, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
 	y3 = this.integerTransform(x3);
-	MyCanvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
+	Canvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
 }
 
 /* x1     :   2-dim array
@@ -60,32 +60,32 @@ CanvasSpace.prototype.drawTriangle = function(x1, x2, x3, shader) {
  * x4     :   2-dim array
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
  */
-CanvasSpace.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
+Canvas2D.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
 	y1 = this.integerTransform(x1);
 	y2 = this.integerTransform(x2);
 	y3 = this.integerTransform(x3);
 	y4 = this.integerTransform(x4);
-	MyCanvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
+	Canvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
 }
 
-CanvasSpace.prototype.drawCircle = function(x, r, shader) {
+Canvas2D.prototype.drawCircle = function(x, r, shader) {
     // it assumes squared canvas, for now ...
     y = this.integerTransform(x);
     z = this.integerTransform([r, 0])[1] - this.integerTransform([0, 0])[1];
-    MyCanvas.prototype.drawCircle.call(this, y, z, shader);
+    Canvas.prototype.drawCircle.call(this, y, z, shader);
 }
 
-CanvasSpace.prototype.drawImage = function (img, x, shader) {
-    MyCanvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+Canvas2D.prototype.drawImage = function (img, x, shader) {
+    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
 }
 
-CanvasSpace.prototype.drawString = function(x, string, contextShader) {
+Canvas2D.prototype.drawString = function(x, string, contextShader) {
     y = this.integerTransform(x);
-    MyCanvas.prototype.drawString.call(this, y, string, contextShader);
+    Canvas.prototype.drawString.call(this, y, string, contextShader);
 };
 
 // camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
-CanvasSpace.prototype.setCamera = function(camera) {
+Canvas2D.prototype.setCamera = function(camera) {
     if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
 		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
 	}
@@ -93,4 +93,4 @@ CanvasSpace.prototype.setCamera = function(camera) {
 }
 
 
-module.exports = CanvasSpace;
+module.exports = Canvas2D;

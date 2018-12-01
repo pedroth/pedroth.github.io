@@ -1,12 +1,12 @@
-var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
+var Canvas = require('../../JsLib/Canvas/main/Canvas.js');
+var Canvas2D = require('../../JsLib/Canvas/main/Canvas2D.js');
 var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
 
 /*
  * Simulations
  */
 function Sim1() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("eulerAlgorithm"), [[-1.1, 1.1], [-1.1, 1.1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("eulerAlgorithm"), [[-1.1, 1.1], [-1.1, 1.1]]);
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.samples = 25;
@@ -118,7 +118,7 @@ function Sim1() {
                 var maxD = Math.sqrt(this.vectorField.max);
                 // copy
                 var u = [scale * v[0] / maxD, scale * v[1] / maxD];
-                this.drawArrow([x, y], u, MyCanvas.simpleShader([0, 0, 255, 255]));
+                this.drawArrow([x, y], u, Canvas.simpleShader([0, 0, 255, 255]));
             }
         }
 
@@ -132,7 +132,7 @@ function Sim1() {
             }
             var color = 1 - (1 / (2 * (colorDegree - 1))) * k;
             for(var l = 0; l < n - 1; l++) {
-                this.canvasGraph.drawLine(integralCurve[l], integralCurve[l + 1], MyCanvas.simpleShader([255 * color, 0, 0, 255]));
+                this.canvasGraph.drawLine(integralCurve[l], integralCurve[l + 1], Canvas.simpleShader([255 * color, 0, 0, 255]));
             }
         }
     }

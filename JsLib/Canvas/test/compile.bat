@@ -1,0 +1,1 @@
+browserify TestCanvas.js --s test > test.js

@@ -1,11 +1,12 @@
-var MyCanvas = require('../../JsLib/MyCanvas/main/MyCanvas.js');
-var CanvasSpace = require('../../JsLib/MyCanvas/main/CanvasSpace.js');
-var ImageIO = require('../../JsLib/MyCanvas/main/ImageIO.js');
+var Canvas = require('../../JsLib/Canvas/main/Canvas.js');
+var Canvas2D = require('../../JsLib/Canvas/main/Canvas2D.js');
+var ImageIO = require('../../JsLib/Canvas/main/ImageIO.js');
 var SimManager = require('../../JsLib/SimManager/main/SimManager.js');
+var Stream = require("../../JsLib/Stream/main/Stream.js");
 
 function getDashedLineShader(color) {
-    return MyCanvas.interpolateLineShader(
-        function(x, line, canvas, t) {
+    return Canvas.interpolateLineShader(
+        (x, line, canvas, t) => {
             var p = 0.1;
             var isDash = (t % p) < (p / 2) ? true : false;
             if(isDash) {
@@ -40,11 +41,6 @@ function classifyCluster(x, clusters, distance) {
     return minIndex;
 }
 
-function squareNormDistance(x, y) {
-    var v = [x[0] - y[0], x[1] - y[1]];
-    return v[0] * v[0] + v[1] * v[1];
-}
-
 function horizontalNormDistance(x, y) {
     var v = x[0] - y[0];
     return v * v;
@@ -58,9 +54,98 @@ function linearFunctor(p1, p2) {
 /*
  * Simulations
  */
+function Sim0(){
+    this.canvas = new Canvas2D(document.getElementById("functionGraph"), [[-0.1, 1.1], [-0.1, 1.1]]);
+    this.fImg = ImageIO.loadImage("resources/f.png");
+    this.xaxisH = 0.9;
+    this.yaxisH = 0.0;
+    this.height = 0.1;
+    this.isNotDrawn = true;
+    this.samples = 50;
+    this.fminMax = [-1, 1];
+
+    this.checkIfCanDraw = function() {
+        return $("#sim0").is(":visible");
+    }
+
+    /**
+     * Generate Heat color shader based on function f
+     * @param {*} f, f:[0, 1]->[0, 1]
+     */
+    this.getHeatColorShader = function(f) {
+        return (x, quad, canvas) => {
+            let xline = canvas.inverseTransform(x);
+            let intensity = Math.min(1, Math.max(0, f(xline[0])));
+            let red = 255 * Math.min(1, Math.max(0, 10.0 / 4.0 * intensity));
+            let green = 255 * Math.min(1, Math.max(0, 10.0 / 4.0 * (intensity - 0.4)));
+            let blue = 255 * Math.min(1, Math.max(0, 5 * (intensity - 0.8)));
+            canvas.drawPxl(x, [Math.floor(red), Math.floor(green), Math.floor(blue), 255]);
+        };
+    }
+
+    this.smooth = function(y) {
+        var z = [];
+        z[0] = (y[0] + y[1]) / 2;
+        for(var i = 1; i < y.length - 1; i++) {
+            z[i] = (y[i] + y[i+1] + y[i-1]) / 3;
+        }
+        z[y.length-1] = (y[y.length-2] + y[y.length-1]) / 2;
+        return z;
+    }
+
+    this.generateNewFunction = function(){
+        let df = this.fminMax[1] - this.fminMax[0];
+        let randomArray = Stream.range(0, this.samples)
+                                .map(x => this.fminMax[0] + df * Math.random())
+                                .reduce([], (acc, x) => { acc.push(x); return acc; });
+        let s = Stream.of(this.smooth(randomArray));
+        return s.map
+    }
+
+    this.draw = function() {
+        if(this.isNotDrawn) {
+            var dy = (this.xaxisH - this.yaxisH);
+
+            this.canvas.clearImage([255, 255, 255, 255]);
+            // f arrow
+            var init = [0.5, this.xaxisH - 0.05 * dy]
+            var end = [0.5, this.yaxisH + 0.15 * dy]
+            drawArrow(init, [end[0] - init[0], end[1] - init[1]], this.canvas, Canvas.simpleShader([0, 0, 0, 255]));
+            this.canvas.drawImage(this.fImg, [0.45, 0.5 * dy]);
+
+            //x-axis color
+            var xTop = this.xaxisH + this.height;
+            this.canvas.drawLine([0, this.xaxisH], [1, this.xaxisH], Canvas.simpleShader([0, 0, 0, 255]));
+            this.canvas.drawQuad([0, this.xaxisH], [1, this.xaxisH], [1, xTop], [0, xTop], this.getHeatColorShader(x => x));
+
+            //y-axis color
+            var yTop = this.yaxisH + this.height;
+            var fsamples = this.generateNewFunction();
+            this.canvas.drawLine([0, this.yaxisH], [1, this.yaxisH], Canvas.simpleShader([0, 0, 0, 255]));
+            this.canvas.drawQuad([0, this.yaxisH], [1, this.yaxisH], [1, yTop], [0, yTop], this.getHeatColorShader(x => fsamples[Math.floor(x * fsamples.length)]));
+
+            this.canvas.paintImage();
+            this.isNotDrawn = false;
+        }
+    }
+
+    this.start = function() {
+        $("#sim0").slideDown();
+    }
+
+    this.end = function() {
+        $("#sim0").slideUp();
+    }
+
+    this.init = function () {
+        // empty
+    }
+}
+
+
 function Sim1() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("linearFunctionGraph"), [[-0.1, 1], [-0.1, 1]]);
-    this.canvasTransformation = new CanvasSpace(document.getElementById("linearFunctionTransformation"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("linearFunctionGraph"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasTransformation = new Canvas2D(document.getElementById("linearFunctionTransformation"), [[-0.1, 1], [-0.1, 1]]);
     this.fa = [1/3, 1/3];
     this.fb = [2/3, 2/3];
     this.xImg = ImageIO.loadImage("resources/x.png");
@@ -126,23 +211,23 @@ function Sim1() {
     }
 
     this.drawSetup = function() {
-        drawArrow([-0.1, 0], [1 ,0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
-        drawArrow([0, -0.1], [0 ,1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([-0.1, 0], [1 ,0], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([0, -0.1], [0 ,1], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
         this.canvasGraph.drawImage(this.xImg, [0.9, -0.01]);
         this.canvasGraph.drawImage(this.yImg, [-0.05, 0.9]);
         
-        drawArrow([-0.1, this.xaxisH], [1, 0], this.canvasTransformation, MyCanvas.simpleShader([0, 0, 0, 255]));
-        drawArrow([-0.1, this.yaxisH], [1, 0], this.canvasTransformation, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([-0.1, this.xaxisH], [1, 0], this.canvasTransformation, Canvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([-0.1, this.yaxisH], [1, 0], this.canvasTransformation, Canvas.simpleShader([0, 0, 0, 255]));
         this.canvasTransformation.drawImage(this.xImg, [0.9, this.xaxisH-0.05]);
         this.canvasTransformation.drawImage(this.yImg, [0.9, this.yaxisH-0.05]);
-        drawArrow([0.4, this.xaxisH - 0.05], [0, 0.7 * (this.yaxisH - this.xaxisH)], this.canvasTransformation, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([0.4, this.xaxisH - 0.05], [0, 0.7 * (this.yaxisH - this.xaxisH)], this.canvasTransformation, Canvas.simpleShader([0, 0, 0, 255]));
         this.canvasTransformation.drawImage(this.fImg, [0.45, 0.5]);
     }
 
     this.drawCanvasGraph = function() {
-        this.canvasGraph.drawLine(this.pointInLine(-2), this.pointInLine(2), MyCanvas.simpleShader([0, 0, 0, 255]));
-        this.canvasGraph.drawCircle(this.fa, this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasGraph.drawCircle(this.fb, this.circleRadius, MyCanvas.simpleShader([0, 255, 0, 255]));
+        this.canvasGraph.drawLine(this.pointInLine(-2), this.pointInLine(2), Canvas.simpleShader([0, 0, 0, 255]));
+        this.canvasGraph.drawCircle(this.fa, this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle(this.fb, this.circleRadius, Canvas.simpleShader([0, 255, 0, 255]));
 
         // dashed red line
         this.canvasGraph.drawLine(this.fa, [this.fa[0], 0], getDashedLineShader([255, 0, 0, 255]));
@@ -162,16 +247,16 @@ function Sim1() {
         var h = (xmax - xmin)  / (samples - 1.0);
         var sampleRadius = 0.5 * this.circleRadius;
         for(var i = 0; i < samples; i++) {
-            this.canvasTransformation.drawCircle([x, this.xaxisH], sampleRadius, MyCanvas.simpleShader([0, 0, 255, 255]));
-            this.canvasTransformation.drawCircle([this.pointInLine(x)[1], this.yaxisH], sampleRadius, MyCanvas.simpleShader([0, 0, 255, 255]));
+            this.canvasTransformation.drawCircle([x, this.xaxisH], sampleRadius, Canvas.simpleShader([0, 0, 255, 255]));
+            this.canvasTransformation.drawCircle([this.pointInLine(x)[1], this.yaxisH], sampleRadius, Canvas.simpleShader([0, 0, 255, 255]));
             x += h;
         }
 
-        this.canvasTransformation.drawCircle([this.fa[0], this.xaxisH], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasTransformation.drawCircle([this.fb[0], this.xaxisH], this.circleRadius, MyCanvas.simpleShader([0, 255, 0, 255]));
+        this.canvasTransformation.drawCircle([this.fa[0], this.xaxisH], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
+        this.canvasTransformation.drawCircle([this.fb[0], this.xaxisH], this.circleRadius, Canvas.simpleShader([0, 255, 0, 255]));
 
-        this.canvasTransformation.drawCircle([this.fa[1], this.yaxisH], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasTransformation.drawCircle([this.fb[1], this.yaxisH], this.circleRadius, MyCanvas.simpleShader([0, 255, 0, 255]));
+        this.canvasTransformation.drawCircle([this.fa[1], this.yaxisH], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
+        this.canvasTransformation.drawCircle([this.fb[1], this.yaxisH], this.circleRadius, Canvas.simpleShader([0, 255, 0, 255]));
 
     }
 
@@ -196,19 +281,19 @@ function Sim1() {
     }
 
     this.init = function() {
-        this.canvasGraph.addEventListener("touchstart", function(e) { apply(0, function(x) { x.touchStart(e) })}, false);
-        this.canvasGraph.addEventListener("touchend", function(e) { apply(0, function(x) { x.touchEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("touchmove", function(e) { apply(0, function(x) { x.touchMove(e) }) }, false);
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(1, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend", function(e) { apply(1, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchmove", function(e) { apply(1, function(x) { x.touchMove(e) }) }, false);
 
-        this.canvasGraph.addEventListener("mousedown", function(e) { apply(0, function(x) { x.mouseStart(e) }) }, false);
-        this.canvasGraph.addEventListener("mouseup", function(e) { apply(0, function(x) { x.mouseEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("mousemove",function(e) { apply(0, function(x) { x.mouseMove(e) }) }, false);
+        this.canvasGraph.addEventListener("mousedown", function(e) { apply(1, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup", function(e) { apply(1, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove",function(e) { apply(1, function(x) { x.mouseMove(e) }) }, false);
     }
 }
 
 
 function Sim2() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("secantApproximation"), [[-0.1, 1], [-0.1, 1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("secantApproximation"), [[-0.1, 1], [-0.1, 1]]);
     this.xImg = ImageIO.loadImage("resources/x.png");
     this.yImg = ImageIO.loadImage("resources/y.png");
     this.fImg = ImageIO.loadImage("resources/f.png");
@@ -335,8 +420,8 @@ function Sim2() {
     }
 
     this.drawSetup = function() {
-        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
-        drawArrow([0, -0.1], [0, 1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([0, -0.1], [0, 1], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
         this.canvasGraph.drawImage(this.xImg, [0.9, -0.01]);
         this.canvasGraph.drawImage(this.yImg, [-0.05, 0.9]);
     }
@@ -349,7 +434,7 @@ function Sim2() {
             var zi = (this.fx.funcSamples[i] - this.fx.min) / scale;
             var zj = (this.fx.funcSamples[i + 1] - this.fx.min) / scale;
             var x = h * i;
-            this.canvasGraph.drawLine([x, zi], [x + h, zj], MyCanvas.simpleShader([0, 0, 255, 255]));
+            this.canvasGraph.drawLine([x, zi], [x + h, zj], Canvas.simpleShader([0, 0, 255, 255]));
         }
 
         this.movingStep += (this.step - this.movingStep) * 0.01;
@@ -357,11 +442,11 @@ function Sim2() {
         var f = (this.fx.func(this.cursor) - this.fx.min) / scale;
         var fh = (this.fx.func(this.cursor + this.movingStep) - this.fx.min) / scale;
 
-        this.canvasGraph.drawCircle([this.cursor, f], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasGraph.drawCircle([this.cursor + this.movingStep, fh], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle([this.cursor, f], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle([this.cursor + this.movingStep, fh], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
 
         var g = linearFunctor([this.cursor, f], [this.cursor + this.movingStep, fh]);
-        this.canvasGraph.drawLine([-1, g(-1)], [1.5, g(1.5)], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasGraph.drawLine([-1, g(-1)], [1.5, g(1.5)], Canvas.simpleShader([0, 0, 0, 255]));
 
         var df = ((fh - f) / this.movingStep);
         $("#df_sim").text("df = " + df.toFixed(3));
@@ -387,20 +472,20 @@ function Sim2() {
     }
 
     this.init = function() {
-        this.canvasGraph.addEventListener("touchstart", function(e) { apply(1, function(x) { x.touchStart(e) })}, false);
-        this.canvasGraph.addEventListener("touchend", function(e) { apply(1, function(x) { x.touchEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("touchmove", function(e) { apply(1, function(x) { x.touchMove(e) }) }, false);
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(2, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend", function(e) { apply(2, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchmove", function(e) { apply(2, function(x) { x.touchMove(e) }) }, false);
 
-        this.canvasGraph.addEventListener("mousedown", function(e) { apply(1, function(x) { x.mouseStart(e) }) }, false);
-        this.canvasGraph.addEventListener("mouseup", function(e) { apply(1, function(x) { x.mouseEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("mousemove",function(e) { apply(1, function(x) { x.mouseMove(e) }) }, false);
+        this.canvasGraph.addEventListener("mousedown", function(e) { apply(2, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup", function(e) { apply(2, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove",function(e) { apply(2, function(x) { x.mouseMove(e) }) }, false);
         
     }
 }
 
 
 function Sim3() {
-    this.canvasGraph = new CanvasSpace(document.getElementById("optimizationProblem"), [[-0.1, 1], [-0.5, 1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("optimizationProblem"), [[-0.1, 1], [-0.5, 1]]);
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.fx = [];
@@ -496,7 +581,7 @@ function Sim3() {
     }
 
     this.drawCanvasGraph = function() {
-        this.canvasGraph.drawLine([-0.2,0], [1.2, 0.0], MyCanvas.simpleShader([0, 0, 0, 255]));
+        this.canvasGraph.drawLine([-0.2,0], [1.2, 0.0], Canvas.simpleShader([0, 0, 0, 255]));
 
         var h = 1.0 / (this.samples - 1);
         var scale = (this.fx.max - this.fx.min);
@@ -505,18 +590,18 @@ function Sim3() {
             var zi = (this.fx.funcSamples[i] - this.fx.min) / scale;
             var zj = (this.fx.funcSamples[i + 1] - this.fx.min) / scale;
             var x = h * i;
-            this.canvasGraph.drawLine([x, zi], [x + h, zj], MyCanvas.simpleShader([0, 0, 255, 255]));
+            this.canvasGraph.drawLine([x, zi], [x + h, zj], Canvas.simpleShader([0, 0, 255, 255]));
         }
 
         for(var i = 0; i < this.measurementsSamples; i++) {
-            this.canvasGraph.drawCircle([this.measurements[i], 0.0], this.circleRadius, MyCanvas.simpleShader([0, 0, 0, 255]));
+            this.canvasGraph.drawCircle([this.measurements[i], 0.0], this.circleRadius, Canvas.simpleShader([0, 0, 0, 255]));
         }
 
-        this.canvasGraph.drawCircle([this.trueMeasure, 0.0], this.circleRadius, MyCanvas.simpleShader([0, 255, 0, 255]));
+        this.canvasGraph.drawCircle([this.trueMeasure, 0.0], this.circleRadius, Canvas.simpleShader([0, 255, 0, 255]));
 
         var cost = (this.costFunction(this.cursor) - this.fx.min) / scale;
-        this.canvasGraph.drawCircle([this.cursor, cost], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
-        this.canvasGraph.drawCircle([this.cursor, 0], this.circleRadius, MyCanvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle([this.cursor, cost], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
+        this.canvasGraph.drawCircle([this.cursor, 0], this.circleRadius, Canvas.simpleShader([255, 0, 0, 255]));
 
         $("#cost_sim").text("C = " + cost.toFixed(3));
     }
@@ -538,13 +623,13 @@ function Sim3() {
     }
 
     this.init = function() {
-        this.canvasGraph.addEventListener("touchstart", function(e) { apply(2, function(x) { x.touchStart(e) })}, false);
-        this.canvasGraph.addEventListener("touchend",   function(e) { apply(2, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(3, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend",   function(e) { apply(3, function(x) { x.touchEnd(e) }) }, false);
         this.canvasGraph.addEventListener("touchmove",  function(e) { apply(2, function(x) { x.touchMove(e) }) }, false);
 
-        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(2, function(x) { x.mouseStart(e) }) }, false);
-        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(2, function(x) { x.mouseEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(2, function(x) { x.mouseMove(e) }) }, false);
+        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(3, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(3, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(3, function(x) { x.mouseMove(e) }) }, false);
 
     }
 }
@@ -553,7 +638,7 @@ function Sim3() {
 function Sim4() {
     this.tImg = ImageIO.loadImage("resources/t.png");
     this.yImg = ImageIO.loadImage("resources/y.png");
-    this.canvasGraph = new CanvasSpace(document.getElementById("eulerAlgorithm"), [[-0.1, 1.1], [-0.1, 1.1]]);
+    this.canvasGraph = new Canvas2D(document.getElementById("eulerAlgorithm"), [[-0.1, 1.1], [-0.1, 1.1]]);
     this.isMouseDown = false;
     this.circleRadius = 0.01;
     this.fx = [];
@@ -650,8 +735,8 @@ function Sim4() {
     }
 
     this.drawCanvasGraph = function() {
-        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
-        drawArrow([0, -0.1], [0, 1], this.canvasGraph, MyCanvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([-0.1, 0], [1, 0], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
+        drawArrow([0, -0.1], [0, 1], this.canvasGraph, Canvas.simpleShader([0, 0, 0, 255]));
         this.canvasGraph.drawImage(this.tImg, [0.9, -0.01]);
         this.canvasGraph.drawImage(this.yImg, [-0.05, 0.9]);
 
@@ -663,7 +748,7 @@ function Sim4() {
                 var y = h * j;
                 var m = this.fx.funcSamples[i];
                 var epsilon = h / 10;
-                this.canvasGraph.drawLine([x - epsilon, y - m * epsilon], [x + epsilon, y + m * epsilon], MyCanvas.simpleShader([0, 0, 255, 255]));
+                this.canvasGraph.drawLine([x - epsilon, y - m * epsilon], [x + epsilon, y + m * epsilon], Canvas.simpleShader([0, 0, 255, 255]));
             }
         }
 
@@ -676,7 +761,7 @@ function Sim4() {
             }
             var color = 1 - (1 / (2 * (colorDegree - 1))) * k;
             for(var l = 0; l < n-1; l++) {
-                this.canvasGraph.drawLine(integralCurve[l], integralCurve[l + 1], MyCanvas.simpleShader([255 * color, 0, 0, 255]));
+                this.canvasGraph.drawLine(integralCurve[l], integralCurve[l + 1], Canvas.simpleShader([255 * color, 0, 0, 255]));
             }
         }
     }
@@ -706,13 +791,12 @@ function Sim4() {
     }
 
     this.init = function() {
-        this.canvasGraph.addEventListener("touchstart", function(e) { apply(3, function(x) { x.touchStart(e) })}, false);
-        this.canvasGraph.addEventListener("touchend",   function(e) { apply(3, function(x) { x.touchEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("touchmove",  function(e) { apply(3, function(x) { x.touchMove(e) }) }, false);
-
-        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(3, function(x) { x.mouseStart(e) }) }, false);
-        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(3, function(x) { x.mouseEnd(e) }) }, false);
-        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(3, function(x) { x.mouseMove(e) }) }, false);
+        this.canvasGraph.addEventListener("touchstart", function(e) { apply(4, function(x) { x.touchStart(e) })}, false);
+        this.canvasGraph.addEventListener("touchend",   function(e) { apply(4, function(x) { x.touchEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("touchmove",  function(e) { apply(4, function(x) { x.touchMove(e) }) }, false);
+        this.canvasGraph.addEventListener("mousedown", function(e)  { apply(4, function(x) { x.mouseStart(e) }) }, false);
+        this.canvasGraph.addEventListener("mouseup",   function(e)  { apply(4, function(x) { x.mouseEnd(e) }) }, false);
+        this.canvasGraph.addEventListener("mousemove", function(e)  { apply(4, function(x) { x.mouseMove(e) }) }, false);
 
     }
 }
@@ -723,6 +807,7 @@ function Sim4() {
  */
 
  var simulations = [
+     new Sim0(),
      new Sim1(),
      new Sim2(),
      new Sim3(),

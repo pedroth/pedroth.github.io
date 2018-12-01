@@ -1,5 +1,5 @@
-var MyCanvas = require('../main/MyCanvas.js');
-var CanvasSpace = require('../main/CanvasSpace.js');
+var Canvas = require('../main/Canvas.js');
+var Canvas2D = require('../main/Canvas2D.js');
 var ImageIO = require('../main/ImageIO.js');
 var Choice = require('../../Choice/main/Choice.js');
 var SimManager = require('../../SimManager/main/SimManager.js');
@@ -22,13 +22,13 @@ function invertVector(init, v, t) {
     return ans;
 }
 
-f = MyCanvas.simpleShader([0, 255, 0, 255]);
-g = MyCanvas.simpleShader([0, 0, 255, 255]);
-r = MyCanvas.simpleShader([255, 0, 0, 255]);
+f = Canvas.simpleShader([0, 255, 0, 255]);
+g = Canvas.simpleShader([0, 0, 255, 255]);
+r = Canvas.simpleShader([255, 0, 0, 255]);
 
 var Test1 = function(divName) {
     this.divName = divName;
-    this.canvasLines = new CanvasSpace(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
+    this.canvasLines = new Canvas2D(document.getElementById("canvasLines"), [[-1, 1], [-1, 1]]);
     this.isFirstIte = true;
 
     this.a = [-1, 1];
@@ -63,12 +63,12 @@ var Test1 = function(divName) {
             this.canvasLines.drawLine(
                                         [0, 0],
                                         [-2, -2],
-                                        MyCanvas.interpolateLineShader(this.colorInterShader)
+                                        Canvas.interpolateLineShader(this.colorInterShader)
             );
             this.canvasLines.paintImage();
             this.isFirstIte = false;
         } else {
-            this.canvasLines.drawLine(this.points[0], this.points[1], MyCanvas.interpolateLineShader(this.colorInterShader));
+            this.canvasLines.drawLine(this.points[0], this.points[1], Canvas.interpolateLineShader(this.colorInterShader));
 
             this.points[0] = [this.points[0][0] + this.speed * this.n[0], this.points[0][1] + this.speed * this.n[1]];
             this.points[1] = [this.points[1][0] + this.speed * this.n[0], this.points[1][1] + this.speed * this.n[1]];
@@ -80,7 +80,7 @@ var Test1 = function(divName) {
 
 var Test2 = function(divName) {
     this.divName = divName;
-    this.canvasPoints = new MyCanvas(document.getElementById("canvasPoints"));
+    this.canvasPoints = new Canvas(document.getElementById("canvasPoints"));
     this.i = 0;
     this.j = 0;
     this.t = 0;
@@ -107,8 +107,8 @@ var Test2 = function(divName) {
 
 var Test3 = function(divName) {
     this.divName = divName;
-    this.triangleShader = MyCanvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
-    this.canvasTriangles = new MyCanvas(document.getElementById("canvasTriangles"));
+    this.triangleShader = Canvas.colorShader([[255,0,0,255],[0,255,0,255],[0,0,255,255]]);
+    this.canvasTriangles = new Canvas(document.getElementById("canvasTriangles"));
     this.samples = 25;
     this.avgTime = 0;
     this.ite = this.samples;
@@ -164,7 +164,7 @@ var Test3 = function(divName) {
 
 var Test4 = function(divName) {
     this.divName = divName;
-    this.canvasTexture = new CanvasSpace(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
+    this.canvasTexture = new Canvas2D(document.getElementById("canvasTexture"), [[-1, 1], [-1,  1]]);
     this.oldTime = new Date().getTime();
 
     this.texture = ImageIO.loadImage("R.png");
@@ -176,7 +176,10 @@ var Test4 = function(divName) {
                  [-0.25,  0.25],
                 ];
 
-    this.shader = new Choice(MyCanvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]]), MyCanvas.simpleShader([255, 0, 255, 255]), ImageIO.generateImageReadyPredicate(this.texture));
+    this.shader = new Choice(Canvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]], (values, x) => values[0]), 
+                             Canvas.simpleShader([255, 0, 255, 255]),
+                             ImageIO.generateImageReadyPredicate(this.texture)
+                            );
 
     this.update = function() {
         var dt = 1E-3 * (new Date().getTime() - this.oldTime);
