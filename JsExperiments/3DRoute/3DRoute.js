@@ -117,6 +117,15 @@ var normalize = function(v) {
  }
 };
 
+var binaryOperation = (u,v, operation) => {
+    if(u.length != v.length) throw `arrays dimension mismatch ${u.length}, ${v.length}`
+    var ans = [];
+    for(let i = 0; i < u.length; i++) {
+        ans.push(operation(u[i], v[i]));
+    }
+    return ans;
+}
+
 var innerProd = function(u,v) {
  return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
 };
@@ -125,7 +134,18 @@ var innerProd = function(u,v) {
 * */
 var matrixProd = function(u,v,w,x) {
  return add(add(scalarMult(x[0],u),scalarMult(x[1],v)),scalarMult(x[2],w));
-}; 
+};
+
+/**
+ * Return the product between the matrix formed by (u,v,w).T and x;
+ * @param {*} u 
+ * @param {*} v 
+ * @param {*} w 
+ * @param {*} x 
+ */
+var matrixProdTranspose = function (u, v, w, x) {
+    return [innerProd(u, x), innerProd(v, x), innerProd(w, x)];
+}
 
 /**
 * return solution to : [ u_0 , h] x = z_0
@@ -186,7 +206,8 @@ var Camera = function() {
 var Device = function() {
 	this.pos   = [0, 0, 0];
 	this.vel   = [0, 0, 0];
-	this.euler = [0, 0, 0];
+    this.euler = [0, 0, 0];
+    this.eulerSpeed = [0, 0, 0];
 	this.basis = [];
 	this.computeBasisFromEuler = function() {
 		var alpha = -this.euler[0];
@@ -601,19 +622,31 @@ function updateCurve(dt) {
 	}
 
 	if(!isMobile && !isManual) {
-	    let newAcc = add(scalarMult(-1 + 2 * Math.random(), [1, 1, 1]), add(scalarMult(-1 + 2 * Math.random(), myDevice.pos), scalarMult(-1 + 2 * Math.random(), myDevice.vel)));
-		accelerationFifo.push(newAcc);
-		eulerFifo.push([ 2 * Math.PI * Math.random(), -Math.PI + 2 * Math.PI * Math.random() , -Math.PI / 2 + Math.PI * Math.random()]);
+        myDevice.computeBasisFromEuler();
+        let randomCoin = Math.random() < 0.3 ? 1 : 0;
+        let force = scalarMult(-1, matrixProdTranspose(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], myDevice.pos));
+        let newAcc = add(scalarMult(randomCoin, force), scalarMult(1 - randomCoin, [1, 0, 0]));
+        accelerationFifo.push(newAcc);
+        console.log()
+        randomCoin = Math.random() < 0.3 ? 1 : 0;
+        randomEulerAcc = scalarMult(10, [-1 * 2 * Math.random(), -1 * 2 * Math.random(), -1 * 2 * Math.random()]);
+        randomEulerAcc = add(scalarMult(randomCoin, randomEulerAcc), scalarMult(1 - randomCoin, [0, 0, 0]));
+        randomEulerAcc = diff(randomEulerAcc, myDevice.eulerSpeed);
+        // integration
+		eulerFifo.push(add(myDevice.euler, scalarMult(dt, myDevice.eulerSpeed)));
+        myDevice.eulerSpeed = add(myDevice.eulerSpeed, scalarMult(dt, randomEulerAcc));
 	}
 
 	var averageAcceleration = diff(averageVectorFifo(accelerationFifo), accelerationCalibration);
 	var averageEuler = diff(averageVectorFifo(eulerFifo), eulerCalibration);
 
-	sendData2PublicChat(averageAcceleration, averageEuler);
+	//sendData2PublicChat(averageAcceleration, averageEuler);
 
 	myDevice.computeBasisFromEuler();
 	accelerationSpace = matrixProd(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], averageAcceleration);
-	accelerationSpace = diff(accelerationSpace, myDevice.vel);
+    // friction
+    accelerationSpace = diff(accelerationSpace, myDevice.vel);
+    //euler integration
 	myDevice.pos = add(myDevice.pos, add(scalarMult(dt, myDevice.vel), scalarMult(0.5 * dt * dt, accelerationSpace)));
 	myDevice.vel = add(myDevice.vel, scalarMult(dt, accelerationSpace));
 

@@ -2,6 +2,15 @@ var UnitTest = require('../../UnitTest/main/UnitTest.js');
 var ArrayUtils = require('../../ArrayUtils/main/ArrayUtils.js');
 var Stream = require("../main/Stream.js");
 
+function primesSieveRecursive(stream) {
+    let p = stream.head();
+    return Stream.of(Stream.pair(p, stream.tail().filter(x => x % p != 0)));
+}
+
+function primesSieve() {
+    return primesSieveRecursive(Stream.range(2));
+}
+
 var TestStreams = function() {
     this.mapTest = () => {
         var assert = UnitTest.Assert(this);
@@ -54,11 +63,36 @@ var TestStreams = function() {
         ));
     }
 
-    this.forEach = () => {
+    this.forEachTest = () => {
         var assert = UnitTest.Assert(this);
         let stack = [];
-        Stream.range(0, 10).filter(x => x % 2 == 0).forEach(x => stack.push(x));
-        assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0,10).filter(x=>x % 2 == 0), stack));
+        Stream.range(0, 10).map(x => x * x).filter(x => x % 2 == 0).forEach(x => stack.push(x));
+        assert.assertTrue(ArrayUtils.arrayEquals(ArrayUtils.range(0,10).map(x => x * x).filter(x=>x % 2 == 0), stack));
+    }
+
+    this.ofTest = () => {
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(
+                            ArrayUtils.range(0, 10),
+                            Stream.of(ArrayUtils.range(0, 10)).collect(Stream.Collectors.toArray())
+                         ));
+        assert.assertTrue(ArrayUtils.arrayEquals(
+                            Stream.range(0,10).collect(Stream.Collectors.toArray()),
+                            Stream.of(Stream.range(0, 10)).collect(Stream.Collectors.toArray())
+                        ));
+        assert.assertTrue(ArrayUtils.arrayEquals(
+                            Stream.of(Stream.generatorOf(0, s => s + 1, s=>String.fromCharCode(s), s => s < 10)).collect(Stream.Collectors.toArray()),
+                            ArrayUtils.range(0,10).map(x => String.fromCharCode(x))
+        ));
+    }
+
+    this.primeSieveTest = () => {
+        let primes =  [2, 3, 5, 7, 11, 13];
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(
+            primes,
+            primesSieve().take(6)
+        ));
     }
 }
 

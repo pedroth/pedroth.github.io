@@ -78,14 +78,15 @@ function sort(v,key) {
 }
 
 function powInt(x,i) {
-  if(i === 0) {
+  if(i == 0) {
     return 1;
-  } else if(i === 1) {
+  }
+  if(i == 1) {
     return x;
   } else {
     var q = Math.floor(i/2);
     var r = i % 2;
-    if(r === 0) {
+    if(r == 0) {
       return powInt(x * x,q);
     } else {
       return x * powInt(x * x,q);
