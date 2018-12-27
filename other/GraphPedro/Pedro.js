@@ -146,8 +146,8 @@ function init() {
 		graphsPos[i] = [];
 		for(var j = 0; j < graphs[i].length; j++) {
 			graphsPos[i][j] = [];
-			graphsPos[i][j][0] =  Math.random() * height;
-			graphsPos[i][j][1] =  Math.random() * width;
+			graphsPos[i][j][0] =  Math.random() * height / 2;
+			graphsPos[i][j][1] =  Math.random() * width / 2;
 		}
 	}
 	mouse = zeros();
@@ -275,21 +275,21 @@ function drawLine(x1, x2, data, rgb) {
 }
 
 function updateGraph(dt) {
-	var l = 200;
+	var l = 50;
 	for(var i = 0; i < graphs.length; i++) {
 		for(var j = 0; j < graphs[i].length; j++) {
-			var acm = zeros();
+			var acc = zeros();
 			for(var k = 0; k < graphs[i][j].length; k++) {
 				var v = diff(graphsPos[i][j], graphsPos[i][graphs[i][j][k]]);
 				var vel = myNorm(v) - l;
-				v = scalarMult(-vel,normalize(v));
-				acm = add(acm, v);
+				v = scalarMult(-vel, normalize(v));
+				acc = add(acc, v);
 			}
 			var mouseForce = diff(graphsPos[i][j], mouse);
 			mouseForce = scalarMult(9000 / (squaredNorm(mouseForce) + 1) , mouseForce);
 			var logic = down ? 1:0;
-			acm = add(acm, scalarMult(logic,mouseForce));
-			graphsPos[i][j] = add(graphsPos[i][j],scalarMult(dt, acm));
+			acc = add(acc, scalarMult(logic, mouseForce));
+			graphsPos[i][j] = add(graphsPos[i][j],scalarMult(dt, acc));
 		}
 	}
 }

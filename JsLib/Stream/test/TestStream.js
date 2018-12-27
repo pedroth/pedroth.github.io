@@ -4,7 +4,7 @@ var Stream = require("../main/Stream.js");
 
 function primesSieveRecursive(stream) {
     let p = stream.head();
-    return Stream.of(Stream.pair(p, stream.tail().filter(x => x % p != 0)));
+    return Stream.pair(p, () => primesSieveRecursive(stream.tail().filter(x => x % p != 0)));
 }
 
 function primesSieve() {
@@ -52,14 +52,16 @@ var TestStreams = function() {
         var assert = UnitTest.Assert(this);
         assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).take(10), ArrayUtils.range(0,10)));
         assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0,100).takeWhile(x => x < 10), ArrayUtils.range(0,10)));
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(1).filter(x => x % 2 == 0).take(10), [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]));
     }
 
     this.filterTest = () => {
         var assert = UnitTest.Assert(this);
-        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0, 100)
+        assert.assertTrue(ArrayUtils.arrayEquals(Stream.range(0, 10)
+                                                       .map(x => x * x)
                                                        .filter(x => x % 2 == 0)
                                                        .collect(Stream.Collectors.toArray()),
-                                                 ArrayUtils.range(0, 100).filter(x => x % 2 == 0)
+                                                 ArrayUtils.range(0, 10).map(x => x * x).filter(x => x % 2 == 0)
         ));
     }
 
