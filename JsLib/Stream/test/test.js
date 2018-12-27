@@ -255,7 +255,18 @@ Stream.prototype.takeWhile = function(predicate) {
     ).collect(Stream.Collectors.toArray());
 }
 
-Stream.pair = function(head, tailSupplier) {
+Stream.prototype.zip = function(stream) {
+    return new Stream(
+        Stream.generatorOf(
+            [this, stream],
+            s => [s[0].tail(), s[1].tail()],
+            s => [s[0].head(), s[1].head()],
+            s => s[0].hasNext() && s[1].hasNext()
+        )
+    );
+}
+
+Stream.ofHeadTail = function(head, tailSupplier) {
     return new Stream(
         Stream.generatorOf(
             {h: head, supplier: tailSupplier},
@@ -328,11 +339,20 @@ var Stream = require("../main/Stream.js");
 
 function primesSieveRecursive(stream) {
     let p = stream.head();
-    return Stream.pair(p, () => primesSieveRecursive(stream.tail().filter(x => x % p != 0)));
+    return Stream.ofHeadTail(p, () => primesSieveRecursive(stream.tail().filter(x => x % p != 0)));
 }
 
 function primesSieve() {
     return primesSieveRecursive(Stream.range(2));
+}
+
+function twin(x, y) {
+    return y == x + 2;
+}
+
+function primeTwins() {
+    let primes = primesSieve();
+    return primes.zip(primes.tail()).filter(x => twin(x[0], x[1]));
 }
 
 var TestStreams = function() {
@@ -418,6 +438,15 @@ var TestStreams = function() {
         assert.assertTrue(ArrayUtils.arrayEquals(
             primes,
             primesSieve().take(6)
+        ));
+    }
+
+    this.twinPrimeTest = () => {
+        let twinPrimes = [[3, 5], [5, 7], [11, 13], [17, 19], [29, 31], [41, 43]];
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(
+            twinPrimes.map(x=>x[0]),
+            primeTwins().map(x=>x[0]).take(6)
         ));
     }
 }

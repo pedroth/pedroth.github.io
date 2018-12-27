@@ -141,7 +141,18 @@ Stream.prototype.takeWhile = function(predicate) {
     ).collect(Stream.Collectors.toArray());
 }
 
-Stream.pair = function(head, tailSupplier) {
+Stream.prototype.zip = function(stream) {
+    return new Stream(
+        Stream.generatorOf(
+            [this, stream],
+            s => [s[0].tail(), s[1].tail()],
+            s => [s[0].head(), s[1].head()],
+            s => s[0].hasNext() && s[1].hasNext()
+        )
+    );
+}
+
+Stream.ofHeadTail = function(head, tailSupplier) {
     return new Stream(
         Stream.generatorOf(
             {h: head, supplier: tailSupplier},

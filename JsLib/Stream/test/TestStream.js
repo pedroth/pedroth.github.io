@@ -4,11 +4,20 @@ var Stream = require("../main/Stream.js");
 
 function primesSieveRecursive(stream) {
     let p = stream.head();
-    return Stream.pair(p, () => primesSieveRecursive(stream.tail().filter(x => x % p != 0)));
+    return Stream.ofHeadTail(p, () => primesSieveRecursive(stream.tail().filter(x => x % p != 0)));
 }
 
 function primesSieve() {
     return primesSieveRecursive(Stream.range(2));
+}
+
+function twin(x, y) {
+    return y == x + 2;
+}
+
+function primeTwins() {
+    let primes = primesSieve();
+    return primes.zip(primes.tail()).filter(x => twin(x[0], x[1]));
 }
 
 var TestStreams = function() {
@@ -94,6 +103,15 @@ var TestStreams = function() {
         assert.assertTrue(ArrayUtils.arrayEquals(
             primes,
             primesSieve().take(6)
+        ));
+    }
+
+    this.twinPrimeTest = () => {
+        let twinPrimes = [[3, 5], [5, 7], [11, 13], [17, 19], [29, 31], [41, 43]];
+        var assert = UnitTest.Assert(this);
+        assert.assertTrue(ArrayUtils.arrayEquals(
+            twinPrimes.map(x => x[0]),
+            primeTwins().map(x => x[0]).take(6)
         ));
     }
 }
