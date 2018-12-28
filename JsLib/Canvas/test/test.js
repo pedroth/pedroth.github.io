@@ -335,7 +335,7 @@ Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isIns
  */
 Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, Canvas.isInsideConvex);
+      this.drawPolygon(array, shader);
 };
 
 /* x1     :   2-dim array
