@@ -334,7 +334,7 @@ Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isIns
  */
 Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader);
+      this.drawPolygon(array, shader, Canvas.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -408,17 +408,17 @@ Canvas.isInsidePolygon = function (x, array) {
 }
 
 Canvas.isInsideConvex = function (x, array) {
-    var length = array.length;
+    var m = array.length;
     var v = [];
     var vDotN = [];
-    for (var i = 0; i < length; i++) {
-        v[i] = diff(array[(i + 1) % length], array[i]);
-        var n = [-v[i][1], v[i][0]];
-        var r = diff(x, array[i]);
+    for (var i = 0; i < m; i++) {
+        v[i] = diff(array[(i + 1) % m], array[i]);
+        let n = [-v[i][1], v[i][0]];
+        let r = diff(x, array[i]);
         vDotN[i] = dot(r, n);
     }
     orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
-    for (var i = 0; i < length; i++) {
+    for (var i = 0; i < m; i++) {
         var myDot = vDotN[i] * orientation;
         if (myDot < 0) {
             return false;

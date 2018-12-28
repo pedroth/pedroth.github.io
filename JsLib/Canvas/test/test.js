@@ -307,8 +307,7 @@ Canvas.prototype.drawLineInt = function (x1, x2, shader) {
 
 };
 
-Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
-    isInsidePoly = isInsidePoly == null ? this.isInsidePolygon : isInsidePoly;
+Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isInsidePolygon) {
     var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
     for(var i = 0; i < array.length; i++) {
       upperBox[0] = min(array[i], upperBox[0]);
@@ -336,7 +335,7 @@ Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  */
 Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, this.isInsideConvex);
+      this.drawPolygon(array, shader, Canvas.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -346,41 +345,8 @@ Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 Canvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
+    this.drawPolygon([x1, x2, x3, x4], shader);
 };
-
-// slower than the method below
-Canvas.prototype.isInsidePolygon = function(x, array) {
-    var v = [];
-    var theta = 0;
-    var length = array.length;
-    for(var i = 0; i < length; i++) {
-        v[0] = diff(array[(i + 1) % length], x);
-        v[1] = diff(array[i], x);
-        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
-    }
-    return Math.abs(theta -  2 * Math.PI) < 1E-3;
-}
-
-Canvas.prototype.isInsideConvex = function(x, array) {
-    var length = array.length;
-    var v = [];
-    var vDotN = [];
-    for(var i = 0; i < length; i++) {
-        v[i] = diff(array[( i + 1 ) % length], array[i]);
-        var n = [-v[i][1], v[i][0]];
-        var r = diff(x, array[i]);
-        vDotN[i] = dot(r, n);
-    }
-    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
-    for(var i = 0; i < length; i++) {
-        var myDot = vDotN[i] * orientation;
-        if (myDot < 0) {
-            return false;
-        }
-    }
-    return true;
-}
 
 Canvas.prototype.drawImage = function (img, x, shader) {
     if("isReady" in img) {
@@ -428,6 +394,39 @@ Canvas.prototype.drawString = function(x, string, contextShader) {
         }
     );
 };
+
+// slower than the method below
+Canvas.isInsidePolygon = function (x, array) {
+    var v = [];
+    var theta = 0;
+    var length = array.length;
+    for (var i = 0; i < length; i++) {
+        v[0] = diff(array[(i + 1) % length], x);
+        v[1] = diff(array[i], x);
+        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
+    }
+    return Math.abs(theta - 2 * Math.PI) < 1E-3;
+}
+
+Canvas.isInsideConvex = function (x, array) {
+    var m = array.length;
+    var v = [];
+    var vDotN = [];
+    for (var i = 0; i < m; i++) {
+        v[i] = diff(array[(i + 1) % m], array[i]);
+        let n = [-v[i][1], v[i][0]];
+        let r = diff(x, array[i]);
+        vDotN[i] = dot(r, n);
+    }
+    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
+    for (var i = 0; i < m; i++) {
+        var myDot = vDotN[i] * orientation;
+        if (myDot < 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
 Canvas.simpleShader = function (color) {
