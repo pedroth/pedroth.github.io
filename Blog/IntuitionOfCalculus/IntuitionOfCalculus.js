@@ -99,7 +99,8 @@ function Sim0(){
         let randomArray = Stream.range(0, this.samples)
                                 .map(x => this.fminMax[0] + df * Math.random())
                                 .reduce([], (acc, x) => { acc.push(x); return acc; });
-        return this.smooth(randomArray);
+        let s = Stream.of(this.smooth(randomArray));
+        return s.map
     }
 
     this.draw = function() {
@@ -116,7 +117,7 @@ function Sim0(){
             //x-axis color
             var xTop = this.xaxisH + this.height;
             this.canvas.drawLine([0, this.xaxisH], [1, this.xaxisH], Canvas.simpleShader([0, 0, 0, 255]));
-            this.canvas.drawQuad([0, this.xaxisH], [1, this.xaxisH], [1, xTop], [0, xTop], Canvas.simpleShader([255, 0, 0, 255]));//this.getHeatColorShader(x => x));
+            this.canvas.drawQuad([0, this.xaxisH], [1, this.xaxisH], [1, xTop], [0, xTop], this.getHeatColorShader(x => x));
 
             //y-axis color
             var yTop = this.yaxisH + this.height;
@@ -1145,8 +1146,7 @@ Canvas.prototype.drawLineInt = function (x1, x2, shader) {
 
 };
 
-Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
-    isInsidePoly = isInsidePoly == null ? this.isInsidePolygon : isInsidePoly;
+Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isInsidePolygon) {
     var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
     for(var i = 0; i < array.length; i++) {
       upperBox[0] = min(array[i], upperBox[0]);
@@ -1174,7 +1174,7 @@ Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly) {
  */
 Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader, this.isInsideConvex);
+      this.drawPolygon(array, shader);
 };
 
 /* x1     :   2-dim array
@@ -1184,41 +1184,8 @@ Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
  * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
 */
 Canvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
-    this.drawPolygon([x1, x2, x3, x4], shader, this.isInsideConvex);
+    this.drawPolygon([x1, x2, x3, x4], shader);
 };
-
-// slower than the method below
-Canvas.prototype.isInsidePolygon = function(x, array) {
-    var v = [];
-    var theta = 0;
-    var length = array.length;
-    for(var i = 0; i < length; i++) {
-        v[0] = diff(array[(i + 1) % length], x);
-        v[1] = diff(array[i], x);
-        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
-    }
-    return Math.abs(theta -  2 * Math.PI) < 1E-3;
-}
-
-Canvas.prototype.isInsideConvex = function(x, array) {
-    var length = array.length;
-    var v = [];
-    var vDotN = [];
-    for(var i = 0; i < length; i++) {
-        v[i] = diff(array[( i + 1 ) % length], array[i]);
-        var n = [-v[i][1], v[i][0]];
-        var r = diff(x, array[i]);
-        vDotN[i] = dot(r, n);
-    }
-    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
-    for(var i = 0; i < length; i++) {
-        var myDot = vDotN[i] * orientation;
-        if (myDot < 0) {
-            return false;
-        }
-    }
-    return true;
-}
 
 Canvas.prototype.drawImage = function (img, x, shader) {
     if("isReady" in img) {
@@ -1266,6 +1233,39 @@ Canvas.prototype.drawString = function(x, string, contextShader) {
         }
     );
 };
+
+// slower than the method below
+Canvas.isInsidePolygon = function (x, array) {
+    var v = [];
+    var theta = 0;
+    var length = array.length;
+    for (var i = 0; i < length; i++) {
+        v[0] = diff(array[(i + 1) % length], x);
+        v[1] = diff(array[i], x);
+        theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
+    }
+    return Math.abs(theta - 2 * Math.PI) < 1E-3;
+}
+
+Canvas.isInsideConvex = function (x, array) {
+    var length = array.length;
+    var v = [];
+    var vDotN = [];
+    for (var i = 0; i < length; i++) {
+        v[i] = diff(array[(i + 1) % length], array[i]);
+        var n = [-v[i][1], v[i][0]];
+        var r = diff(x, array[i]);
+        vDotN[i] = dot(r, n);
+    }
+    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
+    for (var i = 0; i < length; i++) {
+        var myDot = vDotN[i] * orientation;
+        if (myDot < 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
 Canvas.simpleShader = function (color) {
@@ -1644,20 +1644,85 @@ module.exports = SimManager;
 var Function = require("../../Function/main/Function.js");
 /**
  * The Stream constructor
- * @param {*} generator is an object that implements hasNext() and next() functions
- * @param {*} mapFunction 
+ * @param {*} generator is an object that implements hasNext(), next() and peek() functions and have a initial state
+ * @param {*} mapFunction the mapping function
  */
-var Stream = function(generator, mapFunction) {
+var Stream = function(generator, mapFunction=x => x, filterPredicate=x => true) {
     this.gen = generator;
-    this.mapFunction = mapFunction == null ? x => x : mapFunction;
+    this.mapFunction = mapFunction;
+    this.filterPredicate = filterPredicate;
 }
 
+/**
+ * Gets the state of the generator.
+ */
+Stream.prototype.state = function () {
+    return this.gen.state;
+}
+
+/**
+ * Returns true if stream has more elements, false otherwise.
+ */
+Stream.prototype.hasNext = function() {
+    return this.gen.hasNext(this.filteredState());
+}
+
+/**
+ * Return next filtered state.
+ */
+Stream.prototype.filteredState = function() {
+    var state = this.state();
+    while (this.gen.hasNext(state) && !this.filterPredicate(this.gen.peek(state))) {
+        state = this.gen.next(state);
+    }
+    return state;
+}
+
+/**
+ * Gets first element of the generator, filtered.
+ */
+Stream.prototype.head = function () {
+    let state = this.filteredState();
+    if(this.gen.hasNext(state)) return this.gen.peek(state);
+    throw `No head element exception`;
+}
+
+/**
+ * Gets stream without the first element.
+ */
+Stream.prototype.tail = function () {
+    return new Stream(
+        Stream.generatorOf(
+            this.gen.next(this.filteredState()),
+            this.gen.next,
+            this.gen.peek,
+            this.gen.hasNext
+        ),
+        this.mapFunction,
+        this.filterPredicate
+    )
+}
+
+/**
+ * Returns stream with mapping function f
+ * @param {*} f, mapping function.
+ */
 Stream.prototype.map = function(f) {
-    return new Stream(this.gen, Function.of(f).compose(this.mapFunction).get());
+    return new Stream(this.gen, Function.of(f).compose(this.mapFunction).get(), this.filterPredicate);
 }
 
+/**
+ * Reducing operation.
+ * @param {*} identity, identity of binaryOperation used as initial value.
+ * @param {*} binaryOp, binary operation of the reduce.
+ */
 Stream.prototype.reduce = function(identity, binaryOp) {
-    while (this.gen.hasNext()) identity = binaryOp(identity, this.mapFunction(this.gen.next()));
+    var stream =  this;
+    while (stream.hasNext()) {
+        let value = stream.head();
+        identity = binaryOp(identity, stream.mapFunction(value));
+        stream = stream.tail();
+    } 
     return identity;
 }
 /**
@@ -1665,48 +1730,135 @@ Stream.prototype.reduce = function(identity, binaryOp) {
  * @param {*} consumer: is a x => void function 
  */
 Stream.prototype.forEach = function(consumer) {
-    while (this.gen.hasNext()) consumer(this.gen.next());
+    var stream = this;
+    while (stream.hasNext()) {
+        let value = stream.head();
+        consumer(stream.mapFunction(value));
+        stream = stream.tail();
+    }
+}
+
+/**
+ * 
+ * @param {*} collector: is an object with the identity, and reduce attributes
+ * 
+ *  The collector.reduce is a \lambda (identity, acc) => identity. 
+ */
+Stream.prototype.collect = function(collector) {
+    return this.reduce(collector.identity, collector.reduce);
+}
+
+/**
+ * @param {*} predicate is a \lambda (x) => {true, false}
+ * This function choses the elementes where predicate(x) = true
+ */
+Stream.prototype.filter = function(predicate) {
+    return new Stream(this.gen, this.mapFunction, x => this.filterPredicate(x) && predicate(x));
+}
+
+/**
+ * Take first n elements
+ */
+Stream.prototype.take = function(n) {
+    return new Stream(
+        Stream.generatorOf(
+            {i: 0 , stream: this},
+            s => {return {i: s.i + 1, stream: s.stream.tail()}},
+            s => s.stream.head(),
+            s => s.stream.hasNext() && s.i < n),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.takeWhile = function(predicate) {
+    return new Stream(
+        Stream.generatorOf(
+            this, 
+            s => s.tail(),
+            s => s.head(),
+            s => s.hasNext() && predicate(s.head())
+        ),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.zip = function(stream) {
+    return new Stream(
+        Stream.generatorOf(
+            [this, stream],
+            s => [s[0].tail(), s[1].tail()],
+            s => [s[0].head(), s[1].head()],
+            s => s[0].hasNext() && s[1].hasNext()
+        )
+    );
+}
+
+Stream.ofHeadTail = function(head, tailSupplier) {
+    return new Stream(
+        Stream.generatorOf(
+            {h: head, supplier: tailSupplier},
+            s => {
+                let stream = s.supplier();
+                if(stream.hasNext()) return {h: stream.head(), supplier: () => stream.tail()}
+                // empty state
+                return {h: null, supplier: null};
+            },
+            s => s.h,
+            s => s.h != null
+        )
+    );   
 }
 
 Stream.of = function(iterable) {
     var types = [
         {name:"Array", predicate: x => x.constructor === Array},
-        {name: "Generator", predicate: x => typeof x.hasNext === "function" && typeof x.next === "function"}
+        {name: "Generator", predicate: x => typeof x.hasNext === "function" && typeof x.next === "function" && typeof x.peek == "function"},
+        {name: "Stream", predicate: x => x.__proto__ == Stream.prototype}
     ];
     var types2GeneratorMap = {
-        "Array": () => new Stream(Stream.generatorOf({ i: 0, array: iterable },
+        "Array": ite => new Stream(Stream.generatorOf(
+                                                     { i: 0, array: ite },
                                                      s => { return { i: s.i + 1, array: s.array}; },
                                                      s => s.array[s.i],
                                                      s => s.i < s.array.length)
                                                     ),
-        "Generator" : () => new Stream(iterable)
+        "Generator" : ite => new Stream(ite),
+        "Stream": ite => new Stream(ite.gen, ite.mapFunction, ite.filterPredicate)
     }
     for (let i=0; i < types.length; i++) {
-        if(types[i].predicate(iterable)) 
-            return types2GeneratorMap[types[i].name]();
+        if(types[i].predicate(iterable)) {
+            return types2GeneratorMap[types[i].name](iterable);
+        }
     }
     throw `Iterable ${iterable} does not have a stream`;
 }
 
-Stream.range = function(init, end, step) {
-    return new Stream(Stream.generatorOf(init, 
-                                         s => s + (step == null ? 1 : step),
+Stream.range = function(init, end, step=1) {
+    return new Stream(Stream.generatorOf(
+                                         init, 
+                                         s => s + step,
                                          s => s,
-                                         s => s < end
+                                         s => end == null ? true : s < end
                                         )
                      );
 }
 
 Stream.generatorOf = function(initialState, nextStateFunction, getFromStateFunction, hasNextStateFunction) {
-    var s = initialState;
-    return {
-        hasNext: () => hasNextStateFunction(s),
-        next: () => {
-            var ans = getFromStateFunction(s);
-            s = nextStateFunction(s);
-            return ans;
-        }
+    return new function() {
+        this.state = initialState;
+        this.next = nextStateFunction;
+        this.peek = getFromStateFunction;
+        this.hasNext = hasNextStateFunction;
     };
+}
+
+Stream.Collectors = {
+    toArray: () => new function(){ 
+        this.identity = []; 
+        this.reduce = (acc, x) => { acc.push(x); return acc;}
+    } 
 }
 module.exports = Stream;
 },{"../../Function/main/Function.js":5}]},{},[1])(1)
