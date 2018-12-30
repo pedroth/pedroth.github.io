@@ -197,7 +197,7 @@ var Test4 = function(divName) {
         );
 
         var cos = Math.cos(this.t / (2 * Math.PI));
-        var coscos = cos * cos;
+        var coscos = 0.5 * cos * cos;
 
         var transformQuad = [];
         for(var i = 0; i < this.quad.length; i++) {

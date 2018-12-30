@@ -335,7 +335,7 @@ Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isIns
  */
 Canvas.prototype.drawTriangle = function (x1, x2, x3, shader) {
       var array = [x1, x2, x3];
-      this.drawPolygon(array, shader);
+      this.drawPolygon(array, shader, Canvas.isInsideConvex);
 };
 
 /* x1     :   2-dim array
@@ -399,9 +399,9 @@ Canvas.prototype.drawString = function(x, string, contextShader) {
 Canvas.isInsidePolygon = function (x, array) {
     var v = [];
     var theta = 0;
-    var length = array.length;
-    for (var i = 0; i < length; i++) {
-        v[0] = diff(array[(i + 1) % length], x);
+    var n = array.length;
+    for (var i = 0; i < n; i++) {
+        v[0] = diff(array[(i + 1) % n], x);
         v[1] = diff(array[i], x);
         theta += Math.acos(dot(v[0], v[1]) / (norm(v[0]) * norm(v[1])));
     }
@@ -418,7 +418,7 @@ Canvas.isInsideConvex = function (x, array) {
         let r = diff(x, array[i]);
         vDotN[i] = dot(r, n);
     }
-    orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
+    let orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
     for (var i = 0; i < m; i++) {
         var myDot = vDotN[i] * orientation;
         if (myDot < 0) {
@@ -849,7 +849,7 @@ var Test4 = function(divName) {
         );
 
         var cos = Math.cos(this.t / (2 * Math.PI));
-        var coscos = cos * cos;
+        var coscos = 0.5 * cos * cos;
 
         var transformQuad = [];
         for(var i = 0; i < this.quad.length; i++) {
