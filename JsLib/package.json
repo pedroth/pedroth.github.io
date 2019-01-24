@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify nabla.js -o index.js"
+    "build": "browserify nabla.js --s Nabla > index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC.git"
+    "url": "git+https://github.com/pedroth/visualExperiments.git"
   },
   "keywords": [
     "math",
@@ -21,7 +21,7 @@
   "author": "Pedroth",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC/issues"
+    "url": "https://github.com/pedroth/visualExperiments/issues"
   },
-  "homepage": "https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC#readme"
+  "homepage": "https://github.com/pedroth/visualExperiments#readme"
 }
