@@ -8,3 +8,5 @@ Nabla.Canvas = Canvas;
 Nabla.Canvas2D = Canvas2D;
 Nabla.ImageIO = ImageIO;
 Nabla.Stream = Stream;
+
+module.exports = Nabla;

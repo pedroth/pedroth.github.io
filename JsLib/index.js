@@ -906,4 +906,6 @@ Nabla.Canvas = Canvas;
 Nabla.Canvas2D = Canvas2D;
 Nabla.ImageIO = ImageIO;
 Nabla.Stream = Stream;
+
+module.exports = Nabla;
 },{"./Canvas/main/Canvas.js":1,"./Canvas/main/Canvas2D.js":2,"./Canvas/main/ImageIO.js":3,"./Stream/main/Stream.js":5}]},{},[6]);
