@@ -135,12 +135,15 @@ Canvas.prototype.getCanvas = function() {
  * @param rgba
  */
 Canvas.prototype.clearImage = function (rgba) {
-    this.useCanvasCtx(function (canvas) {
-        var size = canvas.getSize();
-        canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
-        canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[1], size[0]);
-    }, true);
+    this.useCanvasCtx( 
+        canvas => {
+            var size = canvas.getSize();
+            canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
+            canvas.ctx.globalCompositeOperation = 'source-over';
+            canvas.ctx.fillRect(0, 0, size[1], size[0]);
+        },
+        true
+    );
 };
 
 Canvas.prototype.useCanvasCtx = function (lambda, isClearImage=false) {
@@ -422,25 +425,25 @@ Canvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
-        var alpha = triangleBaryCoord(x, t1);
+        var alpha = Canvas.triangleBaryCoord(x, t1);
         if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
             shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
         } else {
-            alpha = triangleBaryCoord(x, t2);
+            alpha = Canvas.triangleBaryCoord(x, t2);
             shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
         }
     }
 }
 
 Canvas.interpolateTriangleShader = function(shader) {
-    return function(x, triangle, canvas) {
-        alpha = triangleBaryCoord(x, triangle);
+    return (x, triangle, canvas) => {
+        alpha = Canvas.triangleBaryCoord(x, triangle);
         shader(x, triangle, canvas, alpha);
     }
 }
 
 Canvas.interpolateLineShader = function(shader) {
-    return function (x, line, canvas) {
+    return (x, line, canvas) => {
         var v = diff(line[1], line[0]);
         var z = diff(x, line[0]);
         var vnorm = squareNorm(v);
@@ -454,8 +457,8 @@ Canvas.interpolateLineShader = function(shader) {
  * img: html loaded image.
  * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
  */
-Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=bilinearInterpolation) {
-    var imageShader = function(x, quad, canvas, alpha) {
+Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=Canvas.bilinearInterpolation) {
+    var imageShader = (x, quad, canvas, alpha) => {
         var imageCanvas = new Canvas(ImageIO.getImageCanvas(img));
         var imgSize = imageCanvas.getSize();
         var interpolateTexCoord = [0, 0];

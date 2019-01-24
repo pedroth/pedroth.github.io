@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify nabla.js --s Nabla > index.js"
+    "build": "browserify nabla.js -s Nabla -o index.js"
   },
   "repository": {
     "type": "git",
