@@ -29,14 +29,12 @@ ImageIO.loadImage = function(src) {
     var img = new Image();
     img.src = src;
     img.isReady = false;
-    img.onload = function() {
-        img.isReady = true;
-    };
+    img.onload = () => img.isReady = true;
     return img;
 };
 
 ImageIO.generateImageReadyPredicate = function(img) {
-    return function() { return img.isReady;};
+    return () => img.isReady;
 }
 
 module.exports = ImageIO;

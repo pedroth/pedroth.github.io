@@ -75,8 +75,8 @@ Canvas2D.prototype.drawCircle = function(x, r, shader) {
     Canvas.prototype.drawCircle.call(this, y, z, shader);
 }
 
-Canvas2D.prototype.drawImage = function (img, x, shader) {
-    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+Canvas2D.prototype.drawImage = function (img, x) {
+    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x));
 }
 
 Canvas2D.prototype.drawString = function(x, string, contextShader) {

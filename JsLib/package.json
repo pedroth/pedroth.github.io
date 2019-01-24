@@ -1,0 +1,27 @@
+{
+  "name": "nabla.js",
+  "version": "1.0.0",
+  "description": "Didactic implementation of mathematics, computer science utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify nabla.js -o index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC.git"
+  },
+  "keywords": [
+    "math",
+    "canvas",
+    "CS",
+    "matrix",
+    "stream"
+  ],
+  "author": "Pedroth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC/issues"
+  },
+  "homepage": "https://github.com/pedroth/visualExperiments%1B%5B2%3B3~%1B%5BD%1B%5BC#readme"
+}

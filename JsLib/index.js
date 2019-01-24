@@ -1,3 +1,4 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var ImageIO = require('./ImageIO.js');
 /*
  Canvas coordinates
@@ -509,3 +510,400 @@ Canvas.createCanvas = function(size, dom) {
 }
 
 module.exports = Canvas;
+},{"./ImageIO.js":3}],2:[function(require,module,exports){
+var Canvas = require('./Canvas.js');
+
+//Note that we can switch from heritage to composition, think about that
+
+// cameraSpace : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
+var Canvas2D = function(canvas, cameraSpace) {
+	Canvas.call(this, canvas);
+	if(cameraSpace.length != 2 || (cameraSpace[0].length != 2 && cameraSpace[1].length != 2)) {
+		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
+	}
+	this.cameraSpace = cameraSpace;
+}
+
+Canvas2D.prototype = Object.create(Canvas.prototype);
+Canvas2D.prototype.constructor = Canvas2D;
+
+/* x : 2-dim array in camera space coordinates
+ * returns : 2-dim array in integer coordinates
+ */
+Canvas2D.prototype.integerTransform = function(x) {
+	var xint = -( this.canvas.height - 1)  / (this.cameraSpace[1][1] - this.cameraSpace[1][0]) * (x[1] - this.cameraSpace[1][1]);
+	var yint =   ( this.canvas.width - 1)  / (this.cameraSpace[0][1] - this.cameraSpace[0][0]) * (x[0] - this.cameraSpace[0][0]);
+	return [xint, yint];
+}
+
+/* x : 2-dim array in integer coordinates
+ * returns : 2-dim array in camera space coordinates
+ */
+Canvas2D.prototype.inverseTransform = function(x) {
+	var xt = this.cameraSpace[0][0] + (this.cameraSpace[0][1] - this.cameraSpace[0][0]) / (this.canvas.width - 1)  * x[1];
+	var yt = this.cameraSpace[1][1] - (this.cameraSpace[1][1] - this.cameraSpace[1][0]) / (this.canvas.height - 1) * x[0];
+	return [xt, yt];
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawLine = function(x1, x2, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	Canvas.prototype.drawLine.call(this, y1, y2, shader);
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawTriangle = function(x1, x2, x3, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	Canvas.prototype.drawTriangle.call(this, y1, y2, y3, shader);
+}
+
+/* x1     :   2-dim array
+ * x2     :   2-dim array
+ * x3     :   2-dim array
+ * x4     :   2-dim array
+ * shader :   is a function that receives a 2-dim array and returns a rgba 4-dim array
+ */
+Canvas2D.prototype.drawQuad = function(x1, x2, x3, x4, shader) {
+	y1 = this.integerTransform(x1);
+	y2 = this.integerTransform(x2);
+	y3 = this.integerTransform(x3);
+	y4 = this.integerTransform(x4);
+	Canvas.prototype.drawQuad.call(this, y1, y2, y3, y4, shader);
+}
+
+Canvas2D.prototype.drawCircle = function(x, r, shader) {
+    // it assumes squared canvas, for now ...
+    y = this.integerTransform(x);
+    z = this.integerTransform([r, 0])[1] - this.integerTransform([0, 0])[1];
+    Canvas.prototype.drawCircle.call(this, y, z, shader);
+}
+
+Canvas2D.prototype.drawImage = function (img, x) {
+    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x));
+}
+
+Canvas2D.prototype.drawString = function(x, string, contextShader) {
+    y = this.integerTransform(x);
+    Canvas.prototype.drawString.call(this, y, string, contextShader);
+};
+
+// camera : 2-dim array with two 2-dim arrays that are intervals [a,b] | a < b
+Canvas2D.prototype.setCamera = function(camera) {
+    if(camera.length != 2 || (camera[0].length != 2 && camera[1].length != 2)) {
+		throw "camera space must be 2-dim array with 2-dim arrays representing an interval";
+	}
+	this.cameraSpace = camera;
+}
+
+
+module.exports = Canvas2D;
+},{"./Canvas.js":1}],3:[function(require,module,exports){
+var ImageIO = {
+    // empty object
+};
+
+/**
+ * img : html image
+ */
+ImageIO.getImageCanvas = function(img) {
+    var canvasAux = document.createElement('canvas');
+    canvasAux.width = img.width;
+    canvasAux.height = img.height;
+    var contextAux = canvasAux.getContext('2d');
+    contextAux.fillStyle = 'rgba(0, 0, 0, 0)';
+    contextAux.globalCompositeOperation = 'source-over';
+    contextAux.fillRect(0, 0, canvasAux.width, canvasAux.height);
+    contextAux.drawImage(img, 0 ,0);
+    return canvasAux;
+}
+
+/**
+ * img : html image
+ */
+ImageIO.getDataFromImage = function(img) {
+    canvas = ImageIO.getImageCanvas(img);
+    return canvas.getContext('2d').getImageData(0 , 0, img.width, img.height);
+};
+
+ImageIO.loadImage = function(src) {
+    var img = new Image();
+    img.src = src;
+    img.isReady = false;
+    img.onload = () => img.isReady = true;
+    return img;
+};
+
+ImageIO.generateImageReadyPredicate = function(img) {
+    return () => img.isReady;
+}
+
+module.exports = ImageIO;
+},{}],4:[function(require,module,exports){
+var Function = function(f) {
+    this.f = f;
+}
+
+Function.prototype.compose = function(g) {
+    return new Function(x => this.f(g(x)));
+}
+
+Function.prototype.leftCompose = function(g) {
+    return new Function(x => g(this.f(x)))
+}
+
+Function.prototype.apply = function(x) {
+    return this.f(x);
+}
+
+Function.prototype.get = function() {
+    return this.f;
+}
+
+Function.of = function(f) {
+    return new Function(f);
+}
+
+module.exports = Function;
+},{}],5:[function(require,module,exports){
+var Function = require("../../Function/main/Function.js");
+/**
+ * The Stream constructor
+ * @param {*} generator is an object that implements hasNext(), next() and peek() functions and have a initial state
+ * @param {*} mapFunction the mapping function
+ */
+var Stream = function(generator, mapFunction=x => x, filterPredicate=x => true) {
+    this.gen = generator;
+    this.mapFunction = mapFunction;
+    this.filterPredicate = filterPredicate;
+}
+
+/**
+ * Gets the state of the generator.
+ */
+Stream.prototype.state = function () {
+    return this.gen.state;
+}
+
+/**
+ * Returns true if stream has more elements, false otherwise.
+ */
+Stream.prototype.hasNext = function() {
+    return this.gen.hasNext(this.filteredState());
+}
+
+/**
+ * Return next filtered state.
+ */
+Stream.prototype.filteredState = function() {
+    var state = this.state();
+    while (this.gen.hasNext(state) && !this.filterPredicate(this.gen.peek(state))) {
+        state = this.gen.next(state);
+    }
+    return state;
+}
+
+/**
+ * Gets first element of the generator, filtered.
+ */
+Stream.prototype.head = function () {
+    let state = this.filteredState();
+    if(this.gen.hasNext(state)) return this.gen.peek(state);
+    throw `No head element exception`;
+}
+
+/**
+ * Gets stream without the first element.
+ */
+Stream.prototype.tail = function () {
+    return new Stream(
+        Stream.generatorOf(
+            this.gen.next(this.filteredState()),
+            this.gen.next,
+            this.gen.peek,
+            this.gen.hasNext
+        ),
+        this.mapFunction,
+        this.filterPredicate
+    )
+}
+
+/**
+ * Returns stream with mapping function f
+ * @param {*} f, mapping function.
+ */
+Stream.prototype.map = function(f) {
+    return new Stream(this.gen, Function.of(f).compose(this.mapFunction).get(), this.filterPredicate);
+}
+
+/**
+ * Reducing operation.
+ * @param {*} identity, identity of binaryOperation used as initial value.
+ * @param {*} binaryOp, binary operation of the reduce.
+ */
+Stream.prototype.reduce = function(identity, binaryOp) {
+    var stream =  this;
+    while (stream.hasNext()) {
+        let value = stream.head();
+        identity = binaryOp(identity, stream.mapFunction(value));
+        stream = stream.tail();
+    } 
+    return identity;
+}
+/**
+ * ForEach function on stream
+ * @param {*} consumer: is a x => void function 
+ */
+Stream.prototype.forEach = function(consumer) {
+    var stream = this;
+    while (stream.hasNext()) {
+        let value = stream.head();
+        consumer(stream.mapFunction(value));
+        stream = stream.tail();
+    }
+}
+
+/**
+ * 
+ * @param {*} collector: is an object with the identity, and reduce attributes
+ * 
+ *  The collector.reduce is a \lambda (identity, acc) => identity. 
+ */
+Stream.prototype.collect = function(collector) {
+    return this.reduce(collector.identity, collector.reduce);
+}
+
+/**
+ * @param {*} predicate is a \lambda (x) => {true, false}
+ * This function choses the elementes where predicate(x) = true
+ */
+Stream.prototype.filter = function(predicate) {
+    return new Stream(this.gen, this.mapFunction, x => this.filterPredicate(x) && predicate(x));
+}
+
+/**
+ * Take first n elements
+ */
+Stream.prototype.take = function(n) {
+    return new Stream(
+        Stream.generatorOf(
+            {i: 0 , stream: this},
+            s => {return {i: s.i + 1, stream: s.stream.tail()}},
+            s => s.stream.head(),
+            s => s.stream.hasNext() && s.i < n),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.takeWhile = function(predicate) {
+    return new Stream(
+        Stream.generatorOf(
+            this, 
+            s => s.tail(),
+            s => s.head(),
+            s => s.hasNext() && predicate(s.head())
+        ),
+        this.mapFunction,
+        this.filterPredicate
+    ).collect(Stream.Collectors.toArray());
+}
+
+Stream.prototype.zip = function(stream) {
+    return new Stream(
+        Stream.generatorOf(
+            [this, stream],
+            s => [s[0].tail(), s[1].tail()],
+            s => [s[0].head(), s[1].head()],
+            s => s[0].hasNext() && s[1].hasNext()
+        )
+    );
+}
+
+Stream.ofHeadTail = function(head, tailSupplier) {
+    return new Stream(
+        Stream.generatorOf(
+            {h: head, supplier: tailSupplier},
+            s => {
+                let stream = s.supplier();
+                if(stream.hasNext()) return {h: stream.head(), supplier: () => stream.tail()}
+                // empty state
+                return {h: null, supplier: null};
+            },
+            s => s.h,
+            s => s.h != null
+        )
+    );   
+}
+
+Stream.of = function(iterable) {
+    var types = [
+        {name:"Array", predicate: x => x.constructor === Array},
+        {name: "Generator", predicate: x => typeof x.hasNext === "function" && typeof x.next === "function" && typeof x.peek == "function"},
+        {name: "Stream", predicate: x => x.__proto__ == Stream.prototype}
+    ];
+    var types2GeneratorMap = {
+        "Array": ite => new Stream(Stream.generatorOf(
+                                                     { i: 0, array: ite },
+                                                     s => { return { i: s.i + 1, array: s.array}; },
+                                                     s => s.array[s.i],
+                                                     s => s.i < s.array.length)
+                                                    ),
+        "Generator" : ite => new Stream(ite),
+        "Stream": ite => new Stream(ite.gen, ite.mapFunction, ite.filterPredicate)
+    }
+    for (let i=0; i < types.length; i++) {
+        if(types[i].predicate(iterable)) {
+            return types2GeneratorMap[types[i].name](iterable);
+        }
+    }
+    throw `Iterable ${iterable} does not have a stream`;
+}
+
+Stream.range = function(init, end, step=1) {
+    return new Stream(Stream.generatorOf(
+                                         init, 
+                                         s => s + step,
+                                         s => s,
+                                         s => end == null ? true : s < end
+                                        )
+                     );
+}
+
+Stream.generatorOf = function(initialState, nextStateFunction, getFromStateFunction, hasNextStateFunction) {
+    return new function() {
+        this.state = initialState;
+        this.next = nextStateFunction;
+        this.peek = getFromStateFunction;
+        this.hasNext = hasNextStateFunction;
+    };
+}
+
+Stream.Collectors = {
+    toArray: () => new function(){ 
+        this.identity = []; 
+        this.reduce = (acc, x) => { acc.push(x); return acc;}
+    } 
+}
+module.exports = Stream;
+},{"../../Function/main/Function.js":4}],6:[function(require,module,exports){
+let Canvas = require('./Canvas/main/Canvas.js');
+let Canvas2D = require('./Canvas/main/Canvas2D.js');
+let ImageIO = require('./Canvas/main/ImageIO.js');
+let Stream = require("./Stream/main/Stream.js");
+
+let Nabla = {}
+Nabla.Canvas = Canvas;
+Nabla.Canvas2D = Canvas2D;
+Nabla.ImageIO = ImageIO;
+Nabla.Stream = Stream;
+},{"./Canvas/main/Canvas.js":1,"./Canvas/main/Canvas2D.js":2,"./Canvas/main/ImageIO.js":3,"./Stream/main/Stream.js":5}]},{},[6]);
