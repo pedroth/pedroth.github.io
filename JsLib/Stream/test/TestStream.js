@@ -114,6 +114,22 @@ var TestStreams = function() {
             primeTwins().map(x => x[0]).take(6)
         ));
     }
+
+    this.flatMapTest = () =>  {
+        var assert = UnitTest.Assert(this);
+        let twinPrimes = [[3, 5], [5, 7], [11, 13], [17, 19], [29, 31], [41, 43]];
+        let expectedAns = [3, 5, 5, 7, 11, 13, 17, 19, 29, 31, 41, 43];
+        let ans = Stream.of(twinPrimes).flatMap(x => Stream.of(x)).collect(Stream.Collectors.toArray());
+        assert.assertTrue(ArrayUtils.arrayEquals(expectedAns, ans));
+    }
+
+    this.flatMapTest2 = () =>  {
+        var assert = UnitTest.Assert(this);
+        let input = [[[1,2], [3]], [[4,5]], [[6,7],[8,9,10]]];
+        let expectedAns = [1,2,3,4,5,6,7,8,9,10];
+        let ans = Stream.of(input).flatMap(Stream.of).flatMap(Stream.of).collect(Stream.Collectors.toArray());
+        assert.assertTrue(ArrayUtils.arrayEquals(expectedAns, ans));
+    }
 }
 
 UnitTest.builder()

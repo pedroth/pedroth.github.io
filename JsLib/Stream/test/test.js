@@ -266,6 +266,33 @@ Stream.prototype.zip = function(stream) {
     );
 }
 
+Stream.prototype.flatMap = function(toStreamLambda) {
+    return new Stream(
+        Stream.generatorOf(
+            {baseStream: this, flatStream: null},
+            s => {
+                if (!s.flatStream || !s.flatStream.hasNext()) {
+                   let stream = s.baseStream;
+                   return {baseStream: stream.tail(), flatStream: toStreamLambda(stream.head()).tail()}; 
+                }
+                return {baseStream: s.baseStream, flatStream: s.flatStream.tail()};
+            },
+            s => {
+                if (!s.flatStream || !s.flatStream.hasNext()) {
+                    return toStreamLambda(s.baseStream.head()).head();
+                }
+                return s.flatStream.head();
+            },
+            s => {
+                if(!s.flatStream) {
+                    return s.baseStream.hasNext() && toStreamLambda(s.baseStream.head()).hasNext();
+                }
+                return s.baseStream.hasNext() || s.flatStream.hasNext();
+            }
+        )
+    );
+}
+
 Stream.ofHeadTail = function(head, tailSupplier) {
     return new Stream(
         Stream.generatorOf(
@@ -445,9 +472,25 @@ var TestStreams = function() {
         let twinPrimes = [[3, 5], [5, 7], [11, 13], [17, 19], [29, 31], [41, 43]];
         var assert = UnitTest.Assert(this);
         assert.assertTrue(ArrayUtils.arrayEquals(
-            twinPrimes.map(x=>x[0]),
-            primeTwins().map(x=>x[0]).take(6)
+            twinPrimes.map(x => x[0]),
+            primeTwins().map(x => x[0]).take(6)
         ));
+    }
+
+    this.flatMapTest = () =>  {
+        var assert = UnitTest.Assert(this);
+        let twinPrimes = [[3, 5], [5, 7], [11, 13], [17, 19], [29, 31], [41, 43]];
+        let expectedAns = [3, 5, 5, 7, 11, 13, 17, 19, 29, 31, 41, 43];
+        let ans = Stream.of(twinPrimes).flatMap(x => Stream.of(x)).collect(Stream.Collectors.toArray());
+        assert.assertTrue(ArrayUtils.arrayEquals(expectedAns, ans));
+    }
+
+    this.flatMapTest2 = () =>  {
+        var assert = UnitTest.Assert(this);
+        let input = [[[1,2], [3]], [[4,5]], [[6,7],[8,9,10]]];
+        let expectedAns = [1,2,3,4,5,6,7,8,9,10];
+        let ans = Stream.of(input).flatMap(Stream.of).flatMap(Stream.of).collect(Stream.Collectors.toArray());
+        assert.assertTrue(ArrayUtils.arrayEquals(expectedAns, ans));
     }
 }
 

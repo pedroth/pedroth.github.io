@@ -152,6 +152,33 @@ Stream.prototype.zip = function(stream) {
     );
 }
 
+Stream.prototype.flatMap = function(toStreamLambda) {
+    return new Stream(
+        Stream.generatorOf(
+            {baseStream: this, flatStream: null},
+            s => {
+                if (!s.flatStream || !s.flatStream.hasNext()) {
+                   let stream = s.baseStream;
+                   return {baseStream: stream.tail(), flatStream: toStreamLambda(stream.head()).tail()}; 
+                }
+                return {baseStream: s.baseStream, flatStream: s.flatStream.tail()};
+            },
+            s => {
+                if (!s.flatStream || !s.flatStream.hasNext()) {
+                    return toStreamLambda(s.baseStream.head()).head();
+                }
+                return s.flatStream.head();
+            },
+            s => {
+                if(!s.flatStream) {
+                    return s.baseStream.hasNext() && toStreamLambda(s.baseStream.head()).hasNext();
+                }
+                return s.baseStream.hasNext() || s.flatStream.hasNext();
+            }
+        )
+    );
+}
+
 Stream.ofHeadTail = function(head, tailSupplier) {
     return new Stream(
         Stream.generatorOf(
