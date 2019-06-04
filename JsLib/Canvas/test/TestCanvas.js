@@ -176,7 +176,7 @@ var Test4 = function(divName) {
                  [-0.25,  0.25],
                 ];
 
-    this.shader = new Choice(Canvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]], (values, x) => values[0]), 
+    this.shader = new Choice(Canvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]]), 
                              Canvas.simpleShader([255, 0, 255, 255]),
                              ImageIO.generateImageReadyPredicate(this.texture)
                             );

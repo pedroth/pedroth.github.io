@@ -1,0 +1,64 @@
+{
+  "jars": [
+    {
+      "id": "BrownianMotion",
+      "from": "learning.jar",
+      "in": "apps.BrownianMotion"
+    },
+    {
+      "id": "CellularAutomaton",
+      "from": "learning.jar",
+      "in": "apps.ParallelCellularAutomaton"
+    },
+    {
+      "id": "CubeChaos",
+      "from": "learning.jar",
+      "in": "apps.Cube"
+    },
+    {
+      "id": "GraphXY",
+      "from": "learning.jar",
+      "in": "apps.GraphXY"
+    },
+    {
+      "id": "ImplicitSurface",
+      "from": "pedroEngine.jar",
+      "in": "apps.ImplicitSurface"
+    },
+    {
+      "id": "LinesSurfaces",
+      "from": "learning.jar",
+      "in": "apps.LinesSurfaces"
+    },
+    {
+      "id": "PDE",
+      "from": "learning.jar",
+      "in": "apps.PDEGUI"
+    },
+    {
+      "id": "RandomCurve",
+      "from": "learning.jar",
+      "in": "apps.RandomCurve"
+    },
+    {
+      "id": "SimplePhysics",
+      "from": "learning.jar",
+      "in": "apps.SimplePhysics"
+    },
+    {
+      "id": "SimpleRobot",
+      "from": "learning.jar",
+      "in": "apps.Robot"
+    },
+    {
+      "id": "TetraZBuffer",
+      "from": "learning.jar",
+      "in": "apps.Tetra"
+    },
+    {
+      "id": "EigenSimulation",
+      "from": "pedroEngine.jar",
+      "in": "apps.EigenSimulation"
+    }
+  ]
+}

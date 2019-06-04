@@ -457,11 +457,13 @@ Canvas.interpolateLineShader = function(shader) {
  * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
  */
 Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=Canvas.bilinearInterpolation) {
-    var imageShader = (x, quad, canvas, alpha) => {
-        var imageCanvas = new Canvas(ImageIO.getImageCanvas(img));
-        var imgSize = imageCanvas.getSize();
-        var interpolateTexCoord = [0, 0];
-        for(var i = 0; i < quadTexCoord.length; i++) {
+    let imageCache = null;
+    const imageShader = (x, quad, canvas, alpha) => {
+        if (!img.isReady || imageCache == null) imageCache = new Canvas(ImageIO.getImageCanvas(img));  
+        const imageCanvas = imageCache;
+        const imgSize = imageCanvas.getSize();
+        const interpolateTexCoord = [0, 0];
+        for(let i = 0; i < quadTexCoord.length; i++) {
             interpolateTexCoord[0] = interpolateTexCoord[0] + quadTexCoord[i][0] * alpha[i];
             interpolateTexCoord[1] = interpolateTexCoord[1] + quadTexCoord[i][1] * alpha[i];
         }
@@ -477,13 +479,49 @@ Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=Canvas.bili
     return Canvas.interpolateQuadShader(imageShader);
 }
 
+Canvas.triangleCache = (() => {
+    const hashMap = [];
+    const size = 3;
+    return {
+        constains: triangleHash => hashMap[triangleHash % size] != undefined,
+        get: triangleHash => hashMap[triangleHash % size],
+        set: (triangleHash, value) => hashMap[triangleHash % size] = value 
+    } 
+})(); //{triangle: null, u: [], v:[], det:null, hash:null}
+
+Canvas.triangleHash = triangle =>  {
+    const array = [
+      triangle[0][0],
+      triangle[1][0],
+      triangle[2][0],
+      triangle[0][1],
+      triangle[1][1],
+      triangle[2][1]
+    ];
+    return array.reduce((h,x) => 31 * h + x, 1) 
+}
+
 Canvas.triangleBaryCoord = function(x, triangle) {
-    var y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
-    var u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
-    var v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
-    var det = (u[0] * v[1] - u[1] * v[0]);
+    const hash = Canvas.triangleHash(triangle);
+    const y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
+    if(!Canvas.triangleCache.constains(hash)) {
+        const u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
+        const v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
+        const det = (u[0] * v[1] - u[1] * v[0]);
+        Canvas.triangleCache.set(hash, {
+            triangle: triangle,
+            u: u.map(x => x / det),
+            v: v.map(x => x / det),
+            det: det,
+            hash: hash 
+        });
+    }
+    const cache = Canvas.triangleCache.get(hash);
+    const u = cache.u;
+    const v = cache.v;
+    const det = cache.det;
     if(det == 0) return [0, 0, 0];
-    var alpha = [(v[1] * y[0] - v[0] * y[1]) / det, (u[0] * y[1] - u[1] * y[0]) / det];
+    var alpha = [v[1] * y[0] - v[0] * y[1], u[0] * y[1] - u[1] * y[0]];
     return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
 }
 

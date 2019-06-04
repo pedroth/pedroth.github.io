@@ -16,7 +16,6 @@ var ImageIO = require('./ImageIO.js');
  */
 
 /*
-
 The canvas data is an array of length colors(C) * width(W) * height(H). Is a 3D-array.
 The index is a number in [0, C * W * H - 1].
 Having (x, y, z) where z is the color axis, the formula to index the array is :
@@ -26,8 +25,9 @@ f(x, y, z) = C * W * x + C * y + z.
 Where x in [0, H - 1], y in [0, W - 1] and z in [0, C - 1].
 
 Note that f(H - 1, W - 1, C - 1) = C * W * H - 1.
-
 */
+
+// Auxiliary functions
 function scale(u, r) {
     var ans = [];
     ans[0] = u[0] * r;
@@ -101,32 +101,8 @@ function solve2by2LowerTriMatrix(u, w, z) {
     return [aux, (-u[1] * aux + z[1]) / w];
 }
 
-function triangleBaryCoord(x, triangle) {
-    var y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
-    var u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
-    var v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
-    var det = (u[0] * v[1] - u[1] * v[0]);
-    if(det == 0) return [0, 0, 0];
-    var alpha = [(v[1] * y[0] - v[0] * y[1]) / det, (u[0] * y[1] - u[1] * y[0]) / det];
-    return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
-}
 
-/**
- * values \in R^{k * 4}
- * x \in [0,1]^2
- */
-function bilinearInterpolation(values, x) {
-    var acc = [];
-    for(var k = 0; k < values.length; k++) {
-        var f03 = values[0][k] + (values[3][k] - values[0][k]) * x[1];
-        var f12 = values[1][k] + (values[2][k] - values[1][k]) * x[1];
-        var f = f03 + (f12 - f03) * x[0];
-        acc.push(f);
-    }
-    return acc;
-}
-
-
+// Canvas
 var Canvas = function (canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -159,16 +135,19 @@ Canvas.prototype.getCanvas = function() {
  * @param rgba
  */
 Canvas.prototype.clearImage = function (rgba) {
-    this.useCanvasCtx(function (canvas) {
-        var size = canvas.getSize();
-        canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
-        canvas.ctx.globalCompositeOperation = 'source-over';
-        canvas.ctx.fillRect(0, 0, size[1], size[0]);
-    }, true);
+    this.useCanvasCtx( 
+        canvas => {
+            var size = canvas.getSize();
+            canvas.ctx.fillStyle = 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')';
+            canvas.ctx.globalCompositeOperation = 'source-over';
+            canvas.ctx.fillRect(0, 0, size[1], size[0]);
+        },
+        true
+    );
 };
 
-Canvas.prototype.useCanvasCtx = function (lambda, isClearImage) {
-    if (isClearImage == null || !isClearImage) {
+Canvas.prototype.useCanvasCtx = function (lambda, isClearImage=false) {
+    if (!isClearImage) {
         this.ctx.putImageData(this.image, 0, 0);
     }
     lambda(this);
@@ -241,9 +220,9 @@ Canvas.prototype.drawLine = function (x1, x2, shader) {
             validIntersection.push(x);
         }
     }
-    if (validIntersection.length == 0) {
-        return;
-    }
+
+    if (validIntersection.length == 0) return;
+    
     //it can be shown that at this point there is at least one valid intersection.
     if(inStack.length > 0) {
         var p = [x1[0] + validIntersection[0][0] * v[0], x1[1] + validIntersection[0][0] * v[1]];
@@ -308,14 +287,17 @@ Canvas.prototype.drawLineInt = function (x1, x2, shader) {
 };
 
 Canvas.prototype.drawPolygon = function(array, shader, isInsidePoly=Canvas.isInsidePolygon) {
-    var upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
-    for(var i = 0; i < array.length; i++) {
+    let upperBox = [[Number.MAX_VALUE, Number.MAX_VALUE], [Number.MIN_VALUE, Number.MIN_VALUE]];
+    for(let i = 0; i < array.length; i++) {
       upperBox[0] = min(array[i], upperBox[0]);
       upperBox[1] = max(array[i], upperBox[1]);
     }
-    var size = this.getSize();
-    upperBox[0] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[0])));
-    upperBox[1] = floor(min(diff(size, [1, 1]), max([0, 0], upperBox[1])));
+
+    let size = this.getSize();
+    let clampedSize = diff(size, [1, 1]);
+    let zeros = [0, 0];
+    upperBox[0] = floor(min(clampedSize, max(zeros, upperBox[0])));
+    upperBox[1] = floor(min(clampedSize, max(zeros, upperBox[1])));
 
     for(var i = upperBox[0][0]; i < upperBox[1][0]; i++) {
       for(var j = upperBox[0][1]; j < upperBox[1][1]; j++) {
@@ -348,19 +330,10 @@ Canvas.prototype.drawQuad = function (x1, x2, x3, x4, shader) {
     this.drawPolygon([x1, x2, x3, x4], shader);
 };
 
-Canvas.prototype.drawImage = function (img, x, shader) {
-    if("isReady" in img) {
-        if(!img.isReady) {
-            return;
-        }
-    }
-    if (shader == null) {
-        this.useCanvasCtx(function (canvas) {
-            canvas.ctx.drawImage(img, x[1], x[0]);
-        });
-    }
+Canvas.prototype.drawImage = function (img, x) {
+    if("isReady" in img && !img.isReady) return;
+    this.useCanvasCtx(canvas => canvas.ctx.drawImage(img, x[1], x[0]));
 };
-
 
 Canvas.prototype.drawCircle = function(x, r, shader) {
     var corner = scale([1, 1], r);
@@ -388,14 +361,16 @@ Canvas.prototype.addEventListener = function(key, lambda, useCapture) {
 
 Canvas.prototype.drawString = function(x, string, contextShader) {
     this.useCanvasCtx(
-        function (canvas) {
+    	canvas => {
             contextShader(canvas.ctx);
             canvas.ctx.fillText(string, x[1], x[0]);
         }
     );
 };
 
-// slower than the method below
+// Static functions
+
+// slower than isInsideConvex method
 Canvas.isInsidePolygon = function (x, array) {
     var v = [];
     var theta = 0;
@@ -421,22 +396,18 @@ Canvas.isInsideConvex = function (x, array) {
     let orientation = v[0][0] * v[1][1] - v[0][1] * v[1][0] > 0 ? 1 : -1;
     for (var i = 0; i < m; i++) {
         var myDot = vDotN[i] * orientation;
-        if (myDot < 0) {
-            return false;
-        }
+        if (myDot < 0) return false;
     }
     return true;
 }
 
 
 Canvas.simpleShader = function (color) {
-    return function (x, element, canvas) {
-        canvas.drawPxl(x, color);
-    };
+    return (x, element, canvas) => canvas.drawPxl(x, color)
 };
 
 Canvas.colorShader = function(colors) {
-    var auxShader = function(x, poly, canvas, alpha) {
+    var auxShader = (x, poly, canvas, alpha) => {
         var interpolateColors = [0, 0, 0, 0];
         for(var i = 0; i < poly.length; i++) {
             interpolateColors[0] = interpolateColors[0] + colors[i][0] * alpha[i];
@@ -454,25 +425,25 @@ Canvas.interpolateQuadShader = function(shader) {
     return function(x, quad, canvas) {
         var t1 = [quad[0], quad[1], quad[2]];
         var t2 = [quad[2], quad[3], quad[0]];
-        var alpha = triangleBaryCoord(x, t1);
+        var alpha = Canvas.triangleBaryCoord(x, t1);
         if(alpha[0] > 0 && alpha[1] > 0 && alpha[2] > 0 && Math.abs(alpha[0] + alpha[1] + alpha[2] - 1) < 1E-10) {
             shader(x, quad, canvas, [alpha[0], alpha[1], alpha[2], 0]);
         } else {
-            alpha = triangleBaryCoord(x, t2);
+            alpha = Canvas.triangleBaryCoord(x, t2);
             shader(x, quad, canvas, [alpha[2], 0, alpha[0], alpha[1]]);
         }
     }
 }
 
 Canvas.interpolateTriangleShader = function(shader) {
-    return function(x, triangle, canvas) {
-        alpha = triangleBaryCoord(x, triangle);
+    return (x, triangle, canvas) => {
+        alpha = Canvas.triangleBaryCoord(x, triangle);
         shader(x, triangle, canvas, alpha);
     }
 }
 
 Canvas.interpolateLineShader = function(shader) {
-    return function (x, line, canvas) {
+    return (x, line, canvas) => {
         var v = diff(line[1], line[0]);
         var z = diff(x, line[0]);
         var vnorm = squareNorm(v);
@@ -486,12 +457,14 @@ Canvas.interpolateLineShader = function(shader) {
  * img: html loaded image.
  * quadTexCoord: [0, 1]^{2 * 4}, texture coordinates
  */
-Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=bilinearInterpolation) {
-    var imageShader = function(x, quad, canvas, alpha) {
-        var imageCanvas = new Canvas(ImageIO.getImageCanvas(img));
-        var imgSize = imageCanvas.getSize();
-        var interpolateTexCoord = [0, 0];
-        for(var i = 0; i < quadTexCoord.length; i++) {
+Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=Canvas.bilinearInterpolation) {
+    let imageCache = null;
+    const imageShader = (x, quad, canvas, alpha) => {
+        if (!img.isReady || imageCache == null) imageCache = new Canvas(ImageIO.getImageCanvas(img));  
+        const imageCanvas = imageCache;
+        const imgSize = imageCanvas.getSize();
+        const interpolateTexCoord = [0, 0];
+        for(let i = 0; i < quadTexCoord.length; i++) {
             interpolateTexCoord[0] = interpolateTexCoord[0] + quadTexCoord[i][0] * alpha[i];
             interpolateTexCoord[1] = interpolateTexCoord[1] + quadTexCoord[i][1] * alpha[i];
         }
@@ -507,6 +480,75 @@ Canvas.quadTextureShader = function(img, quadTexCoord, interpolation=bilinearInt
     return Canvas.interpolateQuadShader(imageShader);
 }
 
+Canvas.triangleCache = (() => {
+    const hashMap = [];
+    const size = 3;
+    return {
+        constains: triangleHash => hashMap[triangleHash % size] != undefined,
+        get: triangleHash => hashMap[triangleHash % size],
+        set: (triangleHash, value) => hashMap[triangleHash % size] = value 
+    } 
+})(); //{triangle: null, u: [], v:[], det:null, hash:null}
+
+Canvas.triangleHash = triangle =>  {
+    const array = [
+      triangle[0][0],
+      triangle[1][0],
+      triangle[2][0],
+      triangle[0][1],
+      triangle[1][1],
+      triangle[2][1]
+    ];
+    return array.reduce((h,x) => 31 * h + x, 1) 
+}
+
+Canvas.triangleBaryCoord = function(x, triangle) {
+    const hash = Canvas.triangleHash(triangle);
+    const y = [x[0] - triangle[0][0], x[1] - triangle[0][1]];
+    if(!Canvas.triangleCache.constains(hash)) {
+        const u = [triangle[1][0] - triangle[0][0], triangle[1][1] - triangle[0][1]];
+        const v = [triangle[2][0] - triangle[0][0], triangle[2][1] - triangle[0][1]];
+        const det = (u[0] * v[1] - u[1] * v[0]);
+        Canvas.triangleCache.set(hash, {
+            triangle: triangle,
+            u: u.map(x => x / det),
+            v: v.map(x => x / det),
+            det: det,
+            hash: hash 
+        });
+    }
+    const cache = Canvas.triangleCache.get(hash);
+    const u = cache.u;
+    const v = cache.v;
+    const det = cache.det;
+    if(det == 0) return [0, 0, 0];
+    var alpha = [v[1] * y[0] - v[0] * y[1], u[0] * y[1] - u[1] * y[0]];
+    return [1 - alpha[0] - alpha[1], alpha[0], alpha[1]];
+}
+
+/**
+ * values \in R^{k * 4}
+ * x \in [0,1]^2
+ */
+Canvas.bilinearInterpolation = function(values, x) {
+    var acc = [];
+    for(var k = 0; k < values.length; k++) {
+        var f03 = values[0][k] + (values[3][k] - values[0][k]) * x[1];
+        var f12 = values[1][k] + (values[2][k] - values[1][k]) * x[1];
+        var f = f03 + (f12 - f03) * x[0];
+        acc.push(f);
+    }
+    return acc;
+}
+/**
+ * size: is an array with width and height of a HTML5 Canvas.
+ * dom: DOM element where the canvas will be added
+ * 
+ * returns Canvas object from the generated html canvas. 
+ */
+Canvas.createCanvas = function(size, dom) {
+	
+}
 
 module.exports = Canvas;
 },{"./ImageIO.js":3}],2:[function(require,module,exports){
@@ -587,8 +629,8 @@ Canvas2D.prototype.drawCircle = function(x, r, shader) {
     Canvas.prototype.drawCircle.call(this, y, z, shader);
 }
 
-Canvas2D.prototype.drawImage = function (img, x, shader) {
-    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x), shader);
+Canvas2D.prototype.drawImage = function (img, x) {
+    Canvas.prototype.drawImage.call(this, img, this.integerTransform(x));
 }
 
 Canvas2D.prototype.drawString = function(x, string, contextShader) {
@@ -638,14 +680,12 @@ ImageIO.loadImage = function(src) {
     var img = new Image();
     img.src = src;
     img.isReady = false;
-    img.onload = function() {
-        img.isReady = true;
-    };
+    img.onload = () => img.isReady = true;
     return img;
 };
 
 ImageIO.generateImageReadyPredicate = function(img) {
-    return function() { return img.isReady;};
+    return () => img.isReady;
 }
 
 module.exports = ImageIO;
@@ -823,12 +863,12 @@ var Test4 = function(divName) {
     this.t = 0;
     this.quad = [
                  [-0.25, -0.25],
-                 [ 0.45, -0.25],
-                 [ 0.25,  0.45],
+                 [ 0.6, -0.25],
+                 [ 0.25,  0.6],
                  [-0.25,  0.25],
                 ];
 
-    this.shader = new Choice(Canvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]], (values, x) => values[0]), 
+    this.shader = new Choice(Canvas.quadTextureShader(this.texture, [[0,0], [1, 0], [1, 1], [0, 1]]), 
                              Canvas.simpleShader([255, 0, 255, 255]),
                              ImageIO.generateImageReadyPredicate(this.texture)
                             );
@@ -841,15 +881,15 @@ var Test4 = function(divName) {
 
         this.canvasTexture.drawString(
                                         [-0.95, 0.9],
-                                         "FPS : " + (1 / dt),
+                                         "FPS : " + Math.floor(1 / dt),
                                          function(ctx) {
                                             ctx.fillStyle = "white";
                                             ctx.font = "bold 16px Arial";
                                          }
         );
 
-        var cos = Math.cos(this.t / (2 * Math.PI));
-        var coscos = 0.5 * cos * cos;
+        var cos = Math.cos(this.t / (0.25 * Math.PI));
+        var coscos = 0.75 * cos * cos;
 
         var transformQuad = [];
         for(var i = 0; i < this.quad.length; i++) {
