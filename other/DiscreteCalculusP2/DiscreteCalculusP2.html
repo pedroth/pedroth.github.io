@@ -1,0 +1,302 @@
+<html>
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NQKJHP3');</script>
+<!-- End Google Tag Manager -->
+    <style>
+        #experimentsTab {
+        display: none
+        }
+
+        #projectTitle {
+        color : rgb(255,255,255)
+        }
+
+        #header{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        }
+
+        #footer{
+        background: #212121;
+        background: -moz-linear-gradient(top, #373737, #212121);
+        background: -webkit-linear-gradient(top, #373737, #212121);
+        background: -ms-linear-gradient(top, #373737, #212121);
+        background: -o-linear-gradient(top, #373737, #212121);
+        background: linear-gradient(top, #373737, #212121);
+        color: #fff;
+        padding: 50px 10px 5px 10px;
+        }
+
+        #main_content{
+            padding-right: 1px;
+            padding-left: 1px;
+        }
+
+        .tr-caption-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="VisualExperiments : ">
+    <script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+    </script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <!-- MathJax -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+            type='text/javascript'></script>
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NQKJHP3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div id="header" class="jumbotron text-center">
+    <a href="https://pedroth.github.io/visualExperiments/"><h1 id="projectTitle">VisualExperiments</h1></a>
+    <ul class="list-inline">
+        <li>
+            <h3><a href="javascript:void(0)" id="experimentsName">Experiments</a></h3>
+        </li>
+        <li><h3><a href="https://pedroth.github.io/visualExperiments/Blog/Blog.html">Blog</a></h3></li>
+        <li><h3><a href="https://www.youtube.com/user/peterluigi/">Youtube</a></h3></li>
+        <li><h3><a href="https://www.khanacademy.org/profile/pedroth/programs">Khan Academy</a></h3></li>
+    </ul>
+    <div>
+        <ul class="list-inline" id="experimentsTab">
+            <li><h3><a href="https://pedroth.github.io/visualExperiments/JsExperiments/JsExperiments.html">
+                JsExperiments </a></h3></li>
+            <li><h3><a href="https://pedroth.github.io/visualExperiments/JavaExperiments/JavaExperiments.html">
+                JavaExperiments </a></h3></li>
+        </ul>
+    </div>
+    <script> $("#experimentsName").click( function() { $("#experimentsTab").slideToggle();})</script>
+</div>
+
+<div class="container">
+
+
+<h1>DiscreteCalculusP2</h1>
+<h2>
+Discrete Calculus Part 2</h2>
+<div>
+<br /></div>
+<div>
+<a href="http://pedroth.github.io/visualExperiments/Blog/DiscreteCalculusP1/DiscreteCalculusP1.html" target="_blank">Last time&nbsp;</a>&nbsp;we study discrete functions which are functions of the form $f:\mathbb{N}\rightarrow\mathbb{R}$, we also saw the discrete differential defined as $\Delta^{(k)} f(n) = \Delta^{(k-1)}f(n+1) - \Delta^{(k-1)}f(n)$ and we used to find the discrete Taylor polynomial given by $$f(n) = f(0) + \Delta f(0) \Psi(n,1) + ... + \Delta^{(k)}f(0)\Psi(n,k)+ ...$$<br />
+<br />
+Where $\Psi$ was defined as $$\Psi(n,k) = \sum_{i_1=0}^{n-1}\left [\sum_{i_2=0}^{i_1-1}...\sum_{i_k=0}^{i_{k-1}-1} 1\right]= \sum_{i_1=0}^{n-1}\Psi(i_1,k-1)$$ and later we found out that we could define $\Psi$ in an easier way :<br />
+$$\Psi(n,k) = \begin{cases}<br />
+&nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n=0 \text{ and } k&gt;0\\<br />
+&nbsp;&amp; 1 \;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ if } n \geq 0 \text{ and } k=0\\<br />
+&nbsp;&amp; \Psi(n-1,k) + \Psi(n-1,k-1)\;\;\text{ if } n&gt;0 \text{ and } k&gt;0\\<br />
+&nbsp;&amp; 0\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\text{ otherwise}<br />
+\end{cases}$$<br />
+<br />
+But we weren't quite satisfied, we want an closed expression form $\Psi(n,k)$, by trial and error we found $$\Psi(n,1) = n$$ and $$\Psi(n,2) = \frac{n(n-1)}{2}$$ But this is not smart, we ended last chapter saying that we need a new approach to find a closed expression for $\Psi$<br />
+<br />
+Lets compute the recursion tree<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-gNpRS_jDmqo/VEzG-h3x3JI/AAAAAAAAAL0/c3jnKIzCe9E/s1600/Numerozinho_7.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://3.bp.blogspot.com/-gNpRS_jDmqo/VEzG-h3x3JI/AAAAAAAAAL0/c3jnKIzCe9E/s1600/Numerozinho_7.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.1 Recursion tree of $\Psi$</td></tr>
+</tbody></table>
+We can conclude from the image that the tree have lots of common branches/leafs.</div>
+<div>
+Lets see an example:</div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://2.bp.blogspot.com/-Q-_nMIa-bJA/VEzWIzEP1BI/AAAAAAAAAMc/v41zOMr91JA/s1600/Numerozinho_5.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://2.bp.blogspot.com/-Q-_nMIa-bJA/VEzWIzEP1BI/AAAAAAAAAMc/v41zOMr91JA/s1600/Numerozinho_5.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.2 $\Psi(3,3)$ recursion tree&nbsp;</td></tr>
+</tbody></table>
+<div>
+From this image we see that $\Psi(n,k) = 0 \; \forall k&gt;n$. Lets view $\Psi$ form another prespective, bottom-up style. We start with boundary conditions $\Psi(n,0) = 1$ and $\Psi(0,k) = 0, \; k &gt; 0$, then we construct function $\Psi$.<br />
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://1.bp.blogspot.com/-0gWKS7Oe-uw/VEzOXhUtb7I/AAAAAAAAAMM/I_kubOG31p4/s1600/Numerozinho_6.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://1.bp.blogspot.com/-0gWKS7Oe-uw/VEzOXhUtb7I/AAAAAAAAAMM/I_kubOG31p4/s1600/Numerozinho_6.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.3 $\Psi$ function construction table</td></tr>
+</tbody></table>
+Again we see that $\Psi(n,k) = 0 \; \forall k&gt;n$<br />
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+</div>
+<div>
+<br /></div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://2.bp.blogspot.com/-DERG2U7Lyno/VE1H6lBdGUI/AAAAAAAAAMs/bDTFxxTTKR4/s1600/Numerozinho_09.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://2.bp.blogspot.com/-DERG2U7Lyno/VE1H6lBdGUI/AAAAAAAAAMs/bDTFxxTTKR4/s1600/Numerozinho_09.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.4 more examples</td></tr>
+</tbody></table>
+<div>
+These are cool pictures, that gives us some intuition about the problem, but we are still far from the answer. Finally I created the image that will give us the answer. It is similar to the continuous calculus(<a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html">Taylor polynomial</a>), where we needed to compute $$\Omega (x,k) = \int_{0}^{x} ... \int_{0}^{u_{k-1}}1du_k...du_1$$<br />
+<br /></div>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://3.bp.blogspot.com/-YfbjDNPyKFM/VE1V-4HoNrI/AAAAAAAAAM8/VyqPp2XvVpA/s1600/Numerozinho_10.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://3.bp.blogspot.com/-YfbjDNPyKFM/VE1V-4HoNrI/AAAAAAAAAM8/VyqPp2XvVpA/s1600/Numerozinho_10.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.5</td></tr>
+</tbody></table>
+<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://4.bp.blogspot.com/-cmmRk4nDtiw/VE1YzbK09AI/AAAAAAAAANQ/CgztPc1xUR8/s1600/Numerozinho_11.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://4.bp.blogspot.com/-cmmRk4nDtiw/VE1YzbK09AI/AAAAAAAAANQ/CgztPc1xUR8/s1600/Numerozinho_11.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.6</td></tr>
+</tbody></table>
+From the pictures we get that $\Psi(n,k)$ is just the number of points(in integer coordinates) inside an hyper cube &nbsp;with constraints $i_1 \in \{0,1,2,...,n-1\}$, $i_2 = i_1 - 1$, ..., $i_k = i_{k-1} -1$. Then our conjecture of $\Psi$ close form is :<br />
+<div>
+$$\Psi(n,0) = 1$$<br />
+<div>
+$$\Psi(n,1) = n$$</div>
+<div>
+$$\Psi(n,2) = n \frac{(n-1)}{2}$$&nbsp;</div>
+<div>
+$$\Psi(n,3) = &nbsp;n \frac{(n-1)}{2}\frac{(n-2)}{3}$$</div>
+$$\Psi(n,k) = \Psi(n,k-1)\frac{(n-k+1)}{k}$$</div>
+<div>
+<br /></div>
+<div>
+$$\Psi(n,k) = n\frac{(n-1)}{2}\frac{(n-2)}{3}...\frac{(n-k+1)}{k}\;\;\;\;(1)$$</div>
+<div>
+<br />
+Note that &nbsp;$\Omega$ is just the volume of an hypercube, constraint to $u1 \in [0,x]$ , ... , $u_k \in [0,u_{k-1}]$ , instead of number of integer points inside the hypercube.<br />
+<br />
+Lets check if our conjecture satisfies the definition of $\Psi$<br />
+<br />
+$$\Psi(n,k) = \Psi(n-1,k) + \Psi(n-1,k-1)$$<br />
+substituting&nbsp;&nbsp;(1) we get<br />
+$$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k)}{k!} + \frac{(n-1)(n-2)...(n-k+1)}{(k-1)!}$$<br />
+$$\Leftrightarrow \Psi(n,k) =&nbsp;\frac{(n-1)(n-2)...(n-k)}{k!} + \frac{k(n-1)(n-2)...(n-k+1)}{k(k-1)!}$$<br />
+$$\Leftrightarrow \Psi(n,k) = \frac{(n-1)(n-2)...(n-k) + k(n-1)(n-2)...(n-k+1)}{k!}$$<br />
+$$\Leftrightarrow \Psi(n,k) =&nbsp;\frac{\left [(n-1)(n-2)...(n-k+1)\right]((n-k)+ k)}{k!}$$<br />
+$$\Leftrightarrow \Psi(n,k) =&nbsp;\frac{\left [(n-1)(n-2)...(n-k+1)\right]n}{k!} = \Psi(n,k)$$<br />
+<br />
+Hence our conjecture is really $\Psi$.<br />
+<br /></div>
+<div>
+<div class="separator" style="clear: both; text-align: center;">
+</div>
+<div>
+if you aren't convinced then check the code for the three definitions of $\Psi$&nbsp;<a href="http://repl.it/2v9" target="_blank">here</a>(click the run buttom and type test() in the console) and check that they are all equal.<br />
+<br />
+Finally we can say that for $f:\mathbb{N}\rightarrow\mathbb{R}$ we have :<br />
+<br />
+$$f(n) = \sum_{k = 0}^{\infty} \Delta^{(k)}f(0)\Psi(n,k)\;\;\;\; (2)$$ <br />
+<br />
+This formula (2) is the discrete Taylor polynomial also known as Newton polynomial.<br />
+<br />
+A simple application is the following problem: you need to find a function $u:\mathbb{N}\rightarrow \mathbb{R}$ such that $\Delta u = u$ and $u(0) = 1$.<br />
+<br />
+Its easy to see that $\Delta^{(k)} u = u$ then &nbsp;$\Delta^{(k)} u(0) = 1$, but this is great, because now we can compute the discrete Taylor expansion since we have $\Delta^{(k)}u(0)\; \forall k\geq 0$<br />
+So $$u(n) = \sum_{k = 0}^{\infty}\Psi(n,k)$$<br />
+But note that $\Psi(n,k) = 0\; k &gt; n$, hence &nbsp;$$u(n) = \sum_{k = 0}^{n} \Psi(n,k)$$<br />
+<br />
+Note also that $$\Psi(n,k) =&nbsp;\binom{n}{k}$$, which is the <a href="https://en.wikipedia.org/wiki/Combination" target="_blank">number of combinations.</a><br />
+<br />
+There is a easier way to derive a closed form of this difference equation $$\Delta u(n) = u(n)$$<br />
+<br />
+$$u(n+1) &nbsp;- u(n) = u(n)$$<br />
+$$u(n+1) = 2u(n)$$<br />
+$$u(n) = 2u(n-1)$$<br />
+$$u(n) = 2^2 u(n-2)$$<br />
+$$...$$<br />
+$$u(n) = 2^n u(0)$$<br />
+<br />
+hence we conclude $u(n) = 2^n = \sum_{k = 0}^{n}\binom{n}{k}$ which is cool.<br />
+<br />
+Another application is to interpolate discrete functions, because $\Psi(n,k)$ doesn't require $n$ to be an integer so we can extend $\Psi$ to real continuous function. If we have a function $u(n)$ then the interpolation function $u(x):\mathbb{R_+}\rightarrow \mathbb{R}$ is just &nbsp;$$u(x) = \sum_{k = 0}^{\infty} \Delta^{(k)}u(0)\Psi(x,k) = u(0) + \Delta u(0)x + \Delta^{(2)} u(0)\frac{x(x-1)}{2} &nbsp;+ &nbsp;...$$<br />
+<br />
+We can also derive the continuous Taylor polynomial with the discrete one. Suppose we have a function $f:[a,b]\rightarrow\mathbb{R}$. Let $u:\mathbb{N}\rightarrow\mathbb{R}$ be a sampling of $f$. $u$ is defined as $u(n) = f(a + hn)$ , where $h = \frac{b-a}{N-1}$ and $N$ is the number of samples.<br />
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody>
+<tr><td style="text-align: center;"><a href="http://4.bp.blogspot.com/-teKwfbemMiY/VE9cEQNKTPI/AAAAAAAAANg/eep_XdgmRQ4/s1600/Numerozinho_12.jpg" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="400" src="https://4.bp.blogspot.com/-teKwfbemMiY/VE9cEQNKTPI/AAAAAAAAANg/eep_XdgmRQ4/s1600/Numerozinho_12.jpg" width="640" /></a></td></tr>
+<tr><td class="tr-caption" style="text-align: center;">fig.7</td></tr>
+</tbody></table>
+Now we can have an approximation of $f(x), x\in[a,b]$ by interpolating $u$. From (2) $$u(n) = \sum_{k = 0}^{N-1} \Delta^{(k)}u(0)\frac{n(...)(n-k+1)}{k!}\;\;\;\;(3)$$</div>
+<div>
+<br /></div>
+<div>
+Note that with $N-1$ samples we have only $N-1$ discrete derivatives at $n=0$, as explain in the lower left corner of fig.6</div>
+<div>
+<br /></div>
+<div>
+From the definition of $u$ we know $$\Delta^{(k)} u(n) = \Delta^{(k-1)} f(a+hn+h) - \Delta^{(k-1)}f(a + hn)$$</div>
+<div>
+<br /></div>
+<div>
+You should note that $$\Delta^{(k)}f(a) =&nbsp;\Delta^{(k)} u(0) = &nbsp;\Delta^{(k-1)} f(a + h) - \Delta^{(k-1)} f(a)$$</div>
+<div>
+<br /></div>
+<div>
+example $$\Delta u(0) = f(a+h) - f(a)&nbsp;$$</div>
+<div>
+<br /></div>
+<div>
+We also know that $$n = (x-a)\frac{N-1}{b-a} = \frac{x-a}{h}\;\;\;\;(4)$$</div>
+<div>
+<br /></div>
+<div>
+Thus if we substitute (4) in (3) we get $$u(n) = \sum_{k = 0}^{N-1} \Delta^{(k)}f(a)\frac{(\frac{x-a}{h})(...)(\frac{x-a}{h} - k+1)}{k!}$$</div>
+<div>
+$$\Leftrightarrow u(n) = \sum_{k = 0}^{N-1} \Delta^{(k)}f(a)\frac{(\frac{x-a}{h})(...)(\frac{x-a - kh - h}{h})}{k!}$$</div>
+<div>
+$$\Leftrightarrow u(n) = \sum_{k = 0}^{N-1} \frac{\Delta^{(k)}f(a)}{h^k}\frac{(x-a)(...)(x-a - kh - h)}{k!}$$</div>
+<div>
+<br /></div>
+<div>
+Now if we take $N \rightarrow +\infty$ then $h\rightarrow 0$ we get</div>
+<div>
+$$\lim_{N \to +\infty}\sum_{k = 0}^{N-1} \frac{\Delta^{(k)}f(a)}{h^k}\frac{(x-a)(...)(x-a - kh - h)}{k!} = \sum_{k = 0}^{\infty} f^{(k)}(a)\frac{(x-a)^k}{k!}\;\;\;\; (5)$$</div>
+<div>
+<br />
+(5) is just the continuous Taylor expansion of a function!<br />
+</div>
+</div>
+<!-- Disqus -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'visualexperiments'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+
+        </script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+    Disqus.</a></noscript>
+</div>
+
+
+<footer id="footer" class="container-fluid">
+    <p class="copyright">VisualExperiments maintained by <a href="https://github.com/pedroth">pedroth</a></p>
+    <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+</footer>
+</body>
+</html>

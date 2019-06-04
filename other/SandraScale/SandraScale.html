@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="VisualExperiments : ">
+	<script type="text/x-mathjax-config">
+	  	MathJax.Hub.Config({
+	    extensions: ["tex2jax.js"],
+	    jax: ["input/TeX", "output/HTML-CSS"],
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+	      processEscapes: true
+	    },
+	    "HTML-CSS": { availableFonts: ["TeX"] }
+	  });
+</script>
+<script src='http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type='text/javascript'></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://pedroth.github.io/visualExperiments/stylesheets/stylesheet.css">
+
+    <title>Sandra Scales</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <h1 id="project_title">Sandra Scales</h1>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+      <!--Special-->
+      <table class = "noBorder">
+      	<tr>
+      		<td class = "noBorder"><label> Scale in :</label></td>
+      		<td class = "noBorder"><input type = "number" id = "scaleIn" oninput="scale()" value = "100"\></td>
+      		<td class = "noBorder"><input type = "button" value = "<>" onclick = "swap()"\></td>
+      		<td class = "noBorder"><label>Scale out:</label></td>
+      		<td class = "noBorder"><input type = "number" id = "scaleOut" oninput="scale()" value = "200"\></td>
+      	</tr>
+      	<tr>
+		    <td class = "noBorder"><label>MeasureIn:</label></td>
+      		<td class = "noBorder"><input type = "number" id = "measure" value = "1"\ oninput="scale()"></td>
+      		<td class = "noBorder"><label>MeasureOut:</label></td>
+      		<td class = "noBorder"><p  id = "output" ></p></td>
+      	</tr>
+      </table>
+       <script type="text/javascript">
+       function swap() {
+       	var input = document.getElementById("scaleIn");
+       	var output = document.getElementById("scaleOut");
+       	var temp = input.value;
+       	input.value = output.value;
+       	output.value = temp;
+       	scale();
+       }
+
+       function scale(){
+       	var input = document.getElementById("scaleIn").value;
+       	var output = document.getElementById("scaleOut").value;
+       	var measure = document.getElementById("measure").value;
+       	var y = measure * (input / output);
+       	var pow = 1E9;
+       	document.getElementById("output").innerHTML = "" + parseFloat(Math.round(y * pow) / pow).toFixed(9) + "";
+		//MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("output")]);
+       }
+       scale();
+       </script>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+      </footer>
+    </div>
+  </body>
+</html>
