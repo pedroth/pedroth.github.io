@@ -1,0 +1,24 @@
+{
+  "name": "processor",
+  "version": "1.0.0",
+  "description": "visualExperiments website builder",
+  "main": "processor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedroth/visualExperiments.git"
+  },
+  "author": "pedroth",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pedroth/visualExperiments/issues"
+  },
+  "homepage": "https://github.com/pedroth/visualExperiments#readme",
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "file-system": "^2.2.2",
+    "rimraf": "^2.6.3"
+  }
+}
