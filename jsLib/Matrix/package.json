@@ -1,0 +1,14 @@
+{
+  "name": "matrix",
+  "version": "1.0.0",
+  "description": "Matrix implementation",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Pedroth",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
+}

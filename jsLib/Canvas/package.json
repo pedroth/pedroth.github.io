@@ -1,0 +1,16 @@
+{
+  "name": "canvas",
+  "version": "1.0.0",
+  "description": "Canvas lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "webpack"
+  },
+  "keywords": [],
+  "author": "Pedroth",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
