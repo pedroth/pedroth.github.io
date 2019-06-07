@@ -1,1 +1,0 @@
-browserify TestMatrix.js > test.js

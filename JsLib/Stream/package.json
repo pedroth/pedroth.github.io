@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "Infinite data structure stream",
   "main": "main/Stream.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "browserify test/TestStream.js -o test/test.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +19,8 @@
     "streams"
   ],
   "author": "Pedroth",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
 }

@@ -1,27 +1,27 @@
 /**
- * 
- * @param {*} opt1 
- * @param {*} opt2 
+ *
+ * @param {*} opt1
+ * @param {*} opt2
  * @param {*} predicate predicate is a function: (opt1, opt2) => {true, false}
  */
-var Choice = function(opt1, opt2, predicate) {
-    this.opt1 = opt1;
-    this.opt2 = opt2;
-    this.predicate = predicate == undefined ? () => true : predicate;
+const Choice = function(left, right) {
+  this.left = left;
+  this.right = right;
+  this.predicate = () => true;
+};
 
-    this.chooseFirstIf = function(predicate) {
-        this.predicate = predicate;
-        return this;
-    }
+Choice.prototype.chooseLeftIf = function(predicate) {
+  this.predicate = predicate;
+  return this;
+};
 
-    this.get = function() {
-        if(this.predicate(this.opt1, this.opt2)) return this.opt1;
-        return this.opt2;
-    }
-}
+Choice.prototype.get = function() {
+  if (this.predicate(this.left, this.right)) return this.left;
+  return this.right;
+};
 
-Choice.of = function(opt1, opt2) {
-    return new Choice(opt1, opt2);
-}
+Choice.of = function(left, right) {
+  return new Choice(left, right);
+};
 
 module.exports = Choice;
