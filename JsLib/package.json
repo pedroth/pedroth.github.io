@@ -4,7 +4,7 @@
   "description": "Didactic implementation of mathematics, computer science utils",
   "main": "index.js",
   "scripts": {
-    "build": "browserify nabla.js -s Nabla -o index.js"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/pedroth/visualExperiments/issues"
   },
-  "homepage": "https://github.com/pedroth/visualExperiments#readme"
+  "homepage": "https://github.com/pedroth/visualExperiments#readme",
+  "devDependencies": {
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.2"
+  }
 }
