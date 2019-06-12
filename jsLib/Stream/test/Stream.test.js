@@ -1,6 +1,5 @@
-var UnitTest = require("../../UnitTest/main/UnitTest.js");
-var ArrayUtils = require("../../ArrayUtils/main/ArrayUtils.js");
-var Stream = require("../main/Stream.js");
+const ArrayUtils = require("../../ArrayUtils/main/ArrayUtils.js");
+const Stream = require("../main/Stream.js");
 
 function primesSieveRecursive(stream) {
   let p = stream.head();
