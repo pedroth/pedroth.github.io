@@ -1,4 +1,4 @@
-var visualExp =
+var VisualExp =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -94,7 +94,7 @@ var visualExp =
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("const VisualExp = {};\r\n\r\nVisualExp.retrieveAndAppend = async function(url, htmlId) {\r\n  const html = await fetch(url).then(x => x.text());\r\n  document.getElementById(htmlId).innerHTML = html;\r\n};\r\n\r\nVisualExp.retrieveAndAppend(\r\n  \"resources/templates/nav/nav.html\",\r\n  \"indexContainer\"\r\n);\r\n\r\nmodule.exports.default = VisualExp;\r\n\n\n//# sourceURL=webpack://visualExp/./main.js?");
+eval("const VisualExp = {};\r\n\r\nVisualExp.retrieveAndAppend = async function(url, htmlId) {\r\n  console.log(`Reading from ${url}.. appending on ${htmlId}`);\r\n  const html = await fetch(url).then(x => x.text());\r\n  $(`#${htmlId}`).html(html); // it doesnt works with plain js\r\n};\r\n\r\nVisualExp.readDb = async function() {\r\n  const dbJson = await fetch(\"resources/db/db.json\").then(x => x.json());\r\n  return dbJson;\r\n};\r\n\r\nVisualExp.retrieveAndAppend(\r\n  \"resources/templates/nav/nav.html\",\r\n  \"indexContainer\"\r\n);\r\n\r\nmodule.exports.default = VisualExp;\r\n\n\n//# sourceURL=webpack://VisualExp/./main.js?");
 
 /***/ })
 

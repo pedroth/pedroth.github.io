@@ -1,6 +1,9 @@
 <!-- navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#" title="VisualExperiments"
+  <a
+    class="navbar-brand"
+    href="https://pedroth.github.io/visualExperiments"
+    title="VisualExperiments"
     >VisualExperiments</a
   >
   <!--burger toggler-->
@@ -30,14 +33,41 @@
       <li class="nav-item">
         <a class="nav-link" href="?p=about" title="About">About</a>
       </li>
+      <li class="nav-item">
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            name="q"
+            id="searchInput"
+            class="searchClass"
+            type="search"
+            placeholder="Search..."
+            aria-label="Search"
+          />
+          <button type="submit" class="navIcons" id="searchSubmit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input
-        class="searchClass"
-        type="search"
-        placeholder="Search..."
-        aria-label="Search"
-      />
-    </form>
+    <a href="https://github.com/pedroth" title="Github" class="navIcons"
+      ><i class="fa fa-github"></i
+    ></a>
+    <a
+      href="https://www.youtube.com/user/peterluigi"
+      title="Youtube"
+      class="navIcons"
+      ><i class="fa fa-youtube"></i
+    ></a>
+    <a
+      href="https://stackexchange.com/users/2510741/pedroth?tab=accounts"
+      title="Stack Exchange"
+      class="navIcons"
+      ><i class="fa fa-stack-overflow"></i
+    ></a>
+    <a href="https://twitter.com/pedroth9" title="Twitter" class="navIcons"
+      ><i class="fa fa-twitter"></i
+    ></a>
   </div>
 </nav>
+<div id="navContainer"></div>
+<script src="./resources/templates/nav/nav.js"></script>

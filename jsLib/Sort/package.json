@@ -1,0 +1,16 @@
+{
+  "name": "sort",
+  "version": "1.0.0",
+  "description": "Sorting algorithms utils",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "sort"
+  ],
+  "author": "Pedroth",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.8.0"
+  }
+}
