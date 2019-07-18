@@ -87,14 +87,25 @@ var VisualExp =
 /************************************************************************/
 /******/ ({
 
+/***/ "../Sort/main/Sort.js":
+/*!****************************!*\
+  !*** ../Sort/main/Sort.js ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const Sort = {};\r\n\r\nfunction swap(v, i, j) {\r\n  if (i >= 0 && i < v.length && j >= 0 && j < v.length) {\r\n    var temp = v[i];\r\n    v[i] = v[j];\r\n    v[j] = temp;\r\n  }\r\n}\r\n\r\n/**\r\n * array: array with objects\r\n * comparator: comparator function that compares elements of v. Comparator is a function f(a,b) -> integer\r\n */\r\nSort.quicksort = function(array, comparator = (a, b) => a - b > 0) {\r\n  const n = array.length;\r\n  const v = [...array];\r\n  const stack = [];\r\n  stack.push(0);\r\n  stack.push(n - 1);\r\n  while (stack.length > 0) {\r\n    const high = stack.pop();\r\n    const low = stack.pop();\r\n    /*\r\n     * partition\r\n     */\r\n    if (low < high) {\r\n      const pivot = low + Math.floor((high - low) * Math.random());\r\n      const pvalue = v[pivot];\r\n      swap(v, pivot, high);\r\n      let j = 0;\r\n      for (let i = 0; i < high; i++) {\r\n        if (comparator(v[i], pvalue) <= 0) {\r\n          swap(v, i, j);\r\n          j++;\r\n        }\r\n      }\r\n      swap(v, j, high);\r\n      stack.push(low);\r\n      stack.push(j - 1);\r\n      stack.push(j + 1);\r\n      stack.push(high);\r\n    }\r\n  }\r\n  return v;\r\n};\r\n\r\nmodule.exports = Sort;\r\n\n\n//# sourceURL=webpack://VisualExp/../Sort/main/Sort.js?");
+
+/***/ }),
+
 /***/ "./main.js":
 /*!*****************!*\
   !*** ./main.js ***!
   \*****************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("const VisualExp = {};\r\n\r\nVisualExp.retrieveAndAppend = async function(url, htmlId) {\r\n  console.log(`Reading from ${url}.. appending on ${htmlId}`);\r\n  const html = await fetch(url).then(x => x.text());\r\n  $(`#${htmlId}`).html(html); // it doesnt works with plain js\r\n};\r\n\r\nVisualExp.readDb = async function() {\r\n  const dbJson = await fetch(\"resources/db/db.json\").then(x => x.json());\r\n  console.log(dbJson);\r\n  return dbJson;\r\n};\r\n\r\nVisualExp.retrieveAndAppend(\r\n  \"resources/templates/nav/nav.html\",\r\n  \"indexContainer\"\r\n);\r\n\r\nmodule.exports.default = VisualExp;\r\n\n\n//# sourceURL=webpack://VisualExp/./main.js?");
+eval("const Sort = __webpack_require__(/*! ../Sort/main/Sort */ \"../Sort/main/Sort.js\");\r\nconst VisualExp = {};\r\n\r\nconst TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3;\r\n\r\nfunction date2int(date) {\r\n  var dateStrs = date.split(\"/\");\r\n  var acm = 0;\r\n  var ide = 1;\r\n  for (var j = 0; j < dateStrs.length; j++) {\r\n    acm += parseFloat(dateStrs[j]) * ide;\r\n    ide *= 100;\r\n  }\r\n  return acm;\r\n}\r\n\r\nVisualExp.retrieveAndAppend = async function(url, htmlId) {\r\n  console.log(`Reading from ${url}.. appending on ${htmlId}`);\r\n  const html = await fetch(url).then(x => x.text());\r\n  $(`#${htmlId}`).html(html); // it doesnt works with plain js\r\n};\r\n\r\nVisualExp.readDb = async function() {\r\n  const time = new Date().getTime();\r\n  if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {\r\n    const dbJson = await fetch(\"resources/db/db.json\").then(x => x.json());\r\n    localStorage.db = JSON.stringify({ time: time, data: dbJson });\r\n  }\r\n  return JSON.parse(localStorage.db).data;\r\n};\r\n\r\nVisualExp.sortDb = function(db) {\r\n  return Sort.quicksort(\r\n    db.experiments,\r\n    (a, b) => date2int(a.date) - date2int(b.date) > 0\r\n  );\r\n};\r\n\r\nVisualExp.createCardFromData = function(data) {};\r\n\r\nVisualExp.retrieveAndAppend(\r\n  \"resources/templates/nav/nav.html\",\r\n  \"indexContainer\"\r\n);\r\n\r\nmodule.exports.default = VisualExp;\r\n\n\n//# sourceURL=webpack://VisualExp/./main.js?");
 
 /***/ })
 
