@@ -39,11 +39,9 @@ html {
 body {
   background-color: #222;
   color: rgba(255, 255, 255, 0.9);
+  font-size: 1.25rem;
 }
 
-.paper {
+.simplePaper {
   background-color: #5c5c5c;
-}
-
-#navContainer {
 }
