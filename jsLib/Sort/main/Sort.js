@@ -10,9 +10,9 @@ function swap(v, i, j) {
 
 /**
  * array: array with objects
- * comparator: comparator function that compares elements of v. Comparator is a function f(a,b) -> integer
+ * comparator: comparator function that compares elements of v. Comparator is a function f(a,b) -> z in integers, where z < 0
  */
-Sort.quicksort = function(array, comparator = (a, b) => a - b > 0) {
+Sort.quicksort = function(array, comparator = (a, b) => a - b) {
   const n = array.length;
   const v = [...array];
   const stack = [];
@@ -28,8 +28,8 @@ Sort.quicksort = function(array, comparator = (a, b) => a - b > 0) {
       const pivot = low + Math.floor((high - low) * Math.random());
       const pvalue = v[pivot];
       swap(v, pivot, high);
-      let j = 0;
-      for (let i = 0; i < high; i++) {
+      let j = low;
+      for (let i = low; i < high; i++) {
         if (comparator(v[i], pvalue) <= 0) {
           swap(v, i, j);
           j++;
@@ -44,5 +44,7 @@ Sort.quicksort = function(array, comparator = (a, b) => a - b > 0) {
   }
   return v;
 };
+
+Sort.REVERSE_SORT_COMPARATOR = (a, b) => b - a;
 
 module.exports = Sort;

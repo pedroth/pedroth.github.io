@@ -14,6 +14,43 @@ function date2int(date) {
   return acm;
 }
 
+//Returns true if it is a DOM element
+function isElement(o) {
+  return typeof HTMLElement === "object"
+    ? o instanceof HTMLElement //DOM2
+    : o &&
+        typeof o === "object" &&
+        o !== null &&
+        o.nodeType === 1 &&
+        typeof o.nodeName === "string";
+}
+
+class ElementBuilder {
+  constructor(element) {
+    this.element = element;
+  }
+
+  attribute(name, value) {
+    this.element.setAttribute(name, value);
+    return this;
+  }
+
+  build() {
+    return this.element;
+  }
+
+  static from(elem) {
+    if (isElement(elem)) {
+      return new ElementBuilder(elem);
+    }
+    return document.createElement(document.createElement(elem));
+  }
+
+  static fromElement;
+}
+
+VisualExp.ElementBuilder = elem => ElementBuilder.from(elem);
+
 VisualExp.retrieveAndAppend = async function(url, htmlId) {
   console.log(`Reading from ${url}.. appending on ${htmlId}`);
   const html = await fetch(url).then(x => x.text());
@@ -36,7 +73,18 @@ VisualExp.sortDb = function(db) {
   );
 };
 
-VisualExp.createCardFromData = function(data) {};
+VisualExp.createCardFromData = function(data) {
+  const card = VisualExp.ElementBuilder.from("div")
+    .attribute("class", "card simplePaper")
+    .attribute("style", "width: 18rem");
+
+  const img = VisualExp.ElementBuilder.from("img")
+    .attribute("class", "card-img-top")
+    .attribute("src", data.imageSrc)
+    .attribute("href", data.url);
+
+  const cardBody = VisualExp.ElementBuilder.from("div").
+};
 
 VisualExp.retrieveAndAppend(
   "resources/templates/nav/nav.html",

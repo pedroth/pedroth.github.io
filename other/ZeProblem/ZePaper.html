@@ -1,0 +1,125 @@
+<html>
+	<head>
+		<script type="text/x-mathjax-config">
+		  	MathJax.Hub.Config({
+		    extensions: ["tex2jax.js"],
+		    jax: ["input/TeX", "output/HTML-CSS"],
+		    tex2jax: {
+		      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+		      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+		      processEscapes: true
+		    },
+		    "HTML-CSS": { availableFonts: ["TeX"] }
+		  });
+
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+		        type='text/javascript'></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet"
+		      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+	</head>
+
+	<body>
+
+    <!-- Page Header -->
+    <header>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-auto col-md-auto mx-auto">
+            <div class="post-heading">
+              <h1>Ze's Problem</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-auto col-md-auto mx-auto">
+          	
+          	Let $V'_n:\mathbb{R^n} \rightarrow \mathbb{R}$ be a function that receives length in each coordinate and outputs the number of nodes in a quadratic $n$-cube.
+
+          	I noticed that:
+
+          	$$V'_0 = 1$$
+          	$$V'_1(l_1) = (l_1 + 1)V'_0 + l_1V_0$$
+
+          	Where $V_n$ is a function that receives lengths and outputs the number of nodes in a $n$-cube. Continuing with the sequence:
+
+          	$$V'_2(l_1,l_2) = (l_2 + 1)V'_1(l_1) + l_2V_1(l_1)$$
+
+          	Using the same pattern we get:
+
+          	$$V'_n(\mathbf{l}) = (l_n + 1)V'_{n-1}(\mathbf{l}_{1:n-1}) + l_n V_{n-1}(\mathbf{l}_{1:n-1})$$
+
+          	Where $\mathbf{l}_{1:n-1} = (l_1, \dots, l_{n-1})$. Now we just need to compute $V_n$. We can follow a similar path to compute $V_n$. Note that:
+
+          	$$V_0 = 1$$
+          	$$V_1(l_1) = l_1 + 1$$
+          	$$V_2(l_1, l_2) = (l_2 + 1)V_1(l_1)$$
+
+          	$$\dots$$
+
+          	$$V_n(\mathbf{l}) = (l_n + 1) V_{n-1}(\mathbf{l}_{1:n-1})$$
+
+          	<div style="text-align: center">
+          		$V'_n ($ <input type="text" id="input" value="10,10,1"> $) = $<div id="vn"></div>
+          		<br><br>
+          		<button class=".btn-primary" id="button">Compute</button>
+            </div>
+
+          	<script type="text/javascript">
+          		function vnGui() {
+          			var x = [];
+          			var str = $("#input").val();
+          			var split = str.split(",");
+
+          			for(var i = 0; i < split.length; i++) {
+          				x.push(parseFloat(split[i]));
+          			}
+
+          			var ans = VnLine(x);
+          			$("#vn").html(ans);
+          		}
+
+
+          		function VnLine(x) {
+          			if(x.length == 0) {
+          				return 1;
+          			}
+          			var ln = x.pop();
+          			return (ln + 1) * VnLine(x.slice()) + ln * Vn(x.slice()); 
+          		}
+
+          		function Vn(x) {
+          			if (x.length == 0) {
+          				return 1;
+          			}
+          			var ln = x.pop();
+          			return (ln + 1) * Vn(x.slice());
+          		}
+
+          		$("#button").click(function() { vnGui(); })
+          	</script>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+    </footer>
+  </body>
+
+
+</html>
