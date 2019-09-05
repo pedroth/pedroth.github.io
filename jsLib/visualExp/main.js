@@ -1,7 +1,5 @@
 const Sort = require("../Sort/main/Sort");
-const VisualExp = {};
-
-const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3;
+const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
 
 function date2int(date) {
   var dateStrs = date.split("/");
@@ -25,6 +23,16 @@ function isElement(o) {
         typeof o.nodeName === "string";
 }
 
+function createTagElement(tags) {
+  return tags.map(tag =>
+    ElementBuilder.of("a")
+      .attribute("class", "badge badge-light")
+      .attribute("href", `/?q=${tag}`)
+      .innerHtml(tag)
+      .build()
+  );
+}
+
 class ElementBuilder {
   constructor(element) {
     this.element = element;
@@ -35,21 +43,39 @@ class ElementBuilder {
     return this;
   }
 
+  append(element) {
+    if (element instanceof Array) {
+      element.forEach(x => this.element.appendChild(x));
+    } else {
+      this.element.appendChild(element);
+    }
+    return this;
+  }
+
+  innerHtml(value) {
+    console.log("Inner HTML", value, this);
+    this.element.innerHTML = value;
+    return this;
+  }
+
   build() {
     return this.element;
   }
 
-  static from(elem) {
+  /**
+   * @param {*} elem: string || element
+   */
+  static of(elem) {
     if (isElement(elem)) {
       return new ElementBuilder(elem);
     }
-    return document.createElement(document.createElement(elem));
+    return new ElementBuilder(document.createElement(elem));
   }
-
-  static fromElement;
 }
 
-VisualExp.ElementBuilder = elem => ElementBuilder.from(elem);
+const VisualExp = {};
+
+VisualExp.ElementBuilder = ElementBuilder;
 
 VisualExp.retrieveAndAppend = async function(url, htmlId) {
   console.log(`Reading from ${url}.. appending on ${htmlId}`);
@@ -73,17 +99,46 @@ VisualExp.sortDb = function(db) {
   );
 };
 
+/**
+ * @param data: {imageSrc: string, url: string, title: string, tags: array<string>}
+ */
 VisualExp.createCardFromData = function(data) {
-  const card = VisualExp.ElementBuilder.from("div")
+  console.log("Create Card From Data", data);
+  const card = VisualExp.ElementBuilder.of("div")
     .attribute("class", "card simplePaper")
-    .attribute("style", "width: 18rem");
-
-  const img = VisualExp.ElementBuilder.from("img")
-    .attribute("class", "card-img-top")
-    .attribute("src", data.imageSrc)
-    .attribute("href", data.url);
-
-  const cardBody = VisualExp.ElementBuilder.from("div").
+    .attribute("style", "width: 20rem")
+    .append(
+      VisualExp.ElementBuilder.of("a")
+        .attribute("href", data.url)
+        .append(
+          VisualExp.ElementBuilder.of("img")
+            .attribute("class", "card-img-top")
+            .attribute("src", data.imageSrc)
+            .attribute("href", data.url)
+            .attribute("alt", data.title)
+            .build()
+        )
+        .build()
+    )
+    .append(
+      VisualExp.ElementBuilder.of("div")
+        .attribute("class", "card-body")
+        .append(
+          VisualExp.ElementBuilder.of("a")
+            .attribute("href", data.url)
+            .append(
+              VisualExp.ElementBuilder.of("h3")
+                .attribute("class", "card-title title")
+                .innerHtml(data.title)
+                .build()
+            )
+            .build()
+        )
+        .append(createTagElement(data.tags))
+        .build()
+    )
+    .build();
+  return card;
 };
 
 VisualExp.retrieveAndAppend(

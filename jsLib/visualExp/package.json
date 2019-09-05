@@ -4,7 +4,8 @@
   "main": "index.js",
   "description": "Visual Experiments utils",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "clean": "rm -rf node_modules"
   },
   "keywords": [],
   "author": "Pedroth",

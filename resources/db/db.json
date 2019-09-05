@@ -38,13 +38,7 @@
       "title": "Projection and Dot product",
       "date": "05/06/2018",
       "src": "blog/ProjectionDotProduct",
-      "tags": [
-        "blog",
-        "mathematics",
-        "linear algebra",
-        "geometry",
-        "vectors"
-      ]
+      "tags": ["blog", "mathematics", "linear algebra", "geometry", "vectors"]
     },
     {
       "id": "TaylorPolynomial",
@@ -158,7 +152,7 @@
     },
     {
       "id": "CellularAutomaton",
-      "title": "Cellular Automatons",
+      "title": "Cellular Automaton",
       "date": "1/01/2014",
       "src": "experiments/CellularAutomaton",
       "tags": [
@@ -167,7 +161,7 @@
         "simulation",
         "mathematics",
         "computer science",
-        "cellular automatons"
+        "cellular automaton"
       ]
     },
     {
