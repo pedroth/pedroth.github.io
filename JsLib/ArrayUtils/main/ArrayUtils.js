@@ -39,6 +39,22 @@ ArrayUtils.permute = function(array, permutation) {
 };
 
 /**
+ * Fisher-Yates shuffle algorithm
+ */
+ArrayUtils.randomPermute = function(array) {
+  const ans = [...array];
+  for (let i = array.length - 1; i > 0; i--) {
+    // random number between 0 and i
+    const r = Math.floor(Math.random() * (i + 1));
+    //swap in place
+    const temp = ans[i];
+    ans[i] = ans[r];
+    ans[r] = temp;
+  }
+  return ans;
+};
+
+/**
  * return swap array indexes
  */
 ArrayUtils.swap = function(array, i, j) {

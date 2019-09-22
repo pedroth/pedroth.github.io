@@ -1,4 +1,5 @@
 const Sort = require("../Sort/main/Sort");
+const ArrayUtils = require("../ArrayUtils/main/ArrayUtils");
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
 
 function date2int(date) {
@@ -95,24 +96,27 @@ VisualExp.readDb = async function() {
 VisualExp.sortDb = function(db) {
   return Sort.quicksort(
     db.experiments,
-    (a, b) => date2int(a.date) - date2int(b.date) > 0
+    (a, b) => date2int(a.date) - date2int(b.date) < 0
   );
 };
 
+VisualExp.randomDb = function(db) {
+  return ArrayUtils.randomPermute(db.experiments);
+};
+
 /**
- * @param data: {imageSrc: string, url: string, title: string, tags: array<string>}
+ * @param data: {imageSrc: string, url: string, title: string, tags: array<string>, date: string}
  */
 VisualExp.createCardFromData = function(data) {
   console.log("Create Card From Data", data);
   const card = VisualExp.ElementBuilder.of("div")
     .attribute("class", "card simplePaper")
-    .attribute("style", "width: 20rem")
     .append(
       VisualExp.ElementBuilder.of("a")
         .attribute("href", data.url)
         .append(
           VisualExp.ElementBuilder.of("img")
-            .attribute("class", "card-img-top")
+            .attribute("class", "card-img-top card-plugin")
             .attribute("src", data.imageSrc)
             .attribute("href", data.url)
             .attribute("alt", data.title)
@@ -134,7 +138,17 @@ VisualExp.createCardFromData = function(data) {
             )
             .build()
         )
-        .append(createTagElement(data.tags))
+        .append(
+          VisualExp.ElementBuilder.of("div")
+            .append(createTagElement(data.tags))
+            .build()
+        )
+        .append(
+          VisualExp.ElementBuilder.of("p")
+            .attribute("class", "border-top")
+            .innerHtml(data.date)
+            .build()
+        )
         .build()
     )
     .build();

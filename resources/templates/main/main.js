@@ -1,29 +1,44 @@
-function generateRecent(db) {
-  const sortedDb = VisualExp.sortDb(db);
-  console.log("GENERATE RECENT", sortedDb);
-  sortedDb.map(x => {
-    document.getElementById("recent").appendChild(
-      VisualExp.ElementBuilder.of("div")
-        .attribute("class", "row")
-        .append(
-          VisualExp.ElementBuilder.of("div")
-            .attribute("class", "col")
-            .append(
-              VisualExp.createCardFromData({
-                imageSrc: x.src + `/${x.id}.gif`,
-                url: `/?p=${x.id}`,
-                title: x.title,
-                tags: x.tags
-              })
-            )
-            .build()
-        )
-        .build()
-    );
-  });
+function getCardsInRow(arrayOfCards, colPerRows) {
+  const row = VisualExp.ElementBuilder.of("div").attribute("class", "row");
+  for (let i = 0; i < colPerRows; i++) {
+    const card = arrayOfCards[i];
+    const col = VisualExp.ElementBuilder.of("div")
+      .attribute("class", "col-lg-4 col-sm-12")
+      .attribute("style", "margin-top:10px; margin-bottom: 10px;")
+      .append(
+        VisualExp.createCardFromData({
+          imageSrc: card.src + `/${card.id}.gif`,
+          url: `/?p=${card.src}`,
+          title: card.title,
+          tags: card.tags,
+          date: card.date
+        })
+      )
+      .build();
+    row.append(col);
+  }
+  return row.build();
 }
 
-function generateRandom(db) {}
+/**
+ *
+ * @param {*} db: Database
+ * @param {*} k: Elements per row
+ */
+function generateRecent(db, k = 3) {
+  const sortedDb = VisualExp.sortDb(db);
+  document.getElementById("recent").appendChild(getCardsInRow(sortedDb, k));
+}
+
+/**
+ *
+ * @param {*} db: Database
+ * @param {*} k: Elements per row
+ */
+function generateRandom(db, k = 3) {
+  const randomDb = VisualExp.randomDb(db);
+  document.getElementById("random").appendChild(getCardsInRow(randomDb, k));
+}
 
 async function generateMainPage() {
   const db = await VisualExp.readDb();

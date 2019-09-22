@@ -14,6 +14,11 @@ body {
   border-bottom: 1px solid whitesmoke;
 }
 
+.border-top {
+  margin-top: 1vh;
+  border-top: 1px solid whitesmoke;
+}
+
 .searchClass {
   visibility: visible;
   width: 60%;
@@ -56,6 +61,10 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
+
+.card-plugin {
+  height: 30vh;
 }
 
 #navBar {

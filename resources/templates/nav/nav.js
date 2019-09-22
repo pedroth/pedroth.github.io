@@ -1,6 +1,10 @@
 console.log("Hello from nav!!");
 
-VisualExp.retrieveAndAppend(
-  "resources/templates/main/main.html",
-  "navContainer"
-);
+function navMain() {
+  VisualExp.retrieveAndAppend(
+    "resources/templates/main/main.html",
+    "navContainer"
+  );
+}
+
+navMain();

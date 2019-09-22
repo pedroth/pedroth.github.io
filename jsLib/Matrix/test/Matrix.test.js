@@ -1,4 +1,3 @@
-var UnitTest = require("../../UnitTest/main/UnitTest.js");
 var ArrayUtils = require("../../ArrayUtils/main/ArrayUtils.js");
 var Matrix = require("../main/Matrix.js");
 
