@@ -31,9 +31,9 @@ class DomBuilder {
    */
   static of(elem) {
     if (isElement(elem)) {
-      return new ElementBuilder(elem);
+      return new DomBuilder(elem);
     }
-    return new ElementBuilder(document.createElement(elem));
+    return new DomBuilder(document.createElement(elem));
   }
 }
 
@@ -48,4 +48,4 @@ function isElement(o) {
         typeof o.nodeName === "string";
 }
 
-module.exports.default = DomBuilder;
+module.exports = DomBuilder;

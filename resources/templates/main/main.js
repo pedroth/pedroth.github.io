@@ -1,10 +1,10 @@
 function getCardsInRow(arrayOfCards, colPerRows) {
-  const row = VisualExp.ElementBuilder.of("div").attribute("class", "row");
+  const row = VisualExp.DomBuilder.of("div").attr("class", "row");
   for (let i = 0; i < colPerRows; i++) {
     const card = arrayOfCards[i];
-    const col = VisualExp.ElementBuilder.of("div")
-      .attribute("class", "col-lg-4 col-sm-12")
-      .attribute("style", "margin-top:10px; margin-bottom: 10px;")
+    const col = VisualExp.DomBuilder.of("div")
+      .attr("class", "col-lg-4 col-sm-12")
+      .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
         VisualExp.createCardFromData({
           imageSrc: card.src + `/${card.id}.gif`,
