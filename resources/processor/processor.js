@@ -16,7 +16,7 @@ function readJson(src) {
 }
 
 function readJarsConfig() {
-  const jarSrcCfg = "../buildingJars/config.json";
+  const jarSrcCfg = "./java/config.json";
   return readJson(jarSrcCfg);
 }
 
@@ -31,7 +31,7 @@ function copyFile(srcPath, destPath) {
 }
 
 function createReadMe(jarName, appName) {
-  let readMe = fs.readFileSync(`../buildingJars/README.txt`, {
+  let readMe = fs.readFileSync(`./java/README.txt`, {
     encoding: "utf-8"
   });
   readMe = replaceAll(readMe, "<jar>", jarName);
@@ -40,7 +40,7 @@ function createReadMe(jarName, appName) {
 }
 
 function createRunBat(jarName, appName) {
-  let runBat = fs.readFileSync(`../buildingJars/run.bat`, {
+  let runBat = fs.readFileSync(`./java/run.bat`, {
     encoding: "utf-8"
   });
   runBat = replaceAll(runBat, "<jar>", jarName);
@@ -86,7 +86,7 @@ function processJars() {
     fs.writeFileSync(tmpFolder + `/README.md`, readMe);
     fs.writeFileSync(tmpFolder + `/run.bat`, runBat);
     fs.writeFileSync(tmpFolder + `/run.sh`, runBat);
-    copyFile(`../buildingJars/jars/${jar.from}`, tmpFolder + `/${newJarName}`);
+    copyFile(`./java/${jar.from}`, tmpFolder + `/${newJarName}`);
 
     console.log("ziping folder", tmpFolder, zipPath);
     zipIt(tmpFolder, zipPath, () => {
