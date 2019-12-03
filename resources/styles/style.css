@@ -12,6 +12,17 @@ body {
   width: 100vw;
 }
 
+@media (min-width: 992px) {
+  /* For desktop: */
+  .align {
+    align-items: center;
+  }
+}
+
+.align {
+  align-items: left;
+}
+
 .searchClass {
   visibility: visible;
   opacity: 0.5;
