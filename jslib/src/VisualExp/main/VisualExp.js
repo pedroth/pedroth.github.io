@@ -2,27 +2,6 @@ const { Sort, ArrayUtils } = require("nabla.js");
 const DomBuilder = require("../../DomBuilder/main/DomBuilder");
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
 
-function date2int(date) {
-  var dateStrs = date.split("/");
-  var acm = 0;
-  var ide = 1;
-  for (var j = 0; j < dateStrs.length; j++) {
-    acm += parseFloat(dateStrs[j]) * ide;
-    ide *= 100;
-  }
-  return acm;
-}
-
-function createTagElement(tags) {
-  return tags.map(tag =>
-    DomBuilder.of("a")
-      .attr("class", "badge badge-light")
-      .attr("href", `/?q=${tag}`)
-      .inner(tag)
-      .build()
-  );
-}
-
 const VisualExp = {};
 
 VisualExp.DomBuilder = DomBuilder;
@@ -109,9 +88,33 @@ VisualExp.createCardFromData = function(data) {
   return card;
 };
 
+// Util functions
+function date2int(date) {
+  var dateStrs = date.split("/");
+  var acm = 0;
+  var ide = 1;
+  for (var j = 0; j < dateStrs.length; j++) {
+    acm += parseFloat(dateStrs[j]) * ide;
+    ide *= 100;
+  }
+  return acm;
+}
+
+function createTagElement(tags) {
+  return tags.map(tag =>
+    DomBuilder.of("a")
+      .attr("class", "badge badge-light")
+      .attr("href", `/?q=${tag}`)
+      .inner(tag)
+      .build()
+  );
+}
+
+// MAIN
 VisualExp.retrieveAndAppend(
   "resources/templates/nav/nav.html",
   "indexContainer"
 );
 
+// exports
 module.exports = VisualExp;
