@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: path.resolve("./"),
     filename: "index.js",
-    library: "VisualExp"
+    library: "VisualExp",
+    libraryTarget: "umd"
   }
 };

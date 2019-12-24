@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MathJax TeX Test Page</title>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [
+            ["$", "$"],
+            ["\\(", "\\)"]
+          ],
+          displayMath: [
+            ["$$", "$$"],
+            ["\\[", "\\]"]
+          ],
+          processEscapes: true
+        },
+        options: {
+          ignoreHtmlClass: "tex2jax_ignore",
+          processHtmlClass: "tex2jax_process"
+        }
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+      id="MathJax-script"
+    ></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-auto col-md-auto mx-auto">
+            <div class="post-heading">
+              <h1>Projection and Dot product</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <article>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-auto col-md-auto mx-auto">
+            <h2>Intro</h2>
+            In this post, we will talk about vectors, and in particular about a
+            special operation which is called the projection operation. As
+            usual, we will discover the projection as a problem. I assume that
+            you already know about what vectors and matrices are. Also, all
+            vectors here belong to $\mathbb{R}^n$ for $n > 0$. All vectors are
+            in the canonical basis of the identity matrix, that is vectors are
+            of the form $\mathbf{u} = \sum_{i=1}^n u_i \mathbf{e}_i$, where if
+            we stack $\mathbf{e}_i$ as the columns of a matrix we would get the
+            identity matrix. Some notation: vectors are bold symbols
+            $\mathbf{u}$ and its coordinates are $u_i$. We will talk of vectors
+            in $n$ dimensions, because all the operations we will use are
+            indifferent to its dimension, however, we can always imagine that
+            vectors belong to $n=2,3$ and then generalize to $n$ dimensions.
+
+            <h2>The Problem</h2>
+            <br />
+            <br />
+            <div style="text-align: center;">
+              <img
+                border="0"
+                src="blog/ProjectionDotProduct/vectorProj.png"
+                height="400"
+                width="600"
+              />
+              <p>Fig.1 The Problem</p>
+            </div>
+            <br />
+            <br />
+
+            Let $\mathbf{u} \in \mathbb{R}^{n}$ and $\mathbf{v} \in
+            \mathbb{R}^{n}$ we want to find
+            $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$, as Fig.1 suggests. The first
+            thing we can tell about $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$ is
+            that, it is in the same direction has $\mathbf{v}$ but has a
+            different length. This means that:
+            $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} =
+            |\mathbf{proj}_{\mathbf{v}}\mathbf{u}| \hat{\mathbf{v}}\;\;\;\;(1)$$
+            Where $\hat{\mathbf{v}}$ is the unit vector in the direction of
+            $\mathbf{v}$. In order to compute $\hat{\mathbf{v}}$, we must notice
+            the following property: $$|\alpha \mathbf{v}| = |\alpha|
+            |\mathbf{v}|$$
+
+            <button
+              class="btn btn-primary"
+              onclick='$("#proof_1").slideToggle()'
+            >
+              <h4>Proof</h4>
+            </button>
+            <div id="proof_1" style="display:none">
+              In the euclidean space the vector distance is given by the
+              n-dimensional pythagoras theorem: $$|\mathbf{v}| =
+              \sqrt{\sum_{i=0}^n v_i^2}$$ Then: $$|\alpha \mathbf{v}| =
+              \sqrt{\sum_{i=0}^n (\alpha v_i)^2 } = \sqrt{\sum_{i=0}^n \alpha^2
+              v_i^2} = \sqrt{\alpha^2 \sum_{i=0}^n v_i^2} = |\alpha|
+              \sqrt{\sum_{i=0}^n v_i^2} = |\alpha| |\mathbf{v}|$$
+            </div>
+            <br />
+
+            Using this property it is easy to compute $\hat{\mathbf{v}}$, just
+            solve for $\alpha$. What is the $\alpha$ such that $|\alpha
+            \mathbf{v}| = 1$: $$|\alpha \mathbf{v}| = 1$$ $$|\alpha| =
+            \frac{1}{|\mathbf{v}|}$$ Hence: $$\hat{\mathbf{v}}=
+            \frac{\mathbf{v}}{|\mathbf{v}|}$$ Before we proceed I will introduce
+            the dot product operation, that is a very useful operation. At first
+            it seems that it is just syntactic sugar to reduce the length of
+            calculations, but actually, its properties and geometric
+            interpretations will provide an amazing tool for many problems and
+            proofs.
+
+            <h3>Definition 1 : Dot product</h3>
+            $$ \mathbf{u}\cdot \mathbf{v} = \left < \mathbf{u},\mathbf{v} \right
+            > = \sum_{i=1}^{n} u_i v_i$$ I will use $\left < \cdot, \cdot \right
+            >$ and the dot $ \cdot $ interchangeably, but they are two different
+            ways of writing the dot product. It is easy to show that is a linear
+            operation (you can do it as an exercise): $$\text{1) } \left <
+            \mathbf{u} + \mathbf{v} , \mathbf{w} \right > = \left < \mathbf{u},
+            \mathbf{w} \right > + \left < \mathbf{v}, \mathbf{w}\right >$$
+            $$\text{2) } \left < r \mathbf{u} , \mathbf{w} \right > = r \left <
+            \mathbf{u}, \mathbf{w} \right > ,\;\; r \in \mathbb{R}$$
+
+            <button
+              class="btn btn-primary"
+              onclick='$("#solution_1").slideToggle()'
+            >
+              <h4>Solution</h4>
+            </button>
+            <div id="solution_1" style="display:none">
+              $$\text{1) } \left < \mathbf{u} + \mathbf{v} , \mathbf{w} \right >
+              =\sum_{i=1}^n (u_i + v_i)w_i =\sum_{i=1}^n u_iw_i + v_iw_i =
+              \sum_{i=1}^n u_iw_i + \sum_{i=1}^nv_iw_i $$ $$\text{1) } \left <
+              \mathbf{u} + \mathbf{v} , \mathbf{w} \right > = \left <
+              \mathbf{u},\mathbf{w}\right> + \left <
+              \mathbf{v},\mathbf{w}\right>$$ and $$\text{2) } \left <
+              r\mathbf{u} , \mathbf{w} \right > = \sum_{i=1}^nru_iw_i = r
+              \sum_{i=1}^nu_iw_i = r \left < \mathbf{u} , \mathbf{w} \right >$$
+            </div>
+            <br /><br />
+
+            Other nice property is that $\left < \mathbf{u} , \mathbf{u}\right>
+            = \sum_{i=1}^n u_i^2 = |\mathbf{u}|^2$. With that in mind its is
+            simple to see with some trigonometry that : $$\cos (\theta) =
+            \frac{|\mathbf{proj}_{\mathbf{v}}\mathbf{u}|}{|\mathbf{u}|}$$
+            $$\Leftrightarrow |\mathbf{u}|\cos (\theta) =
+            |\mathbf{proj}_{\mathbf{v}}\mathbf{u}| \;\;\;\;(2)$$ Now
+            substituting (2) in (1) we get :
+            $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} = |\mathbf{u}|\cos
+            (\theta)\frac{\mathbf{v}}{|\mathbf{v}|} \;\;\;\;(3)$$
+
+            <br />
+            <br />
+            <div style="text-align: center;">
+              <img
+                border="0"
+                src="blog/ProjectionDotProduct/vectorTriangle.png"
+                height="400"
+                width="600"
+              />
+              <p>Fig.2 Vector triangle</p>
+            </div>
+            <br />
+            <br />
+
+            Using Fig.2 and the
+            <a
+              href="http://en.wikipedia.org/wiki/Law_of_cosines"
+              target="_blank"
+              >Law of Cosines</a
+            >
+            we get : $$|\mathbf{v} - \mathbf{u}|^{2} = |\mathbf{u}|^{2} +
+            |\mathbf{v}|^{2} - 2|\mathbf{u}||\mathbf{v}|\cos(\theta)$$
+            $$\Leftrightarrow\cos(\theta) = \frac{|\mathbf{u}|^{2} +
+            |\mathbf{v}|^{2} - |\mathbf{v} - \mathbf{u}|^{2}}{
+            2|\mathbf{u}||\mathbf{v}|}$$ Then we need to simplify
+            $|\mathbf{u}|^{2} + |\mathbf{v}|^{2} - |\mathbf{v} -
+            \mathbf{u}|^{2}$: $$|\mathbf{u}|^2 + |\mathbf{v}|^2 - |\mathbf{v} -
+            \mathbf{u}|^2 = |\mathbf{u}|^2 + |\mathbf{v}|^2 - \left
+            <\mathbf{u-v, u-v} \right>$$ $$|\mathbf{u}|^2 + |\mathbf{v}|^2 -
+            \left <\mathbf{u-v, u-v} \right> = |\mathbf{u}|^2 + |\mathbf{v}|^2 -
+            \left ( \left<\mathbf{u,u} \right> - 2 \left< \mathbf{u,v}\right > +
+            \left < \mathbf{v,v}\right >\right )$$ $$|\mathbf{u}|^2 +
+            |\mathbf{v}|^2 - \left ( \left<\mathbf{u,u} \right> - 2 \left<
+            \mathbf{u,v}\right > + \left < \mathbf{v,v}\right >\right ) = 2
+            \left< \mathbf{u,v}\right >$$ Hence we get: $$\cos(\theta) =
+            \frac{\mathbf{u}\cdot\mathbf{v}}{ |\mathbf{u}||\mathbf{v}|} \;\;\;\;
+            (4)$$ Substituting (4) in (3) we get:
+            $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} = \frac{\mathbf{u}\cdot
+            \mathbf{v}}{|\mathbf{v}|^{2}}\mathbf{v}\;\;\;\;(5)$$ Nice! Now we
+            have a formula for the $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$, but I
+            find that this derivation was too difficult and that we are missing
+            something fundamental on this problem. What is really
+            $\mathbf{proj}_{\mathbf{v}}\mathbf{u}$? if we think well you will
+            see that the fundamental problem you are trying to solve is the
+            problem of finding a multiple of $\mathbf{v}$ that best approximates
+            $\mathbf{u}$! So we want to find :
+            $$\underset{\mathbf{\gamma}}{\operatorname{argmin}}|\mathbf{u} -
+            \gamma \mathbf{v}|^{2}$$ But this is simple to solve (check
+            <a href="/blog/IntuitionOfCalculus/IntuitionOfCalculus.html">
+              Intuition of Calculus </a
+            >), just solve for $\gamma$ in the following equation: $$\frac{d}{d
+            \gamma}\left (|\mathbf{u} - \gamma\mathbf{v}|^{2} \right) = 0
+            \;\;\;\;(6)$$ $$\Leftrightarrow \frac{d}{d \gamma}\left( \left<
+            \mathbf{u} - \gamma \mathbf{v}, \mathbf{u} - \gamma
+            \mathbf{v}\right>\right ) = 0$$ $$\Leftrightarrow \frac{d}{d
+            \gamma}\left( |\mathbf{u}|^2 - 2 \gamma \left<\mathbf{v}, \mathbf{u}
+            \right > + \gamma^2 |\mathbf{v}|^2\right ) = 0$$ $$\Leftrightarrow
+            -2\left<\mathbf{v}, \mathbf{u} \right > + 2\gamma |\mathbf{v}|^2 =
+            0$$ $$\Leftrightarrow \gamma = \frac{\left < \mathbf{u},
+            \mathbf{v}\right>}{|\mathbf{v}|^2 }$$ I think this is the best way
+            to derive projection formula, since it is easier to generalize to
+            other mathematical objects (functions, complex vectors, ...) . Let
+            us generalize this to functions(with domain $\mathbb{R}$ and image
+            $\mathbb{R}$), for instance to compute $\mathbf{proj}_{g}f$ you just
+            need to find $\gamma$ such that when multiplied by $g$ gives the
+            best approximation of $f$. More formally: Let
+            $f,g:[a,b]\rightarrow\mathbb{R}$ we want to solve:
+            $$\underset{\mathbf{\gamma}}{\operatorname{argmin}}\int_{a}^{b}(f(x)
+            - \gamma g(x))^2 dx\;\;\;\; (7)$$ To find $\gamma$ we proceed as
+            before: $$\frac{d }{d\gamma}\left ( \int_{a}^{b}(f(x) - \gamma
+            g(x))^2 dx\right ) = 0$$ $$\Leftrightarrow \int_{a}^{b}\frac{d
+            }{d\gamma}\left ((f(x) - \gamma g(x))^2\right ) dx = 0$$
+            $$\Leftrightarrow \int_{a}^{b}\frac{d }{d\gamma}\left (f(x)^2 -
+            2\gamma f(x)g(x) + \gamma ^2 g(x)^2 \right ) dx = 0$$
+            $$\Leftrightarrow \int_{a}^{b}- 2f(x)g(x) + 2\gamma g(x)^2 dx = 0$$
+            $$\Leftrightarrow -2\int_{a}^{b} f(x)g(x)dx + 2\gamma\int_{a}^{b}
+            g(x)^2dx = 0$$ $$\Leftrightarrow \gamma =
+            \frac{\int_{a}^{b}f(x)g(x)dx}{\int_{a}^{b} g(x)^2 dx}\;\;\;\;(8)$$
+            You can check that formula (5) and (8) are very similar, this
+            similarity gives me the urge to define a dot product for functions
+            as $\left < f,g \right > = \int_{a}^{b} f(x) g(x) dx$, thus the
+            projection of functions or vectors can be defined as:
+            $$\mathbf{proj}_{\mathbf{v}}\mathbf{u} = \frac{\left
+            <\mathbf{u},\mathbf{v}\right>}{\left < \mathbf{v},\mathbf{v}
+            \right>} \mathbf{v}$$ $$\mathbf{proj}_{g}f = \frac{\left < f,g
+            \right >}{\left< g,g \right >} g$$ This make us think that functions
+            maybe thought as infinite dimensional vectors, where its coordinates
+            are indexed by $x$.<br />
+            One more thing , note that when $|\mathbf{v}|^2 = 1$, $\mathbf{v}$
+            is a unit vector then $\mathbf{proj}_{\mathbf{v}}\mathbf{u} = \left
+            < \mathbf{u},\mathbf{v} \right> \mathbf{v}$ , in functions if $
+            \left< g, g \right> = 1$, this means that $g^2$ is a
+            <a
+              href="http://en.wikipedia.org/wiki/Probability_density_function"
+              target="_blank"
+              >probability density function</a
+            >, then projection of $f$ in $g$ is $\mathbf{proj}_{g}f = \left < f,
+            g \right > g$. Now we finish this post by checking some nice
+            properties of the dot product/inner product.
+
+            <h2>Dot product cheat sheet</h2>
+
+            <h4>Lemma 1</h4>
+            The dot product is commutative: $$\left < \mathbf{u},
+            \mathbf{v}\right > = \left < \mathbf{v}, \mathbf{u}\right >$$
+            <button
+              class="btn btn-primary"
+              onclick='$("#proof_2").slideToggle()'
+            >
+              <h4>Proof</h4>
+            </button>
+            <div id="proof_2" style="display:none">
+              $$\left < \mathbf{u}, \mathbf{v}\right > = \sum_{i=1}^n u_iv_i =
+              \sum_{i=1}^n v_iu_i = \left < \mathbf{v}, \mathbf{u}\right >$$
+            </div>
+            <br />
+
+            <h4>Lemma 2</h4>
+            Let $M \in \mathbb{R}^{n\times n}$: $$\left < \mathbf{u},
+            M\mathbf{v}\right > = \left < M^T \mathbf{u}, \mathbf{v}\right > $$
+            <button
+              class="btn btn-primary"
+              onclick='$("#proof_3").slideToggle()'
+            >
+              <h4>Proof</h4>
+            </button>
+            <div id="proof_3" style="display:none">
+              In matrix form a dot product can be seen as a matrix product:
+              $$\left < \mathbf{u}, \mathbf{v}\right > = \mathbf{u}^T
+              \mathbf{v}$$ Using the commutative property, $$\left < \mathbf{u},
+              M\mathbf{v}\right > = \left < M\mathbf{v}, \mathbf{u}\right > =
+              (M\mathbf{v})^T \mathbf{u} = \mathbf{v}^T M^T \mathbf{u} = \left<
+              \mathbf{v}, M^T\mathbf{u}\right > = \left < M^T \mathbf{u},
+              \mathbf{v}\right > $$
+            </div>
+            <br />
+
+            <h2>Conclusion</h2>
+
+            Here we studied the projection and dot/inner product operator by
+            deriving it using a geometric argument and an optimization argument.
+            We also viewed functions as an infinite dimensional space, and
+            proved a few fundamental dot/inner product properties.
+
+            <br /><br />
+          </div>
+        </div>
+      </div>
+    </article>
+  </body>
+</html>
