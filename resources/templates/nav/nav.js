@@ -35,6 +35,9 @@ function selectPage(url) {
 function navMain() {
   const url = window.location.href;
   selectPage(url);
+  // render equations
+  console.log("Rendering equations");
+  setTimeout(() => MathJax.typeset(), 100);
 }
 
 navMain();
