@@ -10,6 +10,8 @@ body {
   font-size: 1.25rem;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 a {
@@ -72,11 +74,20 @@ a {
   flex-direction: column;
 }
 
-.card-plugin {
-  height: 30vh;
+.fullHeight {
+  height: 100%;
 }
 
-@media (min-width: 992px) {
+.card-plugin {
+  height: 37vh;
+}
+
+#disqus_thread {
+  margin: 15px;
+  padding: 15px;
+}
+
+@media (min-width: 647px) {
   /* For desktop: */
   .align {
     align-items: center;

@@ -395,6 +395,29 @@
         "simple",
         "pooling"
       ]
+    },
+    {
+      "id": "3DRoute",
+      "title": "3DRoute",
+      "date": "01/05/2017",
+      "src": "experiments/3DRoute",
+      "tags": [
+        "experiments",
+        "js",
+        "3d graphics",
+        "sensors",
+        "mobile",
+        "mathematics",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "test",
+      "title": "Test",
+      "date": "07/01/2020",
+      "src": "blog/test",
+      "tags": ["blog"]
     }
   ]
 }

@@ -3,7 +3,7 @@ function getCardsInRow(arrayOfCards, colPerRows) {
   for (let i = 0; i < colPerRows; i++) {
     const card = arrayOfCards[i];
     const col = VisualExp.DomBuilder.of("div")
-      .attr("class", "col-lg-4 col-sm-12")
+      .attr("class", "col-lg-4 col-md-6 col-sm-12")
       .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
         VisualExp.createCardFromData({

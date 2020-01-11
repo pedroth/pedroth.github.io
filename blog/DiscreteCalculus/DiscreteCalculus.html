@@ -263,10 +263,14 @@
                 little program that computes $\Psi$ using their three definitions, $\Psi_{\text{sum}}$,
                 $\Psi_{\text{recursive}}$ and $\Psi_{\text{closed}}$. If they are equal then we didn't make a mistake (probably :D)
 
-                <br><br>$n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0"
+                <br><br>
+                
+                $n = $ <input type="number" min="0" id="nPsi" value="10">, $k = $ <input type="number" min="0"
                                                                                                  id="kPsi" value="3">
                 <button class="btn btn-primary" onclick='app.showTable()'>Compute</button>
                 <div id="psiComputeTable" style="display:none"></div>
+
+                
                 <br><br>
 
                 From (4) and $\Psi$ we get the discrete Taylor series:
@@ -306,11 +310,10 @@
 
                 <button class="btn btn-primary" onclick='$("#proof_2").slideToggle()'><h4>Proof of property</h4>
                 </button>
-                <div id="proof_2" style="display:none"><br><br>
-
-                    To prove that $\Psi(n, k) = 0, k > n$, we will use the technique called <a target="_blank"
-                                                                                               href="https://en.wikipedia.org/wiki/Mathematical_induction">proof
-                        by induction</a>.<br><br>
+                <div id="proof_2" style="display:none">
+                    <br><br>
+                    To prove that $\Psi(n, k) = 0, k > n$, we will use the technique called <a target="_blank" href="https://en.wikipedia.org/wiki/Mathematical_induction">proof by induction</a>.
+                    <br><br>
 
                     In order to use induction, I will transform the problem to an equivalent one:
 
@@ -330,11 +333,13 @@
                     $$\Psi(n + 1, n + \varepsilon + 1) = \Psi(n, n + \eta)$$
 
                     We know by our hypothesis that $\Psi(n, n + \eta) = 0$, therefore $\Psi(n + 1, n + \varepsilon + 1)
-                    = 0$.<br><br>
+                    = 0$.
+                    <br><br>
 
                     This finishes our proof. We can also check that this true by constructing $\Psi$ using a table.
 
-                    <br><br>$n = $ <input type="number" min="0" id="nPsi2" value="10">, $k = $ <input type="number"
+                    <br><br>
+                    $n = $ <input type="number" min="0" id="nPsi2" value="10">, $k = $ <input type="number"
                                                                                                       min="0" id="kPsi2"
                                                                                                       value="11">
                     <button class="btn btn-primary" onclick='app.showTable2()'>Compute</button>
@@ -342,7 +347,6 @@
                     </div>
                 </div>
                 <br><br>
-
                 <h2> Series Error </h2>
 
                 The error of the series is $R_N(n) = \left |f(n) - \sum_{k=0}^N \Delta^k f(0) \Psi(n,k) \right|$, $N < n$. Following the same idea as the <a href="http://pedroth.github.io/visualExperiments/Blog/TaylorPolynomial/TaylorPolynomial.html" target="_blank">Taylor polynomial</a>, we get:
