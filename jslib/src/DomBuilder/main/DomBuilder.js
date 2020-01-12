@@ -35,6 +35,10 @@ class DomBuilder {
     }
     return new DomBuilder(document.createElement(elem));
   }
+
+  static ofId(id) {
+    return new DomBuilder(document.getElementById(id));
+  }
 }
 
 //Returns true if it is a DOM element

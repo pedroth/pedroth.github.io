@@ -2,6 +2,12 @@ const { Sort, ArrayUtils } = require("nabla.js");
 const DomBuilder = require("../../DomBuilder/main/DomBuilder");
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
 
+//========================================================================================
+/*                                                                                      *
+ *                                    VisualExp class                                   *
+ *                                                                                      */
+//========================================================================================
+
 const VisualExp = {};
 
 VisualExp.DomBuilder = DomBuilder;
@@ -73,7 +79,7 @@ VisualExp.createCardFromData = function(data) {
         )
         .append(
           DomBuilder.of("div")
-            .append(createTagElement(data.tags))
+            .append(VisualExp.createTagElement(data.tags))
             .build()
         )
         .append(
@@ -88,7 +94,22 @@ VisualExp.createCardFromData = function(data) {
   return card;
 };
 
-// Util functions
+VisualExp.createTagElement = function(tags) {
+  return tags.map(tag =>
+    DomBuilder.of("a")
+      .attr("class", "badge badge-light")
+      .attr("href", `/?q=${tag}`)
+      .inner(tag)
+      .build()
+  );
+};
+
+//========================================================================================
+/*                                                                                      *
+ *                                   Util functions                                     *
+ *                                                                                      */
+//========================================================================================
+
 function date2int(date) {
   var dateStrs = date.split("/");
   var acm = 0;
@@ -100,17 +121,12 @@ function date2int(date) {
   return acm;
 }
 
-function createTagElement(tags) {
-  return tags.map(tag =>
-    DomBuilder.of("a")
-      .attr("class", "badge badge-light")
-      .attr("href", `/?q=${tag}`)
-      .inner(tag)
-      .build()
-  );
-}
+//========================================================================================
+/*                                                                                      *
+ *                                         MAIN                                         *
+ *                                                                                      */
+//========================================================================================
 
-// MAIN
 VisualExp.retrieveAndAppend(
   "resources/templates/nav/nav.html",
   "indexContainer"

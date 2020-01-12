@@ -1,1 +1,13 @@
-<h1>Tags</h1>
+<div class="container">
+  <h1>Tags</h1>
+  <div id="tags"></div>
+</div>
+<script>
+  (async () => {
+    const db = await VisualExp.readDb();
+    // const tags = db.experiments.reduce((e,exp) => {
+    //   exp.tags
+    // }, {});
+    console.log("DB", db);
+  })();
+</script>

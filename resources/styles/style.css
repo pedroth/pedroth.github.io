@@ -66,6 +66,7 @@ a {
 
 .simplePaper {
   background-color: #424242;
+  border-radius: 0.25rem;
 }
 
 .flexContainer {
@@ -80,6 +81,11 @@ a {
 
 .card-plugin {
   height: 37vh;
+  max-height: 400px;
+}
+
+.underLine {
+  border-bottom: 1px solid;
 }
 
 #disqus_thread {
@@ -87,7 +93,7 @@ a {
   padding: 15px;
 }
 
-@media (min-width: 647px) {
+@media (min-width: 900px) {
   /* For desktop: */
   .align {
     align-items: center;
