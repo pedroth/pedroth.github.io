@@ -8,6 +8,6 @@ function getApp(url) {
     slashSplit.length > 1
       ? `${secondSplit[1]}/${filename}`
       : `resources/templates/${filename}`;
-  VisualExp.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
+  Pedroth.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
 }
 getApp(window.location.href);

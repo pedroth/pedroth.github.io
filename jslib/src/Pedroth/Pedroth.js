@@ -1,18 +1,18 @@
 const { Sort, ArrayUtils } = require("nabla.js");
-const DomBuilder = require("../../DomBuilder/main/DomBuilder");
+const DomBuilder = require("../DomBuilder/main/DomBuilder");
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
 
 //========================================================================================
 /*                                                                                      *
- *                                    VisualExp class                                   *
+ *                                    Pedroth class                                   *
  *                                                                                      */
 //========================================================================================
 
-const VisualExp = {};
+const Pedroth = {
+  DomBuilder
+};
 
-VisualExp.DomBuilder = DomBuilder;
-
-VisualExp.retrieveAndAppend = async function(url, htmlId) {
+Pedroth.retrieveAndAppend = async function(url, htmlId) {
   console.log(`Reading from ${url}.. appending on ${htmlId}`);
   const html = await fetch(url).then(x => x.text());
   $(`#${htmlId}`).html(html);
@@ -23,7 +23,7 @@ VisualExp.retrieveAndAppend = async function(url, htmlId) {
    */
 };
 
-VisualExp.readDb = async function() {
+Pedroth.readDb = async function() {
   const time = new Date().getTime();
   if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {
     const dbJson = await fetch("resources/db/db.json").then(x => x.json());
@@ -32,21 +32,21 @@ VisualExp.readDb = async function() {
   return JSON.parse(localStorage.db).data;
 };
 
-VisualExp.sortDb = function(db) {
+Pedroth.sortDb = function(db) {
   return Sort.quicksort(
     db.experiments,
     (a, b) => date2int(a.date) - date2int(b.date) < 0
   );
 };
 
-VisualExp.randomDb = function(db) {
+Pedroth.randomDb = function(db) {
   return ArrayUtils.randomPermute(db.experiments);
 };
 
 /**
  * @param data: {imageSrc: string, url: string, title: string, tags: array<string>, date: string}
  */
-VisualExp.createCardFromData = function(data) {
+Pedroth.createCardFromData = function(data) {
   console.log("Create Card From Data", data);
   const card = DomBuilder.of("div")
     .attr("class", "card simplePaper")
@@ -79,7 +79,7 @@ VisualExp.createCardFromData = function(data) {
         )
         .append(
           DomBuilder.of("div")
-            .append(VisualExp.createTagElement(data.tags))
+            .append(Pedroth.createTagElement(data.tags))
             .build()
         )
         .append(
@@ -94,7 +94,7 @@ VisualExp.createCardFromData = function(data) {
   return card;
 };
 
-VisualExp.createTagElement = function(tags) {
+Pedroth.createTagElement = function(tags) {
   return tags.map(tag =>
     DomBuilder.of("a")
       .attr("class", "badge badge-light")
@@ -127,10 +127,7 @@ function date2int(date) {
  *                                                                                      */
 //========================================================================================
 
-VisualExp.retrieveAndAppend(
-  "resources/templates/nav/nav.html",
-  "indexContainer"
-);
+Pedroth.retrieveAndAppend("resources/templates/nav/nav.html", "indexContainer");
 
 // exports
-module.exports = VisualExp;
+module.exports = Pedroth;

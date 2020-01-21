@@ -2,19 +2,19 @@ console.log("Hello from nav!!");
 
 function selectPage(url) {
   defaultPage = () =>
-    VisualExp.retrieveAndAppend(
+    Pedroth.retrieveAndAppend(
       "resources/templates/main/main.html",
       "navContainer"
     );
   url2page = {
     p: p => {
-      VisualExp.retrieveAndAppend(
+      Pedroth.retrieveAndAppend(
         `resources/templates/app/app.html`,
         "navContainer"
       );
     },
     q: q =>
-      VisualExp.retrieveAndAppend(
+      Pedroth.retrieveAndAppend(
         `resources/templates/search/search.html`,
         "navContainer"
       )

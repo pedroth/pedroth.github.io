@@ -1,12 +1,12 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/VisualExp/main/VisualExp.js",
+  entry: "./src/Pedroth/Pedroth.js",
   mode: "development",
   output: {
-    path: path.resolve("./"),
+    path: path.resolve("./dist/"),
     filename: "index.js",
-    library: "VisualExp",
+    library: "Pedroth",
     libraryTarget: "umd"
   }
 };

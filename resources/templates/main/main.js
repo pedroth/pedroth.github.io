@@ -1,12 +1,12 @@
 function getCardsInRow(arrayOfCards, colPerRows) {
-  const row = VisualExp.DomBuilder.of("div").attr("class", "row");
+  const row = Pedroth.DomBuilder.of("div").attr("class", "row");
   for (let i = 0; i < colPerRows; i++) {
     const card = arrayOfCards[i];
-    const col = VisualExp.DomBuilder.of("div")
+    const col = Pedroth.DomBuilder.of("div")
       .attr("class", "col-lg-4 col-md-6 col-sm-12")
       .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
-        VisualExp.createCardFromData({
+        Pedroth.createCardFromData({
           imageSrc: card.src + `/${card.id}.gif`,
           url: `/?p=${card.src}`,
           title: card.title,
@@ -26,7 +26,7 @@ function getCardsInRow(arrayOfCards, colPerRows) {
  * @param {*} k: Elements per row
  */
 function generateRecent(db, k = 3) {
-  const sortedDb = VisualExp.sortDb(db);
+  const sortedDb = Pedroth.sortDb(db);
   document.getElementById("recent").appendChild(getCardsInRow(sortedDb, k));
 }
 
@@ -36,12 +36,12 @@ function generateRecent(db, k = 3) {
  * @param {*} k: Elements per row
  */
 function generateRandom(db, k = 3) {
-  const randomDb = VisualExp.randomDb(db);
+  const randomDb = Pedroth.randomDb(db);
   document.getElementById("random").appendChild(getCardsInRow(randomDb, k));
 }
 
 async function generateMainPage() {
-  const db = await VisualExp.readDb();
+  const db = await Pedroth.readDb();
   generateRecent(db);
   generateRandom(db);
 }
