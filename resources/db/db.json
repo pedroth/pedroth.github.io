@@ -6,6 +6,7 @@
       "date": "24/11/2019",
       "src": "posts/ArcSummary",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "computer science",
@@ -25,6 +26,7 @@
       "date": "31/05/2018",
       "src": "posts/IntuitionOfCalculus",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "calculus",
@@ -38,7 +40,14 @@
       "title": "Projection and Dot product",
       "date": "05/06/2018",
       "src": "posts/ProjectionDotProduct",
-      "tags": ["blog", "mathematics", "linear algebra", "geometry", "vectors"]
+      "tags": [
+        "post",
+        "blog",
+        "mathematics",
+        "linear algebra",
+        "geometry",
+        "vectors"
+      ]
     },
     {
       "id": "TaylorPolynomial",
@@ -46,6 +55,7 @@
       "date": "05/07/2018",
       "src": "posts/TaylorPolynomial",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "calculus",
@@ -60,6 +70,7 @@
       "date": "16/07/2018",
       "src": "posts/MatrixExponential",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "calculus",
@@ -76,6 +87,7 @@
       "date": "25/07/2018",
       "src": "posts/DiscreteCalculus",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "discrete mathematics",
@@ -91,6 +103,7 @@
       "date": "18/08/2018",
       "src": "posts/GradientJacobianHessian",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "multivariable calculus",
@@ -108,6 +121,7 @@
       "date": "14/11/2018",
       "src": "posts/OptimizationI",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "optimization",
@@ -124,6 +138,7 @@
       "date": "15/11/2018",
       "src": "posts/ProofGreenTheorem",
       "tags": [
+        "post",
         "blog",
         "mathematics",
         "multivariable calculus",
@@ -140,6 +155,7 @@
       "date": "1/10/2014",
       "src": "posts/BrownianMotion",
       "tags": [
+        "post",
         "experiments",
         "java",
         "simulation",
@@ -156,6 +172,7 @@
       "date": "1/01/2014",
       "src": "posts/CellularAutomaton",
       "tags": [
+        "post",
         "experiments",
         "java",
         "simulation",
@@ -170,6 +187,7 @@
       "date": "1/05/2014",
       "src": "posts/CubeChaos",
       "tags": [
+        "post",
         "experiments",
         "java",
         "simulation",
@@ -186,6 +204,7 @@
       "date": "1/06/2014",
       "src": "posts/GraphXY",
       "tags": [
+        "post",
         "experiments",
         "java",
         "simulation",
@@ -203,6 +222,7 @@
       "date": "1/11/2014",
       "src": "posts/ImplicitSurface",
       "tags": [
+        "post",
         "experiments",
         "java",
         "simulation",
@@ -220,6 +240,7 @@
       "date": "1/07/2014",
       "src": "posts/LinesSurfaces",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -237,6 +258,7 @@
       "date": "1/08/2014",
       "src": "posts/PDE",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -257,6 +279,7 @@
       "date": "1/03/2014",
       "src": "posts/RandomCurve",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -277,6 +300,7 @@
       "date": "1/02/2014",
       "src": "posts/SimplePhysics",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -296,6 +320,7 @@
       "date": "1/09/2014",
       "src": "posts/SimpleRobot",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -316,6 +341,7 @@
       "date": "1/04/2014",
       "src": "posts/TetraZBuffer",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -331,6 +357,7 @@
       "date": "24/11/2017",
       "src": "posts/EigenSimulation",
       "tags": [
+        "post",
         "experiments",
         "java",
         "visualization",
@@ -352,6 +379,7 @@
       "date": "01/06/2016",
       "src": "posts/Kmeans",
       "tags": [
+        "post",
         "experiments",
         "js",
         "machine learning",
@@ -369,6 +397,7 @@
       "date": "01/05/2017",
       "src": "posts/3DRoute",
       "tags": [
+        "post",
         "experiments",
         "js",
         "3d graphics",
@@ -385,6 +414,7 @@
       "date": "01/12/2017",
       "src": "posts/PublicChat",
       "tags": [
+        "post",
         "experiments",
         "js",
         "java",
@@ -402,6 +432,7 @@
       "date": "01/05/2017",
       "src": "posts/3DRoute",
       "tags": [
+        "post",
         "experiments",
         "js",
         "3d graphics",
@@ -417,7 +448,7 @@
       "title": "Test",
       "date": "07/01/2020",
       "src": "posts/test",
-      "tags": ["blog"]
+      "tags": ["post", "blog"]
     }
   ]
 }
