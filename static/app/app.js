@@ -9,5 +9,9 @@ function getApp(url) {
       ? `${secondSplit[1]}/${filename}`
       : `resources/templates/${filename}`;
   Pedroth.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
+
+  // render equations
+  console.log("Rendering equations");
+  setTimeout(() => MathJax.typeset(), 100);
 }
 getApp(window.location.href);
