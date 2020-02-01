@@ -19,7 +19,7 @@ const Pedroth = {
  *                                                                                      */
 //========================================================================================
 
-WebUtils.retrieveAndAppend("resources/templates/nav/nav.html", "root");
+WebUtils.retrieveAndAppend("/static/nav/nav.html", "root");
 
 // exports
 module.exports = Pedroth;

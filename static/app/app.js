@@ -7,7 +7,7 @@ function getApp(url) {
   const finalSrc =
     slashSplit.length > 1
       ? `${secondSplit[1]}/${filename}`
-      : `resources/templates/${filename}`;
+      : `static/${filename}`;
   Pedroth.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
 
   // render equations

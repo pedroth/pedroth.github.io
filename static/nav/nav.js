@@ -1,23 +1,15 @@
 console.log("Hello from nav!!");
 
 function selectPage(url) {
+  const { WebUtils } = Pedroth;
   defaultPage = () =>
-    Pedroth.retrieveAndAppend(
-      "resources/templates/main/main.html",
-      "navContainer"
-    );
+    WebUtils.retrieveAndAppend("static/main/main.html", "navContainer");
   url2page = {
     p: p => {
-      Pedroth.retrieveAndAppend(
-        `resources/templates/app/app.html`,
-        "navContainer"
-      );
+      WebUtils.retrieveAndAppend(`static/app/app.html`, "navContainer");
     },
     q: q =>
-      Pedroth.retrieveAndAppend(
-        `resources/templates/search/search.html`,
-        "navContainer"
-      )
+      WebUtils.retrieveAndAppend(`static/search/search.html`, "navContainer")
   };
   firstSplit = url.split("?");
   if (firstSplit.length === 1) {
