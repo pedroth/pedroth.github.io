@@ -1,3 +1,5 @@
+const { WebUtils } = Pedroth;
+
 function getApp(url) {
   console.log("Getting app...", url);
   const firstSplit = url.split("?");
@@ -8,7 +10,8 @@ function getApp(url) {
     slashSplit.length > 1
       ? `${secondSplit[1]}/${filename}`
       : `static/${filename}`;
-  Pedroth.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
+  console.log("Final Src", finalSrc);
+  WebUtils.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
 
   // render equations
   console.log("Rendering equations");

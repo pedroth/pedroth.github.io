@@ -5,7 +5,7 @@ html {
 }
 
 body {
-  background-color: #121212;
+  background-color: #181818;
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.25rem;
   display: flex;
@@ -18,19 +18,20 @@ a {
   color: #90caf9;
 }
 
-.mainContainer {
-  display: flex;
-  flex-direction: column;
+.flexColContainer {
   flex-grow: 1;
+  display: flex;
+  flex-direction: row;
 }
 
-.myContainer {
-  padding-left: 5%;
-  padding-right: 5%;
+.flexRowContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .align {
-  align-items: left;
+  align-items: center;
 }
 
 .searchClass {
@@ -69,12 +70,6 @@ a {
   border-radius: 0.25rem;
 }
 
-.flexContainer {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .fullHeight {
   height: 100%;
 }
@@ -94,14 +89,4 @@ a {
 }
 
 @media (min-width: 900px) {
-  /* For desktop: */
-  .align {
-    align-items: center;
-  }
-
-  .mainContainer {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-  }
 }
