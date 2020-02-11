@@ -1,8 +1,8 @@
 {
-  "name": "visualExp",
+  "name": "pedroth",
   "version": "1.0.0",
   "main": "index.js",
-  "description": "Visual Experiments utils",
+  "description": "Pedroth Corner utils",
   "scripts": {
     "build": "webpack --mode=production",
     "buildDev": "webpack --mode=development",

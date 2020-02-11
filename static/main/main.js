@@ -1,6 +1,6 @@
 const { DomBuilder, Card, WebUtils } = Pedroth;
+
 function getCardsInRow(arrayOfCards, colPerRows) {
-  const { DomBuilder, Card } = Pedroth;
   const row = DomBuilder.of("div").attr("class", "row");
   for (let i = 0; i < colPerRows; i++) {
     const card = arrayOfCards[i];

@@ -1,7 +1,7 @@
+const { WebUtils, DomBuilder } = Pedroth;
 console.log("Hello from nav!!");
 
 function selectPage(url) {
-  const { WebUtils } = Pedroth;
   defaultPage = () =>
     WebUtils.retrieveAndAppend("static/main/main.html", "navContainer");
   url2page = {
@@ -33,3 +33,11 @@ function navMain() {
 }
 
 navMain();
+
+const searchFunc = () =>
+  (window.location.href = `?q=${DomBuilder.ofId("searchInput").build().value}`);
+DomBuilder.ofId("searchSubmit").event("click", searchFunc);
+DomBuilder.ofId("searchInput").event(
+  "keydown",
+  evt => evt.keyCode === 13 && searchFunc()
+);
