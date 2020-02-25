@@ -27,6 +27,12 @@ class DomBuilder {
     return this;
   }
 
+  removeChildren() {
+    while (this.element.firstChild) {
+      this.element.removeChild(this.element.lastChild);
+    }
+  }
+
   html(value) {
     return this.inner(value);
   }

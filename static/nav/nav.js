@@ -1,4 +1,3 @@
-const { WebUtils, DomBuilder } = Pedroth;
 console.log("Hello from nav!!");
 
 function selectPage(url) {

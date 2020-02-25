@@ -1,63 +1,100 @@
 const { DomBuilder } = Pedroth;
 
-class Suggestions {
-  constructor(id, parentId) {
-    this.id = id;
-    this.parentId = parentId;
+{
+  /* <input id="searchInput" />
+      <button type="submit" id="searchSubmit">
+        Search
+      </button> */
+}
+
+class SearchBar {
+  constructor(props) {
+    this.id = `id` + Math.random();
+    this.idSuggestion = `id` + Math.random();
+    this.domComponent = this.buildDOMComponent(props);
     // not selected
     this.selectedIndex = -1;
+    this.inputValue = "";
     this.suggestionList = [];
   }
 
-  createCard = suggestion => {
-    return DomBuilder.of("ul")
-      .attr("style", "background-color: 'white', color: 'black'")
-      .html(suggestion);
+  getComponent = () => this.domComponent;
+
+  buildDOMComponent = props => {
+    return DomBuilder.of("div")
+      .attr("id", this.id)
+      .append(this.getInput(props))
+      .append(this.getButton(props))
+      .build();
   };
 
-  renderSuggestionList = () => {
-    DomBuilder.ofId(this.id)
+  getInput = props =>
+    DomBuilder.of("input")
+      .event("input", e => {
+        this.setSuggestions(range0(10).map(Math.random));
+        this.inputValue = e.target.value;
+        this.render();
+      })
+      .event("keydown", evt => {
+        const keyCodeAction = {
+          13: props.onClick
+        };
+        const action = keyCodeAction[evt.keyCode];
+        action && action(this.inputValue);
+      });
+
+  getButton = props =>
+    DomBuilder.of("button")
+      .event("click", () => props.onClick(this.inputValue))
+      .inner(props.buttonLabel);
+
+  render = () => {
+    if (!document.getElementById(this.idSuggestion)) {
+      DomBuilder.of(document.body).append(
+        DomBuilder.of("div").attr("id", this.idSuggestion)
+      );
+    }
+    DomBuilder.ofId(this.idSuggestion).removeChildren();
+    const box = this.getSearchBox();
+    console.log("Box", box);
+    DomBuilder.ofId(this.idSuggestion)
       .append(
-        DomBuilder.of("li").append(this.suggestionList.map(this.createCard))
+        DomBuilder.of("ul")
+          .attr("class", "list-group")
+          .append(this.suggestionList.map(this.createCard))
       )
       .attr(
         "style",
-        `position: absolute, top:${this.getTopPosition()}, left: ${this.getLeftPosition()}`
+        `position: absolute; top:${box.y + box.height}px; left: ${
+          box.x
+        }px; width: ${box.width}`
       );
   };
 
-  getTopPosition = () => DomBuilder.ofId(this.parentId).build().offsetTop;
-
-  getLeftPosition = () => DomBuilder.ofId(this.parentId).build().offsetLeft;
-
-  render = () => {
-    const element = DomBuilder.ofId(this.id);
-    if (!element.element)
-      document.body.appendChild(
-        DomBuilder.of("div")
-          .attr("id", this.id)
-          .build()
-      );
-    this.renderSuggestionList();
+  createCard = suggestion => {
+    return (
+      DomBuilder.of("li")
+        .attr("style", "background-color: 'white', color: 'black'")
+        .attr("class", "list-group-item")
+        // .event("click", "")
+        // .event("mouseover", "")
+        .html(suggestion)
+    );
   };
 
-  pushSuggestion = suggestion => this.suggestionList.push(suggestion);
+  getSearchBox = () =>
+    DomBuilder.ofId(this.id)
+      .build()
+      .getBoundingClientRect();
+
+  setSuggestions = suggestionList => (this.suggestionList = suggestionList);
 }
 
-const s = new Suggestions("suggestions", "searchInput");
+const searchComponent = new SearchBar({
+  onClick: searchInput => (window.location.href = `?q=${searchInput}`),
+  buttonLabel: "search"
+});
+DomBuilder.ofId("root").append(searchComponent.getComponent());
 
-const searchFunc = () =>
-  (window.location.href = `?q=${DomBuilder.ofId("searchInput").build().value}`);
-
-DomBuilder.ofId("searchInput")
-  .event("input", e => {
-    s.pushSuggestion(e.target.value);
-    s.render();
-  })
-  .event("keydown", evt => {
-    keyCodeAction = {
-      13: searchFunc
-    };
-    keyCodeAction[evt.keyCode]();
-  });
-DomBuilder.ofId("searchSubmit").event("click", searchFunc);
+const range = a => b => (a < b ? [a].concat(range(a + 1)(b)) : []);
+const range0 = range(0);

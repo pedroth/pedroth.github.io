@@ -1,5 +1,3 @@
-const { WebUtils } = Pedroth;
-
 function getApp(url) {
   console.log("Getting app...", url);
   const firstSplit = url.split("?");
