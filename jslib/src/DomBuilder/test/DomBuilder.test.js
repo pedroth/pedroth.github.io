@@ -1,4 +1,4 @@
-const DomBuilder = require("../main/DomBuilder");
+import DomBuilder from "../main/DomBuilder";
 
 test("Dom creation", () => {
   // string
