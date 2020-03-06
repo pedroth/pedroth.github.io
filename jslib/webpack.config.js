@@ -1,4 +1,5 @@
 const path = require("path");
+var nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   entry: "./src/Pedroth/Pedroth.js",
@@ -8,5 +9,27 @@ module.exports = {
     filename: "index.js",
     library: "Pedroth",
     libraryTarget: "umd"
+  },
+  // externals: [nodeExternals()],
+  module: {
+    rules: [
+      {
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+            plugins: [
+              "@babel/plugin-proposal-class-properties",
+              [
+                "@babel/plugin-transform-runtime",
+                { corejs: 3, useESModules: true, helpers: true }
+              ]
+            ]
+          }
+        }
+      }
+    ]
   }
 };

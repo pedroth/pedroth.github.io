@@ -1,10 +1,10 @@
-const { DomBuilder, Nabla } = Pedroth;
+import DomBuilder from "../DomBuilder/main/DomBuilder";
 const uuid = key => `${key}${Math.random()}`;
 const range = a => b => (a < b ? [a].concat(range(a + 1)(b)) : []);
 const range0 = range(0);
 const mod = n => i => (n + (i % n)) % n;
 
-class SearchBar {
+class SearchInput {
   static defaultProps = {
     onClick: input => {},
     onChange: (input, searchBar) => {
@@ -17,7 +17,7 @@ class SearchBar {
   };
 
   constructor(props) {
-    this.props = { ...SearchBar.defaultProps, ...props };
+    this.props = { ...SearchInput.defaultProps, ...props };
     this.id = uuid("id");
     this.idInput = uuid("id");
     this.idSuggestion = uuid("id");
@@ -146,15 +146,4 @@ class SearchBar {
   setSuggestions = suggestionList => (this.suggestionList = suggestionList);
 }
 
-const searchComponent = new SearchBar({
-  onClick: searchInput => (window.location.href = `?q=${searchInput}`),
-  buttonDom: DomBuilder.of("button")
-    .attr("style", "border-radius: 5px")
-    .inner("search")
-    .build(),
-  inputDom: DomBuilder.of("input")
-    .attr("style", "border-radius: 5px")
-    .inner("search")
-    .build()
-});
-DomBuilder.ofId("root").append(searchComponent.getDOM());
+export default SearchInput;

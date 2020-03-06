@@ -1,4 +1,4 @@
-const { Sort, ArrayUtils } = require("nabla.js");
+import { Sort, ArrayUtils } from "nabla.js";
 
 const WebUtils = {};
 
@@ -33,7 +33,7 @@ WebUtils.randomDb = function(db) {
   return ArrayUtils.randomPermute(db.experiments);
 };
 
-module.exports = WebUtils;
+export default WebUtils;
 
 //========================================================================================
 /*                                                                                      *

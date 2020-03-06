@@ -12,7 +12,7 @@ Card.createCardFromData = data => {
     .build();
 };
 
-module.exports = Card;
+export default Card;
 
 //========================================================================================
 /*                                                                                      *

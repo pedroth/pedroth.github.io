@@ -1,6 +1,7 @@
-const DomBuilder = require("../DomBuilder/main/DomBuilder");
-const WebUtils = require("../WebUtils/WebUtils");
-const Card = require("../Card/Card");
-const Nabla = require("nabla.js");
+import DomBuilder from "../DomBuilder/main/DomBuilder";
+import WebUtils from "../WebUtils/WebUtils";
+import Card from "../Card/Card";
+import Nabla from "nabla.js";
+import SearchInput from "../SearchInput/SearchInput";
 
-export { DomBuilder, WebUtils, Card, Nabla };
+export { DomBuilder, WebUtils, Card, Nabla, SearchInput };

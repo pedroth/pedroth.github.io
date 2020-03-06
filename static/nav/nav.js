@@ -33,10 +33,15 @@ function navMain() {
 
 navMain();
 
-const searchFunc = () =>
-  (window.location.href = `?q=${DomBuilder.ofId("searchInput").build().value}`);
-DomBuilder.ofId("searchSubmit").event("click", searchFunc);
-DomBuilder.ofId("searchInput").event(
-  "keydown",
-  evt => evt.keyCode === 13 && searchFunc()
-);
+const searchComponent = new SearchInput({
+  onClick: searchInput => (window.location.href = `?q=${searchInput}`),
+  buttonDom: DomBuilder.of("button")
+    .attr("style", "border-radius: 5px")
+    .inner("search")
+    .build(),
+  inputDom: DomBuilder.of("input")
+    .attr("style", "border-radius: 5px")
+    .inner("search")
+    .build()
+});
+DomBuilder.ofId("searchInput").append(searchComponent.getDOM());

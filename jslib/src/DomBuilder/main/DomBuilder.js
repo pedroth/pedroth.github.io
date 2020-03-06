@@ -72,4 +72,4 @@ function isElement(o) {
         typeof o.nodeName === "string";
 }
 
-module.exports = DomBuilder;
+export default DomBuilder;
