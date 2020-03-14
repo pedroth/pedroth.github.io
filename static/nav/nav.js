@@ -31,17 +31,20 @@ function navMain() {
   setTimeout(() => MathJax.typeset(), 100);
 }
 
-navMain();
-
 const searchComponent = new SearchInput({
   onClick: searchInput => (window.location.href = `?q=${searchInput}`),
   buttonDom: DomBuilder.of("button")
-    .attr("style", "border-radius: 5px")
-    .inner("search")
+    .attr("class", "navIcons")
+    .append(DomBuilder.of("i").attr("class", "fas fa-search"))
     .build(),
   inputDom: DomBuilder.of("input")
-    .attr("style", "border-radius: 5px")
-    .inner("search")
-    .build()
+    .attr("class", "searchClass")
+    .inner("search...")
+    .build(),
+  highLightStyle:
+    "background-color:rgba(255, 255, 255); color:rgb(100, 100, 100)",
+  normalStyle: "background-color:rgba(100, 100, 100); color:rgb(255, 255, 255)"
 });
 DomBuilder.ofId("searchInput").append(searchComponent.getDOM());
+
+navMain();

@@ -5,17 +5,6 @@ const range0 = range(0);
 const mod = n => i => (n + (i % n)) % n;
 
 class SearchInput {
-  static defaultProps = {
-    onClick: input => {},
-    onChange: (input, searchBar) => {
-      searchBar.setSuggestions(range0(10).map(Math.random));
-    },
-    inputDom: DomBuilder.of("input").build(),
-    buttonDom: DomBuilder.of("button")
-      .inner("search")
-      .build()
-  };
-
   constructor(props) {
     this.props = { ...SearchInput.defaultProps, ...props };
     this.id = uuid("id");
@@ -71,7 +60,7 @@ class SearchInput {
       .children[0].children;
 
     const arrayDomSuggestions = Array.from(domSuggestions);
-    arrayDomSuggestions.forEach(dom => (dom.style = ""));
+    arrayDomSuggestions.forEach(dom => (dom.style = this.props.normalStyle));
 
     const domSuggestionIndex = arrayDomSuggestions.filter(
       (dom, i) => index === i
@@ -82,11 +71,8 @@ class SearchInput {
 
     DomBuilder.ofId(this.idInput).build().value = this.suggestionList[index];
     this.inputValue = this.suggestionList[index];
-    domSuggestionIndex.forEach(dom => (dom.style = this.highLightStyle));
+    domSuggestionIndex.forEach(dom => (dom.style = this.props.highLightStyle));
   };
-
-  highLightStyle =
-    "background-color:rgba(100, 100, 100); color:rgb(255,255,255);";
 
   getButton = () =>
     DomBuilder.of(this.props.buttonDom).event("click", () =>
@@ -99,14 +85,16 @@ class SearchInput {
   };
 
   renderSuggestions = () => {
+    // create suggestion div if none exists
     if (!document.getElementById(this.idSuggestion)) {
       DomBuilder.of(document.body).append(
         DomBuilder.of("div").attr("id", this.idSuggestion)
       );
     }
-    DomBuilder.ofId(this.idSuggestion).removeChildren();
+
+    const suggestions = DomBuilder.ofId(this.idSuggestion).removeChildren();
     const box = this.getSearchBox();
-    DomBuilder.ofId(this.idSuggestion)
+    suggestions
       .append(
         DomBuilder.of("ul")
           .attr("class", "list-group")
@@ -122,7 +110,12 @@ class SearchInput {
 
   createCard = (suggestion, index) =>
     DomBuilder.of("li")
-      .attr("style", index === this.selectedIndex ? this.highLightStyle : "")
+      .attr(
+        "style",
+        index === this.selectedIndex
+          ? this.props.highLightStyle
+          : this.props.normalStyle
+      )
       .attr("class", "list-group-item")
       .event("click", () => {
         DomBuilder.ofId(this.idInput).build().value = suggestion;
@@ -144,6 +137,20 @@ class SearchInput {
       .getBoundingClientRect();
 
   setSuggestions = suggestionList => (this.suggestionList = suggestionList);
+
+  static defaultProps = {
+    onClick: input => {},
+    onChange: (input, searchBar) => {
+      searchBar.setSuggestions(range0(10).map(Math.random));
+    },
+    inputDom: DomBuilder.of("input").build(),
+    buttonDom: DomBuilder.of("button")
+      .inner("search")
+      .build(),
+    highLightStyle:
+      "background-color:rgba(100, 100, 100); color:rgb(255,255,255);",
+    normalStyle: ""
+  };
 }
 
 export default SearchInput;
