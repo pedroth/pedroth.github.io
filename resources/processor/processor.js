@@ -73,9 +73,9 @@ function processJars() {
     const name = jar.id;
     console.log("Processing ...", name);
 
-    const zipPath = `../../experiments/${name}/${name}.zip`;
+    const zipPath = `../../posts/${name}/${name}.zip`;
     const newJarName = `${name}.jar`;
-    const tmpFolder = `../../experiments/${name}/tmp`;
+    const tmpFolder = `../../posts/${name}/tmp`;
 
     console.log("Creating folder...", tmpFolder);
 

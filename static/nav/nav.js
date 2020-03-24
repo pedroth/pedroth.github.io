@@ -1,5 +1,3 @@
-console.log("Hello from nav!!");
-
 function selectPage(url) {
   defaultPage = () =>
     WebUtils.retrieveAndAppend("static/main/main.html", "navContainer");

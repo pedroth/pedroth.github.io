@@ -1,21 +1,21 @@
 {
   "name": "processor",
   "version": "1.0.0",
-  "description": "visualExperiments java pages builders",
+  "description": "Pedroth jars processor ",
   "main": "processor.js",
   "scripts": {
     "start": "node processor.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pedroth/visualExperiments.git"
+    "url": "git+https://github.com/pedroth/pedroth.github.io.git"
   },
   "author": "pedroth",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pedroth/visualExperiments/issues"
+    "url": "https://github.com/pedroth/pedroth.github.io/issues"
   },
-  "homepage": "https://github.com/pedroth/visualExperiments#readme",
+  "homepage": "https://github.com/pedroth/pedroth.github.io#readme",
   "dependencies": {
     "archiver": "^3.0.0",
     "file-system": "^2.2.2",

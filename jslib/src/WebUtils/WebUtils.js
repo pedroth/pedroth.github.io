@@ -33,6 +33,8 @@ WebUtils.randomDb = function(db) {
   return ArrayUtils.randomPermute(db.experiments);
 };
 
+WebUtils.searchDb = function(db) {};
+
 export default WebUtils;
 
 //========================================================================================
