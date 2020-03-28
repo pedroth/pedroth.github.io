@@ -1,4 +1,5 @@
 import DomBuilder from "../DomBuilder/main/DomBuilder";
+import "./SearchInput.css";
 const uuid = key => `${key}${Math.random()}`;
 const range = a => b => (a < b ? [a].concat(range(a + 1)(b)) : []);
 const range0 = range(0);
@@ -37,13 +38,21 @@ class SearchInput {
       .event("keydown", evt => {
         console.log("Key pressed");
         const keyCodeAction = {
-          13: this.props.onClick,
-          38: this.highLightNextSuggestion(-1),
-          40: this.highLightNextSuggestion(1)
+          Enter: this.props.onClick,
+          Escape: this.clearSuggestion,
+          ArrowUp: this.highLightNextSuggestion(-1),
+          ArrowDown: this.highLightNextSuggestion(1)
         };
-        const action = keyCodeAction[evt.keyCode];
+        const action = keyCodeAction[evt.code];
         action && action(this.inputValue);
       });
+
+  clearSuggestion = () => {
+    this.selectedIndex = null;
+    this.suggestionList = [];
+    DomBuilder.ofId(this.idInput).build().value = this.inputValue || "";
+    this.render();
+  };
 
   highLightNextSuggestion = step => () => {
     if (this.selectedIndex == null) {
@@ -97,14 +106,14 @@ class SearchInput {
     suggestions
       .append(
         DomBuilder.of("ul")
-          .attr("class", "list-group")
+          .attr("class", "search-list")
           .append(this.suggestionList.map(this.createCard))
       )
       .attr(
         "style",
         `position: absolute; top:${box.y + box.height}px; left: ${
           box.x
-        }px; width: ${box.width}`
+        }px; width: ${box.width}; z-index:${9999}`
       );
   };
 
@@ -116,7 +125,7 @@ class SearchInput {
           ? this.props.highLightStyle
           : this.props.normalStyle
       )
-      .attr("class", "list-group-item")
+      .attr("class", "search-list-item")
       .event("click", () => {
         DomBuilder.ofId(this.idInput).build().value = suggestion;
         this.inputValue = suggestion;

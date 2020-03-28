@@ -65,7 +65,7 @@ const createBody = data =>
     .append(
       DomBuilder.of("p")
         .attr("class", "border-top")
-        .inner(data.date)
+        .inner(`<b>Last update</b>: <i>${data.date}</i>`)
         .build()
     )
     .build();

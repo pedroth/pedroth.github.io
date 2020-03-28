@@ -10,7 +10,6 @@ module.exports = {
     library: "Pedroth",
     libraryTarget: "umd"
   },
-  // externals: [nodeExternals()],
   module: {
     rules: [
       {
@@ -29,6 +28,10 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"]
       }
     ]
   }

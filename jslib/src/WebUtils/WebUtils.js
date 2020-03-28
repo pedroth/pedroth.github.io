@@ -1,4 +1,5 @@
 import { Sort, ArrayUtils } from "nabla.js";
+import $ from "jquery";
 
 const WebUtils = {};
 
@@ -33,7 +34,7 @@ WebUtils.randomDb = function(db) {
   return ArrayUtils.randomPermute(db.experiments);
 };
 
-WebUtils.searchDb = function(db) {};
+WebUtils.searchDb = db => searchTerm => {};
 
 export default WebUtils;
 
