@@ -25,13 +25,13 @@ WebUtils.readDb = async function() {
 
 WebUtils.sortDb = function(db) {
   return Sort.quicksort(
-    db.experiments,
+    db.posts,
     (a, b) => date2int(a.date) - date2int(b.date) < 0
   );
 };
 
 WebUtils.randomDb = function(db) {
-  return ArrayUtils.randomPermute(db.experiments);
+  return ArrayUtils.randomPermute(db.posts);
 };
 
 WebUtils.searchDb = db => searchTerm => {};

@@ -442,13 +442,6 @@
         "computer science",
         "differential equations"
       ]
-    },
-    {
-      "id": "test",
-      "title": "Test",
-      "date": "07/01/2020",
-      "src": "posts/test",
-      "tags": ["post", "blog"]
     }
   ]
 }
