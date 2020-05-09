@@ -1,9 +1,9 @@
 import DomBuilder from "../DomBuilder/main/DomBuilder";
 import "./SearchInput.css";
-const uuid = (key) => `${key}${Math.random()}`;
-const range = (a) => (b) => (a < b ? [a].concat(range(a + 1)(b)) : []);
+const uuid = key => `${key}${Math.random()}`;
+const range = a => b => (a < b ? [a].concat(range(a + 1)(b)) : []);
 const range0 = range(0);
-const mod = (n) => (i) => (n + (i % n)) % n;
+const mod = n => i => (n + (i % n)) % n;
 
 class SearchInput {
   constructor(props) {
@@ -30,18 +30,18 @@ class SearchInput {
   getInput = () =>
     DomBuilder.of(this.props.inputDom)
       .attr("id", this.idInput)
-      .event("input", (e) => {
+      .event("input", e => {
         this.inputValue = e.target.value;
         this.props.onChange(this.inputValue, this);
         this.render();
       })
-      .event("keydown", (evt) => {
+      .event("keydown", evt => {
         console.log("Key pressed");
         const keyCodeAction = {
           Enter: this.props.onClick,
           Escape: this.clearSuggestion,
           ArrowUp: this.highLightNextSuggestion(-1),
-          ArrowDown: this.highLightNextSuggestion(1),
+          ArrowDown: this.highLightNextSuggestion(1)
         };
         const action = keyCodeAction[evt.code];
         action && action(this.inputValue);
@@ -50,12 +50,12 @@ class SearchInput {
   clearSuggestion = () => {
     this.selectedIndex = null;
     this.suggestionList = [];
-    DomBuilder.ofId(this.idInput).build().value = this.inputValue || "";
+    this.setInputValue(this.inputValue);
     this.render();
   };
 
-  highLightNextSuggestion = (step) => () => {
-    if (this.selectedIndex == null) {
+  highLightNextSuggestion = step => () => {
+    if (this.selectedIndex == null || this.suggestionList.length === 0) {
       this.highLightIndex(0);
     } else {
       this.highLightIndex(
@@ -64,12 +64,12 @@ class SearchInput {
     }
   };
 
-  highLightIndex = (index) => {
+  highLightIndex = index => {
     const domSuggestions = DomBuilder.ofId(this.idSuggestion).build()
       .children[0].children;
 
     const arrayDomSuggestions = Array.from(domSuggestions);
-    arrayDomSuggestions.forEach((dom) => (dom.style = this.props.normalStyle));
+    arrayDomSuggestions.forEach(dom => (dom.style = this.props.normalStyle));
 
     const domSuggestionIndex = arrayDomSuggestions.filter(
       (dom, i) => index === i
@@ -78,11 +78,9 @@ class SearchInput {
     this.selectedIndex = index;
     if (index === null) return;
 
-    DomBuilder.ofId(this.idInput).build().value = this.suggestionList[index];
-    this.inputValue = this.suggestionList[index];
-    domSuggestionIndex.forEach(
-      (dom) => (dom.style = this.props.highLightStyle)
-    );
+    const suggestion = this.suggestionList[index];
+    this.setInputValue(suggestion ? suggestion : this.inputValue);
+    domSuggestionIndex.forEach(dom => (dom.style = this.props.highLightStyle));
   };
 
   getButton = () =>
@@ -108,7 +106,7 @@ class SearchInput {
     suggestions
       .append(
         DomBuilder.of("ul")
-          .attr("class", "search-list")
+          .attr("class", this.props.ulClass)
           .append(this.suggestionList.map(this.createCard))
       )
       .attr(
@@ -127,17 +125,16 @@ class SearchInput {
           ? this.props.highLightStyle
           : this.props.normalStyle
       )
-      .attr("class", "search-list-item")
+      .attr("class", this.props.liClass)
       .event("click", () => {
-        DomBuilder.ofId(this.idInput).build().value = suggestion;
-        this.inputValue = suggestion;
+        this.setInputValue(suggestion);
         DomBuilder.ofId(this.idSuggestion).removeChildren();
       })
-      .event("mouseover", (evt) => {
+      .event("mouseover", evt => {
         console.log("Mouse over", index);
         this.highLightIndex(index);
       })
-      .event("mouseout", (evt) => {
+      .event("mouseout", evt => {
         this.highLightIndex(null);
       })
       .html(suggestion);
@@ -145,10 +142,15 @@ class SearchInput {
   getSearchBox = () =>
     DomBuilder.ofId(this.idInput).build().getBoundingClientRect();
 
-  setSuggestions = (suggestionList) => (this.suggestionList = suggestionList);
+  setSuggestions = suggestionList => (this.suggestionList = suggestionList);
+
+  setInputValue = value => {
+    DomBuilder.ofId(this.idInput).build().value = value;
+    this.inputValue = value;
+  };
 
   static defaultProps = {
-    onClick: (input) => {},
+    onClick: input => {},
     onChange: (input, searchBar) => {
       searchBar.setSuggestions(range0(10).map(Math.random));
     },
@@ -157,6 +159,8 @@ class SearchInput {
     highLightStyle:
       "background-color:rgba(100, 100, 100); color:rgb(255,255,255);",
     normalStyle: "",
+    ulClass: "search-list",
+    liClass: "search-list-item"
   };
 }
 

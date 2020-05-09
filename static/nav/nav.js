@@ -2,23 +2,19 @@ function selectPage(url) {
   defaultPage = () =>
     WebUtils.retrieveAndAppend("static/main/main.html", "navContainer");
   url2page = {
-    p: p => {
-      WebUtils.retrieveAndAppend(`static/app/app.html`, "navContainer");
-    },
+    p: p => WebUtils.retrieveAndAppend(`static/app/app.html`, "navContainer"),
     q: q =>
       WebUtils.retrieveAndAppend(`static/search/search.html`, "navContainer")
   };
   firstSplit = url.split("?");
-  if (firstSplit.length === 1) {
-    defaultPage();
-  } else {
+  if (firstSplit.length > 1) {
     secondSplit = firstSplit[1].split("=");
     if (secondSplit.length > 0 && secondSplit[0] in url2page) {
       url2page[secondSplit[0]](secondSplit[1]);
-    } else {
-      defaultPage();
+      return;
     }
   }
+  defaultPage();
 }
 
 function navMain() {
@@ -29,8 +25,15 @@ function navMain() {
   setTimeout(() => MathJax.typeset(), 100);
 }
 
+function getRecommendations(query, searchBar) {
+  const { WebUtils } = Pedroth;
+  const searchDb = WebUtils.searchDb(WebUtils.readDb());
+  searchBar.setSuggestions(["p", "ped", "pedro", "pedroth"]);
+}
+
 const searchComponent = new SearchInput({
   onClick: searchInput => (window.location.href = `?q=${searchInput}`),
+  onChange: getRecommendations,
   buttonDom: DomBuilder.of("button")
     .attr("class", "navIcons")
     .append(DomBuilder.of("i").attr("class", "fas fa-search"))
