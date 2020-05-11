@@ -11,11 +11,11 @@ function getApp(url) {
   console.log("Final Src", finalSrc);
   WebUtils.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
 
-  // // render equations
-  // console.log("Rendering equations");
-  // setTimeout(() => {
-  //   console.log("MATHJAX");
-  //   MathJax.typeset();
-  // }, 200);
+  // render equations
+  console.log("Rendering equations");
+  setTimeout(() => {
+    console.log("MATHJAX");
+    MathJax.typeset();
+  }, 200);
 }
 getApp(window.location.href);
