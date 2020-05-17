@@ -27,7 +27,7 @@ WebUtils.readDb = async function () {
 WebUtils.sortDb = function (db) {
   return Sort.quicksort(
     db.posts,
-    (a, b) => date2int(a.date) - date2int(b.date) < 0
+    (a, b) => date2int(a.date) - date2int(b.date)
   );
 };
 
@@ -35,7 +35,15 @@ WebUtils.randomDb = function (db) {
   return ArrayUtils.randomPermute(db.posts);
 };
 
-WebUtils.searchDb = db => searchTerm => {};
+WebUtils.getTagsHistogram = db =>
+  db.reduce((hist, post) => {
+    if (!post.id in hist) {
+      hist[post.id] = 1;
+    } else {
+      hist[post.id] += 1;
+    }
+    return hist;
+  }, {});
 
 export default WebUtils;
 

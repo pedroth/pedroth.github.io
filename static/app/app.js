@@ -14,7 +14,6 @@ function getApp(url) {
   // render equations
   console.log("Rendering equations");
   setTimeout(() => {
-    console.log("MATHJAX");
     MathJax.typeset();
   }, 200);
 }

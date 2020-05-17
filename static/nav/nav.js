@@ -25,11 +25,24 @@ function navMain() {
   setTimeout(() => MathJax.typeset(), 100);
 }
 
+let tagsHist = {};
+WebUtils.readDb()
+  .then(WebUtils.getTagsHistogram)
+  .then(tagsH => (tagsHist = tagsH));
 function getRecommendations(query, searchBar) {
-  const { WebUtils } = Pedroth;
-  const searchDb = WebUtils.searchDb(WebUtils.readDb());
-  searchBar.setSuggestions(["p", "ped", "pedro", "pedroth"]);
+  const K = 6;
+  const { distance } = Nabla.EditDistance;
+  const sortedTags = Object.keys(tagsHist)
+    .map(t => ({ name: t, distance: distance(query, t) }))
+    .sort((a, b) => a.distance - b.distance);
+  searchBar.setSuggestions(sortedTags.slice(0, K));
 }
+
+//========================================================================================
+/*                                                                                      *
+ *                                         Main                                         *
+ *                                                                                      */
+//========================================================================================
 
 const searchComponent = new SearchInput({
   onClick: searchInput => (window.location.href = `?q=${searchInput}`),
@@ -47,5 +60,4 @@ const searchComponent = new SearchInput({
   normalStyle: "background-color:rgba(100, 100, 100); color:rgb(255, 255, 255)"
 });
 DomBuilder.ofId("searchInput").append(searchComponent.getDOM());
-
 navMain();

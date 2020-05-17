@@ -1,8 +1,8 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/Pedroth/Pedroth.js",
   mode: "development",
+  entry: "./src/Pedroth/Pedroth.js",
   output: {
     path: path.resolve("./dist/"),
     filename: "index.js",
