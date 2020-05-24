@@ -3,7 +3,7 @@ import $ from "jquery";
 
 const WebUtils = {};
 
-WebUtils.retrieveAndAppend = async function (url, htmlId) {
+WebUtils.retrieveAndAppend = async (url, htmlId) => {
   console.log(`Reading from ${url}.. appending on ${htmlId}`);
   const html = await fetch(url).then(x => x.text());
   $(`#${htmlId}`).html(html);
@@ -14,7 +14,7 @@ WebUtils.retrieveAndAppend = async function (url, htmlId) {
    */
 };
 
-WebUtils.readDb = async function () {
+WebUtils.readDb = async () => {
   const time = new Date().getTime();
   if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {
     console.log("retrieving db from cache");
@@ -24,14 +24,14 @@ WebUtils.readDb = async function () {
   return JSON.parse(localStorage.db).data;
 };
 
-WebUtils.sortDb = function (db) {
+WebUtils.sortDb = db => {
   return Sort.quicksort(
     db.posts,
     (a, b) => date2int(a.date) - date2int(b.date)
   );
 };
 
-WebUtils.randomDb = function (db) {
+WebUtils.randomDb = db => {
   return ArrayUtils.randomPermute(db.posts);
 };
 
@@ -46,6 +46,13 @@ WebUtils.getTagsHistogram = db =>
       }
       return hist;
     }, {});
+
+WebUtils.search = db => query => {
+  if (!query || query.replaceAll(" ", "") === "") return [];
+  const querySplit = query.trim().split("+");
+  const tagsHist = WebUtils.getTagsHistogram(db);
+  db.posts;
+};
 
 export default WebUtils;
 

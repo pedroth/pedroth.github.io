@@ -1,10 +1,10 @@
 function selectPage(url) {
+  const { retrieveAndAppend } = WebUtils;
   defaultPage = () =>
-    WebUtils.retrieveAndAppend("static/main/main.html", "navContainer");
+    retrieveAndAppend("static/main/main.html", "navContainer");
   url2page = {
-    p: p => WebUtils.retrieveAndAppend(`static/app/app.html`, "navContainer"),
-    q: q =>
-      WebUtils.retrieveAndAppend(`static/search/search.html`, "navContainer")
+    p: p => retrieveAndAppend(`static/app/app.html`, "navContainer"),
+    q: q => retrieveAndAppend(`static/search/search.html`, "navContainer")
   };
   firstSplit = url.split("?");
   if (firstSplit.length > 1) {
@@ -35,12 +35,16 @@ function getRecommendations(query, searchBar) {
     searchBar.setSuggestions([]);
     return;
   }
-  query = query.trim();
+  const querySplit = query.split("+");
+  const finalQuery =
+    querySplit.length > 1
+      ? querySplit[querySplit.length - 1].trim()
+      : querySplit[0].trim();
   const { distance } = Nabla.EditDistance;
   const sortedTags = Object.keys(tagsHist)
     .map(t => ({
       name: t,
-      distance: distance(query, t.substring(0, query.length))
+      distance: distance(finalQuery, t.substring(0, finalQuery.length))
     }))
     .sort((a, b) => a.distance - b.distance);
   searchBar.setSuggestions(
@@ -49,6 +53,15 @@ function getRecommendations(query, searchBar) {
       .filter((t, i) => i < 7)
       .map(z => z.name)
   );
+}
+
+function onSetSuggestion(prevValue, suggestion) {
+  const split = prevValue.split("+").map(z => z.trim());
+  if (split.length > 1) {
+    split[split.length - 1] = suggestion;
+    return split.join(" + ");
+  }
+  return suggestion;
 }
 
 //========================================================================================
@@ -60,13 +73,15 @@ function getRecommendations(query, searchBar) {
 const searchComponent = new SearchInput({
   onClick: searchInput => (window.location.href = `?q=${searchInput}`),
   onChange: getRecommendations,
+  onSetInput: onSetSuggestion,
   buttonDom: DomBuilder.of("button")
     .attr("class", "navIcons")
     .append(DomBuilder.of("i").attr("class", "fas fa-search"))
     .build(),
   inputDom: DomBuilder.of("input")
     .attr("class", "searchClass")
-    .inner("search...")
+    .attr("type", "text")
+    .attr("placeholder", "Search... use + to concat")
     .build(),
   highLightStyle:
     "background-color:rgba(255, 255, 255); color:rgb(100, 100, 100)",

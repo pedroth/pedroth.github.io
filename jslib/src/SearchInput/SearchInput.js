@@ -36,7 +36,6 @@ class SearchInput {
         this.render();
       })
       .event("keydown", evt => {
-        console.log("Key pressed");
         const keyCodeAction = {
           Enter: this.props.onClick,
           Escape: this.clearSuggestion,
@@ -89,7 +88,6 @@ class SearchInput {
     );
 
   render = () => {
-    console.log("Render", this.selectedIndex);
     this.renderSuggestions();
   };
 
@@ -145,8 +143,12 @@ class SearchInput {
   setSuggestions = suggestionList => (this.suggestionList = suggestionList);
 
   setInputValue = value => {
-    DomBuilder.ofId(this.idInput).build().value = value;
-    this.inputValue = value;
+    const input = DomBuilder.ofId(this.idInput).build();
+    const nextInput = this.props.onSetInput(input.value, value);
+    this.inputValue = nextInput;
+    input.value = nextInput;
+    input.focus();
+    input.select();
   };
 
   static defaultProps = {
@@ -154,6 +156,7 @@ class SearchInput {
     onChange: (input, searchBar) => {
       searchBar.setSuggestions(range0(10).map(Math.random));
     },
+    onSetInput: (prev, suggestion) => suggestion,
     inputDom: DomBuilder.of("input").build(),
     buttonDom: DomBuilder.of("button").inner("search").build(),
     highLightStyle:
