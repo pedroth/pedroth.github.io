@@ -29,13 +29,26 @@ let tagsHist = {};
 WebUtils.readDb()
   .then(WebUtils.getTagsHistogram)
   .then(tagsH => (tagsHist = tagsH));
+
 function getRecommendations(query, searchBar) {
-  const K = 6;
+  if (!query || query === "" || query.replaceAll(" ", "") === "") {
+    searchBar.setSuggestions([]);
+    return;
+  }
+  query = query.trim();
   const { distance } = Nabla.EditDistance;
   const sortedTags = Object.keys(tagsHist)
-    .map(t => ({ name: t, distance: distance(query, t) }))
+    .map(t => ({
+      name: t,
+      distance: distance(query, t.substring(0, query.length))
+    }))
     .sort((a, b) => a.distance - b.distance);
-  searchBar.setSuggestions(sortedTags.slice(0, K));
+  searchBar.setSuggestions(
+    sortedTags
+      .filter(t => t.distance <= 7)
+      .filter((t, i) => i < 7)
+      .map(z => z.name)
+  );
 }
 
 //========================================================================================

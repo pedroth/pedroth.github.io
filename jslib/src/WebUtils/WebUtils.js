@@ -36,14 +36,16 @@ WebUtils.randomDb = function (db) {
 };
 
 WebUtils.getTagsHistogram = db =>
-  db.reduce((hist, post) => {
-    if (!post.id in hist) {
-      hist[post.id] = 1;
-    } else {
-      hist[post.id] += 1;
-    }
-    return hist;
-  }, {});
+  db.posts
+    .flatMap(p => p.tags)
+    .reduce((hist, tag) => {
+      if (!(tag in hist)) {
+        hist[tag] = 1;
+      } else {
+        hist[tag] += 1;
+      }
+      return hist;
+    }, {});
 
 export default WebUtils;
 

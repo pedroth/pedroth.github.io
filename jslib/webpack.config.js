@@ -22,7 +22,7 @@ module.exports = {
               "@babel/plugin-proposal-class-properties",
               [
                 "@babel/plugin-transform-runtime",
-                { corejs: 3, useESModules: true, helpers: true }
+                { useESModules: true, helpers: true }
               ]
             ]
           }
