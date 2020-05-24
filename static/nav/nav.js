@@ -31,7 +31,7 @@ WebUtils.readDb()
   .then(tagsH => (tagsHist = tagsH));
 
 function getRecommendations(query, searchBar) {
-  if (!query || query === "" || query.replaceAll(" ", "") === "") {
+  if (!query || query.replaceAll(" ", "") === "") {
     searchBar.setSuggestions([]);
     return;
   }
