@@ -1,18 +1,18 @@
-function getCardsInRow(arrayOfCards, colPerRows) {
+function getCardsInRow(posts, colPerRows) {
   const row = DomBuilder.of("div").attr("class", "row");
   for (let i = 0; i < colPerRows; i++) {
-    const card = arrayOfCards[i];
+    const card = posts[i];
     const col = DomBuilder.of("div")
       .attr("class", "col-lg-4 col-md-6 col-sm-12")
       .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
-        Card.createCardFromData({
-          imageSrc: card.src + `/${card.id}.gif`,
-          url: `/?p=${card.src}`,
-          title: card.title,
-          tags: card.tags,
-          date: card.date
-        })
+        Card.builder()
+          .imageSrc(card.src + `/${card.id}.gif`)
+          .url(`/?p=${card.src}`)
+          .title(card.title)
+          .tags(card.tags)
+          .date(card.date)
+          .build()
       )
       .build();
     row.append(col);
@@ -27,7 +27,7 @@ function getCardsInRow(arrayOfCards, colPerRows) {
  */
 function generateRecent(db, k = 3) {
   const sortedDb = WebUtils.sortDb(db);
-  document.getElementById("recent").appendChild(getCardsInRow(sortedDb, k));
+  DomBuilder.ofId("recent").append(getCardsInRow(sortedDb, k));
 }
 
 /**
@@ -37,7 +37,7 @@ function generateRecent(db, k = 3) {
  */
 function generateRandom(db, k = 3) {
   const randomDb = WebUtils.randomDb(db);
-  document.getElementById("random").appendChild(getCardsInRow(randomDb, k));
+  DomBuilder.ofId("random").append(getCardsInRow(randomDb, k));
 }
 
 async function generateMainPage() {

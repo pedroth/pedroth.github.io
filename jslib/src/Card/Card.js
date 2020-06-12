@@ -1,5 +1,7 @@
 const Card = {};
 
+Card.builder = () => new CardBuilder();
+
 /**
  * @param data: {imageSrc: string, url: string, title: string, tags: array<string>, date: string}
  */
@@ -19,6 +21,35 @@ export default Card;
  *                                   Private functions                                  *
  *                                                                                      */
 //========================================================================================
+
+class CardBuilder {
+  constructor() {
+    this._imageSrc = "";
+    this._url = "";
+    this._title = "";
+    this._tags = [];
+    this._date = "";
+  }
+  assignRet = expr => {
+    expr();
+    return this;
+  };
+
+  imageSrc = src => this.assignRet(() => (this._imageSrc = src));
+  url = url => this.assignRet(() => (this._url = url));
+  title = title => this.assignRet(() => (this._title = title));
+  tags = tags => this.assignRet(() => (this._tags = tags));
+  date = date => this.assignRet(() => (this._date = date));
+
+  build = () =>
+    Card.createCardFromData({
+      imageSrc: this._imageSrc,
+      url: this._url,
+      title: this._title,
+      tags: this._tags,
+      date: this._date
+    });
+}
 
 const createImage = data =>
   DomBuilder.of("a")
@@ -57,11 +88,7 @@ const createBody = data =>
   DomBuilder.of("div")
     .attr("class", "card-body")
     .append(createTitle(data))
-    .append(
-      DomBuilder.of("div")
-        .append(createTags(data.tags))
-        .build()
-    )
+    .append(DomBuilder.of("div").append(createTags(data.tags)).build())
     .append(
       DomBuilder.of("p")
         .attr("class", "border-top")

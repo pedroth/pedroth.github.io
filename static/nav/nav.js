@@ -31,28 +31,27 @@ WebUtils.readDb()
   .then(tagsH => (tagsHist = tagsH));
 
 function getRecommendations(query, searchBar) {
-  if (!query || query.replaceAll(" ", "") === "") {
+  if (!query || query.trim() === "") {
     searchBar.setSuggestions([]);
     return;
   }
-  const querySplit = query.split("+");
-  const finalQuery =
-    querySplit.length > 1
-      ? querySplit[querySplit.length - 1].trim()
-      : querySplit[0].trim();
-  const { distance } = Nabla.EditDistance;
-  const sortedTags = Object.keys(tagsHist)
+  const len = array => array.length;
+  const subStr = (string, length) => string.substring(0, length);
+  const { distance: d } = Nabla.EditDistance;
+  const qSplit = query.split("+").map(s => s.trim());
+  const finalQuery = len(qSplit) > 1 ? qSplit[len(qSplit) - 1] : qSplit[0];
+  const tags = Object.keys(tagsHist);
+  const sortedTags = tags
     .map(t => ({
       name: t,
-      distance: distance(finalQuery, t.substring(0, finalQuery.length))
+      distance: d(finalQuery, subStr(t, len(finalQuery)))
     }))
     .sort((a, b) => a.distance - b.distance);
-  searchBar.setSuggestions(
-    sortedTags
-      .filter(t => t.distance <= 7)
-      .filter((t, i) => i < 7)
-      .map(z => z.name)
-  );
+  const suggestions = sortedTags
+    .filter(t => t.distance <= 7)
+    .filter((t, i) => i < 7)
+    .map(z => z.name);
+  searchBar.setSuggestions(suggestions);
 }
 
 function onSetSuggestion(prevValue, suggestion) {

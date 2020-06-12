@@ -1,4 +1,4 @@
-import { Sort, ArrayUtils } from "nabla.js";
+import { Sort, ArrayUtils, EditDistance } from "nabla.js";
 import $ from "jquery";
 
 const WebUtils = {};
@@ -48,10 +48,23 @@ WebUtils.getTagsHistogram = db =>
     }, {});
 
 WebUtils.search = db => query => {
-  if (!query || query.replaceAll(" ", "") === "") return [];
-  const querySplit = query.trim().split("+");
-  const tagsHist = WebUtils.getTagsHistogram(db);
-  db.posts;
+  if (!query || query.trim() === "") return [];
+  const { distance: d } = EditDistance;
+  const queryT = query.trim();
+  const querySplit = queryT.split("+").map(s => s.trim());
+  const tags = Object.keys(WebUtils.getTagsHistogram(db));
+  const argMin = array => cost =>
+    array.reduce(
+      ([minC, minV], v) => {
+        const c = cost(v);
+        return c < minC ? [c, v] : [minC, minV];
+      },
+      [Number.MAX_VALUE, null]
+    )[1];
+  const qTagSet = querySplit
+    .map(q => argMin(tags)(t => d(q, t.substring(0, q.length))))
+    .reduce((s, v) => s.add(v), new Set());
+  return db.posts.filter(p => p.tags.some(t => qTagSet.has(t)));
 };
 
 export default WebUtils;
