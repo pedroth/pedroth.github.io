@@ -1,16 +1,12 @@
 function getApp(url) {
   console.log("Getting app...", url);
-  const firstSplit = url.split("?");
-  const secondSplit = firstSplit[1].split("=");
-  const slashSplit = secondSplit[1].split("/");
-  const filename = slashSplit[slashSplit.length - 1];
-  const finalSrc =
-    slashSplit.length > 1
-      ? `${secondSplit[1]}/${filename}`
-      : `static/${filename}`;
-  console.log("Final Src", finalSrc);
-  WebUtils.retrieveAndAppend(`${finalSrc}.html`, "appContainer");
-
+  const div2append = "appContainer";
+  const split = url.split("=");
+  if (split.length <= 1) {
+    WebUtils.retrieveAndAppend("static/notFound.html", div2append);
+  } else {
+    WebUtils.retrieveAndAppend(split[1], div2append);
+  }
   // render equations
   console.log("Rendering equations");
   setTimeout(() => {

@@ -6,8 +6,8 @@ const getCardGrid = posts => {
       .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
         Card.builder()
-          .imageSrc(post.src + `/${post.id}.gif`)
-          .url(`/?p=${post.src}`)
+          .imageSrc(`${post.src}/${post.id}.gif`)
+          .url(`/?p=${post.src}/${post.id}.html`)
           .title(post.title)
           .tags(post.tags)
           .date(post.date)
@@ -30,5 +30,18 @@ const getCardGrid = posts => {
       DomBuilder.of("h1").inner(`Results for "${query}"`)
     );
     DomBuilder.ofId("results").append(getCardGrid(WebUtils.search(db)(query)));
+    DomBuilder.ofId("google").append(
+      DomBuilder.of("a")
+        .attr("class", "btn btn-primary")
+        .attr("style", "flex-grow: 1")
+        .attr(
+          "href",
+          `https://www.google.com/search?q=${encodeURI(
+            `site:https://pedroth.github.io ${query}`
+          )}`
+        )
+        .attr("target", `_blank`)
+        .append(DomBuilder.of("h2").inner("Google"))
+    );
   });
 })();

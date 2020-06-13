@@ -1,17 +1,17 @@
 function getCardsInRow(posts, colPerRows) {
   const row = DomBuilder.of("div").attr("class", "row");
   for (let i = 0; i < colPerRows; i++) {
-    const card = posts[i];
+    const post = posts[i];
     const col = DomBuilder.of("div")
       .attr("class", "col-lg-4 col-md-6 col-sm-12")
       .attr("style", "margin-top:10px; margin-bottom: 10px;")
       .append(
         Card.builder()
-          .imageSrc(card.src + `/${card.id}.gif`)
-          .url(`/?p=${card.src}`)
-          .title(card.title)
-          .tags(card.tags)
-          .date(card.date)
+          .imageSrc(`${post.src}/${post.id}.gif`)
+          .url(`/?p=${post.src}/${post.id}.html`)
+          .title(post.title)
+          .tags(post.tags)
+          .date(post.date)
           .build()
       )
       .build();

@@ -4,7 +4,8 @@ function selectPage(url) {
     retrieveAndAppend("static/main/main.html", "navContainer");
   url2page = {
     p: p => retrieveAndAppend(`static/app/app.html`, "navContainer"),
-    q: q => retrieveAndAppend(`static/search/search.html`, "navContainer")
+    q: q => retrieveAndAppend(`static/search/search.html`, "navContainer"),
+    s: s => retrieveAndAppend(`static/${s}`, "navContainer")
   };
   firstSplit = url.split("?");
   if (firstSplit.length > 1) {

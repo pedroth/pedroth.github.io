@@ -64,7 +64,10 @@ WebUtils.search = db => query => {
   const qTagSet = querySplit
     .map(q => argMin(tags)(t => d(q, t.substring(0, q.length))))
     .reduce((s, v) => s.add(v), new Set());
-  return db.posts.filter(p => p.tags.some(t => qTagSet.has(t)));
+  const score = searchScore(qTagSet);
+  return db.posts
+    .filter(p => p.tags.some(t => qTagSet.has(t)))
+    .sort((a, b) => score(b) - score(a));
 };
 
 export default WebUtils;
@@ -74,6 +77,9 @@ export default WebUtils;
  *                                   Private functions                                  *
  *                                                                                      */
 //========================================================================================
+
+const searchScore = queryTagSet => post =>
+  post.tags.reduce((acc, v) => (queryTagSet.has(v) ? acc + 1 : acc), 0);
 
 function date2int(date) {
   var dateStrs = date.split("/");
