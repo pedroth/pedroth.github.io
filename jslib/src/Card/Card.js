@@ -1,3 +1,4 @@
+import "./Card.css";
 const Card = {};
 
 Card.builder = () => new CardBuilder();

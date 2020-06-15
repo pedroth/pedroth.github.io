@@ -1,13 +1,9 @@
-<div class="container">
-  <h1>Tags</h1>
-  <div id="tags"></div>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <div style="flex-grow: 0.77;">
+    <h1 class="underLine" id="resultsHeader" style="padding-top: 25px;">
+      Tags
+    </h1>
+    <div id="results"></div>
+  </div>
 </div>
-<script>
-  (async () => {
-    const db = await Pedroth.readDb();
-    // const tags = db.experiments.reduce((e,exp) => {
-    //   exp.tags
-    // }, {});
-    console.log("DB", db);
-  })();
-</script>
+<script src="./static/tags/tags.js"></script>
