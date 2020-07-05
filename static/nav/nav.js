@@ -23,7 +23,7 @@ function navMain() {
   selectPage(url);
   // render equations
   console.log("Rendering equations");
-  setTimeout(() => MathJax.typeset(), 100);
+  // setTimeout(() => MathJax.typeset(), 100);
 }
 
 let tagsHist = {};
