@@ -123,8 +123,8 @@ class Box {
     return e1P < 0 || e2P < 0 ? Box.ZERO : new Box(newMin, newMax);
   }
 
-  move(position) {
-    return new Box(this.min.add(position), this.max.add(position));
+  move(vector) {
+    return new Box(this.min.add(vector), this.max.add(vector));
   }
 
   collidesWith(box) {
@@ -205,7 +205,7 @@ const createTagWithBox = (tag, box, power) => {
   return tagEl;
 };
 
-const createTag = function (tag, { x, y }, power) {
+const createTagWithPos = function (tag, { x, y }, power) {
   const sizes = [100, 200];
   height = 25;
   const red = [1, 0, 0];
@@ -237,6 +237,27 @@ const createTag = function (tag, { x, y }, power) {
   return tagEl;
 };
 
+const createTag = function (tag, power, getStyle) {
+  const sizes = [100, 200];
+  height = 25;
+  const red = [1, 0, 0];
+  const blue = [0, 0, 1];
+  const color = blue
+    .map(x => x * (1 - power))
+    .map((x, i) => x + red[i] * power)
+    .map(x => Math.floor(x * 255));
+  const width = sizes[0] * (1 - power) + sizes[1] * power;
+  const fontColor = color.map(x => 255);
+  const tagEl = DomBuilder.of("a")
+    .attr("class", "badge")
+    .attr("href", `/?q=${tag}`)
+    .attr("style", getStyle)
+    .inner(tag)
+    .build();
+  DomBuilder.ofId("results").append(tagEl);
+  return tagEl;
+};
+
 const argmax = (array, profit) =>
   array.reduce(
     (acc, v) => {
@@ -251,9 +272,10 @@ function collideWithBoxes(box, boxes) {
 }
 
 function samplePositionFromBox(box) {
-  return box.center.add(
-    Vec2.random(-0.1, 0.1).mul(Vec2.of(box.width, box.height))
-  );
+  const scale = 2;
+  const randVec = Vec2.random(-scale, scale);
+  const sizeVec = Vec2.of(box.width, box.height);
+  return box.center.add(randVec.mul(sizeVec));
 }
 
 function generateSampleFromPivot(pivotEl, { tag, power }, results, k) {
@@ -262,11 +284,12 @@ function generateSampleFromPivot(pivotEl, { tag, power }, results, k) {
   const samples = [];
   for (let i = 0; i < k; i++) {
     const samplePosition = samplePositionFromBox(pivotBox);
-    const sampleBox = pivotBox.move(samplePosition);
+    const translateVec = samplePosition.sub(pivotBox.center);
+    const sampleBox = pivotBox.move(translateVec);
     const notCollideWithBoxes = !collideWithBoxes(sampleBox, boxes);
     const insideMainBox = MAIN_BOX.collidesWith(samplePosition);
     if (notCollideWithBoxes && insideMainBox) {
-      samples.push(samplePosition);
+      samples.push(translateVec);
     }
   }
   averageDistFromBoxes = v =>
@@ -278,7 +301,7 @@ function generateSampleFromPivot(pivotEl, { tag, power }, results, k) {
 }
 
 function generateSample({ tag, power }) {
-  return createTag(tag, MAIN_BOX.randomPointInside(), power);
+  return createTagWithPos(tag, MAIN_BOX.randomPointInside(), power);
 }
 
 const randomInt = (min = 0) => (max = 1) => {
@@ -289,7 +312,7 @@ const randomInt = (min = 0) => (max = 1) => {
 
 const randomInt0 = randomInt();
 
-function poissonDiskSample(priorityTagName, tagPower, k = 3) {
+function poissonDiskSample(priorityTagName, tagPower, k = 10) {
   console.log("Start Poisson");
   const tagActiveList = [priorityTagName.shift()];
   const firstTag = tagActiveList[0];
