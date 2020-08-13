@@ -1,0 +1,186 @@
+<html>
+  <body>
+    <a
+      id="b1"
+      style="
+        position: absolute;
+        top: 150px;
+        left: 75px;
+        background-color: blue;
+        font-size: 100px;
+      "
+      >batata</a
+    >
+    <a
+      id="b2"
+      style="position: absolute; top: 75px; left: 50px; background-color: red;"
+      >pedro</a
+    >
+  </body>
+  <script>
+    class Vec2 {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+
+      toArray() {
+        return [this.x, this.y];
+      }
+
+      map(lambda) {
+        return new Vec2(...this.toArray().map(lambda));
+      }
+
+      reduce(foldLambda, acc = 0) {
+        return this.toArray().reduce(foldLambda, acc);
+      }
+
+      op(vec2, operator) {
+        const v = vec2.toArray();
+        return new Vec2(...this.toArray().map((x, i) => operator(x, v[i])));
+      }
+
+      sum(vec2) {
+        return this.op(vec2, (a, b) => a + b);
+      }
+
+      add(vec2) {
+        return this.sum(vec2);
+      }
+
+      sub(vec2) {
+        return this.op(vec2, (a, b) => a - b);
+      }
+
+      mul(vec2) {
+        return this.op(vec2, (a, b) => a * b);
+      }
+
+      div(vec2) {
+        return this.op(vec2, (a, b) => a / b);
+      }
+
+      dot(vec2) {
+        return this.mul(vec2).reduce((acc, x) => acc + x, 0);
+      }
+
+      scale(r) {
+        return this.map(x => x * r);
+      }
+
+      length() {
+        return Math.sqrt(this.dot(this));
+      }
+
+      equals(vec2, precision = 1e-5) {
+        if (!(vec2 instanceof Vec2)) return false;
+        return this.sub(vec2).length() < precision;
+      }
+
+      static random(min = 0, max = 1) {
+        let minimum = Math.min(min, max);
+        let maximum = Math.max(min, max);
+        return new Vec2(
+          ...[1, 2].map(() => minimum + (maximum - minimum) * Math.random())
+        );
+      }
+
+      static of(x, y) {
+        return new Vec2(x, y);
+      }
+
+      static fromArray([x, y]) {
+        return new Vec2(x, y);
+      }
+
+      static ZERO = new Vec2(0, 0);
+
+      static e1 = Vec2.of(1, 0);
+      static e2 = Vec2.of(0, 1);
+    }
+    class Box {
+      constructor(min, max) {
+        this.min = min.op(max, Math.min);
+        this.max = max.op(min, Math.max);
+        this.center = min.add(max).scale(1 / 2);
+        this.diagonal = max.sub(min);
+        this.width = this.diagonal.x;
+        this.height = this.diagonal.y;
+      }
+      /**
+       * Union of boxes
+       * @param {*} box
+       */
+      add(box) {
+        const { min, max } = this;
+        return new Box(min.op(box.min, Math.min), max.op(box.max, Math.max));
+      }
+
+      /**
+       * Intersection of boxes
+       * @param {*} box
+       */
+      sub(box) {
+        const { min, max } = this;
+        const newMin = min.op(box.min, Math.max);
+        const newMax = max.op(box.max, Math.min);
+        const newDiag = newMax.sub(newMin);
+        const e1P = newDiag.dot(Vec2.e1);
+        const e2P = newDiag.dot(Vec2.e2);
+        return e1P < 0 || e2P < 0 ? Box.ZERO : new Box(newMin, newMax);
+      }
+
+      move(position) {
+        return new Box(this.min.add(position), this.max.add(position));
+      }
+
+      collidesWith(box) {
+        const actionByTypes = [
+          { type: Box, action: () => !this.sub(box).isEmpty() },
+          { type: Vec2, action: () => !this.sub(new Box(box, box)).isEmpty() }
+        ];
+        for (let i = 0; i < actionByTypes.length; i++) {
+          if (box instanceof actionByTypes[i].type) {
+            return actionByTypes[i].action();
+          }
+        }
+      }
+
+      randomPointInside() {
+        return this.min.add(
+          Vec2.random().mul(Vec2.of(this.width, this.height))
+        );
+      }
+
+      isEmpty() {
+        return this.equals(Box.ZERO);
+      }
+
+      equals(box) {
+        if (!(box instanceof Box)) return false;
+        if (this == Box.ZERO) return true;
+        return this.min.equals(box.min) && this.max.equals(box.max);
+      }
+
+      static ZERO = new Box(Vec2.ZERO, Vec2.ZERO);
+
+      static ofHtml(elem) {
+        const { top, left, height, width } = elem.getBoundingClientRect();
+        const corner = Vec2.of(top, left);
+        return new Box(corner, corner.add(Vec2.of(height, width)));
+      }
+    }
+
+    setInterval(() => {
+      const b1 = Box.ofHtml(document.getElementById("b1"));
+      const b2 = Box.ofHtml(document.getElementById("b2"));
+      const collides = b1
+        .move(Vec2.of(1, 1))
+        .collidesWith(b2.move(Vec2.of(1, 1)));
+      const collides1 = b2.collidesWith(b1);
+      console.log("B1 collides with B2", collides);
+      console.log("B2 collides with B1", collides1);
+    }, 1000);
+  </script>
+</html>

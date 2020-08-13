@@ -28,6 +28,7 @@
   "dependencies": {
     "@babel/runtime": "^7.9.6",
     "jquery": "^3.5.1",
-    "nabla.js": "github:pedroth/nabla.js"
+    "nabla.js": "github:pedroth/nabla.js",
+    "textfit": "github:STRML/textFit"
   }
 }
