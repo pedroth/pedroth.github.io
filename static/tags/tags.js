@@ -164,99 +164,17 @@ class Box {
 
 //========================================================================================
 /*                                                                                      *
- *                                  Poisson Disk Sample                                 *
+ *                                         Utils                                        *
  *                                                                                      */
 //========================================================================================
 
-const TITLE_HEIGHT = 175;
-const MAIN_BOX = new Box(
-  Vec2.of(window.innerHeight * 0.1, window.innerWidth * 0.1),
-  Vec2.of(window.innerHeight * 0.9, window.innerWidth * 0.9)
-);
-
-const createTagWithBox = (tag, box, power) => {
-  const sizes = [100, 200];
-  const width = sizes[0] * (1 - power) + sizes[1] * power;
-  const red = [1, 0, 0];
-  const blue = [0, 0, 1];
-  const color = blue
-    .map(x => x * (1 - power))
-    .map((x, i) => x + red[i] * power)
-    .map(x => Math.floor(x * 255));
-  const fontColor = color.map(x => 255);
-  const tagEl = DomBuilder.of("a")
-    .attr("class", "badge")
-    .attr("href", `/?q=${tag}`)
-    .attr(
-      "style",
-      `
-      position: absolute;
-      top:${box.min.x}px; 
-      left:${box.min.y}px;
-      width:${width};
-      height:${box.width};
-      background-color:rgb(${color[0]},${color[1]},${color[2]});
-      color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
-      `
-    )
-    .inner(tag)
-    .build();
-  DomBuilder.ofId("results").append(tagEl);
-  return tagEl;
+const randomInt = (min = 0) => (max = 1) => {
+  let minimum = Math.min(min, max);
+  let maximum = Math.max(min, max);
+  return Math.floor(minimum + (maximum - minimum) * Math.random());
 };
 
-const createTagWithPos = function (tag, { x, y }, power) {
-  const sizes = [100, 200];
-  height = 25;
-  const red = [1, 0, 0];
-  const blue = [0, 0, 1];
-  const color = blue
-    .map(x => x * (1 - power))
-    .map((x, i) => x + red[i] * power)
-    .map(x => Math.floor(x * 255));
-  const width = sizes[0] * (1 - power) + sizes[1] * power;
-  const fontColor = color.map(x => 255);
-  const tagEl = DomBuilder.of("a")
-    .attr("class", "badge")
-    .attr("href", `/?q=${tag}`)
-    .attr(
-      "style",
-      `
-      position: absolute;
-      top:${x - height / 2}px; 
-      left:${y - width / 2}px;
-      width:${width};
-      height:${height};
-      background-color:rgb(${color[0]},${color[1]},${color[2]});
-      color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
-      `
-    )
-    .inner(tag)
-    .build();
-  DomBuilder.ofId("results").append(tagEl);
-  return tagEl;
-};
-
-const createTag = function (tag, power, getStyle) {
-  const sizes = [100, 200];
-  height = 25;
-  const red = [1, 0, 0];
-  const blue = [0, 0, 1];
-  const color = blue
-    .map(x => x * (1 - power))
-    .map((x, i) => x + red[i] * power)
-    .map(x => Math.floor(x * 255));
-  const width = sizes[0] * (1 - power) + sizes[1] * power;
-  const fontColor = color.map(x => 255);
-  const tagEl = DomBuilder.of("a")
-    .attr("class", "badge")
-    .attr("href", `/?q=${tag}`)
-    .attr("style", getStyle)
-    .inner(tag)
-    .build();
-  DomBuilder.ofId("results").append(tagEl);
-  return tagEl;
-};
+const randomInt0 = randomInt();
 
 const argmax = (array, profit) =>
   array.reduce(
@@ -266,6 +184,72 @@ const argmax = (array, profit) =>
     },
     { p: Number.MIN_VALUE, v: null }
   ).v;
+
+//========================================================================================
+/*                                                                                      *
+ *                                  Poisson Disk Sample                                 *
+ *                                                                                      */
+//========================================================================================
+
+const TITLE_HEIGHT = 175;
+const MAIN_BOX = new Box(
+  Vec2.of(window.innerHeight * 0.25, window.innerWidth * 0.1),
+  Vec2.of(window.innerHeight * 0.9, window.innerWidth * 0.9)
+);
+
+const createTagWithBox = (tag, box, power) => {
+  return createTag(
+    tag,
+    power,
+    (width, height, color, fontColor) => `
+  position: absolute;
+  top:${box.min.x}px; 
+  left:${box.min.y}px;
+  width:${width};
+  height:${height};
+  background-color:rgb(${color[0]},${color[1]},${color[2]});
+  color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
+  `
+  );
+};
+
+const createTagWithPos = function (tag, { x, y }, power) {
+  return createTag(
+    tag,
+    power,
+    (width, height, color, fontColor) => `
+  position: absolute;
+  top:${x - height / 2}px; 
+  left:${y - width / 2}px;
+  width:${width};
+  height:${height};
+  background-color:rgb(${color[0]},${color[1]},${color[2]});
+  color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
+  `
+  );
+};
+
+const createTag = function (tag, power, getStyle) {
+  const widths = [0.1 * window.innerWidth, 0.2 * window.innerWidth];
+  const heights = [0.025 * window.innerHeight, 0.05 * window.innerHeight];
+  const red = [1, 0, 0];
+  const blue = [0, 0, 1];
+  const color = blue
+    .map(x => x * (1 - power))
+    .map((x, i) => x + red[i] * power)
+    .map(x => Math.floor(x * 255));
+  const width = widths[0] * (1 - power) + widths[1] * power;
+  const height = heights[0] * (1 - power) + heights[1] * power;
+  const fontColor = color.map(x => 255);
+  const tagEl = DomBuilder.of("a")
+    .attr("class", "badge")
+    .attr("href", `/?q=${tag}`)
+    .attr("style", getStyle(width, height, color, fontColor))
+    .inner(tag)
+    .build();
+  DomBuilder.ofId("results").append(tagEl);
+  return tagEl;
+};
 
 function collideWithBoxes(box, boxes) {
   return boxes.some(b => b.collidesWith(box));
@@ -304,21 +288,13 @@ function generateSample({ tag, power }) {
   return createTagWithPos(tag, MAIN_BOX.randomPointInside(), power);
 }
 
-const randomInt = (min = 0) => (max = 1) => {
-  let minimum = Math.min(min, max);
-  let maximum = Math.max(min, max);
-  return Math.floor(minimum + (maximum - minimum) * Math.random());
-};
-
-const randomInt0 = randomInt();
-
 function poissonDiskSample(priorityTagName, tagPower, k = 10) {
-  console.log("Start Poisson");
   const tagActiveList = [priorityTagName.shift()];
   const firstTag = tagActiveList[0];
   const resultsEl = {
     [firstTag]: generateSample({ tag: firstTag, power: tagPower(firstTag) })
   };
+  let nextTag = priorityTagName.shift();
   while (tagActiveList.length > 0 && priorityTagName.length > 0) {
     const keys = Object.keys(resultsEl);
     const randomIndex = randomInt0(tagActiveList.length);
@@ -326,20 +302,28 @@ function poissonDiskSample(priorityTagName, tagPower, k = 10) {
       tagActiveList.length > 0
         ? resultsEl[tagActiveList[randomIndex]]
         : resultsEl[keys[randomInt0(keys.length)]];
-    const nextTag = priorityTagName.shift();
     const sampleEl = generateSampleFromPivot(
       pivotEl,
       { tag: nextTag, power: tagPower(nextTag) },
       resultsEl,
       k
     );
-    if (!sampleEl) tagActiveList.splice(randomIndex, 1);
-    else {
+    if (!sampleEl) {
+      tagActiveList.length > 0 && tagActiveList.splice(randomIndex, 1);
+    } else {
       resultsEl[nextTag] = sampleEl;
       tagActiveList.push(nextTag);
+      nextTag = priorityTagName.shift();
     }
   }
   return resultsEl;
+}
+
+function randomSample(priorityTagName, tagPower) {
+  while (priorityTagName.length > 0) {
+    const tag = priorityTagName.shift();
+    generateSample({ tag, power: tagPower(tag) });
+  }
 }
 
 //========================================================================================
@@ -359,6 +343,7 @@ WebUtils.readDb().then(db => {
     .map(x => x[0]);
   const tagPower = t => (tagsH[t] / sum - min) / (max - min);
   poissonDiskSample(priorityTagName, tagPower);
+  // randomSample(priorityTagName, tagPower);
   textFit(document.getElementsByClassName("badge"), {
     alignHoriz: true,
     alignVert: true

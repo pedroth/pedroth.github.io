@@ -20,6 +20,121 @@
       ]
     },
     {
+      "id": "IntuitionOfCalculus",
+      "title": "Intuition of Calculus",
+      "date": "31/05/2018",
+      "src": "posts/IntuitionOfCalculus",
+      "tags": [
+        "blog",
+        "mathematics",
+        "calculus",
+        "one variable",
+        "optimization",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "ProjectionDotProduct",
+      "title": "Projection and Dot product",
+      "date": "05/06/2018",
+      "src": "posts/ProjectionDotProduct",
+      "tags": ["blog", "mathematics", "linear algebra", "geometry", "vectors"]
+    },
+    {
+      "id": "TaylorPolynomial",
+      "title": "Taylor Polynomial",
+      "date": "05/07/2018",
+      "src": "posts/TaylorPolynomial",
+      "tags": [
+        "blog",
+        "mathematics",
+        "calculus",
+        "taylor's polynomial",
+        "approximation",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "MatrixExponential",
+      "title": "Matrix Exponential",
+      "date": "16/07/2018",
+      "src": "posts/MatrixExponential",
+      "tags": [
+        "blog",
+        "mathematics",
+        "calculus",
+        "taylor's polynomial",
+        "differential equations",
+        "matrices",
+        "exponential",
+        "linear algebra"
+      ]
+    },
+    {
+      "id": "DiscreteCalculus",
+      "title": "Discrete Calculus",
+      "date": "25/07/2018",
+      "src": "posts/DiscreteCalculus",
+      "tags": [
+        "blog",
+        "mathematics",
+        "discrete mathematics",
+        "calculus",
+        "taylor's polynomial",
+        "difference equations",
+        "exponential"
+      ]
+    },
+    {
+      "id": "GradientJacobianHessian",
+      "title": "Gradient, Jacobian and Hessian",
+      "date": "18/08/2018",
+      "src": "posts/GradientJacobianHessian",
+      "tags": [
+        "blog",
+        "mathematics",
+        "multivariable calculus",
+        "vector calculus",
+        "linear algebra",
+        "approximation",
+        "gradient",
+        "jacobian",
+        "hessian"
+      ]
+    },
+    {
+      "id": "OptimizationI",
+      "title": "OptimizationI",
+      "date": "14/11/2018",
+      "src": "posts/OptimizationI",
+      "tags": [
+        "blog",
+        "mathematics",
+        "optimization",
+        "multivariable calculus",
+        "vector calculus",
+        "gradient descend",
+        "gradient",
+        "hessian"
+      ]
+    },
+    {
+      "id": "ProofGreenTheorem",
+      "title": "My Proof of Green's Theorem",
+      "date": "15/11/2018",
+      "src": "posts/ProofGreenTheorem",
+      "tags": [
+        "blog",
+        "mathematics",
+        "multivariable calculus",
+        "vector calculus",
+        "differential forms",
+        "vector fields",
+        "jacobian",
+        "change of coordinates"
+      ]
+    },
+    {
       "id": "BrownianMotion",
       "title": "Brownian Motion",
       "date": "1/10/2014",

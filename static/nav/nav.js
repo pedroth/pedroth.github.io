@@ -7,11 +7,11 @@ function selectPage(url) {
     q: q => retrieveAndAppend(`static/search/search.html`, "navContainer"),
     s: s => retrieveAndAppend(`static/${s}`, "navContainer")
   };
-  firstSplit = url.split("?");
-  if (firstSplit.length > 1) {
-    secondSplit = firstSplit[1].split("=");
-    if (secondSplit.length > 0 && secondSplit[0] in url2page) {
-      url2page[secondSplit[0]](secondSplit[1]);
+  [_, address] = url.split("?");
+  if (!!address) {
+    [type, value] = address.split("=");
+    if (!!type && type in url2page) {
+      url2page[type](value);
       return;
     }
   }
@@ -21,9 +21,6 @@ function selectPage(url) {
 function navMain() {
   const url = window.location.href;
   selectPage(url);
-  // render equations
-  console.log("Rendering equations");
-  // setTimeout(() => MathJax.typeset(), 100);
 }
 
 let tagsHist = {};
