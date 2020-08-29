@@ -5,7 +5,7 @@ function getApp(url) {
   if (split.length <= 1) {
     WebUtils.retrieveAndAppend("static/notFound.html", div2append);
   } else {
-    WebUtils.retrieveAndAppend(split[1], div2append);
+    WebUtils.retrieveAndAppendMarkDown(split[1], div2append);
   }
   // render equations
   console.log("Rendering equations");

@@ -3,16 +3,25 @@ import $ from "jquery";
 
 const WebUtils = {};
 
-WebUtils.retrieveAndAppend = async (url, htmlId) => {
+/**
+ *
+ * @param {*} url
+ * @param {*} htmlId
+ * @param {*} mapLambda: String => String(in html)
+ */
+WebUtils.retrieveAndAppend = async (url, htmlId, mapLambda = text => text) => {
   console.log(`Reading from ${url}.. appending on ${htmlId}`);
-  const html = await fetch(url).then(x => x.text());
-  $(`#${htmlId}`).html(html);
+  const text = await fetch(url).then(x => x.text());
+  $(`#${htmlId}`).html(mapLambda(text));
   /**
    * We have to use jquery to run <script> tags in html, vanilla js doesn't work.
    * vanilla js: document.getElementById(htmlId).innerHTML = html;
    * jquery does some processing to the innerHTML string
    */
 };
+
+WebUtils.retrieveAndAppendMarkDown = async (url, htmlId) =>
+  WebUtils.retrieveAndAppend(url, htmlId, text => text);
 
 WebUtils.readDb = async () => {
   const time = new Date().getTime();
