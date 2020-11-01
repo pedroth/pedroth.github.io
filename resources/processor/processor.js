@@ -11,8 +11,8 @@ function replaceAll(str, search, replace) {
 }
 
 function readJson(src) {
-  const rawdata = fs.readFileSync(src);
-  return JSON.parse(rawdata);
+  const rawData = fs.readFileSync(src);
+  return JSON.parse(rawData);
 }
 
 function readJarsConfig() {
@@ -54,7 +54,7 @@ function zipIt(src, dest, afterZip = () => {}) {
 
   // listen for all archive data to be written
   // 'close' event is fired only when a file descriptor is involved
-  output.on("close", function() {
+  output.on("close", function () {
     console.log(archive.pointer() + " total bytes");
     console.log(
       "archiver has been finalized and the output file descriptor has closed."
@@ -88,7 +88,7 @@ function processJars() {
     fs.writeFileSync(tmpFolder + `/run.sh`, runBat);
     copyFile(`./java/${jar.from}`, tmpFolder + `/${newJarName}`);
 
-    console.log("ziping folder", tmpFolder, zipPath);
+    console.log("zipping folder", tmpFolder, zipPath);
     zipIt(tmpFolder, zipPath, () => {
       console.log("rm dir", tmpFolder);
       rmFolder(tmpFolder);
