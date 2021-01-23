@@ -1,6 +1,5 @@
 import { Sort, ArrayUtils, EditDistance } from "nabla.js";
-import $ from "jquery";
-
+import { renderHtml } from "../Utils/Utils";
 const WebUtils = {};
 
 /**
@@ -9,19 +8,20 @@ const WebUtils = {};
  * @param {*} htmlId
  * @param {*} mapLambda: String => String(in html)
  */
-WebUtils.retrieveAndAppend = async (url, htmlId, mapLambda = text => text) => {
-  console.log(`Reading from ${url}.. appending on ${htmlId}`);
+WebUtils.retrieveAndAppend = async (
+  url,
+  htmlComponent,
+  mapLambda = text => text
+) => {
+  console.log(`Reading from ${url}.. appending on ${htmlComponent.id}`);
   const text = await fetch(url).then(x => x.text());
-  $(`#${htmlId}`).html(mapLambda(text));
-  /**
-   * We have to use jquery to run <script> tags in html, vanilla js doesn't work.
-   * vanilla js: document.getElementById(htmlId).innerHTML = html;
-   * jquery does some processing to the innerHTML string
-   */
+  const child = renderHtml(mapLambda(text));
+  htmlComponent.appendChild(child);
 };
 
-WebUtils.retrieveAndAppendMarkDown = async (url, htmlId) =>
-  WebUtils.retrieveAndAppend(url, htmlId, text => text);
+WebUtils.retrieveAndAppendMarkDown = async (url, htmlComponent) => {
+  WebUtils.retrieveAndAppend(url, htmlComponent, text => text);
+};
 
 WebUtils.readDb = async () => {
   const time = new Date().getTime();
@@ -91,11 +91,11 @@ const searchScore = queryTagSet => post =>
   post.tags.reduce((acc, v) => (queryTagSet.has(v) ? acc + 1 : acc), 0);
 
 function date2int(date) {
-  var dateStrs = date.split("/");
+  var dateStrings = date.split("/");
   var acc = 0;
   var accM = 1;
-  for (var j = 0; j < dateStrs.length; j++) {
-    acc += parseFloat(dateStrs[j]) * accM;
+  for (var j = 0; j < dateStrings.length; j++) {
+    acc += parseFloat(dateStrings[j]) * accM;
     accM *= 100;
   }
   return acc;

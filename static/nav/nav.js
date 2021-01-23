@@ -1,11 +1,11 @@
 function selectPage(url) {
   const { retrieveAndAppend } = WebUtils;
-  defaultPage = () =>
-    retrieveAndAppend("static/main/main.html", "navContainer");
+  const navContainer = document.getElementById("navContainer");
+  defaultPage = () => retrieveAndAppend("static/main/main.html", navContainer);
   url2page = {
-    p: p => retrieveAndAppend(`static/app/app.html`, "navContainer"),
-    q: q => retrieveAndAppend(`static/search/search.html`, "navContainer"),
-    s: s => retrieveAndAppend(`static/${s}`, "navContainer")
+    p: p => retrieveAndAppend(`static/app/app.html`, navContainer),
+    q: q => retrieveAndAppend(`static/search/search.html`, navContainer),
+    s: s => retrieveAndAppend(`static/${s}`, navContainer)
   };
   [_, address] = url.split("?");
   if (!!address) {
