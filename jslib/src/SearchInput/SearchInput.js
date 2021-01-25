@@ -1,8 +1,6 @@
 import DomBuilder from "../DomBuilder/main/DomBuilder";
 import "./SearchInput.css";
 const uuid = key => `${key}${Math.random()}`;
-const range = a => b => (a < b ? [a].concat(range(a + 1)(b)) : []);
-const range0 = range(0);
 const mod = n => i => (n + (i % n)) % n;
 
 class SearchInput {
@@ -154,7 +152,7 @@ class SearchInput {
   static defaultProps = {
     onClick: input => {},
     onChange: (input, searchBar) => {
-      searchBar.setSuggestions(range0(10).map(Math.random));
+      searchBar.setSuggestions([1, 2, 3].map(Math.random));
     },
     onSetInput: (prev, suggestion) => suggestion,
     inputDom: DomBuilder.of("input").build(),

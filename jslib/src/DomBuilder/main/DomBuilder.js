@@ -7,7 +7,10 @@ class DomBuilder {
     this.element.setAttribute(name, value);
     return this;
   }
-
+  /**
+   *
+   * @param {*} element: Dom | DomBuilder | Array<Dom | DomBuilder>
+   */
   append(element) {
     const defaultAction = e => this.element.appendChild(e);
     const type2ActionMap = {
