@@ -16,8 +16,16 @@ const getCardGrid = posts => {
       .build();
     row.append(col);
   });
-  return row.build();
+  const rowDiv = row.build();
+  const rowResize = getRowReSize(rowDiv);
+  window.sizeObservers.push(rowResize);
+  rowResize();
+  return rowDiv;
 };
+
+function getRowReSize(rowDiv) {
+  return () => {};
+}
 
 // main
 (() => {

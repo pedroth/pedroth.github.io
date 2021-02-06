@@ -1,10 +1,31 @@
+function getRowReSize(rowDiv) {
+  return () => {
+    if (window.innerWidth >= window.innerHeight) {
+      const n = rowDiv.childNodes.length;
+      const w = window.innerWidth / n;
+      rowDiv.style["flex-direction"] = "row";
+      rowDiv.childNodes.forEach(child => {
+        child.style.width = `${w}px`;
+        child.style["max-width"] = `100%`;
+      });
+    } else {
+      rowDiv.style["flex-direction"] = "column";
+      rowDiv.style["align-items"] = "center";
+      const w = window.innerWidth * 0.77;
+      rowDiv.childNodes.forEach(child => (child.style.width = `${w}px`));
+    }
+  };
+}
+
 function getCardsInRow(posts, colPerRows) {
-  const row = DomBuilder.of("div").attr("class", "row");
+  const row = DomBuilder.of("div").attr(
+    "style",
+    "display: flex; max-width: 100%"
+  );
   for (let i = 0; i < colPerRows; i++) {
     const post = posts[i];
     const col = DomBuilder.of("div")
-      .attr("class", "col-lg-4 col-md-6 col-sm-12")
-      .attr("style", "margin-top:10px; margin-bottom: 10px;")
+      .attr("style", "margin: 10px;")
       .append(
         Card.builder()
           .imageSrc(`${post.src}/${post.id}.gif`)
@@ -17,7 +38,11 @@ function getCardsInRow(posts, colPerRows) {
       .build();
     row.append(col);
   }
-  return row.build();
+  const rowDiv = row.build();
+  const rowResize = getRowReSize(rowDiv);
+  window.sizeObservers.push(rowResize);
+  rowResize();
+  return rowDiv;
 }
 
 /**
