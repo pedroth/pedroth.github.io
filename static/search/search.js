@@ -24,7 +24,22 @@ const getCardGrid = posts => {
 };
 
 function getRowReSize(rowDiv) {
-  return () => {};
+  return () => {
+    if (window.innerWidth >= window.innerHeight) {
+      const n = rowDiv.childNodes.length;
+      const w = window.innerWidth / n;
+      rowDiv.style["flex-direction"] = "row";
+      rowDiv.childNodes.forEach(child => {
+        child.style.width = `${w}px`;
+        child.style["max-width"] = `100%`;
+      });
+    } else {
+      rowDiv.style["flex-direction"] = "column";
+      rowDiv.style["align-items"] = "center";
+      const w = window.innerWidth * 0.77;
+      rowDiv.childNodes.forEach(child => (child.style.width = `${w}px`));
+    }
+  };
 }
 
 // main

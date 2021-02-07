@@ -12,10 +12,20 @@ body {
   flex-direction: column;
   height: 100%;
   width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 a {
   color: #90caf9;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
 
 .flexColContainer {
@@ -88,4 +98,37 @@ a {
 #disqus_thread {
   margin: 15px;
   padding: 15px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.badge-light {
+  color: #212529;
+  background-color: #f8f9fa;
+}
+a.badge-light:focus,
+a.badge-light:hover {
+  color: #212529;
+  background-color: #dae0e5;
+}
+a.badge-light.focus,
+a.badge-light:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+}
+
+a.badge:hover {
+  text-decoration: none;
 }
