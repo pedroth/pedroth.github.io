@@ -1,7 +1,9 @@
 import { Sort, ArrayUtils, EditDistance } from "nabla.js";
 import { renderHtml } from "../Utils/Utils";
-const WebUtils = {};
+import { parse } from "nabladown.js/dist/Parser";
+import { render } from "nabladown.js/dist/Render";
 
+const WebUtils = {};
 /**
  *
  * @param {*} url
@@ -20,7 +22,11 @@ WebUtils.retrieveAndAppend = async (
 };
 
 WebUtils.retrieveAndAppendMarkDown = async (url, htmlComponent) => {
-  WebUtils.retrieveAndAppend(url, htmlComponent, text => text);
+  console.log(
+    `Reading from ${url} markdown.. appending on ${htmlComponent.id}`
+  );
+  const text = await fetch(url).then(x => x.text());
+  htmlComponent.appendChild(render(parse(text)));
 };
 
 WebUtils.readDb = async () => {

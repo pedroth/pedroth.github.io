@@ -1,21 +1,16 @@
-<div class="container">
-  <h1 class="underLine">About</h1>
-  <p>
-    Hello world, I am Pedroth, Catholic, searcher of the <b>Good</b>, the
-    <b>Truth</b> and the <b>Beauty</b>.
-  </p>
-  <p>
-    My main interest are <i>Mathematics</i>, <i>Computer Science</i>,
-    <i>Philosophy</i> and the <i>Catholic Faith</i>.
-  </p>
-  <p>
-    In this website I will document my personal projects. Those include,
-    software projects, demos and essays about my interests.
-  </p>
-  <p>
-    Thank you for visiting!
-  </p>
-  $$\oint_{\partial \Omega} \alpha = \int_{\Omega} d\alpha$$
+# About
+
+Hello world, I am Pedroth, Catholic, searcher of the **Good**, the **Truth** and the **Beauty**.
+
+My main interest are *Mathematics*, *Computer Science*, *Philosophy* and the *Catholic Faith*.
+
+In this website I will document my personal projects. Those include, software projects and notes about my interests.
+
+Thank you for visiting!
+
+$$\oint_{\partial \Omega} \alpha = \int_{\Omega} d\alpha$$
+
++++
   <div
     style="
       text-align: center;
@@ -51,4 +46,4 @@
       <i class="fas fa-leaf" style="font-size: 50px;"></i>
     </a>
   </div>
-</div>
++++

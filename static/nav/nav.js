@@ -1,11 +1,16 @@
+let tagsHist = {};
+WebUtils.readDb()
+  .then(WebUtils.getTagsHistogram)
+  .then(tagsH => (tagsHist = tagsH));
+
 function selectPage(url) {
   const { retrieveAndAppend } = WebUtils;
   const navContainer = document.getElementById("navContainer");
   defaultPage = () => retrieveAndAppend("static/main/main.html", navContainer);
   url2page = {
-    p: p => retrieveAndAppend(`static/app/app.html`, navContainer),
-    q: q => retrieveAndAppend(`static/search/search.html`, navContainer),
-    s: s => retrieveAndAppend(`static/${s}`, navContainer)
+    p: p => retrieveAndAppend(`static/app/app.html`, navContainer), // as post pages
+    q: q => retrieveAndAppend(`static/search/search.html`, navContainer), // search query
+    s: s => retrieveAndAppend(`static/${s}`, navContainer) // as static pages
   };
   [_, address] = url.split("?");
   if (!!address) {
@@ -22,11 +27,6 @@ function navMain() {
   const url = window.location.href;
   selectPage(url);
 }
-
-let tagsHist = {};
-WebUtils.readDb()
-  .then(WebUtils.getTagsHistogram)
-  .then(tagsH => (tagsHist = tagsH));
 
 function getRecommendations(query, searchBar) {
   if (!query || query.trim() === "") {

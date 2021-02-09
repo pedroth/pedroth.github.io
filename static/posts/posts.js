@@ -55,9 +55,10 @@ const getCardGrid = (posts, k = 3) => {
   const body = DomBuilder.of("div");
   const n = Math.floor(posts.length / k);
   for (let i = 0; i < n; i++) {
-    const row = getCardsInRow(posts.splice(i * k, k), k);
+    const row = getCardsInRow([...posts].splice(i * k, k), k);
     body.append(row);
   }
+  body.append(getCardsInRow([...posts].splice(n * k, k)));
   return body.build();
 };
 

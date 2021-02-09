@@ -7,7 +7,6 @@ Card.builder = () => new CardBuilder();
  * @param data: {imageSrc: string, url: string, title: string, tags: array<string>, date: string}
  */
 Card.createCardFromData = data => {
-  console.log("Create Card From Data", data);
   return DomBuilder.of("div")
     .attr("class", "card simplePaper")
     .append(createImage(data))

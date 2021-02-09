@@ -127,7 +127,6 @@ class SearchInput {
         DomBuilder.ofId(this.idSuggestion).removeChildren();
       })
       .event("mouseover", evt => {
-        console.log("Mouse over", index);
         this.highLightIndex(index);
       })
       .event("mouseout", evt => {

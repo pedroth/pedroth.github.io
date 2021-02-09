@@ -7,10 +7,5 @@ function getApp(url) {
   } else {
     WebUtils.retrieveAndAppendMarkDown(split[1], div2append);
   }
-  // render equations
-  console.log("Rendering equations");
-  setTimeout(() => {
-    MathJax.typeset();
-  }, 200);
 }
 getApp(window.location.href);
