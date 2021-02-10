@@ -10,7 +10,7 @@ const WebUtils = {};
  * @param {*} htmlId
  * @param {*} mapLambda: String => String(in html)
  */
-WebUtils.retrieveAndAppend = async (
+WebUtils.renderHtml = async (
   url,
   htmlComponent,
   mapLambda = text => text
@@ -21,7 +21,7 @@ WebUtils.retrieveAndAppend = async (
   htmlComponent.appendChild(child);
 };
 
-WebUtils.retrieveAndAppendMarkDown = async (url, htmlComponent) => {
+WebUtils.renderNablaDown = async (url, htmlComponent) => {
   console.log(
     `Reading from ${url} markdown.. appending on ${htmlComponent.id}`
   );

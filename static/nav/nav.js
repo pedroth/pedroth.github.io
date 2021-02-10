@@ -4,13 +4,13 @@ WebUtils.readDb()
   .then(tagsH => (tagsHist = tagsH));
 
 function selectPage(url) {
-  const { retrieveAndAppend } = WebUtils;
+  const { renderHtml } = WebUtils;
   const navContainer = document.getElementById("navContainer");
-  defaultPage = () => retrieveAndAppend("static/main/main.html", navContainer);
+  defaultPage = () => renderHtml("static/main/main.html", navContainer);
   url2page = {
-    p: p => retrieveAndAppend(`static/app/app.html`, navContainer), // as post pages
-    q: q => retrieveAndAppend(`static/search/search.html`, navContainer), // search query
-    s: s => retrieveAndAppend(`static/${s}`, navContainer) // as static pages
+    p: p => renderHtml(`static/app/app.html`, navContainer), // as post pages
+    q: q => renderHtml(`static/search/search.html`, navContainer), // search query
+    s: s => renderHtml(`static/${s}`, navContainer) // as static pages
   };
   [_, address] = url.split("?");
   if (!!address) {

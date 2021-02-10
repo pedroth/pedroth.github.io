@@ -1,5 +1,5 @@
 const { DomBuilder, Card, WebUtils, SearchInput, Nabla, textFit } = Pedroth;
-WebUtils.retrieveAndAppend(
+WebUtils.renderHtml(
   "/static/nav/nav.html",
   document.getElementById("root")
 );
