@@ -10,11 +10,7 @@ const WebUtils = {};
  * @param {*} htmlId
  * @param {*} mapLambda: String => String(in html)
  */
-WebUtils.renderHtml = async (
-  url,
-  htmlComponent,
-  mapLambda = text => text
-) => {
+WebUtils.renderHtml = async (url, htmlComponent, mapLambda = text => text) => {
   console.log(`Reading from ${url}.. appending on ${htmlComponent.id}`);
   const text = await fetch(url).then(x => x.text());
   const child = renderHtml(mapLambda(text));
