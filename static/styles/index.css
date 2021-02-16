@@ -82,10 +82,6 @@ a:hover {
   border-radius: 0.25rem;
 }
 
-.fullHeight {
-  height: 100%;
-}
-
 .card-plugin {
   height: 37vh;
   max-height: 400px;
@@ -93,11 +89,6 @@ a:hover {
 
 .underLine {
   border-bottom: 1px solid;
-}
-
-#disqus_thread {
-  margin: 15px;
-  padding: 15px;
 }
 
 .badge {
