@@ -205,8 +205,8 @@ const createTagWithBox = (tag, box, power) => {
   position: absolute;
   top:${box.min.x}px; 
   left:${box.min.y}px;
-  width:${width};
-  height:${height};
+  width:${width}px;
+  height:${height}px;
   background-color:rgb(${color[0]},${color[1]},${color[2]});
   color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
   `
@@ -221,8 +221,8 @@ const createTagWithPos = function (tag, { x, y }, power) {
   position: absolute;
   top:${x - height / 2}px; 
   left:${y - width / 2}px;
-  width:${width};
-  height:${height};
+  width:${width}px;
+  height:${height}px;
   background-color:rgb(${color[0]},${color[1]},${color[2]});
   color:rgb(${fontColor[0]},${fontColor[1]},${fontColor[2]})
   `
