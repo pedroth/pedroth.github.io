@@ -1,7 +1,7 @@
 import { Sort, ArrayUtils, EditDistance } from "nabla.js";
 import { renderHtml } from "../Utils/Utils";
 import { parse } from "nabladown.js/dist/Parser";
-import { render } from "nabladown.js/dist/Render";
+import { render } from "nabladown.js/dist/PRender";
 
 const WebUtils = {};
 /**
@@ -26,13 +26,14 @@ WebUtils.renderNablaDown = async (url, htmlComponent) => {
 };
 
 WebUtils.readDb = async () => {
-  const time = new Date().getTime();
-  if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {
-    console.log("retrieving db from cache");
-    const dbJson = await fetch("resources/db/db.json").then(x => x.json());
-    localStorage.db = JSON.stringify({ time: time, data: dbJson });
-  }
-  return JSON.parse(localStorage.db).data;
+  // const time = new Date().getTime();
+  // if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {
+  //   console.log("retrieving db from cache");
+  //   const dbJson = await fetch("resources/db/db.json").then(x => x.json());
+  //   localStorage.db = JSON.stringify({ time: time, data: dbJson });
+  // }
+  // return JSON.parse(localStorage.db).data;
+  return await fetch("resources/db/db.json").then(x => x.json());
 };
 
 WebUtils.sortDb = db => {
@@ -43,7 +44,7 @@ WebUtils.sortDb = db => {
 };
 
 WebUtils.randomDb = db => {
-  return ArrayUtils.randomPermute(db.posts);
+  return ArrayUtils.shuffle(db.posts);
 };
 
 WebUtils.getTagsHistogram = db =>
