@@ -1,3 +1,21 @@
+import Card from "../Card/Card";
+
+export function addResizeObservers(window) {
+  window.sizeObservers = [];
+  function onResize() {
+    window.sizeObservers.forEach(obs => {
+      obs();
+    });
+  }
+  window.addEventListener("resize", onResize);
+}
+
+//========================================================================================
+/*                                                                                      *
+ *                                      CARDS GRID                                      *
+ *                                                                                      */
+//========================================================================================
+
 export function getRowReSize(rowDiv) {
   return () => {
     if (window.innerWidth >= window.innerHeight) {
@@ -29,7 +47,7 @@ export function getCardsInRow(posts, colPerRows) {
       .append(
         Card.builder()
           .imageSrc(`${post.src}/${post.id}.gif`)
-          .url(`/?p=${post.src}/${post.id}.html`)
+          .url(`/?p=${post.src}/${post.id}.nd`)
           .title(post.title)
           .tags(post.tags)
           .date(post.date)
@@ -44,6 +62,24 @@ export function getCardsInRow(posts, colPerRows) {
   rowResize();
   return rowDiv;
 }
+
+export const getCardGrid = (posts, k = 3) => {
+  const body = DomBuilder.of("div");
+  const n = Math.floor(posts.length / k);
+  for (let i = 0; i < n; i++) {
+    const row = getCardsInRow(posts.splice(0, k), k);
+    body.append(row);
+  }
+  const remainder = posts.splice(0, k);
+  body.append(getCardsInRow(remainder, remainder.length));
+  return body.build();
+};
+
+//========================================================================================
+/*                                                                                      *
+ *                                         RENDER HTML                                  *
+ *                                                                                      */
+//========================================================================================
 
 export function renderHtml(htmlString) {
   const div = document.createElement("div");

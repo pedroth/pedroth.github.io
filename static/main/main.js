@@ -1,3 +1,8 @@
+// Utils.js imported in index.js
+// DomBuilder.js imported in index.js
+// WebUtils.js imported in index.js
+const { getCardsInRow } = Utils;
+
 /**
  *
  * @param {*} db: Database

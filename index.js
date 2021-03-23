@@ -1,13 +1,13 @@
-const { DomBuilder, Card, WebUtils, SearchInput, Nabla, textFit } = Pedroth;
-WebUtils.renderHtml(
-  "/static/nav/nav.html",
-  document.getElementById("root")
-);
+const {
+  DomBuilder,
+  Card,
+  WebUtils,
+  SearchInput,
+  Nabla,
+  textFit,
+  Utils
+} = Pedroth;
 
-window.sizeObservers = [];
-function onResize() {
-  window.sizeObservers.forEach(obs => {
-    obs();
-  });
-}
-window.addEventListener("resize", onResize);
+WebUtils.renderHtml("/static/nav/nav.html", document.getElementById("root"));
+
+Utils.addResizeObservers(window);

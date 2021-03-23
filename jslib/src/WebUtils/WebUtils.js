@@ -39,7 +39,7 @@ WebUtils.readDb = async () => {
 WebUtils.sortDb = db => {
   return Sort.quicksort(
     db.posts,
-    (a, b) => date2int(a.date) - date2int(b.date)
+    (a, b) => date2int(b.date) - date2int(a.date)
   );
 };
 
@@ -94,10 +94,10 @@ const searchScore = queryTagSet => post =>
   post.tags.reduce((acc, v) => (queryTagSet.has(v) ? acc + 1 : acc), 0);
 
 function date2int(date) {
-  var dateStrings = date.split("/");
-  var acc = 0;
-  var accM = 1;
-  for (var j = 0; j < dateStrings.length; j++) {
+  const dateStrings = date.split("/");
+  let acc = 0;
+  let accM = 1;
+  for (let j = 0; j < dateStrings.length; j++) {
     acc += parseFloat(dateStrings[j]) * accM;
     accM *= 100;
   }
