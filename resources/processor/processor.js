@@ -82,7 +82,7 @@ function processJars() {
     createDir(tmpFolder);
     const readMe = createReadMe(newJarName, jar.in);
     const runBat = createRunBat(newJarName, jar.in);
-    fs.writeFileSync(tmpFolder + `/README.txt`, readMe);
+    // fs.writeFileSync(tmpFolder + `/README.txt`, readMe);
     fs.writeFileSync(tmpFolder + `/README.md`, readMe);
     fs.writeFileSync(tmpFolder + `/run.bat`, runBat);
     fs.writeFileSync(tmpFolder + `/run.sh`, runBat);

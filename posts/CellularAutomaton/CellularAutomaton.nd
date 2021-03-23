@@ -4,15 +4,19 @@ I made a simple [*Cellular Automaton*](https://en.wikipedia.org/wiki/Cellular_au
 
 In the beginning you are able to draw the initial condition of the cells, then press space bar to start the animation. Press "h" for help.
 
-![Video of the java app](https://www.youtube.com/embed/HO1TijJ5DFM)
+![Cellular automaton app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
 +++
-<div style="display: flex;">
-<button class="btn">
+<div style="display: flex;flex-direction: column">
+<a href="posts/CellularAutomaton/CellularAutomaton.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
  Download app
 </button>
-<button class="btn">
- Code
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/ParallelCellularAutomaton.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
 </button>
+</a>
 </div>
 +++

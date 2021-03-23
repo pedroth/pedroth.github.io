@@ -1,7 +1,7 @@
 import { Sort, ArrayUtils, EditDistance } from "nabla.js";
 import { renderHtml } from "../Utils/Utils";
 import { parse } from "nabladown.js/dist/Parser";
-import { render } from "nabladown.js/dist/PRender";
+import { CodeRender } from "nabladown.js/dist/CodeRender";
 
 const WebUtils = {};
 /**
@@ -103,5 +103,15 @@ function date2int(date) {
   }
   return acc;
 }
+
+/**
+ *
+ * @param {*} ast : nabladown.js abstract syntax tree
+ */
+function render(ast) {
+  return new PRender().render(ast);
+}
+
+class PRender extends CodeRender {}
 
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
