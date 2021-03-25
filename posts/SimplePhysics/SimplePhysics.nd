@@ -1,0 +1,21 @@
+# Simple Physics
+
+ *SimplePhysics* is a simple application that let you kind of simulate the physics of a rigid square, in different landscapes. There are formidable landscapes to explore :D.
+Press "h" for help (to see available actions). Feel free to download the program below.
+
+![Simple physics app video](https://youtu.be/Jvv2J325cmI)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/SimplePhysics/SimplePhysics.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/SimplePhysics.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++

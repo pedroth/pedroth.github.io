@@ -51,7 +51,7 @@
       "in": "apps.Robot"
     },
     {
-      "id": "TetraZBuffer",
+      "id": "Tetra",
       "from": "learning.jar",
       "in": "apps.Tetra"
     },

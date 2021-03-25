@@ -112,6 +112,16 @@ function render(ast) {
   return new PRender().render(ast);
 }
 
-class PRender extends CodeRender {}
+class PRender extends CodeRender {
+  renderBlockCode(blockCode) {
+    const { code, language } = blockCode;
+    if (language.trim() === "") {
+      const pre = document.createElement("pre");
+      pre.innerHTML += code;
+      return pre;
+    }
+    return super.getHighlightedCodeElem(code, language);
+  }
+}
 
 const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;

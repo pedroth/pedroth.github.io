@@ -138,7 +138,7 @@
     },
     {
       "id": "RandomCurve",
-      "title": "RandomCurve",
+      "title": "Random Curve",
       "date": "1/03/2014",
       "src": "posts/RandomCurve",
       "tags": [
@@ -196,10 +196,10 @@
       ]
     },
     {
-      "id": "TetraZBuffer",
-      "title": "Geometry ZBuffer",
+      "id": "Tetra",
+      "title": "Tetra",
       "date": "1/04/2014",
-      "src": "posts/TetraZBuffer",
+      "src": "posts/Tetra",
       "tags": [
         "experiments",
         "java",

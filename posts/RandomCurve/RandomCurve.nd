@@ -1,0 +1,34 @@
+# Random Curve
+
+  *RandomCurve* is a simple application that generates a **random** curve in time. The **random** curve $\gamma$ is generated as follows:
+
+$$X\sim \text{Uniform}(0,1)$$
+
+$$\ddot{\theta} = 100X - 50 -\dot \theta$$
+
+$$\dot \gamma = \mathbf{e_r}(\theta)$$
+
+$$\mathbf{e_r}(\theta) =\begin{bmatrix}
+\cos (\theta)\\
+\sin(\theta)
+\end{bmatrix}$$
+
+Press "h" for help. Feel free to download the program below.
+
+![Random Curve app video](https://youtu.be/gOz2MV5Z-D0)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/RandomCurve/RandomCurve.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/RandomCurve.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
+
