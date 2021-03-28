@@ -31,7 +31,7 @@ function copyFile(srcPath, destPath) {
 }
 
 function createReadMe(jarName, appName) {
-  let readMe = fs.readFileSync(`./java/README.txt`, {
+  let readMe = fs.readFileSync(`./java/README.md`, {
     encoding: "utf-8"
   });
   readMe = replaceAll(readMe, "<jar>", jarName);

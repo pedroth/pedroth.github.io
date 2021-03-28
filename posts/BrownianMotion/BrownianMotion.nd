@@ -1,0 +1,23 @@
+# Brownian motion
+
+ *Brownian Motion* is small application where particles collide with each other. In this program you are able to control the direction of a constant length force field. It is fun the watch the dynamics of the system.
+
+Press `h` for help. Feel free to download the program below.
+
+![**Brownian motion** app](https://youtu.be/xEuvduHU1_w)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/BrownianMotion/BrownianMotion.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/BrownianMotion.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
+

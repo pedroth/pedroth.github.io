@@ -1,0 +1,28 @@
+# Simple Robot
+
+ *Simple Robot* is a simple application that let you see a robotic arm following a ball. It works by doing a [gradient descend](https://en.wikipedia.org/wiki/Gradient_descent) on a cost function. This cost function is defined as following:
+Let $\mathbf{x} \in \mathbb{R^3}$ be the position of a ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives $\boldsymbol{\theta}$ and outputs $\mathbf{y}$ which is the end position of the Robot ( $\text{DK}$ is usually called [direct kinematics](https://en.wikipedia.org/wiki/Forward_kinematics) function). Finally the cost function is:
+$$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
+$$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
+
+Where $C_i$ are functions that constraint the degrees of freedom, *e.g*: $\theta_1 > 0 \text{ and } \theta_1 < 2 \pi$.
+
+Press `h` for help. Feel free to download the program below.
+                
+![**Simple Robot** app video](https://youtu.be/rb4BLRtzkJ8)
+
+ +++
+<div style="display: flex;flex-direction: column">
+<a href="posts/SimpleRobot/SimpleRobot.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/Robot.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
+

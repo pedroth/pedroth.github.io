@@ -2,9 +2,12 @@
 
 I made a simple [*Cellular Automaton*](https://en.wikipedia.org/wiki/Cellular_automaton) application long time ago. Here you can try several random [cellular automata rules](http://psoup.math.wisc.edu/mcell/rullex_life.html).
 
-In the beginning you are able to draw the initial condition of the cells, then press space bar to start the animation. Press "h" for help.
+In the beginning you are able to draw the initial condition of the cells, then press space bar to start the animation. 
 
-![Cellular automaton app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
+Press `h` for help. Feel free to download the program below.
+
+![**Cellular automaton** app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
+
 
 +++
 <div style="display: flex;flex-direction: column">

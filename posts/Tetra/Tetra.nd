@@ -2,7 +2,7 @@
 
  *TetraZBuffer* is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), it lets you see some **triangular meshes**. It can also generate random **planets**.
 
-Press "h" for help. Feel free to download the program below.
+Press `h` for help. Feel free to download the program below.
 
 ![Showing some **meshes**](https://youtu.be/EWfagjIxd4g)
 
