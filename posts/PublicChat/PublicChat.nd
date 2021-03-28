@@ -1,0 +1,32 @@
+# Simple Public Chat
+
+ *Simple Public Chat* is a chat web application, that I made, while learning some `http server` features of `java`.
+
+My main goals with this project were:
+
+- Learning how to build a `java server` with minimal dependencies.
+- Learning about setting up a website from home using free tools:
+ - The amazing [duckdns](https://www.duckdns.org/) free dynamic DNS.
+ - Router port-forwarding.
+- Implementing upload from scratch.
+- Creating a chat with a public delete button.
+- Testing pooling http requests to simulate web-sockets (*conclusion*: just use web-sockets).
+- Creating open source project
+
+```plaintext
+[TODO]: Dockerize app
+```
+
+The [server](http://pedroth.duckdns.org:8080/PublicChat) is sometimes off :).
+
+![**Public Chat** app](/posts/PublicChat/PublicChat.gif)
+
++++
+<div style="display: flex;flex-direction: column">
+<a target="_blank" href="https://github.com/pedroth/PublicChat" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
