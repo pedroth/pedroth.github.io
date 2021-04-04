@@ -2,7 +2,7 @@
 
  *Simple Public Chat* is a chat web application, that I made, while learning some `http server` features of `java`.
 
-My main goals with this project were:
+My goals with this project were:
 
 - Learning how to build a `java server` with minimal dependencies.
 - Learning about setting up a website from home using free tools:

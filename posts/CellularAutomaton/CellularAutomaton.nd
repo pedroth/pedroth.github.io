@@ -2,7 +2,7 @@
 
 I made a simple [*Cellular Automaton*](https://en.wikipedia.org/wiki/Cellular_automaton) application long time ago. Here you can try several random [cellular automata rules](http://psoup.math.wisc.edu/mcell/rullex_life.html).
 
-In the beginning you are able to draw the initial condition of the cells, then press space bar to start the animation. 
+In the beginning you are able to draw the initial condition of the cells, then press `space bar` to start the animation. 
 
 Press `h` for help. Feel free to download the program below.
 
