@@ -7,7 +7,7 @@ This blog entry redirects you to my masters thesis about "Arc Summaries of TV Se
  In this dissertation, we aim to create a system capable of generating summaries of arcs of TV series. With thousands of hours of video being uploaded and stored in video-sharing websites and online streaming services, a need for video summarization appears as a necessary tool to save time and catch up with our beloved series. We propose a way to solve this problem using just subtitles information. The presented solution uses the framework of spectral graph theory to segment, find story arcs and summarize those arcs.
 
 - [Thesis](/posts/ArcSummary/thesisPedroth.pdf)
-- [Extended Abstract (Article form)](/posts/ArcSummary/ExtendedAbstract.pdf)
+- [Extended Abstract (Article form)](/posts/ArcSummary/extendedAbstract.pdf)
 - [Presentation ( watch it in presentation mode )](https://docs.google.com/presentation/d/1iQXAZszNOVqrjnANjOsVPEUHrQNjqlOWJqWMKAidRgc/edit?usp=sharing)
 
 ### Video Tutorial

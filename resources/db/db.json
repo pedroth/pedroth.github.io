@@ -280,6 +280,24 @@
         "simple",
         "pooling"
       ]
+    },
+    {
+      "id": "TextSimplex",
+      "title": "Text Simplex",
+      "date": "11/04/2021",
+      "src": "posts/TextSimplex",
+      "tags": [
+        "experiments",
+        "heat equation",
+        "java",
+        "mathematics",
+        "computer science",
+        "graph theory",
+        "natural language processing",
+        "partial differential equations",
+        "signal processing",
+        "visualization"
+      ]
     }
   ]
 }

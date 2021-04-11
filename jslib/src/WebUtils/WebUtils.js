@@ -26,6 +26,7 @@ WebUtils.renderNablaDown = async (url, htmlComponent) => {
 };
 
 WebUtils.readDb = async () => {
+  // const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
   // const time = new Date().getTime();
   // if (!localStorage.db || time - localStorage.db.time > TIME2UPDATE_MILLIS) {
   //   console.log("retrieving db from cache");
@@ -123,5 +124,3 @@ class PRender extends CodeRender {
     return super.getHighlightedCodeElem(code, language);
   }
 }
-
-const TIME2UPDATE_MILLIS = 24 * 3.6e3 * 1e3; // one day in millis;
