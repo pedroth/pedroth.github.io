@@ -33,6 +33,7 @@ function getRecommendations(query, searchBar) {
     searchBar.setSuggestions([]);
     return;
   }
+  const alpha = 1;
   const len = array => array.length;
   const subStr = (string, length) => string.substring(0, length);
   const { distance: d } = Nabla.EditDistance;
@@ -40,11 +41,22 @@ function getRecommendations(query, searchBar) {
   const finalQuery = len(qSplit) > 1 ? qSplit[len(qSplit) - 1] : qSplit[0];
   const tags = Object.keys(tagsHist);
   const sortedTags = tags
+    .map(t => {
+      console.log(
+        `d(${finalQuery}, ${subStr(t, len(finalQuery))}) = ${d(
+          finalQuery,
+          subStr(t, len(finalQuery))
+        )}`
+      );
+      return t;
+    })
     .map(t => ({
       name: t,
-      distance: d(finalQuery, subStr(t, len(finalQuery)))
+      distance:
+        (d(finalQuery, subStr(t, len(finalQuery))) + d(finalQuery, t)) / 2
     }))
     .sort((a, b) => a.distance - b.distance);
+  console.log(sortedTags);
   const suggestions = sortedTags
     .filter(t => t.distance <= 7)
     .filter((t, i) => i < 7)

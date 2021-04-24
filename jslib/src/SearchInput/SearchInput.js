@@ -96,13 +96,13 @@ class SearchInput {
         DomBuilder.of("div").attr("id", this.idSuggestion)
       );
     }
-
     const suggestions = DomBuilder.ofId(this.idSuggestion).removeChildren();
     const box = this.getSearchBox();
     suggestions
       .append(
         DomBuilder.of("ul")
           .attr("class", this.props.ulClass)
+          .attr("style", `width:${box.width}px`)
           .append(this.suggestionList.map(this.createCard))
       )
       .attr(
