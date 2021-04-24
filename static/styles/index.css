@@ -123,3 +123,8 @@ a.badge-light:focus {
 a.badge:hover {
   text-decoration: none;
 }
+
+.bound-left-right {
+  margin-left: 5%;
+  margin-right: 5%;
+}
