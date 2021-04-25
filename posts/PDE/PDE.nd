@@ -1,0 +1,37 @@
+# PDE
+
+ *PDE* is a simple application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation) of the form:
+
+ $$u_t(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u})$$
+ Or 
+ $$u_{tt}(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u}, u_t)$$
+
+Where $\mathbf{x} \in \mathbb{R}^2$, $u_{xy} = \frac{\partial u}{\partial x\partial y}$, $\nabla\mathbf{u} = (u_x, u_y)^T$, $\nabla^2\mathbf{u} = \begin{bmatrix}
+ u_{xx}&  u_{xy}\\
+ u_{yx}&  u_{yy}    
+\end{bmatrix}$. 
+
+Famous Equations are:
+* Heat Equation : $u_t = \Delta u = \text{div}(\nabla u) = \text{tr}(\nabla^2\mathbf{u}) = u_{xx} + u_{yy}$
+- Wave Equation : $u_{tt} = \Delta u$
+- Continuity: $u_t = -\mathbf{v} \cdot \nabla \mathbf{u}, \mathbf{v} \in \mathbb{R}^2$
+
+Press `h` for help. Feel free to download the program below.
+
+![**PDE** app video](https://youtu.be/xjDF8uDfTYs)
+
+ +++
+<div style="display: flex;flex-direction: column">
+<a href="posts/PDE/PDE.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/PDEGUI.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
+

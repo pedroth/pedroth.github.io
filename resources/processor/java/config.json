@@ -51,7 +51,7 @@
       "in": "apps.Robot"
     },
     {
-      "id": "TetraZBuffer",
+      "id": "Tetra",
       "from": "learning.jar",
       "in": "apps.Tetra"
     },
@@ -59,6 +59,11 @@
       "id": "EigenSimulation",
       "from": "pedroEngine.jar",
       "in": "apps.EigenSimulation"
+    },
+    {
+      "id": "TextSimplex",
+      "from": "pedroEngine.jar",
+      "in": "apps.TextCurves"
     }
   ]
 }

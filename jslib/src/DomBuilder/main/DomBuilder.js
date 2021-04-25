@@ -7,18 +7,42 @@ class DomBuilder {
     this.element.setAttribute(name, value);
     return this;
   }
-
+  /**
+   *
+   * @param {*} element: Dom | DomBuilder | Array<Dom | DomBuilder>
+   */
   append(element) {
-    if (element instanceof Array) {
-      element.forEach(x => this.element.appendChild(x));
-    } else {
-      this.element.appendChild(element);
-    }
+    const defaultAction = e => this.element.appendChild(e);
+    const type2ActionMap = {
+      Array: e => e.forEach(x => this.append(x)),
+      [this.constructor.name]: e => this.element.appendChild(e.build())
+    };
+    const type = element.constructor.name;
+
+    if (type in type2ActionMap) type2ActionMap[type](element);
+    else defaultAction(element);
+
     return this;
   }
 
   inner(value) {
     this.element.innerHTML = value;
+    return this;
+  }
+
+  removeChildren() {
+    while (this.element.firstChild) {
+      this.element.removeChild(this.element.lastChild);
+    }
+    return this;
+  }
+
+  html(value) {
+    return this.inner(value);
+  }
+
+  event(eventName, lambda) {
+    this.element.addEventListener(eventName, lambda);
     return this;
   }
 
@@ -52,4 +76,4 @@ function isElement(o) {
         typeof o.nodeName === "string";
 }
 
-module.exports = DomBuilder;
+export default DomBuilder;

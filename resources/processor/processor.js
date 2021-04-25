@@ -11,8 +11,8 @@ function replaceAll(str, search, replace) {
 }
 
 function readJson(src) {
-  const rawdata = fs.readFileSync(src);
-  return JSON.parse(rawdata);
+  const rawData = fs.readFileSync(src);
+  return JSON.parse(rawData);
 }
 
 function readJarsConfig() {
@@ -31,7 +31,7 @@ function copyFile(srcPath, destPath) {
 }
 
 function createReadMe(jarName, appName) {
-  let readMe = fs.readFileSync(`./java/README.txt`, {
+  let readMe = fs.readFileSync(`./java/README.md`, {
     encoding: "utf-8"
   });
   readMe = replaceAll(readMe, "<jar>", jarName);
@@ -54,7 +54,7 @@ function zipIt(src, dest, afterZip = () => {}) {
 
   // listen for all archive data to be written
   // 'close' event is fired only when a file descriptor is involved
-  output.on("close", function() {
+  output.on("close", function () {
     console.log(archive.pointer() + " total bytes");
     console.log(
       "archiver has been finalized and the output file descriptor has closed."
@@ -73,22 +73,22 @@ function processJars() {
     const name = jar.id;
     console.log("Processing ...", name);
 
-    const zipPath = `../../experiments/${name}/${name}.zip`;
+    const zipPath = `../../posts/${name}/${name}.zip`;
     const newJarName = `${name}.jar`;
-    const tmpFolder = `../../experiments/${name}/tmp`;
+    const tmpFolder = `../../posts/${name}/tmp`;
 
     console.log("Creating folder...", tmpFolder);
 
     createDir(tmpFolder);
     const readMe = createReadMe(newJarName, jar.in);
     const runBat = createRunBat(newJarName, jar.in);
-    fs.writeFileSync(tmpFolder + `/README.txt`, readMe);
+    // fs.writeFileSync(tmpFolder + `/README.txt`, readMe);
     fs.writeFileSync(tmpFolder + `/README.md`, readMe);
     fs.writeFileSync(tmpFolder + `/run.bat`, runBat);
     fs.writeFileSync(tmpFolder + `/run.sh`, runBat);
     copyFile(`./java/${jar.from}`, tmpFolder + `/${newJarName}`);
 
-    console.log("ziping folder", tmpFolder, zipPath);
+    console.log("zipping folder", tmpFolder, zipPath);
     zipIt(tmpFolder, zipPath, () => {
       console.log("rm dir", tmpFolder);
       rmFolder(tmpFolder);

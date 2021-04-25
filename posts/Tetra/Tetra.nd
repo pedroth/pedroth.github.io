@@ -1,0 +1,30 @@
+# Tetra
+
+ *Tetra* is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), it lets you see some **triangular meshes**. It can also generate random **planets**.
+
+Press `h` for help. Feel free to download the program below.
+
+![Showing some **meshes**](https://youtu.be/EWfagjIxd4g)
+
+```
+
+
+
+```
+![Showing some **planets**](https://youtu.be/SeJcezzg_ow)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/Tetra/Tetra.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/Tetra.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++
+

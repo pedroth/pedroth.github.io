@@ -1,0 +1,22 @@
+# Cube Chaos
+
+ *Cube Chaos* is small application where you can see several particles being driven by force and velocity vector fields. It is called **chaos** because one of the vector field is the [Lorenz attractor](https://en.wikipedia.org/wiki/Lorenz_system) from [chaos theory](https://en.wikipedia.org/wiki/Chaos_theory). 
+
+Press `h` for help. Feel free to download the program below.
+
+![**Cube Chaos** in action](https://youtu.be/fY2K_D7GUtQ)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/CubeChaos/CubeChaos.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/Cube.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++

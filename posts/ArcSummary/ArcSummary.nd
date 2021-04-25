@@ -1,0 +1,24 @@
+# Arc Summaries of TV Series
+
+This blog entry redirects you to my masters thesis about "Arc Summaries of TV Series". Although I *couldn't have nice results*, in the paper there are a good description of the algorithms that were developed/used for **segmentation**, **clustering** and **summarization** of text signals. In the paper we used [Spectral Graph Theory](https://en.wikipedia.org/wiki/Spectral_graph_theory) framework to solve most of the problems, relating this area with glimpses of other fields such as [Discrete Exterior Calculus](https://en.wikipedia.org/wiki/Discrete_exterior_calculus), [Functional Data Analysis](https://en.wikipedia.org/wiki/Functional_data_analysis).
+
+## Abstract
+
+ In this dissertation, we aim to create a system capable of generating summaries of arcs of TV series. With thousands of hours of video being uploaded and stored in video-sharing websites and online streaming services, a need for video summarization appears as a necessary tool to save time and catch up with our beloved series. We propose a way to solve this problem using just subtitles information. The presented solution uses the framework of spectral graph theory to segment, find story arcs and summarize those arcs.
+
+- [Thesis](/posts/ArcSummary/thesisPedroth.pdf)
+- [Extended Abstract (Article form)](/posts/ArcSummary/extendedAbstract.pdf)
+- [Presentation ( watch it in presentation mode )](https://docs.google.com/presentation/d/1iQXAZszNOVqrjnANjOsVPEUHrQNjqlOWJqWMKAidRgc/edit?usp=sharing)
+
+### Video Tutorial
+
+![](https://youtu.be/5Oc-WWqchZg)
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/ArcSummary/ArcSummary.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Web app
+</button>
+</a>
++++

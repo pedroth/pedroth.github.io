@@ -1,0 +1,34 @@
+# Eigen Simulation
+
+ *Eigen Simulation* app is a application that lets you visualize three algorithms for finding eigenvectors. For starters eigenvectors are vectors that have the following property:
+let $A \in \mathbb{R}^{n \times n}$ be a matrix and $\mathbf{v} \in \mathbb{R}^n$ a vector then $\mathbf{v}$ is a not trivial solution ( that means $\mathbf{v} \neq \mathbf{0}$) of the equation below:
+
+$$A\mathbf{v} = \lambda \mathbf{v}\;\;\;(1)$$
+
+These eigenvectors and eigenvalues (the $\lambda$ 's in (1)) are very useful in different fields such as **Physics**, **Optimization**, **Machine Learning**, etc. Here I explore such methods in a visual matter. I tried three methods, the first is the [power method](https://en.wikipedia.org/wiki/Power_iteration) and the other two are based on a constraint optimization problem. A small detail I forgot to mention is that the matrix $A$ is [symmetric matrix](https://en.wikipedia.org/wiki/Symmetric_matrix)(this is important because it guarantees the existence of real eigenvectors and eigenvalues).
+The optimization problem is the following:
+$$\min_{\mathbf{x}\in \mathbb{R}^n} \text{ or } \max_{\mathbf{x}\in \mathbb{R}^n} \left < \mathbf{x}, A \mathbf{x}\right >$$
+$$\text{such that  } \;\;|\mathbf{x}|^2 = 1 \;\;\; (2)$$
+
+In the application you will see a sphere (which by the way is the space of the constraint in (2)) and in this sphere there is a color. This color represent the value of the cost function in (2).
+By clicking on the button `3` you will be able to see the gradient vector field of this cost function on the sphere.
+
+Press `h` for help. Feel free to download the program below.
+
+![*Eigen Simulation* app video](https://youtu.be/0QV7QjFa0k8)
+
+
++++
+<div style="display: flex;flex-direction: column">
+<a href="posts/EigenSimulation/EigenSimulation.zip" target="_blank" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Download app
+</button>
+</a>
+<a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/EigenSimulation.java" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Source Code
+</button>
+</a>
+</div>
++++

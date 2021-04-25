@@ -1,65 +1,19 @@
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <!-- Google Tag Manager -->
-    <script>
-      (function(w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-NQKJHP3");
-    </script>
-
-    <!-- Charset -->
-    <meta charset="utf-8" />
-
-    <!-- MathJax -->
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [
-            ["$", "$"],
-            ["\\(", "\\)"]
-          ],
-          displayMath: [
-            ["$$", "$$"],
-            ["\\[", "\\]"]
-          ],
-          processEscapes: true
-        },
-        options: {
-          ignoreHtmlClass: "tex2jax_ignore",
-          processHtmlClass: "tex2jax_process"
-        }
-      };
-    </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
-      id="MathJax-script"
-    ></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script
-      id="MathJax-script"
-      async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-    ></script>
-
-    <!-- FontAwesome -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
+    <!-- HTML 5 -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
     />
+
+    <!-- imports -->
+    <script src="./jslib/dist/index.js"></script>
+
+    <!-- FontAwesome -->
+    <link href="./static/styles/all.css" rel="stylesheet" />
 
     <!-- Bootstrap -->
     <link
@@ -70,30 +24,24 @@
     />
 
     <!-- main style -->
-    <link rel="stylesheet" href="./resources/styles/style.css" />
+    <link rel="stylesheet" href="./static/styles/index.css" />
 
-    <title>Pedroth's Corner: Math, Programming and Philosophy</title>
+    <!-- IMPORTANT WHEN USING FORMULAS. KATEX STYLE -->
+    <link rel="stylesheet" href="./static/styles/katex.css" />
+
+    <!-- Title -->
+    <title>Pedroth's Corner: Math.Computer Science.Philosophy</title>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-NQKJHP3"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe>
-    </noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <div id="indexContainer" class="flexContainer">
-      <h1 style="text-align: center;">In Maintenance...</h1>
-    </div>
+    <div id="root" class="flexRowContainer"></div>
   </body>
   <!-- Scripts -->
-  <!-- <script src="/jsLib/index.js"></script> -->
+  <script src="./index.js"></script>
   <!-- Jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script
+    crossorigin="anonymous"
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"
+  ></script>
   <!-- Bootstrap -->
   <script
     src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
