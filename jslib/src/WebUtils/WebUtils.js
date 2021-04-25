@@ -78,6 +78,10 @@ WebUtils.search = db => query => {
     .map(q => argMin(tags)(t => d(q, t.substring(0, q.length))))
     .reduce((s, v) => s.add(v), new Set());
   const score = searchScore(qTagSet);
+  console.log(
+    "Search score",
+    db.posts.filter(p => p.tags.some(t => qTagSet.has(t))).map(p => score(p))
+  );
   return db.posts
     .filter(p => p.tags.some(t => qTagSet.has(t)))
     .sort((a, b) => score(b) - score(a));
@@ -92,7 +96,10 @@ export default WebUtils;
 //========================================================================================
 
 const searchScore = queryTagSet => post =>
-  post.tags.reduce((acc, v) => (queryTagSet.has(v) ? acc + 1 : acc), 0);
+  post.tags.reduce(
+    (acc, v) => (queryTagSet.has(v) ? acc + date2int(post.date) : acc),
+    0
+  );
 
 function date2int(date) {
   const dateStrings = date.split("/");
