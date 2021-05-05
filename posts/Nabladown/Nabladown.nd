@@ -1,0 +1,35 @@
+# Nabladown.js
+
+[Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the nabladown.js language, which is a pseudo/flavored **markdown** language. 
+
+I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I wanted a simple way to render *html documents*, with **formulas**, **code highlight**, **media**, etc. These are the main features of the language: 
+
+- Simple language, like **markdown**.
+- Support *mathematical formulae*(*latex style*).
+- Support **code highlight**
+- Support regular *html*
+- Should expose the **parser** of the language 
+- Easy way to write multiple **renders**
+- Easy to install/use
+
+The main motivation for [Nabladown.js](https://github.com/pedroth/nabladown.js) was the rendering the posts of this website.
+
+
+Please go check it's project page.
+
++++
+<div style="display: flex;flex-direction: column">
+<a target="_blank" href="https://github.com/pedroth/nabladown.js" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Project Page
+</button>
+</a>
+<a target="_blank" href="https://pedroth.github.io/nabladown.js" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ Nabladown editor
+</button>
+</a>
+</div>
++++
+
+![](/posts/Nabladown/Nabladown.gif)

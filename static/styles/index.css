@@ -28,6 +28,21 @@ a:hover {
   text-decoration: underline;
 }
 
+a.badge-light:focus,
+a.badge-light:hover {
+  color: #212529;
+  background-color: #dae0e5;
+}
+a.badge-light.focus,
+a.badge-light:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
+}
+
+a.badge:hover {
+  text-decoration: none;
+}
+
 .flexColContainer {
   flex-grow: 1;
   display: flex;
@@ -109,22 +124,7 @@ a:hover {
   color: #212529;
   background-color: #f8f9fa;
 }
-a.badge-light:focus,
-a.badge-light:hover {
-  color: #212529;
-  background-color: #dae0e5;
-}
-a.badge-light.focus,
-a.badge-light:focus {
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5);
-}
 
-a.badge:hover {
-  text-decoration: none;
-}
-
-.bound-left-right {
-  margin-left: 5%;
-  margin-right: 5%;
+.bound {
+  margin: 3%;
 }
