@@ -316,6 +316,21 @@
         "grammars",
         "visualization"
       ]
+    },
+    {
+      "id": "BitCalculator",
+      "title": "Simple Bit Calculator",
+      "date": "05/05/2021",
+      "src": "posts/BitCalculator",
+      "tags": [
+        "js",
+        "mathematics",
+        "computer science",
+        "compiler",
+        "parsing",
+        "grammars",
+        "calculator"
+      ]
     }
   ]
 }

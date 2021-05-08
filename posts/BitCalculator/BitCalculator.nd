@@ -1,0 +1,22 @@
+# Bit Calculator
+
+Bit Calculator is a simple parser and evaluator for mathematical expressions in binary. My main motivation for this was to study [formal grammars](https://en.wikipedia.org/wiki/Formal_grammar), [parsers](https://en.wikipedia.org/wiki/LL_parser) and [compilers](https://en.wikipedia.org/wiki/Compiler). I tried to build the simplest parser I could, using no dependencies. The parser that was implemented is a [LL Parser](https://en.wikipedia.org/wiki/LL_parser). With the practice I have got from this I started to write the [Nabladown language](https://github.com/pedroth/nabladown.js).
+
+Please go check this project page.
+
++++
+<div style="display: flex;flex-direction: column">
+<a target="_blank" href="https://github.com/pedroth/BitCalculator" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Project Page
+</button>
+</a>
+<a target="_blank" href="https://pedroth.github.io/BitCalculator/" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ BitCalculator Demo
+</button>
+</a>
+</div>
++++
+
+![](/posts/BitCalculator/BitCalculator.gif)
