@@ -1,7 +1,7 @@
 import { Sort, ArrayUtils, EditDistance } from "nabla.js";
 import { renderHtml } from "../Utils/Utils";
 import { parse } from "nabladown.js/dist/Parser";
-import { CodeRender } from "nabladown.js/dist/CodeRender";
+import { Render } from "nabladown.js/dist/NabladownRender";
 
 const WebUtils = {};
 /**
@@ -60,6 +60,8 @@ WebUtils.getTagsHistogram = db =>
       return hist;
     }, {});
 
+WebUtils.getTitles
+
 WebUtils.search = db => query => {
   if (!query || query.trim() === "") return [];
   const { distance: d } = EditDistance;
@@ -78,10 +80,6 @@ WebUtils.search = db => query => {
     .map(q => argMin(tags)(t => d(q, t.substring(0, q.length))))
     .reduce((s, v) => s.add(v), new Set());
   const score = searchScore(qTagSet);
-  console.log(
-    "Search score",
-    db.posts.filter(p => p.tags.some(t => qTagSet.has(t))).map(p => score(p))
-  );
   return db.posts
     .filter(p => p.tags.some(t => qTagSet.has(t)))
     .sort((a, b) => score(b) - score(a));
@@ -120,7 +118,7 @@ function render(ast) {
   return new PRender().render(ast);
 }
 
-class PRender extends CodeRender {
+class PRender extends Render {
   renderBlockCode(blockCode) {
     const { code, language } = blockCode;
     if (language.trim() === "") {
