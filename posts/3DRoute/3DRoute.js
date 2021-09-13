@@ -627,7 +627,6 @@ function updateCurve(dt) {
         let force = scalarMult(-1, matrixProdTranspose(myDevice.basis[0], myDevice.basis[1], myDevice.basis[2], myDevice.pos));
         let newAcc = add(scalarMult(randomCoin, force), scalarMult(1 - randomCoin, [1, 0, 0]));
         accelerationFifo.push(newAcc);
-        console.log()
         randomCoin = Math.random() < 0.3 ? 1 : 0;
         randomEulerAcc = scalarMult(10, [-1 * 2 * Math.random(), -1 * 2 * Math.random(), -1 * 2 * Math.random()]);
         randomEulerAcc = add(scalarMult(randomCoin, randomEulerAcc), scalarMult(1 - randomCoin, [0, 0, 0]));

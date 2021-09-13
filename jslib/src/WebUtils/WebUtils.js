@@ -60,8 +60,6 @@ WebUtils.getTagsHistogram = db =>
       return hist;
     }, {});
 
-WebUtils.getTitles
-
 WebUtils.search = db => query => {
   if (!query || query.trim() === "") return [];
   const { distance: d } = EditDistance;

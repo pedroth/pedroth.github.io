@@ -1,7 +1,15 @@
+const len = array => array.length;
+const subStr = (string, length) => string.substring(0, length);
+
 let tagsHist = {};
 WebUtils.readDb()
   .then(WebUtils.getTagsHistogram)
   .then(tagsH => (tagsHist = tagsH));
+
+let titles = {};
+WebUtils.readDb().then(data => {
+  titles = data.posts.map(({ title }) => title);
+});
 
 function selectPage(url) {
   const { renderHtml } = WebUtils;
@@ -33,35 +41,66 @@ function getRecommendations(query, searchBar) {
     searchBar.setSuggestions([]);
     return;
   }
-  const alpha = 1;
-  const len = array => array.length;
-  const subStr = (string, length) => string.substring(0, length);
-  const { distance: d } = Nabla.EditDistance;
-  const qSplit = query.split("+").map(s => s.trim());
-  const finalQuery = len(qSplit) > 1 ? qSplit[len(qSplit) - 1] : qSplit[0];
-  const tags = Object.keys(tagsHist);
-  const sortedTags = tags
-    .map(t => {
-      console.log(
-        `d(${finalQuery}, ${subStr(t, len(finalQuery))}) = ${d(
-          finalQuery,
-          subStr(t, len(finalQuery))
-        )}`
-      );
-      return t;
-    })
-    .map(t => ({
-      name: t,
-      distance:
-        (d(finalQuery, subStr(t, len(finalQuery))) + d(finalQuery, t)) / 2
-    }))
-    .sort((a, b) => a.distance - b.distance);
-  console.log(sortedTags);
-  const suggestions = sortedTags
-    .filter(t => t.distance <= 7)
-    .filter((t, i) => i < 7)
-    .map(z => z.name);
-  searchBar.setSuggestions(suggestions);
+  const titleSuggestions = getTitleSuggestions(query);
+  const tagSuggestions = getTagSuggestions(query);
+  searchBar.setSuggestions([...titleSuggestions, ...tagSuggestions]);
+}
+
+function getTitleSuggestions(query) {
+  const { distance } = Nabla.EditDistance;
+  const queryLength = len(query);
+  const finalDist = (q, str) => distance(q, subStr(str, queryLength));
+  const titleFeaturesObjList = titles
+    .map(title => title.toLowerCase())
+    .map(title => {
+      const titleKws = title.split(" ");
+      return {
+        title: title,
+        distance: finalDist(query, title),
+        minDistanceKw: titleKws.reduce(
+          (min, tkw) => Math.min(min, finalDist(query, tkw)),
+          Number.MAX_VALUE
+        ),
+        wordsRationInAcceptableDistance:
+          titleKws.filter(titleKw => finalDist(query, titleKw) < 3).length /
+          titleKws.length
+      };
+    });
+  const suggestions = titleFeaturesObjList
+    .map(
+      ({
+        title,
+        distance,
+        minDistanceKw,
+        wordsRationInAcceptableDistance
+      }) => ({
+        title,
+        distance: distance + minDistanceKw - wordsRationInAcceptableDistance
+      })
+    )
+    .sort((a, b) => a.distance - b.distance)
+    .map(({ title }) => title);
+  return suggestions.splice(0, 5);
+}
+
+function getTagSuggestions(query) {
+  return [];
+  // const { distance: d } = Nabla.EditDistance;
+  // const qSplit = query.split("+").map(s => s.trim());
+  // const finalQuery = len(qSplit) > 1 ? qSplit[len(qSplit) - 1] : qSplit[0];
+  // const tags = Object.keys(tagsHist);
+  // const sortedTags = tags
+  //   .map(t => ({
+  //     name: t,
+  //     distance:
+  //       (d(finalQuery, subStr(t, len(finalQuery))) + d(finalQuery, t)) / 2
+  //   }))
+  //   .sort((a, b) => a.distance - b.distance);
+  // const suggestions = sortedTags
+  //   .filter(t => t.distance <= 7)
+  //   .filter((t, i) => i < 7)
+  //   .map(z => z.name);
+  // return suggestions;
 }
 
 function onSetSuggestion(prevValue, suggestion) {
