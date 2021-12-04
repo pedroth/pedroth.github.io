@@ -60,29 +60,17 @@ WebUtils.getTagsHistogram = db =>
       return hist;
     }, {});
 
-WebUtils.getTitles
-
 WebUtils.search = db => query => {
   if (!query || query.trim() === "") return [];
-  const { distance: d } = EditDistance;
-  const queryT = query.trim();
-  const querySplit = queryT.split("+").map(s => s.trim());
-  const tags = Object.keys(WebUtils.getTagsHistogram(db));
-  const argMin = array => cost =>
-    array.reduce(
-      ([minC, minV], v) => {
-        const c = cost(v);
-        return c < minC ? [c, v] : [minC, minV];
-      },
-      [Number.MAX_VALUE, null]
-    )[1];
-  const qTagSet = querySplit
-    .map(q => argMin(tags)(t => d(q, t.substring(0, q.length))))
-    .reduce((s, v) => s.add(v), new Set());
-  const score = searchScore(qTagSet);
+  const tagsHist = WebUtils.getTagsHistogram(db);
+  const { distance: editDistance } = Nabla.EditDistance;
+  const queryT = query.toLowerCase().trim();
+  if (queryT in tagsHist) {
+    return db.posts.filter(p => p.tags.some(t => t === queryT)).sort((a, b) => date2int(a.date) - date2int(b.date))
+  }
   return db.posts
-    .filter(p => p.tags.some(t => qTagSet.has(t)))
-    .sort((a, b) => score(b) - score(a));
+    .filter(p => p.title.includes(queryT))
+    .sort((a, b) => editDistance(a, queryT) - editDistance(b, queryT));
 };
 
 export default WebUtils;
