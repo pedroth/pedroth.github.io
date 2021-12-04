@@ -65,12 +65,25 @@ WebUtils.search = db => query => {
   const tagsHist = WebUtils.getTagsHistogram(db);
   const { distance: editDistance } = Nabla.EditDistance;
   const queryT = query.toLowerCase().trim();
+  let searchPosts = []
   if (queryT in tagsHist) {
-    return db.posts.filter(p => p.tags.some(t => t === queryT)).sort((a, b) => date2int(a.date) - date2int(b.date));
+    searchPosts = db.posts
+      .filter(p => p.tags.some(t => t === queryT))
+      .sort((a, b) => date2int(b.date) - date2int(a.date))
+
   }
-  return db.posts
-    .filter(p => p.title.toLowerCase().trim().includes(queryT))
-    .sort((a, b) => editDistance(a, queryT) - editDistance(b, queryT));
+  if (searchPosts.length === 0) {
+    searchPosts = db.posts
+      .filter(p => p.title.toLowerCase().trim().includes(queryT))
+  }
+  if (searchPosts.length === 0) {
+    searchPosts = [...db.posts]
+      .sort((a, b) =>
+        editDistance(a.title.toLowerCase().substring(0, queryT.length), queryT) -
+        editDistance(b.title.toLowerCase().substring(0, queryT.length), queryT)
+      ).splice(0, 5)
+  }
+  return searchPosts;
 };
 
 export default WebUtils;
@@ -81,11 +94,6 @@ export default WebUtils;
  *                                                                                      */
 //========================================================================================
 
-const searchScore = queryTagSet => post =>
-  post.tags.reduce(
-    (acc, v) => (queryTagSet.has(v) ? acc + date2int(post.date) : acc),
-    0
-  );
 
 function date2int(date) {
   const dateStrings = date.split("/");

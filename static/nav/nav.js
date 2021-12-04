@@ -47,7 +47,7 @@ function getRecommendations(query, searchBar) {
   const suggestions = [...titles, ...tags]
     .map(s => s.toLowerCase())
     .filter(s => s.includes(queryT))
-    .sort((a, b) => editDistance(a, queryT) - editDistance(b, queryT));
+    .sort((a, b) => editDistance(a.substring(0, queryT.length), queryT) - editDistance(b.substring(0, queryT.length), queryT));
   searchBar.setSuggestions(suggestions.splice(0, 5))
 }
 
