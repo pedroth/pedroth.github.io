@@ -66,10 +66,10 @@ WebUtils.search = db => query => {
   const { distance: editDistance } = Nabla.EditDistance;
   const queryT = query.toLowerCase().trim();
   if (queryT in tagsHist) {
-    return db.posts.filter(p => p.tags.some(t => t === queryT)).sort((a, b) => date2int(a.date) - date2int(b.date))
+    return db.posts.filter(p => p.tags.some(t => t === queryT)).sort((a, b) => date2int(a.date) - date2int(b.date));
   }
   return db.posts
-    .filter(p => p.title.includes(queryT))
+    .filter(p => p.title.toLowerCase().trim().includes(queryT))
     .sort((a, b) => editDistance(a, queryT) - editDistance(b, queryT));
 };
 
