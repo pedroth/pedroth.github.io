@@ -1,5 +1,5 @@
 # Kmeans
-In this project I tried to implement two clustering algorithms on video data. The algorithms implemented were [Kmeans]() and a simplified [Gaussian mixture model](). 
+In this project I tried to implement two clustering algorithms on video data. The algorithms implemented were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
 
 More details can be found in the project section.
 
