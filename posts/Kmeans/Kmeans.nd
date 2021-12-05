@@ -1,3 +1,24 @@
 # Kmeans
+In this project I tried to implement two clustering algorithms on video data. The algorithms implemented were [Kmeans]() and a simplified [Gaussian mixture model](). 
 
-### Coming soon!!
+More details can be found in the project section.
+
+![](/posts/Kmeans/Kmeans.gif)
+
+
+
+## Project
++++
+<div style="display: flex;flex-direction: column">
+<a target="_blank" href="https://github.com/pedroth/kmeans-demo" style="align-self: center; margin: 20px">
+<button class="btn btn-primary btn-lg">
+ Project Page
+</button>
+</a>
+<a target="_blank" href="https://pedroth.github.io/kmeans-demo/" style="align-self: center">
+<button class="btn btn-primary btn-lg">
+ App Page
+</button>
+</a>
+</div>
++++
