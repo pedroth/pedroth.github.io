@@ -4,6 +4,9 @@ Bit Calculator is a simple parser and evaluator for mathematical expressions in 
 
 Please go check the project page.
 
+![](/posts/BitCalculator/BitCalculator.webp)
+
+# Project
 +++
 <div style="display: flex;flex-direction: column">
 <a target="_blank" href="https://github.com/pedroth/BitCalculator" style="align-self: center; margin: 20px">
@@ -19,4 +22,3 @@ Please go check the project page.
 </div>
 +++
 
-![](/posts/BitCalculator/BitCalculator.gif)

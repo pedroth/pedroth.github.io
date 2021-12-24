@@ -46,7 +46,7 @@ export function getCardsInRow(posts, colPerRows) {
       .attr("style", "margin: 10px;")
       .append(
         Card.builder()
-          .imageSrc(`${post.src}/${post.id}.gif`)
+          .imageSrc(`${post.src}/${post.id}.webp`)
           .url(`/?p=${post.src}/${post.id}.nd`)
           .title(post.title)
           .tags(post.tags)
