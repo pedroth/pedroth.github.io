@@ -1,11 +1,13 @@
 # Kmeans
-In this project I tried to implement two clustering algorithms on video data. The algorithms implemented were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
+
+I have read [here](https://davidwalsh.name/browser-camera) that I could access camera in the browser, so I decided to make a small demo doing some image processing. One of the simplest projects is to cluster images colors. This classification of pixels makes a nice cartoonish effect.
+
+The algorithms implemented were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
+
 
 More details can be found in the project section.
 
 ![](/posts/Kmeans/Kmeans.gif)
-
-
 
 ## Project
 +++
@@ -17,7 +19,7 @@ More details can be found in the project section.
 </a>
 <a target="_blank" href="https://pedroth.github.io/kmeans-demo/" style="align-self: center">
 <button class="btn btn-primary btn-lg">
- App Page
+ Demo Page
 </button>
 </a>
 </div>
