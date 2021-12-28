@@ -1,12 +1,12 @@
 # 3D Route
 
-After I [read](https://developers.google.com/web/fundamentals/native-hardware/device-orientation) that you can get phone sensor data from the browser, I decided to do some project using that. The project is a way to visualize this sensor data. In this demo you will see a wireframe abstraction of a phone, moving in space. The movement of the phone will trace a path.
+After I [read](https://developers.google.com/web/fundamentals/native-hardware/device-orientation) that you can get phone sensor data from the browser, I decided to do a project using that. The project is a way to visualize this sensor data. In this demo, you will see a wireframe abstraction of a phone, moving in space. The movement of the phone will trace a path.
 
-The available sensors are:
+The used sensors were:
 - [Real-time orientation](https://w3c.github.io/deviceorientation/#deviceorientation)
 - [Real-time acceleration](https://w3c.github.io/deviceorientation/#def-devicemotion)
 
-Although this demo is made for the mobile hardware, it has a desktop version. 
+Although this demo is made for mobile hardware, it has a desktop version. 
 
 ![](/posts/3DRoute/3DRoute.webp)
 
