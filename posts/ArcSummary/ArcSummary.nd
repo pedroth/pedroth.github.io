@@ -1,6 +1,6 @@
 # Arc Summaries of TV Series
 
-This blog entry redirects you to my master's thesis about "Arc Summaries of TV Series". Although I *couldn't have nice results*, in the paper, there is a good description of the algorithms that were developed/used for **segmentation**, **clustering**, and **summarization** of text signals. In the paper we used [Spectral Graph Theory](https://en.wikipedia.org/wiki/Spectral_graph_theory) framework to solve most of the problems, relating this area with glimpses of other fields such as [Discrete Exterior Calculus](https://en.wikipedia.org/wiki/Discrete_exterior_calculus), [Functional Data Analysis](https://en.wikipedia.org/wiki/Functional_data_analysis).
+This blog entry redirects you to my masters thesis about "Arc Summaries of TV Series". Although I *couldn't have nice results*, in the paper there are a good description of the algorithms that were developed/used for **segmentation**, **clustering** and **summarization** of text signals. In the paper we used [Spectral Graph Theory](https://en.wikipedia.org/wiki/Spectral_graph_theory) framework to solve most of the problems, relating this area with glimpses of other fields such as [Discrete Exterior Calculus](https://en.wikipedia.org/wiki/Discrete_exterior_calculus), [Functional Data Analysis](https://en.wikipedia.org/wiki/Functional_data_analysis).
 
 ## Abstract
 
@@ -19,38 +19,41 @@ This blog entry redirects you to my master's thesis about "Arc Summaries of TV S
 
 Just run:
 
-```
+```sh
 sudo docker run -it -v <full path to folder where your series are>:<some container folder> -p 31415:31415 pedroth/arc-summary
 ```
 
 
-It will run a page at `localhost:31415/ArcSummary`. There you must insert the full path to the folder where the series is at the container.
+It will run a page at `localhost:31415/ArcSummary`. There you must insert the full path to folder where the series is in the container.
 
 ### Example
 
 A simple example would be: 
 
-```
+```sh
 sudo docker run -it -v ~/Desktop/code/java-demos/OverTheGardenWall:/app/OverTheGardenWall -p 31415:31415 pedroth/arc-summary
 ```
 
 Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put `/app/OverTheGardenWall`. 
 
-The `video extension` input should have the correct extensions of the video files.
+The `video extension` input should have the correct extensions of the video files videos.
 
 
 ## Artifacts
 
 - ArcSummary.zip:
-    - ArcSummary.jar
-    - ArcSummary.sh(bat)
-    - README.md (instructions to run on computer)
-    - Tutorial.mp4/wmv
-    - Dockerfile
-    - lib/
-    - web/
-    - conf.txt
-    - stopWords.txt
+ - ArcSummary.jar
+ - ArcSummary.sh(bat)
+ - README.md (instructions to run on computer)
+ - Tutorial.mp4/wmv
+ - Dockerfile
+ - lib/
+ - web/
+ - conf.txt
+ - stopWords.txt
+
+
+    
 +++
 <div style="display: flex;flex-direction: column">
 <a href="posts/ArcSummary/ArcSummary.zip" target="_blank" style="align-self: center; margin: 20px">

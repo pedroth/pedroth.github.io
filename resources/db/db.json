@@ -3,7 +3,7 @@
     {
       "id": "ArcSummary",
       "title": "Arc Summary",
-      "date": "24/11/2019",
+      "date": "28/12/2021",
       "src": "posts/ArcSummary",
       "tags": [
         "blog",
@@ -16,7 +16,8 @@
         "graph theory",
         "clustering",
         "signal processing",
-        "natural language processing"
+        "natural language processing",
+        "docker"
       ]
     },
     {
@@ -269,7 +270,7 @@
     {
       "id": "PublicChat",
       "title": "Public Chat",
-      "date": "01/12/2017",
+      "date": "27/12/2021",
       "src": "posts/PublicChat",
       "tags": [
         "experiments",
@@ -280,7 +281,8 @@
         "open source",
         "computer science",
         "simple",
-        "pooling"
+        "pooling",
+        "docker"
       ]
     },
     {

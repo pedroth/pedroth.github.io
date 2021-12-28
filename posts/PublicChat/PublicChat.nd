@@ -12,14 +12,23 @@ My goals with this project were:
 - Creating a chat with a public delete button.
 - Testing pooling http requests to simulate web-sockets (*conclusion*: just use web-sockets).
 - Creating open source project
+-  Dockerize app
 
-```plaintext
-[TODO]: Dockerize app
-```
 
 The [server](http://pedroth.duckdns.org:8080/PublicChat) is sometimes off :).
 
 ![**Public Chat** app](/posts/PublicChat/PublicChat.webp)
+
+
+## Project
+
+### Run with docker
+
+`docker run -it -p 8080:8080 --name public-chat pedroth/public-chat`
+
+Then open `localhost:8080/PublicChat`.
+
+### Github
 
 +++
 <div style="display: flex;flex-direction: column">
