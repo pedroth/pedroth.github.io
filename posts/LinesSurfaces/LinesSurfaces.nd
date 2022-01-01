@@ -1,13 +1,14 @@
 # Lines and Surfaces
 
- *Lines and Surfaces* is a simple application that let you see parametrized surfaces and curves in 3 dimensions.
+ *Lines and Surfaces* is a `java` application that lets you see parametrized surfaces and curves in 3 dimensions.
 
 These are **surfaces** given by a function $\mathbf{f}$:
 $$ \mathbf{f}:(u,v)\in \mathbb{R^2} \rightarrow (f_1(u,v), f_2(u,v), f_3(u,v))^{T}$$
  **Curves** given by a function $\boldsymbol{\gamma}$:
  
  $$\boldsymbol{\gamma}:t\in\mathbb{R}\rightarrow(\gamma_1(t), \gamma_2(t), \gamma_3(t))^{T}$$
-After setting up your curve or surface you can generate `.obj` file by pressing `key g`.
+
+The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan`.After setting up your curve or surface you can generate a `.obj` file by pressing key `g`. 
 
 Press `h` for help. Feel free to download the program below.
 
@@ -27,4 +28,4 @@ Press `h` for help. Feel free to download the program below.
 </a>
 </div>
 +++
-
++++

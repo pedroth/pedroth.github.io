@@ -20,15 +20,13 @@ The [server](http://pedroth.duckdns.org:8080/PublicChat) is sometimes off :).
 ![**Public Chat** app](/posts/PublicChat/PublicChat.webp)
 
 
-## Project
-
-### Run with docker
+## Run with docker
 
 `docker run -it -p 8080:8080 --name public-chat pedroth/public-chat`
 
 Then open `localhost:8080/PublicChat`.
 
-### Github
+## Github
 
 +++
 <div style="display: flex;flex-direction: column">

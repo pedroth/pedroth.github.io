@@ -1,8 +1,14 @@
 # Implicit Surface
 
- *Implicit Surface* is a simple application where you can see surfaces that are the level sets of three dimensional functions. These surfaces are of the form $\left \{(x,y,z) \in \mathbb{R}^3 : f(x,y,z) = 0 \right \}$. For instance the sphere will have the following formula: 
+ *Implicit Surface* is a simple `java` application where you can visualize surfaces of the form: 
+
+    $$S = \left \{(x,y,z) \in \mathbb{R}^3 : f(x,y,z) = 0 \right \}$$
+
+Where $f: \mathbb{R}^3 \rightarrow \mathbb{R}$. A popular surface of these, is the sphere, which is defined as: 
  
-$$x^2+y^2+z^2 -1 = 0$$
+    $$x^2+y^2+z^2 -1 = 0$$
+
+There are many other surfaces to explore here, check the demo on the video below. Enjoy!!
 
 Press `h` for help. Feel free to download the program below.
 

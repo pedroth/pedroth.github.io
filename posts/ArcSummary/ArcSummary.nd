@@ -31,12 +31,10 @@ It will run a page at `localhost:31415/ArcSummary`. There you must insert the fu
 A simple example would be: 
 
 ```sh
-sudo docker run -it -v ~/Desktop/code/java-demos/OverTheGardenWall:/app/OverTheGardenWall -p 31415:31415 pedroth/arc-summary
+sudo docker run -it -v ~/Downloads/OverTheGardenWall:/app/OverTheGardenWall -p 31415:31415 pedroth/arc-summary
 ```
 
-Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put `/app/OverTheGardenWall`. 
-
-The `video extension` input should have the correct extensions of the video files videos.
+Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put `/app/OverTheGardenWall`. For more details check the video tutorial above.
 
 
 ## Artifacts

@@ -1,6 +1,6 @@
 # Random Curve
 
-  *RandomCurve* is a simple application that generates a **random** curve in time. The **random** curve $\gamma$ is generated as follows:
+ *RandomCurve* is a simple `java` application that generates a **random** curve in time. The **random** curve $\gamma$ is generated as follows:
 
 $$X\sim \text{Uniform}(0,1)$$
 
@@ -8,14 +8,107 @@ $$\ddot{\theta} = 100X - 50 -\dot \theta$$
 
 $$\dot \gamma = \mathbf{e_r}(\theta)$$
 
-$$\mathbf{e_r}(\theta) =\begin{bmatrix}
+$$
+\mathbf{e_r}(\theta) =\begin{bmatrix}
 \cos (\theta)\\
 \sin(\theta)
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
 Press `h` for help. Feel free to download the program below.
 
 ![Random Curve app video](https://youtu.be/gOz2MV5Z-D0)
+
+## Javascript port
+
+Below you will find a `javascript` port of the `java` version. Also available on [my khan academy](https://www.khanacademy.org/computer-programming/hsb-random-curve/2499302706).
+
++++
+<div style="display: flex;justify-content: center;">
+<canvas id="canvas" width="560" height="400"></canvas>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+<script>
+    var canvas = document.getElementById("canvas"),
+    processing = new Processing(canvas, function(processing) {
+        processing.size(canvas.width, canvas.height), processing.background(4095);
+        var mouseIsPressed = !1;
+        processing.mousePressed = function() {
+            mouseIsPressed = !0
+        }, processing.mouseReleased = function() {
+            mouseIsPressed = !1
+        };
+        var keyIsPressed = !1;
+
+        function getImage(n) {
+            var o = "https://www.kasandbox.org/programming-images/" + n + ".png";
+            return processing.externals.sketch.imageCache.add(o), processing.loadImage(o)
+        }
+        processing.keyPressed = function() {
+            keyIsPressed = !0
+        }, processing.keyReleased = function() {
+            keyIsPressed = !1
+        };
+        var rotateFn = processing.rotate;
+        with(processing.rotate = function(n) {
+            rotateFn(processing.radians(n))
+        }, processing) var gamma, omega, theta, oldPoint, newPoint, time, isInit = !0,
+            currentTime, oldTime, speed, timeColor, xmin = -5,
+            xmax = 5,
+            ymin = -5,
+            ymax = 5,
+            w = canvas.width,
+            h = canvas.height,
+            computeDxdt = function() {
+                return cos(theta)
+            },
+            computeDydt = function() {
+                return sin(theta)
+            },
+            computeColor = function(n) {
+                var o = [];
+                return o[0] = round(255 * sin(3 * n) * sin(3 * n)), o[1] = round(255 * sin(6 * n) * sin(6 * n)), o[2] = round(255 * sin(12 * n) * sin(12 * n)), o
+            },
+            changeXcoord = function(n) {
+                return (n - xmin) * w / abs(xmax - xmin)
+            },
+            changeYcoord = function(n) {
+                return -(n - ymax) * h / abs(ymax - ymin)
+            },
+            drawLine = function(n, o, e, i) {
+                var t = changeXcoord(n),
+                    s = changeYcoord(o),
+                    r = changeXcoord(e),
+                    a = changeYcoord(i);
+                line(t, s, r, a)
+            },
+            euler = function() {
+                var n = (currentTime = .001 * millis()) - oldTime;
+                oldTime = currentTime, time += n, oldPoint[0] > 5 ? oldPoint[0] = -5 : oldPoint[0] < -5 ? oldPoint[0] = 5 : oldPoint[1] > 5 ? oldPoint[1] = -5 : oldPoint[1] < -5 && (oldPoint[1] = 5);
+                var o = oldPoint[0],
+                    e = oldPoint[1];
+                gamma = 100 * random(0, 1) - 50 - omega, theta += (omega += gamma * n * speed) * n * speed;
+                var i = computeDxdt(),
+                    t = computeDydt();
+                newPoint[0] = o + n * i * speed, newPoint[1] = e + n * t * speed, timeColor = computeColor(time), stroke(timeColor[0], 255, 255), drawLine(oldPoint[0], oldPoint[1], newPoint[0], newPoint[1]), oldPoint[0] = newPoint[0], oldPoint[1] = newPoint[1]
+            },
+            init = function() {
+                oldPoint = [], newPoint = [];
+                for (var n = 0; n < 2; n++) newPoint[n] = random(-5, 5), oldPoint[n] = random(-5, 5);
+                theta = random(0, 6.283184), omega = random(0, 6.283184), background(0, 0, 0), oldTime = .001 * millis(), time = 0, speed = 5, isInit = !1, colorMode(HSB)
+            },
+            mouseReleased = function() {
+                oldPoint[0] = xmin + mouseX / w * abs(xmax - xmin), oldPoint[1] = ymax - mouseY / h * abs(ymax - ymin)
+            },
+            draw = function() {
+                isInit && init(), euler()
+            };
+        void 0 !== draw && (processing.draw = draw)
+    });
+</script>
++++
+
+## Links
 
 +++
 <div style="display: flex;flex-direction: column">
@@ -31,4 +124,3 @@ Press `h` for help. Feel free to download the program below.
 </a>
 </div>
 +++
-
