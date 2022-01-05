@@ -1,1 +1,1 @@
-java -cp <jar> <app name>
+java -cp ${jar} ${appName}

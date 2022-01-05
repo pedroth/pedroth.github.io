@@ -41,8 +41,8 @@ Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put 
 
 - ArcSummary.zip:
  - ArcSummary.jar
- - ArcSummary.sh(bat)
- - README.md (instructions to run on computer)
+ - ArcSummary.sh/ArcSummary.bat
+ - README.md
  - Tutorial.mp4/wmv
  - Dockerfile
  - lib/

@@ -34,8 +34,8 @@ function createReadMe(jarName, appName) {
   let readMe = fs.readFileSync(`./java/README.md`, {
     encoding: "utf-8"
   });
-  readMe = replaceAll(readMe, "<jar>", jarName);
-  readMe = replaceAll(readMe, "<app name>", appName);
+  readMe = replaceAll(readMe, "${jar}", jarName);
+  readMe = replaceAll(readMe, "${appName}", appName);
   return readMe;
 }
 
@@ -43,9 +43,19 @@ function createRunBat(jarName, appName) {
   let runBat = fs.readFileSync(`./java/run.bat`, {
     encoding: "utf-8"
   });
-  runBat = replaceAll(runBat, "<jar>", jarName);
-  runBat = replaceAll(runBat, "<app name>", appName);
+  runBat = replaceAll(runBat, "${jar}", jarName);
+  runBat = replaceAll(runBat, "${appName}", appName);
   return runBat;
+}
+
+function createRunDocker(repo, jarName, appName) {
+  let runDocker = fs.readFileSync(`./java/runDocker.sh`, {
+    encoding: "utf-8"
+  });
+  const jarLocal = `${repo}/${jarName}`;
+  runDocker = replaceAll(runDocker, "${jar}", jarLocal);
+  runDocker = replaceAll(runDocker, "${appName}", appName);
+  return runDocker;
 }
 
 function zipIt(src, dest, afterZip = () => {}) {
@@ -82,10 +92,12 @@ function processJars() {
     createDir(tmpFolder);
     const readMe = createReadMe(newJarName, jar.in);
     const runBat = createRunBat(newJarName, jar.in);
+    const runDocker = createRunDocker(jar.repo, jar.from, jar.in);
     // fs.writeFileSync(tmpFolder + `/README.txt`, readMe);
     fs.writeFileSync(tmpFolder + `/README.md`, readMe);
     fs.writeFileSync(tmpFolder + `/run.bat`, runBat);
     fs.writeFileSync(tmpFolder + `/run.sh`, runBat);
+    fs.writeFileSync(tmpFolder + `/runDocker.sh`, runDocker);
     copyFile(`./java/${jar.from}`, tmpFolder + `/${newJarName}`);
 
     console.log("zipping folder", tmpFolder, zipPath);
@@ -96,7 +108,16 @@ function processJars() {
   });
 }
 
+function logDockerCommands() {
+  const config = readJarsConfig();
+  const commands = [];
+  config.jars.forEach(({ from, in: jarIn, repo }) => {
+    console.log(`- \`${createRunDocker(repo, from, jarIn)}\``);
+  });
+}
+
 function main() {
   processJars();
+  logDockerCommands();
 }
 main();

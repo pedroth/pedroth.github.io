@@ -17,7 +17,8 @@
         "clustering",
         "signal processing",
         "natural language processing",
-        "docker"
+        "docker",
+        "UI"
       ]
     },
     {
@@ -34,7 +35,7 @@
         "computer science",
         "differential equations",
         "brownian motion",
-        "2d graphics"
+        "2d"
       ]
     },
     {
@@ -49,7 +50,7 @@
         "mathematics",
         "computer science",
         "cellular automaton",
-        "2d graphics"
+        "2d"
       ]
     },
     {
@@ -65,7 +66,8 @@
         "computer science",
         "vector fields",
         "chaos",
-        "differential equations"
+        "differential equations",
+        "3d"
       ]
     },
     {
@@ -81,8 +83,10 @@
         "mathematics",
         "computer science",
         "optimization",
-        "3d graphics",
-        "surfaces"
+        "gradient descend",
+        "3d",
+        "surfaces",
+        "geometry"
       ]
     },
     {
@@ -98,8 +102,9 @@
         "mathematics",
         "computer science",
         "implicit surfaces",
-        "3d graphics",
-        "surfaces"
+        "3d",
+        "surfaces",
+        "geometry"
       ]
     },
     {
@@ -114,9 +119,10 @@
         "mathematics",
         "computer science",
         "surfaces",
-        "3d graphics",
+        "3d",
         "curves",
-        "obj files"
+        "OBJ files",
+        "geometry"
       ]
     },
     {
@@ -132,11 +138,12 @@
         "mathematics",
         "computer science",
         "surfaces",
-        "3d graphics",
+        "3d",
         "partial differential equations",
         "heat equation",
         "wave equation",
-        "curvature flow"
+        "curvature flow",
+        "geometry"
       ]
     },
     {
@@ -155,8 +162,9 @@
         "random",
         "differential equations",
         "curvature",
-        "2d graphics",
-        "procedural"
+        "2d",
+        "procedural",
+        "geometry"
       ]
     },
     {
@@ -174,7 +182,7 @@
         "computer science",
         "differential equations",
         "rigid body",
-        "2d graphics",
+        "2d",
         "procedural"
       ]
     },
@@ -194,7 +202,7 @@
         "computer science",
         "differential equations",
         "rigid body",
-        "3d graphics",
+        "3d",
         "kinematics"
       ]
     },
@@ -210,7 +218,8 @@
         "procedural",
         "mathematics",
         "computer science",
-        "3d graphics"
+        "3d",
+        "geometry"
       ]
     },
     {
@@ -227,7 +236,7 @@
         "eigenvalues",
         "mathematics",
         "computer science",
-        "3d graphics",
+        "3d",
         "vector fields",
         "optimization",
         "differential equations",
@@ -259,7 +268,7 @@
       "tags": [
         "experiments",
         "js",
-        "3d graphics",
+        "3d",
         "sensors",
         "mobile",
         "mathematics",
@@ -282,7 +291,8 @@
         "computer science",
         "simple",
         "pooling",
-        "docker"
+        "docker",
+        "UI"
       ]
     },
     {
@@ -300,7 +310,13 @@
         "natural language processing",
         "partial differential equations",
         "signal processing",
-        "visualization"
+        "visualization",
+        "eigenvectors",
+        "eigenvalues",
+        "geometry",
+        "simulation",
+        "2d",
+        "3d"
       ]
     },
     {
@@ -309,14 +325,16 @@
       "date": "03/05/2021",
       "src": "posts/Nabladown",
       "tags": [
-        "lib",
+        "library",
+        "experiments",
         "js",
         "mathematics",
         "computer science",
         "compiler",
         "parsing",
         "grammars",
-        "visualization"
+        "visualization",
+        "UI"
       ]
     },
     {
@@ -325,13 +343,15 @@
       "date": "05/05/2021",
       "src": "posts/BitCalculator",
       "tags": [
+        "experiments",
         "js",
         "mathematics",
         "computer science",
         "compiler",
         "parsing",
         "grammars",
-        "calculator"
+        "calculator",
+        "UI"
       ]
     }
   ]

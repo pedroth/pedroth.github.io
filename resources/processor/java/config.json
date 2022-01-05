@@ -2,66 +2,79 @@
   "jars": [
     {
       "id": "BrownianMotion",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.BrownianMotion"
     },
     {
       "id": "CellularAutomaton",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.ParallelCellularAutomaton"
     },
     {
       "id": "CubeChaos",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.Cube"
     },
     {
       "id": "GraphXY",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.GraphXY"
     },
     {
       "id": "ImplicitSurface",
+      "repo": "pedroEngine",
       "from": "pedroEngine.jar",
       "in": "apps.ImplicitSurface"
     },
     {
       "id": "LinesSurfaces",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.LinesSurfaces"
     },
     {
       "id": "PDE",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.PDEGUI"
     },
     {
       "id": "RandomCurve",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.RandomCurve"
     },
     {
       "id": "SimplePhysics",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.SimplePhysics"
     },
     {
       "id": "SimpleRobot",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.Robot"
     },
     {
       "id": "Tetra",
+      "repo": "Learning",
       "from": "learning.jar",
       "in": "apps.Tetra"
     },
     {
       "id": "EigenSimulation",
+      "repo": "pedroEngine",
       "from": "pedroEngine.jar",
       "in": "apps.EigenSimulation"
     },
     {
       "id": "TextSimplex",
+      "repo": "pedroEngine",
       "from": "pedroEngine.jar",
       "in": "apps.TextCurves"
     }
