@@ -353,6 +353,13 @@
         "calculator",
         "UI"
       ]
+    },
+    {
+      "id": "Roulette",
+      "title": "Simple Roullete game",
+      "date": "29/01/2022",
+      "src": "posts/Roulette",
+      "tags": ["experiments", "js", "processing", "game", "khan academy", "UI"]
     }
   ]
 }
