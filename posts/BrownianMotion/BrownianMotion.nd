@@ -6,6 +6,7 @@ Press `h` for help. Feel free to download the program below.
 
 ![**Brownian motion** app](https://youtu.be/xEuvduHU1_w)
 
+## Links
 +++
 <div style="display: flex;flex-direction: column">
 <a href="posts/BrownianMotion/BrownianMotion.zip" target="_blank" style="align-self: center; margin: 20px">
@@ -21,3 +22,8 @@ Press `h` for help. Feel free to download the program below.
 </div>
 +++
 
+## Running with docker
+
+Copy paste to a terminal:
+
+`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.BrownianMotion"`

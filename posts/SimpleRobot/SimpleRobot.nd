@@ -11,7 +11,9 @@ Press `h` for help. Feel free to download the program below.
                 
 ![**Simple Robot** app video](https://youtu.be/rb4BLRtzkJ8)
 
- +++
+## Links
+
++++
 <div style="display: flex;flex-direction: column">
 <a href="posts/SimpleRobot/SimpleRobot.zip" target="_blank" style="align-self: center; margin: 20px">
 <button class="btn btn-primary btn-lg">
@@ -26,3 +28,8 @@ Press `h` for help. Feel free to download the program below.
 </div>
 +++
 
+## Running with docker
+
+Copy paste to a terminal:
+
+`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Robot"`

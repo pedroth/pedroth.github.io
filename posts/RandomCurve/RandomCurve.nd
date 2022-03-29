@@ -124,3 +124,9 @@ Below you will find a `javascript` port of the `java` version. Also available on
 </a>
 </div>
 +++
+
+## Running with docker
+
+Copy paste to a terminal:
+
+`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.RandomCurve"`

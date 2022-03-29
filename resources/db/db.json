@@ -245,7 +245,7 @@
     },
     {
       "id": "Kmeans",
-      "title": "K-means",
+      "title": "Clustering Colors",
       "date": "05/12/2021",
       "src": "posts/Kmeans",
       "tags": [
@@ -262,7 +262,7 @@
     },
     {
       "id": "3DRoute",
-      "title": "3DRoute",
+      "title": "3D Route",
       "date": "22/12/2021",
       "src": "posts/3DRoute",
       "tags": [

@@ -19,6 +19,7 @@ For more options press `h` for help. Feel free to download the program below.
 
 ![*Eigen Simulation* app video](https://youtu.be/0QV7QjFa0k8)
 
+## Links
 
 +++
 <div style="display: flex;flex-direction: column">
@@ -34,3 +35,9 @@ For more options press `h` for help. Feel free to download the program below.
 </a>
 </div>
 +++
+
+## Running with docker
+
+Copy paste to a terminal:
+
+`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.EigenSimulation"`

@@ -14,7 +14,9 @@ Press `h` for help. Feel free to download the program below.
 
 ![**Implicit Surface** app video](https://youtu.be/th5fCVsMbXw)
 
- +++
+## Links
+
++++
 <div style="display: flex;flex-direction: column">
 <a href="posts/ImplicitSurface/ImplicitSurface.zip" target="_blank" style="align-self: center; margin: 20px">
 <button class="btn btn-primary btn-lg">
@@ -28,3 +30,9 @@ Press `h` for help. Feel free to download the program below.
 </a>
 </div>
 +++
+
+## Running with docker
+
+Copy paste to a terminal:
+
+`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.ImplicitSurface"`
