@@ -1,4 +1,4 @@
-# Kmeans
+# Clustering colors
 
 I have read [here](https://davidwalsh.name/browser-camera) that I could access the camera in the browser, so I decided to make a small demo doing some image processing. One of the simplest projects is to cluster images colors. This classification of pixels makes a nice cartoonish effect.
 
