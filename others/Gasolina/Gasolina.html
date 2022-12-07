@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gasolina Casa -- Mov.ai</title>
+    <style>
+        html {
+            text-align: center;
+        }
+
+        table {
+            font-size: x-large;
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script>
+    const header = document.createElement("h1");
+    header.innerText = "Custos da Viagem (Casa < == > Movai)"
+    document.body.appendChild(header);
+
+    class Mul {
+        constructor(left, right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        mul(node) {
+            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            return new Mul(this, node);
+        }
+
+        div(node) {
+            if (!isNaN(node)) return new Div(this, new Constant(node))
+            return new Div(this, node);
+        }
+
+        compute() {
+            return this.left.compute() * this.right.compute()
+        }
+
+        toString() {
+            return `(${this.left.toString()} * ${this.right.toString()})`
+        }
+    }
+
+    class Div {
+        constructor(left, right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        mul(node) {
+            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            return new Mul(this, node);
+        }
+
+        div(node) {
+            if (!isNaN(node)) return new Div(this, new Constant(node))
+            return new Div(this, node);
+        }
+
+        compute() {
+            return this.left.compute() / this.right.compute()
+        }
+
+        toString() {
+            return `(${this.left.toString()} / ${this.right.toString()})`
+        }
+    }
+
+    class Constant {
+        constructor(value) {
+            this.value = value;
+        }
+
+        mul(node) {
+            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            return new Mul(this, node);
+        }
+
+        div(node) {
+            if (!isNaN(node)) return new Div(this, new Constant(node))
+            return new Div(this, node);
+        }
+
+        compute() {
+            return this.value;
+        }
+
+        toString() {
+            return `${this.value}`
+        }
+    }
+
+    const numeroDePessoas = new Constant(3);
+    const consumoMedioLitro100Km = new Constant(7.7);
+    const consumoMedioLitroKm = consumoMedioLitro100Km.div(100);
+    const distanciaCasaMovai = new Constant(26.8)
+    const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
+    const preçoGasolina = new Constant(1.763);
+    const preçoFinal = preçoGasolina.mul(distanciaCasaMovaiDouble).mul(consumoMedioLitroKm)
+    const preçoFinalShared = new Constant(preçoFinal.compute()).div(3)
+    const table = {
+        "Nº pessoas": numeroDePessoas,
+        "Consumo médio (l/100km)": consumoMedioLitro100Km,
+        "Consumo médio (l/km)": consumoMedioLitroKm,
+        "Distância Casa -> Movai (km)": distanciaCasaMovai,
+        "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
+        "Preço da Gasolina (€/l)": preçoGasolina,
+        "Preço Final €": preçoFinal,
+        "Preço Final € / Nº Pessoas": preçoFinalShared
+    }
+    const explainTable = document.createElement("table")
+    Object.keys(table).forEach(key => {
+        const line = document.createElement("tr");
+        const lineItem1 = document.createElement("td");
+        lineItem1.innerText = key;
+        line.appendChild(lineItem1)
+
+        const lineItem2 = document.createElement("td");
+        const str = table[key].toString()
+        lineItem2.innerText = str.includes("(") ? str.slice(1, str.length - 1) : str;
+        line.appendChild(lineItem2)
+        explainTable.appendChild(line)
+
+        const lineItem3 = document.createElement("td");
+        console.log("debug")
+        lineItem3.innerText = table[key].compute();
+        line.appendChild(lineItem3)
+        explainTable.appendChild(line)
+    })
+    document.body.appendChild(explainTable)
+</script>
+
+</html>
