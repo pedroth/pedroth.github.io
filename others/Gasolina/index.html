@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gasolina Casa -- Mov.ai</title>
     <style>
         html {
@@ -18,6 +18,10 @@
             border: 1px solid #ddd;
         }
 
+        table input {
+            font-size: larger;
+        }
+
         th,
         td {
             text-align: left;
@@ -26,61 +30,113 @@
     </style>
 </head>
 
-<body>
-
-</body>
+<body></body>
 <script>
-    const header = document.createElement("h1");
-    header.innerText = "Custos da Viagem (Casa < == > Movai)"
-    document.body.appendChild(header);
-
     class Mul {
         constructor(left, right) {
             this.left = left;
+            this.left.parent = [...(this.left.parent || []), this];
             this.right = right;
+            this.right.parent = [...(this.right.parent || []), this];
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            if (!isNaN(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node))
+            if (!isNaN(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
         compute() {
-            return this.left.compute() * this.right.compute()
+            return this.left.compute() * this.right.compute();
         }
 
         toString() {
-            return `(${this.left.toString()} * ${this.right.toString()})`
+            return `(${this.left.toString()} * ${this.right.toString()})`;
+        }
+
+
+        render() {
+            const span = document.createElement("span")
+            this.dom = span;
+            span.innerText = this.compute();
+            return span;
+        }
+
+        updateRender() {
+            this.parent && this.parent.forEach(p => p.updateRender())
+            if (this.dom) {
+                this.dom.innerText = this.compute();
+            }
+            return this;
+        }
+
+        simplify() {
+            const simpleLeft = this.left.simplify()
+            const simpleRight = this.right.simplify()
+            if (simpleLeft instanceof Constant && simpleRight instanceof Constant) {
+                return new Constant(simpleLeft.compute() * simpleRight.compute())
+            }
+            return new Mul(simpleLeft, simpleRight);
         }
     }
 
     class Div {
         constructor(left, right) {
             this.left = left;
+            this.left.parent = [...(this.left.parent || []), this];
             this.right = right;
+            this.right.parent = [...(this.right.parent || []), this];
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            if (!isNaN(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node))
+            if (!isNaN(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
         compute() {
-            return this.left.compute() / this.right.compute()
+            return this.left.compute() / this.right.compute();
         }
 
         toString() {
-            return `(${this.left.toString()} / ${this.right.toString()})`
+            return `(${this.left.toString()} / ${this.right.toString()})`;
+        }
+
+        onchange(lambda) {
+            this.onchange = lambda;
+            return this
+        }
+
+        render() {
+            const span = document.createElement("span")
+            this.dom = span;
+            span.innerText = this.compute();
+            return span;
+        }
+
+        updateRender() {
+            this.parent && this.parent.forEach(p => p.updateRender())
+            if (this.dom) {
+                this.dom.innerText = this.compute();
+            }
+            return this;
+        }
+
+        simplify() {
+            const simpleLeft = this.left.simplify()
+            const simpleRight = this.right.simplify()
+            if (simpleLeft instanceof Constant && simpleRight instanceof Constant) {
+                return new Constant(simpleLeft.compute() / simpleRight.compute())
+            }
+            return new Div(simpleLeft, simpleRight);
         }
     }
 
@@ -90,12 +146,12 @@
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node))
+            if (!isNaN(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node))
+            if (!isNaN(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
@@ -104,48 +160,153 @@
         }
 
         toString() {
-            return `${this.value}`
+            return `${this.value}`;
+        }
+
+        onchange() {
+            return this;
+        }
+
+        render() {
+            const span = document.createElement("span")
+            this.dom = span;
+            span.innerText = this.compute();
+            return span;
+        }
+
+        updateRender() {
+            // constant values don't change, hence no need to upadate dom
+            return this;
+        }
+
+        simplify() {
+            return this;
         }
     }
 
-    const numeroDePessoas = new Constant(3);
-    const consumoMedioLitro100Km = new Constant(7.7);
-    const consumoMedioLitroKm = consumoMedioLitro100Km.div(100);
-    const distanciaCasaMovai = new Constant(26.8)
-    const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
-    const preçoGasolina = new Constant(1.763);
-    const preçoFinal = preçoGasolina.mul(distanciaCasaMovaiDouble).mul(consumoMedioLitroKm)
-    const preçoFinalShared = new Constant(preçoFinal.compute()).div(3)
-    const table = {
-        "Nº pessoas": numeroDePessoas,
-        "Consumo médio (l/100km)": consumoMedioLitro100Km,
-        "Consumo médio (l/km)": consumoMedioLitroKm,
-        "Distância Casa -> Movai (km)": distanciaCasaMovai,
-        "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
-        "Preço da Gasolina (€/l)": preçoGasolina,
-        "Preço Final €": preçoFinal,
-        "Preço Final € / Nº Pessoas": preçoFinalShared
+    class Variable {
+        constructor(symbol, value) {
+            this.symbol = symbol;
+            this.value = value;
+        }
+
+        mul(node) {
+            if (!isNaN(node)) return new Mul(this, new Constant(node));
+            return new Mul(this, node);
+        }
+
+        div(node) {
+            if (!isNaN(node)) return new Div(this, new Constant(node));
+            return new Div(this, node);
+        }
+
+        compute() {
+            return this.value;
+        }
+
+
+        toString() {
+            return `${this.symbol}`;
+        }
+
+        render() {
+            const numberInput = document.createElement("input")
+            numberInput.setAttribute("type", "number")
+            numberInput.setAttribute("min", 0)
+            numberInput.setAttribute("step", 0.01)
+            numberInput.onchange = (e) => {
+                this.value = Number(e.target.value);
+                console.log("debug variable on change", this.value)
+                this.parent && this.parent.forEach(p => p.updateRender())
+                this.updateRender();
+            }
+            numberInput.value = this.compute()
+            this.dom = numberInput;
+            return numberInput;
+        }
+
+        updateRender() {
+            if (this.dom) {
+                this.dom.value = this.compute();
+            }
+            return this;
+        }
+
+        simplify() {
+            return this;
+        }
     }
-    const explainTable = document.createElement("table")
-    Object.keys(table).forEach(key => {
-        const line = document.createElement("tr");
-        const lineItem1 = document.createElement("td");
-        lineItem1.innerText = key;
-        line.appendChild(lineItem1)
 
-        const lineItem2 = document.createElement("td");
-        const str = table[key].toString()
-        lineItem2.innerText = str.includes("(") ? str.slice(1, str.length - 1) : str;
-        line.appendChild(lineItem2)
-        explainTable.appendChild(line)
+    function getExplainedTable() {
+        const numeroDePessoas = new Constant(3);
+        const consumoMedioLitro100Km = new Constant(7.7);
+        const consumoMedioLitroKm = consumoMedioLitro100Km.div(100);
+        const distanciaCasaMovai = new Constant(26.8);
+        const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
+        const preçoGasolina = new Variable("x", 1.763);
+        const preçoFinal = preçoGasolina
+            .mul(distanciaCasaMovaiDouble)
+            .mul(consumoMedioLitroKm);
+        const preçoFinalShared = preçoFinal.simplify().div(3);
+        const table = {
+            "Nº pessoas": numeroDePessoas,
+            "Consumo médio (l/100km)": consumoMedioLitro100Km,
+            "Consumo médio (l/km)": consumoMedioLitroKm,
+            "Distância Casa -> Movai (km)": distanciaCasaMovai,
+            "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
+            "Preço da Gasolina (€/l)": preçoGasolina,
+            "Preço Final €": preçoFinal,
+            "Preço Final € / Nº Pessoas": preçoFinalShared
+        };
+        const explainTable = document.createElement("table");
+        Object.keys(table).forEach(key => {
+            const line = document.createElement("tr");
+            const columnItem1 = document.createElement("td");
+            columnItem1.innerText = key;
+            line.appendChild(columnItem1);
 
-        const lineItem3 = document.createElement("td");
-        console.log("debug")
-        lineItem3.innerText = table[key].compute();
-        line.appendChild(lineItem3)
-        explainTable.appendChild(line)
-    })
-    document.body.appendChild(explainTable)
+            const columnItem2 = document.createElement("td");
+            const str = table[key].toString();
+            columnItem2.innerText = str.includes("(")
+                ? str.slice(1, str.length - 1)
+                : str;
+            line.appendChild(columnItem2);
+            explainTable.appendChild(line);
+
+            const columnItem3 = document.createElement("td");
+            columnItem3.appendChild(table[key].render());
+            line.appendChild(columnItem3);
+            explainTable.appendChild(line);
+        });
+        return explainTable;
+    }
+
+    function getGasolineWidget() {
+        const div = document.createElement("div");
+        const widget = document.createElement("div");
+        widget.id = "maisgasolina-widget";
+        widget.setAttribute("data-theme", 1);
+        widget.onload = () => {
+            console.log("onload widget");
+        };
+        div.appendChild(widget);
+        const widgetScript = document.createElement("script");
+        widgetScript.setAttribute(
+            "src",
+            "//static.maisgasolina.com/widget/mg.js"
+        );
+        widgetScript.setAttribute("async", true);
+        div.appendChild(widgetScript);
+        return div;
+    }
+
+    (async () => {
+        const header = document.createElement("h1");
+        header.innerText = "Custos da Viagem (Casa < == > Movai)";
+        document.body.appendChild(header);
+        document.body.appendChild(getGasolineWidget());
+        document.body.appendChild(getExplainedTable())
+    })();
 </script>
 
 </html>
