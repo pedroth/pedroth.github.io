@@ -32,6 +32,21 @@
 
 <body></body>
 <script>
+    function just(x) {
+        return { map: f => maybe(f(x)), orSome: z => x }
+    }
+
+    function none(x) {
+        return { map: _ => none(), orSome: z => z }
+    }
+
+    function maybe(x) {
+        if (!!x) {
+            return just(x);
+        }
+        return none(x)
+    }
+
     class Mul {
         constructor(left, right) {
             this.left = left;
@@ -57,7 +72,6 @@
         toString() {
             return `(${this.left.toString()} * ${this.right.toString()})`;
         }
-
 
         render() {
             const span = document.createElement("span")
@@ -110,11 +124,6 @@
             return `(${this.left.toString()} / ${this.right.toString()})`;
         }
 
-        onchange(lambda) {
-            this.onchange = lambda;
-            return this
-        }
-
         render() {
             const span = document.createElement("span")
             this.dom = span;
@@ -163,10 +172,6 @@
             return `${this.value}`;
         }
 
-        onchange() {
-            return this;
-        }
-
         render() {
             const span = document.createElement("span")
             this.dom = span;
@@ -204,7 +209,6 @@
             return this.value;
         }
 
-
         toString() {
             return `${this.symbol}`;
         }
@@ -213,7 +217,12 @@
             const numberInput = document.createElement("input")
             numberInput.setAttribute("type", "number")
             numberInput.setAttribute("min", 0)
-            numberInput.setAttribute("step", 0.01)
+            numberInput.setAttribute("step",
+                maybe(Number(this.value).toString().split("."))
+                    .map(x => x[1])
+                    .map(x => 1 / Math.pow(10, x.length))
+                    .orSome(1)
+            )
             numberInput.onchange = (e) => {
                 this.value = Number(e.target.value);
                 console.log("debug variable on change", this.value)
@@ -238,7 +247,7 @@
     }
 
     function getExplainedTable() {
-        const numeroDePessoas = new Constant(3);
+        const numeroDePessoas = new Variable("n", 3);
         const consumoMedioLitro100Km = new Constant(7.7);
         const consumoMedioLitroKm = consumoMedioLitro100Km.div(100);
         const distanciaCasaMovai = new Constant(26.8);
@@ -247,7 +256,7 @@
         const preçoFinal = preçoGasolina
             .mul(distanciaCasaMovaiDouble)
             .mul(consumoMedioLitroKm);
-        const preçoFinalShared = preçoFinal.simplify().div(3);
+        const preçoFinalShared = preçoFinal.simplify().div(numeroDePessoas);
         const table = {
             "Nº pessoas": numeroDePessoas,
             "Consumo médio (l/100km)": consumoMedioLitro100Km,
