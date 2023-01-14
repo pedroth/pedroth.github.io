@@ -33,11 +33,11 @@
 <body></body>
 <script>
     function just(x) {
-        return { map: f => maybe(f(x)), orSome: z => x }
+        return { map: f => maybe(f(x)), orSome: f => x }
     }
 
     function none(x) {
-        return { map: _ => none(), orSome: z => z }
+        return { map: _ => none(), orSome: f => f() }
     }
 
     function maybe(x) {
@@ -47,21 +47,97 @@
         return none(x)
     }
 
+    function take(listOfNodes) {
+        return {
+            from:
+                l => listOfNodes.length === 0 ?
+                    l :
+                    l.filter(x => !listOfNodes.some(y => x.toString() === y.toString()))
+        }
+
+    }
+
+    function union(l, r) {
+        const unionArray = [];
+        l.forEach(x => r.forEach(y => {
+            if (x.toString() === y.toString()) unionArray.push(x);
+        }))
+        return unionArray;
+    }
+
+    /**
+     * create list out of multiplication node
+     * */
+    function linearize(node) {
+        if (!(node instanceof Mul)) return [node];
+        return [...linearize(node.left), ...linearize(node.right)];
+    }
+
+    /**
+     * Take node in rational form and factors it
+     * */
+    function factor(node) {
+        if (node instanceof Div) {
+            const l1 = linearize(node.left)
+            const l2 = linearize(node.right);
+            const listUnion = union(l1, l2);
+            const factoredL1 = take(listUnion).from(l1);
+            const factoredL2 = take(listUnion).from(l2);
+            const numberator = factoredL1.reduce((e, x) => e.mul(x), new Constant(1))
+            const denominator = factoredL2.reduce((e, x) => e.mul(x), new Constant(1))
+            return numberator.div(denominator);
+        }
+        return node;
+    }
+
     class Mul {
         constructor(left, right) {
             this.left = left;
             this.left.parent = [...(this.left.parent || []), this];
             this.right = right;
             this.right.parent = [...(this.right.parent || []), this];
+            if (this.left instanceof Constant && this.left.compute() === 0) return new Constant(0)
+            if (this.left instanceof Constant && this.left.compute() === 1) return this.right;
+            if (this.right instanceof Constant && this.right.compute() === 0) return new Constant(0);
+            if (this.right instanceof Constant && this.right.compute() === 1) return this.left;
+        }
+
+        getReal() {
+            const filteredNodes = [this.left, this.right].filter(x => x instanceof Constant);
+            if (filteredNodes.length === 0) return new Constant(1);
+            if (filteredNodes.length === 1) return new Constant(filteredNodes[0].compute());
+            // filteredNodes.length > 1
+            return new Constant(filteredNodes[0].mul(filteredNodes[1]).compute());
+        }
+
+        getSymbolic() {
+            const filteredNodes = [this.left, this.right].filter(x => !(x instanceof Constant));
+            if (filteredNodes.length === 0) return new Constant(1);
+            if (filteredNodes.length === 1) return filteredNodes[0];
+            // filteredNodes.length > 1
+            return this;
+        }
+
+        getRealSymbolic() {
+            return [this.getReal(), this.getSymbolic()]
+        }
+
+        toRatioForm() {
+            const divNodes = [this.left, this.right].filter(x => x instanceof Div);
+            const notDivNodes = [this.left, this.right].filter(x => !(x instanceof Div));
+            if (divNodes.length === 0) return this;
+            if (divNodes.length === 1) return divNodes[0].left.mul(notDivNodes[0]).div(divNodes[0].right);
+            // divNodes.length > 1
+            return divNodes[0].left.mul(divNodes[1].left).div(divNodes[0].right.mul(divNodes[1].right));
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node));
+            if (Number.isFinite(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node));
+            if (Number.isFinite(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
@@ -88,13 +164,16 @@
             return this;
         }
 
+
         simplify() {
-            const simpleLeft = this.left.simplify()
-            const simpleRight = this.right.simplify()
-            if (simpleLeft instanceof Constant && simpleRight instanceof Constant) {
-                return new Constant(simpleLeft.compute() * simpleRight.compute())
-            }
-            return new Mul(simpleLeft, simpleRight);
+            const simpleLeft = this.left.simplify();
+            const simpleRight = this.right.simplify();
+            const [leftReal, leftSymbol] = simpleLeft.getRealSymbolic();
+            const [rightReal, rightSymbol] = simpleRight.getRealSymbolic();
+            const real = new Constant(leftReal.mul(rightReal).compute());
+            if (real.compute() === 0) return new Constant(0);
+            if (real.compute() === 1) return leftSymbol.mul(rightSymbol);
+            return new Mul(real, factor(leftSymbol.mul(rightSymbol).toRatioForm()));
         }
     }
 
@@ -104,15 +183,49 @@
             this.left.parent = [...(this.left.parent || []), this];
             this.right = right;
             this.right.parent = [...(this.right.parent || []), this];
+            if (this.left instanceof Constant && this.left.compute() === 0) return new Constant(0)
+            if (this.right instanceof Constant && this.right.compute() === 1) return this.left;
+        }
+
+        getReal() {
+            const filteredNodes = [this.left, this.right].filter(x => x instanceof Constant);
+            if (filteredNodes.length === 0) return new Constant(1);
+            if (filteredNodes.length === 1) return new Constant(filteredNodes[0].compute());
+            // filteredNodes > 1
+            return new Constant(filteredNodes[0].div(filteredNodes[1]).compute());
+        }
+
+        getSymbolic() {
+            const filteredNodes = [this.left, this.right].filter(x => !(x instanceof Constant));
+            if (filteredNodes.length === 0) return new Constant(1);
+            if (filteredNodes.length === 1) return filteredNodes[0];
+            // filteredNodes > 1
+            return this;
+        }
+
+        getRealSymbolic() {
+            return [this.getReal(), this.getSymbolic()]
+        }
+
+        toRatioForm() {
+            const divNodes = [this.left, this.right].filter(x => x instanceof Div);
+            const notDivNodes = [this.left, this.right].filter(x => !(x instanceof Div));
+            if (divNodes.length === 0) return this;
+            if (divNodes.length === 1) {
+                if (this.left instanceof Div && !(this.right instanceof Div)) return this.left.left.div(this.left.right.mul(this.right))
+                if (!(this.left instanceof Div) && this.right instanceof Div) return this.left.left.mul(this.right.left).div(this.right.right)
+            }
+            // divNodes.length > 1
+            return this.left.left.mul(this.right.left).div(this.left.right.mul(this.right.right));
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node));
+            if (Number.isFinite(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node));
+            if (Number.isFinite(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
@@ -140,12 +253,14 @@
         }
 
         simplify() {
-            const simpleLeft = this.left.simplify()
-            const simpleRight = this.right.simplify()
-            if (simpleLeft instanceof Constant && simpleRight instanceof Constant) {
-                return new Constant(simpleLeft.compute() / simpleRight.compute())
-            }
-            return new Div(simpleLeft, simpleRight);
+            const simpleLeft = this.left.simplify();
+            const simpleRight = this.right.simplify();
+            const [leftReal, leftSymbol] = simpleLeft.getRealSymbolic();
+            const [rightReal, rightSymbol] = simpleRight.getRealSymbolic();
+            const real = new Constant(leftReal.div(rightReal).compute());
+            if (real.compute() === 0) return new Constant(0);
+            if (real.compute() === 1) return leftSymbol.div(rightSymbol);
+            return new Mul(real, factor(leftSymbol.div(rightSymbol).toRatioForm()));
         }
     }
 
@@ -154,13 +269,29 @@
             this.value = value;
         }
 
+        getReal() {
+            return this;
+        }
+
+        getSymbolic() {
+            return new Constant(1);
+        }
+
+        getRealSymbolic() {
+            return [this.getReal(), this.getSymbolic()]
+        }
+
+        toRatioForm() {
+            return this;
+        }
+
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node));
+            if (Number.isFinite(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node));
+            if (Number.isFinite(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
         }
 
@@ -189,20 +320,66 @@
         }
     }
 
-    class Variable {
-        constructor(symbol, value) {
+    class Symbol {
+        constructor(symbol) {
             this.symbol = symbol;
-            this.value = value;
+        }
+
+        getReal() {
+            return new Constant(1);
+        }
+
+        getSymbolic() {
+            return this;
+        }
+
+        getRealSymbolic() {
+            return [this.getReal(), this.getSymbolic()]
+        }
+
+        toRatioForm() {
+            return this;
         }
 
         mul(node) {
-            if (!isNaN(node)) return new Mul(this, new Constant(node));
+            if (Number.isFinite(node)) return new Mul(this, new Constant(node));
             return new Mul(this, node);
         }
 
         div(node) {
-            if (!isNaN(node)) return new Div(this, new Constant(node));
+            if (Number.isFinite(node)) return new Div(this, new Constant(node));
             return new Div(this, node);
+        }
+
+        compute() {
+            return 1;
+        }
+
+        toString() {
+            return `${this.symbol}`;
+        }
+
+        render() {
+            const span = document.createElement("span")
+            this.dom = span;
+            span.innerText = this.compute();
+            return span;
+        }
+
+        updateRender() {
+            // constant values don't change, hence no need to upadate dom
+            return this;
+        }
+
+        simplify() {
+            return this;
+        }
+    }
+
+    class Variable extends Symbol {
+        constructor(symbol, value) {
+            super(symbol)
+            this.value = value;
         }
 
         compute() {
@@ -221,11 +398,10 @@
                 maybe(Number(this.value).toString().split("."))
                     .map(x => x[1])
                     .map(x => 1 / Math.pow(10, x.length))
-                    .orSome(1)
+                    .orSome(() => 1)
             )
             numberInput.onchange = (e) => {
                 this.value = Number(e.target.value);
-                console.log("debug variable on change", this.value)
                 this.parent && this.parent.forEach(p => p.updateRender())
                 this.updateRender();
             }
@@ -240,30 +416,27 @@
             }
             return this;
         }
-
-        simplify() {
-            return this;
-        }
     }
 
     function getExplainedTable() {
         const numeroDePessoas = new Variable("n", 3);
-        const consumoMedioLitro100Km = new Constant(7.7);
-        const consumoMedioLitroKm = consumoMedioLitro100Km.div(100);
-        const distanciaCasaMovai = new Constant(26.8);
+        const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
+        const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
+        const distanciaCasaMovai = new Constant(26.8).mul(new Symbol("km"));
         const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
         const preçoGasolina = new Variable("x", 1.763);
-        const preçoFinal = preçoGasolina
+        const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
             .mul(distanciaCasaMovaiDouble)
             .mul(consumoMedioLitroKm);
-        const preçoFinalShared = preçoFinal.simplify().div(numeroDePessoas);
+        const preçoFinalShared = preçoFinal.div(numeroDePessoas).simplify();
+
         const table = {
             "Nº pessoas": numeroDePessoas,
             "Consumo médio (l/100km)": consumoMedioLitro100Km,
             "Consumo médio (l/km)": consumoMedioLitroKm,
             "Distância Casa -> Movai (km)": distanciaCasaMovai,
             "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
-            "Preço da Gasolina (€/l)": preçoGasolina,
+            "Preço da Gasolina 95 Simples(€/l)": preçoGasolina,
             "Preço Final €": preçoFinal,
             "Preço Final € / Nº Pessoas": preçoFinalShared
         };
