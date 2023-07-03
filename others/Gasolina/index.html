@@ -418,29 +418,8 @@
         }
     }
 
-    function getExplainedTable() {
-        const numeroDePessoas = new Variable("n", 3);
-        const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
-        const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
-        const distanciaCasaMovai = new Constant(26.8).mul(new Symbol("km"));
-        const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
-        const preçoGasolina = new Variable("x", 1.763);
-        const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
-            .mul(distanciaCasaMovaiDouble)
-            .mul(consumoMedioLitroKm);
-        const preçoFinalShared = preçoFinal.div(numeroDePessoas).simplify();
-
-        const table = {
-            "Nº pessoas": numeroDePessoas,
-            "Consumo médio (l/100km)": consumoMedioLitro100Km,
-            "Consumo médio (l/km)": consumoMedioLitroKm,
-            "Distância Casa -> Movai (km)": distanciaCasaMovai,
-            "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
-            "Preço da Gasolina 95 Simples(€/l)": preçoGasolina,
-            "Preço Final €": preçoFinal,
-            "Preço Final € / Nº Pessoas": preçoFinalShared
-        };
-        const explainTable = document.createElement("table");
+    function getTable(table) {
+        const outTable = document.createElement("table");
         Object.keys(table).forEach(key => {
             const line = document.createElement("tr");
             const columnItem1 = document.createElement("td");
@@ -453,14 +432,67 @@
                 ? str.slice(1, str.length - 1)
                 : str;
             line.appendChild(columnItem2);
-            explainTable.appendChild(line);
+            outTable.appendChild(line);
 
             const columnItem3 = document.createElement("td");
             columnItem3.appendChild(table[key].render());
             line.appendChild(columnItem3);
-            explainTable.appendChild(line);
+            outTable.appendChild(line);
         });
-        return explainTable;
+
+        return outTable;
+    }
+
+    function getSimpleTable() {
+        const numeroDePessoas = new Variable("n", 3);
+        const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
+        const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
+        const distanciaCasaMovai = new Constant(17.5).mul(new Symbol("km"));
+        const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
+        const preçoGasolina = new Variable("x", 1.763);
+        const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
+            .mul(distanciaCasaMovaiDouble)
+            .mul(consumoMedioLitroKm);
+        const preçoFinalShared = preçoFinal.div(numeroDePessoas).simplify();
+
+        const table = {
+            "Preço da Gasolina 95 Simples(€/l)": preçoGasolina,
+            "Nº pessoas": numeroDePessoas,
+            "Preço Final € / Nº Pessoas": preçoFinalShared
+        };
+        const simpleTable = getTable(table);
+        return simpleTable;
+    }
+
+    function getExplainedTable() {
+        const numeroDePessoas = new Variable("n", 3);
+        const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
+        const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
+        const distanciaCasaMovai = new Constant(17.5).mul(new Symbol("km"));
+        const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
+        const preçoGasolina = new Variable("x", 1.763);
+        const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
+            .mul(distanciaCasaMovaiDouble)
+            .mul(consumoMedioLitroKm);
+        const preçoFinalShared = preçoFinal.div(numeroDePessoas).simplify();
+
+        const table = {
+            "Preço da Gasolina 95 Simples(€/l)": preçoGasolina,
+            "Nº pessoas": numeroDePessoas,
+            "Consumo médio (l/100km)": consumoMedioLitro100Km,
+            "Consumo médio (l/km)": consumoMedioLitroKm,
+            "Distância Casa -> Movai (km)": distanciaCasaMovai,
+            "2x Distância Casa -> Movai (km)": distanciaCasaMovaiDouble,
+            "Preço Final €": preçoFinal,
+            "Preço Final € / Nº Pessoas": preçoFinalShared
+        };
+        const explainTable = getTable(table);
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.innerText = "Details:";
+        details.appendChild(summary)
+        details.appendChild(explainTable);
+        return details;
     }
 
     function getGasolineWidget() {
@@ -487,6 +519,7 @@
         header.innerText = "Custos da Viagem (Casa < == > Movai)";
         document.body.appendChild(header);
         document.body.appendChild(getGasolineWidget());
+        document.body.appendChild(getSimpleTable());
         document.body.appendChild(getExplainedTable())
     })();
 </script>
