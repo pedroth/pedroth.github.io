@@ -1,3 +1,5 @@
+const { EditDistance } = Nabla
+
 const len = array => array.length;
 const subStr = (string, length) => string.substring(0, length);
 
@@ -43,7 +45,7 @@ function getRecommendations(query, searchBar) {
   }
   const queryT = query.toLowerCase().trim();
   const tags = Object.keys(tagsHist);
-  const { distance: editDistance } = Nabla.EditDistance;
+  const { distance: editDistance } = EditDistance;
   const suggestions = [...titles, ...tags]
     .map(s => s.toLowerCase())
     .filter(s => s.includes(queryT))

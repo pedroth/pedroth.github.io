@@ -64,7 +64,7 @@ WebUtils.getTagsHistogram = db =>
 WebUtils.search = db => query => {
   if (!query || query.trim() === "") return [];
   const tagsHist = WebUtils.getTagsHistogram(db);
-  const { distance: editDistance } = Nabla.EditDistance;
+  const { distance: editDistance } = EditDistance;
   const queryT = query.toLowerCase().trim();
   debugger;
   let searchPosts = [];
