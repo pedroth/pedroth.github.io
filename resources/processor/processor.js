@@ -120,4 +120,5 @@ function main() {
   processJars();
   logDockerCommands();
 }
+
 main();
