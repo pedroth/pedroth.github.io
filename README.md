@@ -24,6 +24,8 @@ Pedroth's Corner is my personal website. Here I will:
 - Visual post representation
 - Posts written in [nabladown.js](https://github.com/pedroth/nabladown.js)
 - Minimal dependencies
+- Minimalistic design
+- All tags visual representation
 
 # Architecture
 
@@ -59,8 +61,13 @@ DB := {
 Post := {
 	id: String,
 	title: String,
-	date: Date(String),
+	date: String[],
+    updated: Date(String)
 	src: Address(String),
 	tags: Array<String>
 }
 ```
+
+## Js first
+
+It will be a single page application using vanilla js
