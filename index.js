@@ -6,8 +6,15 @@ const {
   Nabla,
   textFit,
   Utils
-} = Pedroth;
+} =
+  Pedroth;
 
-WebUtils.renderHtml("/static/nav/nav.html", document.getElementById("root"));
+WebUtils.renderHtml(
+  "/static/nav/nav.html",
+  document.getElementById("root")
+)
+  .then(() => {
+    document.body.classList.add("loaded");
+  });
 
 Utils.addResizeObservers(window);
