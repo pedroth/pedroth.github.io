@@ -1,0 +1,169 @@
+# About
+
+Hello world, I am Pedroth, Catholic, searcher of the *Good*, the *Truth* and the *Beauty*. 
+
+My main interest are _Mathematics_, _Computer Science_, _Philosophy_ and the _Catholic Faith_. 
+
+Pedroth's Corner is my personal website. Here I will:
+
+- Write about things I like
+- Distill knowledge
+- Showcase demos and software projects
+- I will also share my contact and places on the web
+
+Here are some places where you can find me:
+<style>
+.links-box {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    border-radius: 1rem;
+    margin: auto;
+    border: 3px solid;
+    border-color: inherit;
+}
+
+.about-icon {
+    width: 3rem;
+    margin: 0.5rem;
+}
+
+</style>
+<div class="links-box" id="links-box">
+</div>
+
+<script type="module">
+import DOM from "/src/DomBuilder.js"
+import getSvg from "/src/Svgs.js"
+
+DOM.ofId("links-box")
+.append( ...[
+{url: "https://github.com/pedroth", title: "Github", svg: "/assets/github.svg"},
+{url: "https://www.youtube.com/@pedroth3", title: "Youtube", svg: "/assets/youtube.svg"},
+{url: "https://twitter.com/pedroth9", title: "X-Twitter", svg: "/assets/x-twitter.svg"},
+{url: "https://stackexchange.com/users/2510741/pedroth?tab=accounts", title: "Stack Exchange", svg: "/assets/stackoverflow.svg"},
+{url: "https://www.khanacademy.org/profile/pedroth/projects", title: "Khan Academy", svg: "/assets/khan-academy.svg"},
+].map(({url, title, svg}) => DOM.of("a")
+                .addClass("specialIcon")
+                .attr("href", url)
+                .attr("title", title)
+                .append(
+                    DOM.of("div")
+                    .addClass("about-icon")
+                    .inner(getSvg(svg))
+                )
+    )
+)
+</script>
+
+You can also contact me through mail: <b><span id="mail">cGVkcm90aWFnbzkyQGdtYWlsLmNvbQ==</span></b>
+
+<script type="module">
+import DOM from "/src/DomBuilder.js"
+
+function Vec(...coords) {
+    return {
+        coords,
+        add: vec => {
+            const ans = [];
+            for (let i = 0; i < coords.length; i++) {
+                ans[i] = coords[i] + vec.coords[i];
+            }
+            return Vec(...ans);
+        },
+        sub: vec => {
+            const ans = [];
+            for (let i = 0; i < coords.length; i++) {
+                ans[i] = coords[i] - vec.coords[i];
+            }
+            return Vec(...ans);
+        },
+        scale: r => Vec(...coords.map(x => x * r))
+    }
+}
+
+function str2vec(str) {
+    return Vec(...[...str].map(x => x.charCodeAt(0)));
+}
+
+function vec2str(vec) {
+    return vec.coords.map(x => String.fromCharCode(Math.floor(x))).join("");
+}
+
+function fillVec(vec, size, value = 0) {
+    if(vec.coords.length === size) return vec;
+    return Vec(...vec.coords.concat(Array(size-vec.coords.length).fill(value)));
+}
+
+function syncVecSizes(u,v) {
+    const spaceCharCode = " ".charCodeAt(0);
+    const n = Math.max(u.coords.length, v.coords.length);
+    if(u.coords.length < v.coords.length) {
+        return [fillVec(u, n, spaceCharCode), v];
+    }
+    return [u, fillVec(v, n, spaceCharCode)];
+}
+
+function lerp(init, end) {
+    const v = end.sub(init);
+    return t => init.add(v.scale(t));
+}
+
+function lerpStr(init, end) { 
+    const [initVec, endVec] = syncVecSizes(str2vec(init), str2vec(end));
+    const interpolation = lerp(initVec, endVec);
+    return t => vec2str(interpolation(t));
+}
+
+function quadStr(init, middle, end) {
+    const [dummyInit, dummyEnd] = syncVecSizes(str2vec(init), str2vec(end));
+    const [finalInit, dummyMiddle] = syncVecSizes(dummyInit, str2vec(middle));
+    const [finalEnd, finalMiddle] = syncVecSizes(dummyEnd, dummyMiddle);
+    const inter0 = lerp(finalInit, finalMiddle);
+    const inter1 = lerp(finalMiddle, finalEnd);
+    return t => vec2str(lerp(inter0(t), inter1(t))(t));
+}
+
+function mutateString(str, p) {
+    return vec2str(Vec(...str2vec(str).coords.map(x => Math.random() < p ? x + 1: x)));
+}
+
+function animateEmail() {
+    const mailDOM = DOM.ofId("mail");
+    const encodedMail = mailDOM.element.innerText;
+    const decodedMail = atob(encodedMail);
+
+    const middleMail = mutateString(decodedMail, 0.25);
+    const curve = quadStr(encodedMail, middleMail, decodedMail);
+
+    // t: number in seconds
+    const anime = (t,is2Trim=false) => mailDOM.inner(is2Trim ? curve(t).trim() : curve(t));
+
+    const initT = performance.now();
+    let iterations = 0;
+    const play = () => {
+        requestAnimationFrame(() => {
+            let t = (performance.now()-initT) * 1e-3;
+            iterations++;
+            const expT = 1 - Math.exp(-t);
+            t = expT < 0.9 ? expT : 0.9999999 + 1e-9 * (iterations-140); 
+            const is2Stop = Math.abs(t-1) < 1e-9;
+            if(is2Stop) anime(1.0, true);
+            else anime(t);
+            if(!is2Stop) play();
+        });
+    }
+    play();
+}
+
+animateEmail();
+</script>
+
+[quote]:::
+    This website *doesn't retrieve any information* from the user, it is made from _scratch_ and is [_*open source*_](https://github.com/pedroth/pedroth.github.io).
+:::
+
+
+Thank you for visiting!
+$$\oint_{\partial \Omega} \alpha = \int_{\Omega} d\alpha$$
+
