@@ -1,10 +1,12 @@
 html {
-  scroll-behaviour: smooth;
+  scroll-behavior: smooth;
   height: 100vh;
   width: 100vw;
 }
 
 body {
+  opacity: 0.1;
+  transition: opacity 0.5s ease-in-out;
   background-color: #181818;
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.25rem;
@@ -16,6 +18,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body.loaded {
+  opacity: 1;
 }
 
 a {
