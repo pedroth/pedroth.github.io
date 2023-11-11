@@ -2,7 +2,7 @@ import { writeFile, readFile } from "fs/promises";
 import { default as RSS } from "rss";
 import { Command } from "commander";
 import { date2int } from "../src/Utils.js";
-import { buildJavaPosts } from "./build-java-posts.js";
+import { buildJavaPosts } from "./build-java.js";
 
 const HOME = `https://pedroth.github.io`
 

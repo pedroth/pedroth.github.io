@@ -16,9 +16,11 @@
   },
   "scripts": {
     "test": "bun test",
-    "clean": "rm -r node_modules; rm -r dist",
+    "clean": "rm -r node_modules; rm -r lib;",
     "serve": "bunx http-server",
-    "build": "bun i; bun bundle.js"
+    "build": "bun i; bun bundle.js; bun run rss; bun run build-java",
+    "rss": "bun ./scripts/blog-builder rss",
+    "build-java": "node ./scripts/blog-builder build-java"
   },
   "repository": {
     "type": "git",

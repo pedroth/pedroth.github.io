@@ -1,3 +1,10 @@
+//========================================================================================
+/*                                                                                      *
+ *                                   BUILD JAVA POSTS                                   *
+ *                                                                                      */
+//========================================================================================
+
+
 import {
     copyFileSync,
     createWriteStream,
@@ -10,7 +17,7 @@ import archiver from "archiver";
 import { rimraf } from "rimraf";
 import { exec } from 'child_process';
 
-const HOME = `./scripts/build-java-posts`
+const HOME = `./scripts/build-java`
 
 function rmFolder(path) {
     console.log("removing...", path);

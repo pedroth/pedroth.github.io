@@ -10,52 +10,10 @@ function notFound(page) {
 }
 
 function renderTags(tags) {
-    // const modal = DOM.of("dialog")
-    //     .append(
-    //         DOM.of("div")
-    //             .append(
-    //                 DOM.of("h3").inner("Tags"),
-    //                 DOM.of("div")
-    //                     .addClass("posts-grid")
-    //                     .append(...tags.map(tag => {
-    //                         return DOM.of("a")
-    //                             .addClass("badge")
-    //                             .attr("title", tag)
-    //                             .style(`
-    //                         background-color: var(--primary-color);
-    //                         color: white;
-    //                         font-size: 1em;
-    //                         text-decoration: none;
-    //                     `)
-    //                             .attr("href", `/?p=search#query=${tag}`)
-    //                             .inner(tag);
-    //                     })),
-    //             )
-    //     )
-    // // From https://stackoverflow.com/questions/25864259/how-to-close-the-new-html-dialog-tag-by-clicking-on-its-backdrop
-    // modal.event("click", (event) => {
-    //     const rect = modal.element.getBoundingClientRect();
-    //     const isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height &&
-    //         rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
-    //     if (!isInDialog) {
-    //         modal.element.close();
-    //     }
-    // })
-    // return DOM.of("div")
-    //     .append(
-    //         modal,
-    //         DOM.of("button")
-    //             .addClass("button")
-    //             .inner("Tags")
-    //             .event("click", () => {
-    //                 modal.element.showModal();
-    //             })
-    //     )
-
     return DOM.of("div").append(
         DOM.of("h3").inner("Tags"),
         DOM.of("div")
-            .addClass("flex wrap")
+            .addClass("flex wrap center")
             .append(...tags.map(tag => {
                 return DOM.of("a")
                     .addClass("badge")
@@ -64,7 +22,8 @@ function renderTags(tags) {
                 background-color: var(--primary-color);
                 color: white;
                 font-size: 1em;
-                margin: 0 0.1em;
+                margin: 0.25em 0.5em;
+                padding: 0.25em 0.5em;
                 text-decoration: none;
             `)
                     .attr("href", `/?p=search#query=${tag}`)
