@@ -1,30 +1,30 @@
-# GraphXY
- 
- *GraphXY* is a simple application where you can see graphs of functions of two variables. You can also compute a gradient descend/ascend on the function. 
- 
-Press `h` for help. Feel free to download the program below.
+_GraphXY_ is a simple application where you can see graphs of functions of two variables. You can also compute a gradient descend/ascend on the function.
 
-![**GraphXY** app video](https://youtu.be/cjhTs1DJ4-k)
+The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`.
+
+Feel free to download the program below.
+
+![*GraphXY* app video](https://youtu.be/cjhTs1DJ4-k)
 
 ## Links
 
- +++
 <div style="display: flex;flex-direction: column">
-<a href="posts/GraphXY/GraphXY.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/GraphXY.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/GraphXY/GraphXY.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/GraphXY.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.GraphXY"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.GraphXY"
+```

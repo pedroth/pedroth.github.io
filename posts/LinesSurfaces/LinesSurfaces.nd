@@ -1,38 +1,36 @@
-# Lines and Surfaces
+_Lines and Surfaces_ is a `java` application that lets you see parametrized surfaces and curves in 3 dimensions.
 
- *Lines and Surfaces* is a `java` application that lets you see parametrized surfaces and curves in 3 dimensions.
-
-These are **surfaces** given by a function $\mathbf{f}$:
+These are *surfaces* given by a function $\mathbf{f}$:
 $$ \mathbf{f}:(u,v)\in \mathbb{R^2} \rightarrow (f_1(u,v), f_2(u,v), f_3(u,v))^{T}$$
- **Curves** given by a function $\boldsymbol{\gamma}$:
- 
- $$\boldsymbol{\gamma}:t\in\mathbb{R}\rightarrow(\gamma_1(t), \gamma_2(t), \gamma_3(t))^{T}$$
+*Curves* given by a function $\boldsymbol{\gamma}$:
 
-The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan`.After setting up your curve or surface you can generate a `.obj` file by pressing key `g`. 
+$$\boldsymbol{\gamma}:t\in\mathbb{R}\rightarrow(\gamma_1(t), \gamma_2(t), \gamma_3(t))^{T}$$
 
-Press `h` for help. Feel free to download the program below.
+The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`.After setting up your _curve_ or _surface_ you can generate a `.obj` file by pressing key `g`. 
 
-![**Lines and Surfaces** app video](https://youtu.be/PRomaGN4ENg)
+Feel free to download the program below.
+
+![*Lines and Surfaces* app video](https://youtu.be/PRomaGN4ENg)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/LinesSurfaces/LinesSurfaces.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/LinesSurfaces.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/LinesSurfaces/LinesSurfaces.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/LinesSurfaces.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.LinesSurfaces"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.LinesSurfaces"
+```

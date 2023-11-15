@@ -1,7 +1,7 @@
 import Database from "../Database.js";
 import DOM from "../DomBuilder.js";
 import renderFromString from "../PedroDown.js";
-import { formatDate } from "../Utils.js";
+import { formatDate, str2dom } from "../Utils.js";
 
 
 function notFound(page) {
@@ -57,11 +57,53 @@ function renderPostHeader(post) {
         );
 }
 
+function renderComments() {
+    return str2dom(`
+    <details>
+    <summary>Open/Close comments</summary>
+    <!-- begin wwww.htmlcommentbox.com -->
+    <div id="HCB_comment_box" class="bound" style="padding:0 3em;">
+      <a href="http://www.htmlcommentbox.com">Comment Form</a> is loading
+      comments...
+    </div>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0"
+    />
+    <script type="text/javascript" id="hcb">
+      /*<!--*/ if (!window.hcb_user) {
+        hcb_user = {};
+      }
+      (function () {
+        var s = document.createElement("script"),
+          l = hcb_user.PAGE || ("" + window.location).replace(/'/g, "%27"),
+          h = "https://www.htmlcommentbox.com";
+        s.setAttribute("type", "text/javascript");
+        s.setAttribute(
+          "src",
+          h +
+            "/jread?page=" +
+            encodeURIComponent(l).replace("+", "%2B") +
+            "&mod=%241%24wq1rdBcg%24iPBjIjl5Snl95PPcGQ7YG%2F" +
+            "&opts=16862&num=10&ts=1619287827621"
+        );
+        if (typeof s != "undefined")
+          document.getElementsByTagName("head")[0].appendChild(s);
+      })(); /*-->*/
+    </script>
+    <!-- end www.htmlcommentbox.com -->
+  </details>
+    `);
+}
+
 function renderPostFooter(post) {
     const { tags } = post;
     return [
-        DOM.of("hr").style("margin-top: 7rem;"),
-        renderTags(tags)
+        DOM.of("hr"),
+        renderTags(tags),
+        DOM.of("hr"),
+        renderComments()
     ];
 }
 

@@ -1,37 +1,32 @@
-# Tetra
+_Tetra_ is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), made from scratch. It lets you see some *triangular meshes*, which includes some random *planets*, as you can see in the videos below.
 
- *Tetra* is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), it lets you see some **triangular meshes**. It can also generate random **planets**.
+![Showing some *meshes*](https://youtu.be/EWfagjIxd4g)
 
-Press `h` for help. Feel free to download the program below.
-
-![Showing some **meshes**](https://youtu.be/EWfagjIxd4g)
-
-```
-
-
-
-```
 ![Showing some **planets**](https://youtu.be/SeJcezzg_ow)
+
+
+
+Feel free to download the program below.
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/Tetra/Tetra.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/Tetra.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
+    <a href="posts/Tetra/Tetra.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/Tetra.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
 </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Tetra"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Tetra"
+```

@@ -1,29 +1,27 @@
-# Brownian motion
+ _Brownian Motion_ is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. It is fun the watch the dynamics of the system.
 
- *Brownian Motion* is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. It is fun the watch the dynamics of the system.
-
-Press `h` for help. Feel free to download the program below.
-
-![**Brownian motion** app](https://youtu.be/xEuvduHU1_w)
+![*Brownian motion* app](https://youtu.be/xEuvduHU1_w)
 
 ## Links
-+++
+
 <div style="display: flex;flex-direction: column">
-<a href="posts/BrownianMotion/BrownianMotion.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/BrownianMotion.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/BrownianMotion/BrownianMotion.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/BrownianMotion.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.BrownianMotion"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.BrownianMotion"
+```
+

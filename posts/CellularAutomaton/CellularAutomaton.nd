@@ -1,32 +1,28 @@
-# Cellular automaton
-
 I made a simple [*Cellular Automaton*](https://en.wikipedia.org/wiki/Cellular_automaton) application long time ago. Here you can try several random [cellular automata rules](http://psoup.math.wisc.edu/mcell/rullex_life.html).
 
 In the beginning you are able to draw the initial condition of the cells, then press `space bar` to start the animation. 
 
-Press `h` for help. Feel free to download the program below.
-
-![**Cellular automaton** app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
+![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/CellularAutomaton/CellularAutomaton.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/ParallelCellularAutomaton.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/CellularAutomaton/CellularAutomaton.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/ParallelCellularAutomaton.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.ParallelCellularAutomaton"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.ParallelCellularAutomaton"
+```

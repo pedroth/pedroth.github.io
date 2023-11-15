@@ -107,6 +107,7 @@ function createJarsFromDocker() {
         );
         const filesCopied = commands.map(() => false);
         commands.forEach((command, i) => {
+            console.log(`Executing command ${command}`);
             exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.log("Caught error while creating jars from docker", error, stderr);
@@ -127,8 +128,10 @@ function createJarsFromDocker() {
 }
 
 async function processJars() {
+    console.log("Processing jars");
     const config = readJarsConfig();
     await createJarsFromDocker(config);
+    console.log("created Jars From Docker");
     config.jars.forEach(async (jar) => {
         const name = jar.id;
         console.log("Processing ...", name);

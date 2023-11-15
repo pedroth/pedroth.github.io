@@ -7,7 +7,6 @@ export function useState(defaultState) {
     const setState = lambda => {
         state = lambda(state);
         onChangeLambda.forEach(func => {
-            console.log(">>>> state", state);
             func(state)
         });
     }
@@ -86,3 +85,28 @@ export function debounce(lambda, debounceTimeInMillis = 500) {
         return true;
     };
 }
+
+export function str2dom(string) {
+        const dom = new DOMParser().parseFromString(string, 'text/html').body.children[0];
+        Array(...dom.getElementsByTagName("script")).forEach(async scriptEl => {
+            await evalScriptTag(scriptEl);
+        })
+        return dom;
+}
+
+export function evalScriptTag(scriptTag) {
+    const globalEval = eval;
+    const srcUrl = scriptTag?.attributes["src"]?.textContent;
+    if (srcUrl) {
+      return fetch(srcUrl)
+        .then(code => code.text())
+        .then(code => {
+          globalEval(code);
+        });
+    } else {
+      return new Promise((re) => {
+        globalEval(scriptTag.innerText);
+        re(true);
+      });
+    }
+  }

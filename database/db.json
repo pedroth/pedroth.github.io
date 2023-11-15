@@ -244,7 +244,7 @@
       ]
     },
     {
-      "id": "Kmeans",
+      "id": "ClusteringColors",
       "title": "Clustering Colors",
       "date": "05/10/2022",
       "lastUpdate": "05/10/2022",
@@ -356,7 +356,7 @@
     },
     {
       "id": "Roulette",
-      "title": "Simple Roullete game",
+      "title": "Roullete game",
       "date": "29/01/2022",
       "lastUpdate": "29/01/2022",
       "tags": ["experiments", "js", "processing", "game", "khan academy", "UI"]

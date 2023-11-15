@@ -25,7 +25,7 @@ Pedroth's Corner is my personal website. Here I will:
 - Posts written in [nabladown.js](https://github.com/pedroth/nabladown.js)
 - Minimal dependencies
 - Minimalistic design
-- All tags visual representation
+- Visual representation of tags
 
 # Architecture
 
@@ -58,20 +58,24 @@ DB := {
 Post := {
 	id: String,
 	title: String,
-	date: String[],
-    updated: Date(String)
+	date: Date(String),
+	lastUpdate: Date(String),
 	src: Address(String),
 	tags: Array<String>
 }
 ```
 
+> `date` should be the creation date
+
 ## Js first
 
-It will be a single page application using _vanilla js_
+It will be a single page application using _vanilla js_, described [here](/src)
 
 # Scripts
 
-To run the scripts you need to run it from the root `./`, like this:
+Most of the useful scripts can be found in the [package.json](./package.json), scripts section. Therefore you should run those, by using `bun run ...` or `node run ...<name of script>`.
+
+If you really need to run the scripts you need to run it from the [root `./`](./), like this:
 
 `sh scripts/...`
 
@@ -85,8 +89,10 @@ or
 
 > The `scripts/blog-builder.js build-java` only run using `node`, there is a [bug in bun](https://github.com/oven-sh/bun/issues/6992) that blocks running this particular command.
 
+
 # Dependencies
 
-- [bun.js](https://bun.sh/) 
+- [bun.js](https://bun.sh/)
+- [node.js](https://nodejs.org/) 
 - [docker](https://www.docker.com/)
 - [ffmpeg](https://www.ffmpeg.org/) (this is useful to run [webm2webp.sh](./scripts/webm2webp.sh))

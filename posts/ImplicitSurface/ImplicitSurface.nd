@@ -1,6 +1,4 @@
-# Implicit Surface
-
- *Implicit Surface* is a simple `java` application where you can visualize surfaces of the form: 
+_Implicit Surface_ is a simple `java` application where you can visualize surfaces of the form: 
 
     $$S = \left \{(x,y,z) \in \mathbb{R}^3 : f(x,y,z) = 0 \right \}$$
 
@@ -9,30 +7,30 @@ Where $f: \mathbb{R}^3 \rightarrow \mathbb{R}$. A popular surface of these, is t
     $$x^2+y^2+z^2 -1 = 0$$
 
 There are many other surfaces to explore here, check the demo on the video below. Enjoy!!
+ 
+Feel free to download the program below.
 
-Press `h` for help. Feel free to download the program below.
-
-![**Implicit Surface** app video](https://youtu.be/th5fCVsMbXw)
+![*Implicit Surface* app video](https://youtu.be/th5fCVsMbXw)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/ImplicitSurface/ImplicitSurface.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/ImplicitSurface.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/ImplicitSurface/ImplicitSurface.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/ImplicitSurface.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.ImplicitSurface"`
+``` bash
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.ImplicitSurface"
+```

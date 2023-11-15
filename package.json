@@ -9,18 +9,20 @@
     "child_process": "^1.0.2",
     "commander": "^11.1.0",
     "eslint": "^8.53.0",
-    "nabladown.js": "^2.0.22",
+    "nabladown.js": "^2.0.23",
     "rimraf": "^5.0.5",
     "rss": "^1.2.2",
     "textfit": "^2.4.0"
   },
   "scripts": {
     "test": "bun test",
-    "clean": "rm -r node_modules; rm -r lib;",
     "serve": "bunx http-server",
-    "build": "bun i; bun bundle.js; bun run rss; bun run build-java",
+    "build-lib": "bun i; bun bundle.js;",
     "rss": "bun ./scripts/blog-builder rss",
-    "build-java": "node ./scripts/blog-builder build-java"
+    "clean": "rm -r node_modules; rm -r lib;",
+    "build": "bun run build-lib; bun run build-blog;",
+    "blog-build": "bun run rss; bun run build-java",
+    "build-java": "node ./scripts/blog-builder build-java",
   },
   "repository": {
     "type": "git",

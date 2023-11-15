@@ -9,7 +9,6 @@ import about from "./src/pages/about/about.js";
 import search from "./src/pages/search.js";
 import main from "./src/pages/main.js";
 
-let isFirstRender = true;
 
 function title() {
   return DOM.of("a")
@@ -79,10 +78,7 @@ function themeButton() {
   onThemeChange(newTheme => {
     updateTheme(newTheme);
   })
-  // first render
-  if (isFirstRender) {
-    updateTheme(getTheme());
-  }
+  updateTheme(getTheme());
   return button;
 }
 
@@ -166,5 +162,4 @@ function footer() {
     .append(footer())
     .addClass("loaded")
 
-  isFirstRender = false;
 })();

@@ -1,6 +1,4 @@
-# Random Curve
-
- *RandomCurve* is a simple `java` application that generates a **random** curve in time. The **random** curve $\gamma$ is generated as follows:
+_RandomCurve_ is a `java` application that generates a *random* curve in time. The *random* curve $\gamma$ is generated as follows:
 
 $$X\sim \text{Uniform}(0,1)$$
 
@@ -15,7 +13,7 @@ $$
 \end{bmatrix}
 $$
 
-Press `h` for help. Feel free to download the program below.
+Feel free to download the program below.
 
 ![Random Curve app video](https://youtu.be/gOz2MV5Z-D0)
 
@@ -23,7 +21,6 @@ Press `h` for help. Feel free to download the program below.
 
 Below you will find a `javascript` port of the `java` version. Also available on [my khan academy](https://www.khanacademy.org/computer-programming/hsb-random-curve/2499302706).
 
-+++
 <div style="display: flex;justify-content: center;">
 <canvas id="canvas" width="560" height="400"></canvas>
 </div>
@@ -106,27 +103,26 @@ Below you will find a `javascript` port of the `java` version. Also available on
         void 0 !== draw && (processing.draw = draw)
     });
 </script>
-+++
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/RandomCurve/RandomCurve.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/RandomCurve.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/RandomCurve/RandomCurve.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/RandomCurve.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.RandomCurve"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.RandomCurve"
+```
