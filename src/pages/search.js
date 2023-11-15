@@ -62,7 +62,6 @@ export default async function search() {
     const inputElem = input(getQuery(), setQuery);
     const searchDiv = getSearchedPosts(posts, getQuery());
     onQueryChange((newQuery) => {
-        console.log(">>> onQueryChange", getQuery());
         searchDiv.removeChildren();
         searchDiv.append(
             ...searchPosts(posts, newQuery)

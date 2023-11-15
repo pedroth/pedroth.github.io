@@ -3,9 +3,10 @@
 My goals with this project were:
 
 - Learning how to build a `java server` with minimal dependencies.
-- Learning about setting up a website from home using free tools:
+- Learning about setting up a website from home using some tools:
  - The amazing [duckdns](https://www.duckdns.org/) free dynamic DNS.
  - Router port-forwarding.
+ - Setting a [Raspberry Pi](https://www.raspberrypi.com/) server
 - Implementing upload from scratch.
 - Creating a chat with a public delete button.
 - Testing pooling http requests to simulate web-sockets (*conclusion*: just use web-sockets).

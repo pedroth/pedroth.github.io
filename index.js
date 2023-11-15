@@ -9,7 +9,6 @@ import about from "./src/pages/about/about.js";
 import search from "./src/pages/search.js";
 import main from "./src/pages/main.js";
 
-
 function title() {
   return DOM.of("a")
     .inner("Pedroth")
