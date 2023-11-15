@@ -43,11 +43,11 @@ program.command('rss')
             feed.item({
                 title,
                 description: title,
-                url: `${HOME}/?p=posts/${id}/${id}.nd`,
+                url: `${HOME}/?p=post/${id}/${id}.nd`,
                 date: parseDate(lastUpdate),
                 author: "Pedroth",
                 enclosure: {
-                    url: `${HOME}/posts/${id}/${id}.webp`, // URL of the image
+                    url: `${HOME}/posts/${id}/${id}_small.webp`, // URL of the image
                     type: 'image/webp', // Mime type of the image
                 }
             });
