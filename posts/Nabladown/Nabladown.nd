@@ -1,5 +1,3 @@
-# Nabladown.js
-
 [Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the nabladown.js language, which is a pseudo/flavored **markdown** language. 
 
 I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I wanted a simple way to render *html documents*, with **formulas**, **code highlight**, **media**, etc. These are the main features of the language: 
@@ -17,21 +15,18 @@ The main motivation for [Nabladown.js](https://github.com/pedroth/nabladown.js) 
 
 Please go check its project page.
 
-![](/posts/Nabladown/Nabladown.gif)
+![](/posts/Nabladown/Nabladown.webp)
 
 ## Project
-+++
 <div style="display: flex;flex-direction: column">
-<a target="_blank" href="https://github.com/pedroth/nabladown.js" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Project Page
-</button>
-</a>
-<a target="_blank" href="https://pedroth.github.io/nabladown.js" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Nabladown editor
-</button>
-</a>
+    <a target="_blank" href="https://github.com/pedroth/nabladown.js" style="align-self: center; margin: 20px">
+        <button class="button">
+            Project Page
+        </button>
+    </a>
+    <a target="_blank" href="https://pedroth.github.io/nabladown.js" style="align-self: center">
+        <button class="button">
+            Nabladown editor
+        </button>
+    </a>
 </div>
-+++
-

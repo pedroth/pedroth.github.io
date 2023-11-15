@@ -1,30 +1,26 @@
-# Text simplex
+ *Text simplex* is a simple tool to visualize [lowbow curves](https://jmlr.csail.mit.edu/papers/volume8/lebanon07a/lebanon07a.pdf). Basically it takes a _text signal_ into a _high-dimensional curve_. This `java` application enables you to visualize these curves using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) or [barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system).
 
- *Text simplex* is a simple tool to visualize [lowbow curves](https://jmlr.csail.mit.edu/papers/volume8/lebanon07a/lebanon07a.pdf). Basically it takes a *text* signal into a high-dimensional curve. This `java` application enables you to visualize these curves using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) or [barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system).
-
-Press `h` for help. Feel free to download the program below.
-
-![Tutorial on **lowbow** app](https://youtu.be/Fr4B4AG-q54)
+![Tutorial on *lowbow* app](https://youtu.be/Fr4B4AG-q54)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/TextSimplex/TextSimplex.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/TextCurves.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/TextSimplex/TextSimplex.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/TextCurves.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.TextCurves"`
+``` bash
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.TextCurves"`
+```

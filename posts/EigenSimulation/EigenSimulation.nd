@@ -1,13 +1,11 @@
-# Eigen Simulation
-
- *Eigen Simulation* is a `java` application that lets you visualize three algorithms for finding *real eigenvectors*. 
+ _Eigen Simulation_ is a `java` application that lets you visualize three algorithms for finding _real eigenvectors_. 
  
 For starters eigenvectors are vectors that have the following property:
 Let $A \in \mathbb{R}^{n \times n}$ be a matrix and $\mathbf{v} \in \mathbb{R}^n$ a vector then $\mathbf{v}$ is a not trivial solution ( that means $\mathbf{v} \neq \mathbf{0}$) of the equation below.
 
 $$A\mathbf{v} = \lambda \mathbf{v}\;\;\;(1)$$
 
-These eigenvectors and eigenvalues (the $\lambda$ 's in (1)) are essential to **Mathematics** and are very useful in different fields such as **Physics**, **Optimization**, **Machine Learning**, etc. Here I explore three algorithms that compute a special kind of eigenvectors called *real eigenvectors*. For these *eigenvectors* the matrix in (1) has the constraint of $A = A^T$. Those matrices are called [symmetric matrices](https://en.wikipedia.org/wiki/Symmetric_matrix) and guarantee the existence of *real eigenvectors and eigenvalues*. The first method is the [power method](https://en.wikipedia.org/wiki/Power_iteration) and the other two are based on a constraint optimization problem:
+These eigenvectors and eigenvalues (the $\lambda$ 's in (1)) are essential to *Mathematics* and are very useful in different fields such as *Physics*, *Optimization*, *Machine Learning*, etc. Here I explore three algorithms that compute a special kind of eigenvectors called *real eigenvectors*. For these *eigenvectors* the matrix in (1) has the constraint of $A = A^T$. Those matrices are called [symmetric matrices](https://en.wikipedia.org/wiki/Symmetric_matrix) and guarantee the existence of *real eigenvectors and eigenvalues*. The first method is the [power method](https://en.wikipedia.org/wiki/Power_iteration) and the other two are based on a constraint optimization problem:
 $$\min_{\mathbf{x}\in \mathbb{R}^n} \text{ or } \max_{\mathbf{x}\in \mathbb{R}^n} \left < \mathbf{x}, A \mathbf{x}\right >$$
 $$\text{such that  } \;\;|\mathbf{x}|^2 = 1 \;\;\; (2)$$
 
@@ -15,29 +13,29 @@ To visualize these algorithms, the application will draw a sphere (which is the 
 
 In the application you can press the keyboard button `3`, to see the gradient vector field of this cost function on the sphere. In the video below you will see a demo of this program.
 
-For more options press `h` for help. Feel free to download the program below.
+Feel free to download the program below.
 
-![*Eigen Simulation* app video](https://youtu.be/0QV7QjFa0k8)
+![_Eigen Simulation_ app video](https://youtu.be/0QV7QjFa0k8)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/EigenSimulation/EigenSimulation.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/EigenSimulation.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/EigenSimulation/EigenSimulation.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/pedroEngine/blob/master/src/main/java/apps/EigenSimulation.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.EigenSimulation"`
+``` sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.EigenSimulation"
+```

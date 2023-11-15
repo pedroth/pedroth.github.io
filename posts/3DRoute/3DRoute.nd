@@ -1,5 +1,3 @@
-# 3D Route
-
 After I [read](https://developers.google.com/web/fundamentals/native-hardware/device-orientation) that you can get phone sensor data from the browser, I decided to do a project using that. The project is a way to visualize this sensor data. In this demo, you will see a wireframe abstraction of a phone, moving in space. The movement of the phone will trace a path.
 
 The used sensors were:
@@ -8,20 +6,19 @@ The used sensors were:
 
 Although this demo is made for mobile hardware, it has a desktop version. 
 
-![](/posts/3DRoute/3DRoute.webp)
+![Gif of the desktop version](/posts/3DRoute/3DRoute.webp)
+
 
 ## Project
-+++
 <div style="display: flex;flex-direction: column">
-<a target="_blank" href="https://github.com/pedroth/3d-route-demo" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Project Page
-</button>
-</a>
-<a target="_blank" href="https://pedroth.github.io/3d-route-demo/" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Demo Page
-</button>
-</a>
+    <a target="_blank" href="https://github.com/pedroth/3d-route-demo" style="align-self: center; margin: 20px">
+        <button class="button">
+            Project Page
+        </button>
+    </a>
+    <a target="_blank" href="https://pedroth.github.io/3d-route-demo/" style="align-self: center">
+        <button class="button">
+            Demo Page
+        </button>
+    </a>
 </div>
-+++

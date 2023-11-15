@@ -1,10 +1,8 @@
-# PDE
+_PDE_ is a `java` application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation)(PDE) of the form:
 
- *PDE* is a `java` application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation)(PDE) of the form:
-
- $$u_t(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u})$$
- Or 
- $$u_{tt}(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u}, u_t)$$
+$$u_t(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u})$$
+Or 
+$$u_{tt}(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u}, u_t)$$
 
 Where $\mathbf{x} \in \mathbb{R}^2$, $u_{xy} = \frac{\partial u}{\partial x\partial y}$, $\nabla\mathbf{u} = (u_x, u_y)^T$, $\nabla^2\mathbf{u} = \begin{bmatrix}
  u_{xx}&  u_{xy}\\
@@ -16,31 +14,31 @@ Famous Equations are:
 - Wave Equation : $u_{tt} = \Delta u$
 - Continuity: $u_t = -\mathbf{v} \cdot \nabla \mathbf{u}, \mathbf{v} \in \mathbb{R}^2$
 
-In the `UI` of the program, you may use the usual `syntax` to define, the initial conditions (top input text field) and evolution equations of the *PDE*. You have the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan`. In the evolution input text field (the one at the bottom), more functions are available, such as `dx, dy, d2x, d2y, dxy, dt` which are $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$ respectively.
+In the `UI` of the program, you may use the usual `syntax` to define, the initial conditions (top input text field) and evolution equations of the _PDE_. You have the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`. In the evolution input text field (the one at the bottom), more functions are available, such as `dx, dy, d2x, d2y, dxy, dt` which are $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$ respectively.
 
-Press `h` for help. Feel free to download the program below.
+Feel free to download the program below.
 
-![**PDE** app video](https://youtu.be/xjDF8uDfTYs)
+![*PDE* app video](https://youtu.be/xjDF8uDfTYs)
 
 ## Links
 
-+++
 <div style="display: flex;flex-direction: column">
-<a href="posts/PDE/PDE.zip" target="_blank" style="align-self: center; margin: 20px">
-<button class="btn btn-primary btn-lg">
- Download app
-</button>
-</a>
-<a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/PDEGUI.java" style="align-self: center">
-<button class="btn btn-primary btn-lg">
- Source Code
-</button>
-</a>
+    <a href="posts/PDE/PDE.zip" target="_blank" style="align-self: center; margin: 20px">
+        <button class="button">
+            Download app
+        </button>
+    </a>
+    <a target="_blank" href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/PDEGUI.java" style="align-self: center">
+        <button class="button">
+            Source Code
+        </button>
+    </a>
 </div>
-+++
 
 ## Running with docker
 
 Copy paste to a terminal:
 
-`xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.PDEGUI"`
+```sh
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.PDEGUI"
+```
