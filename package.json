@@ -22,7 +22,7 @@
     "clean": "rm -r node_modules; rm -r lib;",
     "build": "bun run build-lib; bun run build-blog;",
     "blog-build": "bun run rss; bun run build-java",
-    "build-java": "node ./scripts/blog-builder build-java",
+    "build-java": "node ./scripts/blog-builder build-java"
   },
   "repository": {
     "type": "git",

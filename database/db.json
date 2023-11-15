@@ -18,7 +18,7 @@
         "signal processing",
         "natural language processing",
         "docker",
-        "UI"
+        "ui"
       ]
     },
     {
@@ -247,7 +247,7 @@
       "id": "ClusteringColors",
       "title": "Clustering Colors",
       "date": "05/10/2022",
-      "lastUpdate": "05/10/2022",
+      "lastUpdate": "08/09/2023",
       "tags": [
         "experiments",
         "js",
@@ -292,7 +292,7 @@
         "simple",
         "pooling",
         "docker",
-        "UI"
+        "ui"
       ]
     },
     {
@@ -323,7 +323,7 @@
       "id": "Nabladown",
       "title": "Nabladown.js a pseudo-markdown language",
       "date": "03/05/2021",
-      "lastUpdate": "03/05/2021",
+      "lastUpdate": "01/11/2023",
       "tags": [
         "library",
         "experiments",
@@ -334,7 +334,7 @@
         "parsing",
         "grammars",
         "visualization",
-        "UI"
+        "ui"
       ]
     },
     {
@@ -351,7 +351,7 @@
         "parsing",
         "grammars",
         "calculator",
-        "UI"
+        "ui"
       ]
     },
     {
@@ -359,7 +359,14 @@
       "title": "Roullete game",
       "date": "29/01/2022",
       "lastUpdate": "29/01/2022",
-      "tags": ["experiments", "js", "processing", "game", "khan academy", "UI"]
+      "tags": [
+        "experiments",
+        "js",
+        "processing",
+        "game",
+        "khan academy",
+        "ui"
+      ]
     }
   ]
 }
