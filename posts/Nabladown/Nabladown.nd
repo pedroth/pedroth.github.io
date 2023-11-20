@@ -2,12 +2,13 @@
 
 I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I wanted a simple way to render *html documents*, with **formulas**, **code highlight**, **media**, etc. These are the main features of the language: 
 
-- Simple language, like **markdown**.
-- Support *mathematical formulae*(*latex style*).
-- Support **code highlight**
+- Simple language, like *markdown*.
+- Support *mathematical formulae*(_latex style_).
+- Support *code highlight*
 - Support regular *html*
-- Should expose the **parser** of the language 
-- Easy way to write multiple **renders**
+- Support *custom* space.
+- Should expose the *parser* of the language 
+- Easy way to write multiple *renders*
 - Easy to install/use
 
 The main motivation for [Nabladown.js](https://github.com/pedroth/nabladown.js) was the rendering the posts of this website.

@@ -45,6 +45,10 @@ article:visited {
     color: var(--tertiary-color);
 }
 
+article img {
+    border-radius: 0.5rem;
+}
+
 
 nav {
     align-self: center;
@@ -280,12 +284,26 @@ dialog {
     display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;
-    margin-inline-start: 40px;
-    margin-inline-end: 40px;
+    margin-inline-start: 1rem;
+    margin-inline-end: 1rem;
     padding: 0.5em 1em;
     border-radius: 0.25rem;
     border-left: .25em solid;
     border-color: inherit;
+    opacity: 0.75;
+}
+
+.note {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 1rem;
+    margin-inline-end: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 0.25rem;
+    border-left: .25em solid;
+    border-color: inherit;
+    background-color: var(--primary-color);
     opacity: 0.75;
 }
 

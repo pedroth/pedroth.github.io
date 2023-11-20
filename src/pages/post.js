@@ -5,20 +5,20 @@ import { formatDate, str2dom } from "../Utils.js";
 
 
 function notFound(page) {
-    // TODO: think of adding a small game, simulation here...
-    return DOM.of("p").style("margin-bottom: 10rem").inner(`Sorry but we didn't found the page, ${page}...`);
+  // TODO: think of adding a small game, simulation here...
+  return DOM.of("p").style("margin-bottom: 10rem").inner(`Sorry but we didn't found the page, ${page}...`);
 }
 
 function renderTags(tags) {
-    return DOM.of("div").append(
-        DOM.of("h3").inner("Tags"),
-        DOM.of("div")
-            .addClass("flex wrap center")
-            .append(...tags.map(tag => {
-                return DOM.of("a")
-                    .addClass("badge")
-                    .attr("title", tag)
-                    .style(`
+  return DOM.of("div").append(
+    DOM.of("h3").inner("Tags"),
+    DOM.of("div")
+      .addClass("flex wrap center")
+      .append(...tags.map(tag => {
+        return DOM.of("a")
+          .addClass("badge")
+          .attr("title", tag)
+          .style(`
                 background-color: var(--primary-color);
                 color: white;
                 font-size: 1em;
@@ -26,39 +26,39 @@ function renderTags(tags) {
                 padding: 0.25em 0.5em;
                 text-decoration: none;
             `)
-                    .attr("href", `/?p=search#query=${tag}`)
-                    .inner(tag);
-            })),
-    );
+          .attr("href", `/?p=search#query=${tag}`)
+          .inner(tag);
+      })),
+  );
 }
 
 function renderPostHeader(post) {
-    const { title, lastUpdate, date } = post;
-    return DOM.of("div")
+  const { title, lastUpdate, date } = post;
+  return DOM.of("div")
+    .append(
+      // DOM.of("div")
+      //     .addClass("center")
+      //     .append(
+      //         DOM.of("img")
+      //             .style("max-width: 100%; border-radius:0.25rem;")
+      //             .attr("src", `/posts/${id}/${id}.webp`)
+      //     ),
+      DOM.of("h1").inner(`${title}`),
+      DOM.of("div")
+        .addClass("flex level")
         .append(
-            // DOM.of("div")
-            //     .addClass("center")
-            //     .append(
-            //         DOM.of("img")
-            //             .style("max-width: 100%; border-radius:0.25rem;")
-            //             .attr("src", `/posts/${id}/${id}.webp`)
-            //     ),
-            DOM.of("h1").inner(`${title}`),
-            DOM.of("div")
-                .addClass("flex level")
-                .append(
-                    DOM.of("small")
-                        .addClass("grow")
-                        .inner(`Created: ${formatDate(date)}`),
-                    DOM.of("small")
-                        .inner(`Updated: ${formatDate(lastUpdate)}`),
-                ),
-            DOM.of("hr")
-        );
+          DOM.of("small")
+            .addClass("grow")
+            .inner(`Created: ${formatDate(date)}`),
+          DOM.of("small")
+            .inner(`Updated: ${formatDate(lastUpdate)}`),
+        ),
+      DOM.of("hr")
+    );
 }
 
 function renderComments() {
-    return str2dom(`
+  return str2dom(`
     <details>
     <summary>Open/Close comments</summary>
     <!-- begin wwww.htmlcommentbox.com -->
@@ -98,27 +98,33 @@ function renderComments() {
 }
 
 function renderPostFooter(post) {
-    const { tags } = post;
-    return [
-        DOM.of("hr"),
-        renderTags(tags),
-        DOM.of("hr"),
-        renderComments()
-    ];
+  const { tags } = post;
+  return [
+    DOM.of("hr"),
+    renderTags(tags),
+    DOM.of("hr"),
+    renderComments()
+  ];
 }
 
 export default async function post(page) {
-    const split = page.split("/");
-    if (split.length === 0) return notFound(page);
-    const id = split[1];
-    const postsMap = await Database.readPostsAsMap();
-    if (!(id in postsMap)) return notFound(page);
-    const post = postsMap[id];
-    const content = await fetch(`/posts/${id}/${id}.nd`).then(x => x.text());
-    return DOM.of("div")
-        .append(
-            renderPostHeader(post),
-            await renderFromString(content),
-            ...renderPostFooter(post),
-        );
+  const split = page.split("/");
+  if (split.length === 0) return notFound(page);
+  const id = split[1];
+  const postsMap = await Database.readPostsAsMap();
+  if (!(id in postsMap)) return notFound(page);
+  const post = postsMap[id];
+  const filePath = `/posts/${id}/${id}.nd`;
+  const content = await fetch(filePath)
+    .then(data =>
+      data.ok ?
+        data.text() :
+        `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
+    );
+  return DOM.of("div")
+    .append(
+      renderPostHeader(post),
+      await renderFromString(content),
+      ...renderPostFooter(post),
+    );
 }
