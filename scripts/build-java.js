@@ -165,7 +165,7 @@ async function processJars() {
 //     });
 // }
 
-export async function buildJavaPosts() {
+export default async function buildJavaPosts() {
     await processJars();
     // logDockerCommands();
 }

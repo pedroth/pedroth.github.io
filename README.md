@@ -93,6 +93,6 @@ or
 # Dependencies
 
 - [bun.js](https://bun.sh/)
-- [node.js](https://nodejs.org/) 
+- [node.js](https://nodejs.org/) // to be removed after [bug](https://github.com/oven-sh/bun/issues/6992) is solved.
 - [docker](https://www.docker.com/)
 - [ffmpeg](https://www.ffmpeg.org/) (this is useful to run [webm2webp.sh](./scripts/webm2webp.sh))
