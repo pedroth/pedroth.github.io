@@ -1,21 +1,165 @@
-_Simple Calculator Parser_ is a simple _parser_ and _evaluator_ for mathematical expressions in binary. My main motivation for this was to study [formal grammars](https://en.wikipedia.org/wiki/Formal_grammar), [parsers](https://en.wikipedia.org/wiki/Recursive_descent_parser) and [compilers](https://en.wikipedia.org/wiki/Compiler). I tried to build the simplest parser I could, using no dependencies. The parser that was implemented is similar to a [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator). With the practice I have got from this I started to write the [Nabladown language](https://github.com/pedroth/nabladown.js).
+<style>
+    .grammar .katex-display {
+        border: dashed;
+        border-radius: 0.5rem;
+        padding: 1.5em 0;
+    }
+</style>
 
-Please go check the project page.
+## TL:DR
 
-![](/posts/SimpleCalculator/SimpleCalculator.webp)
+I really want to learn about [formal grammars][grammar], [parsers][parser] and [compilers][compiler] for my future projects. Therefore, I need a simple project to apply those concepts. Hence, I decided to implement a parser and evaluator for basic mathematical expressions.
 
-# Project
+[quote]:::
+    _What I cannot create, I do not understand_
 
-<div style="display: flex;flex-direction: column">
-    <a target="_blank" href="https://github.com/pedroth/BitCalculator" style="align-self: center; margin: 20px">
-        <button class="button">
-            Project Page
-        </button>
-    </a>
-    <a target="_blank" href="https://pedroth.github.io/BitCalculator/" style="align-self: center">
-        <button class="button">
-            BitCalculator Demo
-        </button>
-    </a>
-</div>
+    <div style="flex; text-align: right">Richard Feynman</div>
+:::
+
+
+![Calculator demo](/posts/SimpleCalculator/SimpleCalculator.webp)
+
+
+## Playground
+
+ > TODO
+
+## Implementation
+
+Let's start from a top down view of what we want to do. What I want is to take a string `2 * 3.14;` as an input of the _calculator_ and return `6.28`.
+
+![Calculator machine](/posts/SimpleCalculator/assets/calculator.jpeg)
+
+How can we start implementing this? First we need to create some kind of structure from the input string. Something like the image below:
+
+![Structure from input string](/posts/SimpleCalculator/assets/string2structure.jpeg)
+
+Having this kind of structure it would be simple to evaluate the expression. Getting structure from a string is what we usually call to `parsing`. Great, we know discovered that our calculator has two main components, the `parser` and  the `evaluator`.
+
+![Top view of calculator](/posts/SimpleCalculator/assets/top_view_calculator.jpeg)
+
+## Grammars
+[grammar]:::
+
+From the picture above a `parser` is a function that takes a `string` and returns a `tree` structure, that represents in a abstract way what a computation is. That is great but, how to build it? It seems really hard to start building this from scratch, so we need explore the problem further. What are we trying to parse? Math expressions, right? So, what is really a mathematical expression? The example that we gave is something like:
+
+$$\text{number * number}$$
+
+And this can be generalized to any operator:
+
+$$\text{number <operator> number}$$
+
+Here, I am just interested in the basic operators such as: `+,-,*,/`. So I could say that a mathematical expression, is something like:
+
+$$ \text{Expression} \rightarrow \text{number <operator> number}$$
+
+Usually we don't have just one multiplication, right? So, what is really an expression? I have a suggestion:
+
+$$ 
+\text{Expression} \rightarrow \text{Expression  <operator> Expression}\\
+\text{or}\\
+\text{Expression} \rightarrow \text{number }
+$$
+
+Here, we use a recursive definition, where an `expression` is defined in terms of itself. But this is circular, right? That's why we need the _or_, to terminate the recursion. We can rewrite the definition above in a more succinct language:
+
+$$ 
+\text{Expression} \rightarrow \text{Expression Operator Expression || number}\\
+\text{Operator} \rightarrow \text{+ || - || * || /}
+$$
+
+Where `||` stands for _or_. This _syntax_ I have been using is basically the definition of a [formal grammar][grammar]. I think simulating such grammars would give a better idea of what we are talking about.
+
+```js*
+function or(...builders) {
+    const randomIndex = Math.floor(Math.random() * builders.length);
+    return builders[randomIndex]();
+}
+
+function operator() {
+    return or(
+        () => "+",
+        () => "-",
+        () => "*",
+        () => "/"
+    );
+}
+
+function number() {
+    return Math.floor(Math.random() * 100);
+}
+
+function expression() {
+    return or(
+        () => `${expression()} ${operator()} ${expression()}`,
+        () => `${number()}`
+    );
+}
+
+[
+ expression(),
+ expression(),
+ expression(),
+ expression(),
+ expression()
+];
+
+```
+
+
+Interesting, but in reality, we don't write expressions such as `12 * 6 + 1 / 2`, we usually write expressions with parenthesis `()`. Also we didn't take into account precedence of operators. A normal evaluation of the previous expression would be `(12 * 6) + (1 / 2) = 72.5`, while other set of parentheses would evaluate the expression differently.
+
+After some work I finally found I nice grammar that is able to represent the nuances of mathematical expressions, such as precedences. I will add parentheses in various places so that we understand the various binary operations.
+
+$$
+\text{Sum} \rightarrow \text{ (Sum + Sum) || (Sum - Sum) ||  Mul } \\
+\text{Mul} \rightarrow \text{ (Mul * Mul) || (Mul / Mul) || Number}\\
+\text{Number} \rightarrow \text{ 0Number || 1Number || ... || 9Number || } \varepsilon\\
+$$
+:::
+[quote]:::
+    The symbol $\boldsymbol{\varepsilon}$ represents the *null* character.
+:::
+
+Let us simulate this grammar:
+
+```js*
+function or(...builders) {
+    const randomIndex = Math.floor(Math.random() * builders.length);
+    return builders[randomIndex]();
+}
+
+function number() {
+    return Math.floor(Math.random() * 100);
+}
+
+function mul() {
+    return or(
+        () => `(${mul()} * ${mul()})`,
+        () => `(${mul()} / ${mul()})`,
+        () => `${number()}`,
+    )
+}
+
+function sum() {
+    return or(
+        () => `(${sum()} + ${sum()})`,
+        () => `(${sum()} - ${sum()})`,
+        () => `${mul()}`
+    );
+}
+
+sum();
+```
+
+
+## From a grammar into a parser
+
+## Evaluating the tree
+
+## Conclusion
+
+[grammar]: https://en.wikipedia.org/wiki/Formal_grammar
+[parser]: https://en.wikipedia.org/wiki/Recursive_descent_parser
+[compiler]: https://en.wikipedia.org/wiki/Compiler
 
