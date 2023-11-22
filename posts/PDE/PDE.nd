@@ -7,7 +7,7 @@ $$u_{tt}(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u}, 
 Where $\mathbf{x} \in \mathbb{R}^2$, $u_{xy} = \frac{\partial u}{\partial x\partial y}$, $\nabla\mathbf{u} = (u_x, u_y)^T$, $\nabla^2\mathbf{u} = \begin{bmatrix}
  u_{xx}&  u_{xy}\\
  u_{yx}&  u_{yy}    
-\end{bmatrix}$. You may also edit the initial condition of the equation, $u(0, \mathbf{x})$.
+\end{bmatrix}$. You may also edit the initial condition of $u(0, \mathbf{x})$.
 
 Famous Equations are:
 - Heat Equation : $u_t = \Delta u = \text{div}(\nabla u) = \text{tr}(\nabla^2\mathbf{u}) = u_{xx} + u_{yy}$

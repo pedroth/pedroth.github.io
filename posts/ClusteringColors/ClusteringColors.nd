@@ -1,6 +1,6 @@
 I have read [here](https://davidwalsh.name/browser-camera) that I could access the camera in the browser, so I decided to make a small demo doing some image processing. One of the simplest projects is to cluster images colors. This classification of pixels makes a nice cartoonish effect.
 
-The algorithms implemented were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
+The algorithms implemented here were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
 
 
 More details can be found in the project section.

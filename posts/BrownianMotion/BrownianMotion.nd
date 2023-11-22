@@ -1,6 +1,6 @@
- _Brownian Motion_ is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. It is fun the watch the dynamics of the system.
+ _Brownian Motion_ is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. I made it because is fun the watch the dynamics of the system. Enjoy!
 
-![*Brownian motion* app](https://youtu.be/xEuvduHU1_w)
+![*Brownian motion* app](/posts/BrownianMotion/BrownianMotion.webp)
 
 ## Links
 
@@ -25,3 +25,25 @@ Copy paste to a terminal:
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.BrownianMotion"
 ```
 
+## Details
+
+All balls have the same size and start in a random position and velocity. They can be accelerated by a constant force field $X$, controlled by the user. When a ball is moving in free space it moves as an accelerated object:
+
+$$ \ddot p_i = X $$
+
+[quote]:::
+    $p_i$ is the position of the ball.
+:::
+
+The interesting behavior is when there is a *collision* between two balls. In this regime the ball velocity will be updated as follows:
+
+$$
+    \dot p_i = v_i - (2 - \beta) \left < v_i, n \right> n 
+$$
+
+Where $v$ is the velocity of the ball before collision and $n$ is the normalized normal to the plane of contact between the balls in collision. That is: 
+    $$n = \frac{p_i - p_j}{|p_i - p_j|}$$
+
+While $\beta$ is the damping factor, which is a value between $0< \beta < 1$. Where $\beta = 0$.
+
+This simulation doesn't try to follow the rules of physics, instead it tries to be a cool dynamical system.

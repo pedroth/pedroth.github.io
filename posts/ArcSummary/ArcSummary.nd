@@ -10,7 +10,9 @@ This blog entry redirects you to my masters thesis about _"Arc Summaries of TV S
 
 ## Video Tutorial
 
-![](https://youtu.be/5Oc-WWqchZg)
+In this video tutorial, you will understand how to use the software made for implementation of the thesis.
+
+![Video tutorial of the Arc Summarizer](https://youtu.be/5Oc-WWqchZg)
 
 
 ## Running with docker
@@ -37,6 +39,8 @@ Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put 
 
 ## Artifacts
 
+As said above, you can test the software by using docker, or use the alternative, which is to download the artifacts below:
+
 - ArcSummary.zip:
  - ArcSummary.jar
  - ArcSummary.sh/ArcSummary.bat
@@ -57,7 +61,7 @@ Then in `localhost:31415/ArcSummary`, in the `base folder` input you should put 
         style="align-self: center; margin: 20px"
     >
     <button class="button">
-        ArcSummary.zip
+        Download ArcSummary.zip
     </button>
     </a>
 </div>

@@ -338,8 +338,8 @@
          ]
       },
       {
-         "id": "SimpleCalculator",
-         "title": "Simple Calculator Parser",
+         "id": "BitCalculator",
+         "title": "Bit Calculator",
          "date": "05/05/2021",
          "lastUpdate": "01/11/2023",
          "tags": [
@@ -366,6 +366,17 @@
             "processing",
             "experiments",
             "khan academy"
+         ]
+      },
+      {
+         "id": "PreservingCasio",
+         "title": "Preserving my old calculator programs",
+         "date": "22/11/2023",
+         "lastUpdate": "22/11/2023",
+         "tags": [
+            "blog",
+            "emulation",
+            "preservation"
          ]
       }
    ]

@@ -22,5 +22,5 @@
 Copy paste to a terminal:
 
 ``` bash
-xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.TextCurves"`
+xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.TextCurves"
 ```
