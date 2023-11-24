@@ -310,9 +310,8 @@ dialog {
 .button {
     background-color: var(--primary-color);
     color: var(--text-color);
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 0.5rem;
     font-size: 1.25rem;
-    line-height: 1.5;
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;

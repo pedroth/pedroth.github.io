@@ -1,8 +1,35 @@
-I made a simple [*Cellular Automaton*](https://en.wikipedia.org/wiki/Cellular_automaton) application long time ago. Here you can try several random [cellular automata rules](http://psoup.math.wisc.edu/mcell/rullex_life.html).
+<!-- 
+title: Cellular automaton
+creationDate: 01/01/2014
+lastUpdateDate: 01/01/2014
+tags: [
+    2d,
+    java,
+    simulation,
+    experiments,
+    mathematics,
+    computer science,
+    cellular automaton
+]
+ -->
+I made a simple [*Cellular Automaton*][automaton] application long time ago. Here each pixel represents a [cellular automaton][automaton] which is *alive* if is green or *dead* if is dark. The rules for the cellular automaton to be born and to survive are defined by the $S/B$ rules: 
+- $S$ defines counts of alive neighbors necessary for a cell to survive.
+- $B$ defines counts of alive neighbors necessary for a cell to be born. 
+
+In this _app_ you can try several [cellular automata rules][rules]:
+
+- Maze: `12345/3`
+- 34 Life: `34/34`
+- Coral: `45678/3`
+- Coagulation: `2335678/378`
+- Pseudo life: `238/357`
+- Replicator: `1357/1357`
+- Total Random rules
+
+![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
 In the beginning you are able to draw the initial condition of the cells, then press `space bar` to start the animation. 
 
-![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
 ## Links
 
@@ -26,3 +53,7 @@ Copy paste to a terminal:
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.ParallelCellularAutomaton"
 ```
+
+[rules]: https://web.archive.org/web/20210512105747/http://psoup.math.wisc.edu/mcell/rullex_life.html
+[automaton]: https://en.wikipedia.org/wiki/Cellular_automaton
+

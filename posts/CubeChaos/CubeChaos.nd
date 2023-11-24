@@ -1,10 +1,38 @@
-_Cube Chaos_ is simple application where you can see several particles being driven by force and velocity vector fields. It is called *chaos* because one of the vector field is the [Lorenz attractor](https://en.wikipedia.org/wiki/Lorenz_system) from [chaos theory](https://en.wikipedia.org/wiki/Chaos_theory). 
+<!-- 
+title: Cube Chaos
+creationDate: 01/05/2014
+lastUpdateDate: 01/05/2014
+tags: [
+    3d,
+    java,
+    chaos,
+    simulation,
+    experiments,
+    mathematics,
+    vector fields,
+    computer science,
+    differential equations
+]
+ -->
+_Cube Chaos_ is simple application where you can see several particles being driven by force or velocity vector fields. It is called *chaos* because one of the vector field is the [Lorenz attractor](https://en.wikipedia.org/wiki/Lorenz_system) from [chaos theory](https://en.wikipedia.org/wiki/Chaos_theory). 
 
 
 Feel free to download the program below.
 
 ![*Cube Chaos* in action](https://youtu.be/fY2K_D7GUtQ)
 
+## Lorenz Attractor system
+$$
+\begin{equation}
+        \begin{split}
+            \dot x = \sigma (y - x)\\
+            \dot y = x(\rho -z) -y \\
+            \dot z = xy -\beta z
+        \end{split}
+\end{equation}
+$$
+
+Where $\sigma, \rho$ and $\beta$ are free parameters of the model. 
 ## Links
 
 <div style="display: flex;flex-direction: column">

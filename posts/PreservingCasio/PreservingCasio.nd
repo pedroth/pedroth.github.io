@@ -1,0 +1,32 @@
+<!-- 
+title: Preserving Casio software
+creationDate: 22/11/2023
+lastUpdateDate: 22/11/2023
+tags: [
+    emulation,
+    blog,
+    calculator
+] 
+ -->
+
+One of my first [Youtube][youtube] videos, was about a 3d engine made in my [Casio][casio] calculator. I was bored with some high school classes and started doing lots of programs in the calculator.
+
+![The famous youtube video](https://youtu.be/ge2o3HtHDKA?si=I5_mUEHxS4UBpbWS)
+
+There is a problem with this kind of software, is that it just runs on the casio, but I want to running it in my computer in 2023. Then I found an [emulator][emulator]! Emulators are amazing! They are one of the best tools for preserving software, including my casio programs. There are a lot of emulators and they are really famous in the [retro gaming](https://www.youtube.com/watch?v=PCTAVbWdS5o) community.
+
+# Running the emulator in my computer
+
+First you need to download some `.g1m` files and upload them to the `SD Card` of the emulator. You can find some programs in my [casio programs graveyard](https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/src/casio). There is one issue with the [emulator][emulator], it just runs on `windows` and I use a `linux`. The solution was to use [wine][wine], which is something amazing that can run windows executables on linux (also good for software preservation). Just run: `wine emulator_file.exe`.
+---
+![Loading `.g1m` files into the emulator](/posts/PreservingCasio/CasioEmulator_installG1M.webm)
+---
+![Demo](/posts/PreservingCasio/Casio_emulation.webm)
+---
+
+Hope you enjoyed my adventure through preserving old programs.
+
+[casio]: https://www.casio.com/
+[youtube]: https://www.youtube.com/
+[emulator]: https://www.intereseducation.com/resources/casio-fx-9860g-sd-graphing-calculator-emulator-full-version/
+[wine]: https://www.winehq.org/

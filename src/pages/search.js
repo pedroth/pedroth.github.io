@@ -36,7 +36,8 @@ function searchPosts(posts, query) {
         .filter(
             p =>
                 p.title.toLowerCase().includes(finalQuery) ||
-                p.tags.some(t => t.toLowerCase().includes(finalQuery))
+                finalQuery.includes(p.title.toLowerCase()) ||
+                p.tags.some(t => t.toLowerCase().includes(finalQuery) || finalQuery.includes(t.toLowerCase()) )
         )
         .map(p => Card(p));
     const paragraph = DOM.of("p").inner(`Found ${results.length} results for "${query}" :`);
@@ -53,11 +54,37 @@ function getSearchedPosts(posts, query) {
         .append(...searchPosts(posts, query));
 }
 
+function getSearchInGoogle(getQuery, onQueryChange) {
+    const button = DOM.of("a")
+        .addClass("center")
+        .append(
+            DOM.of("button")
+                .addClass("button")
+                .append(
+                    DOM.of("h2").inner("Search in Google")
+                )
+        )
+        .attr("href", `https://www.google.com/search?q=${encodeURI(`site:https://pedroth.github.io ${getQuery()}`)}`)
+        .attr("target", `_blank`)
+    const container = DOM.of("div")
+        .addClass("center")
+        .append(
+            button
+        )
+    onQueryChange(newQuery =>
+        button.attr(
+            "href",
+            `https://www.google.com/search?q=${encodeURI(`site:https://pedroth.github.io ${newQuery}`)}`
+        )
+    )
+    return container;
+}
+
 export default async function search() {
     const posts = await Database.readSortedPosts();
     const urlParams = new URLSearchParams(window.location.hash.substring(1));
     const queryParam = urlParams.get("query");
-    const [getQuery,setQuery, onQueryChange] = useState(queryParam || "");
+    const [getQuery, setQuery, onQueryChange] = useState(queryParam || "");
 
     const inputElem = input(getQuery(), setQuery);
     const searchDiv = getSearchedPosts(posts, getQuery());
@@ -75,6 +102,8 @@ export default async function search() {
         .append(
             DOM.of("h1").inner("Search"),
             inputElem,
-            searchDiv
+            searchDiv,
+            DOM.of("hr"),
+            getSearchInGoogle(getQuery, onQueryChange)
         );
 }

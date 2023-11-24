@@ -1,4 +1,19 @@
-*Public Chat* is a chat web application, that I made, to learn about `http server` features of `java`.
+<!-- 
+title: Public chat
+creationDate: 27/12/2021
+lastUpdateDate: 27/12/2021
+tags: [
+    js,
+    ui,
+    chat,
+    java,
+    docker,
+    server,
+    experiments,
+    computer science
+]
+ -->
+_Public Chat_ is a chat web application, that I made, to learn about `http server` features of `java`.
 
 My goals with this project were:
 

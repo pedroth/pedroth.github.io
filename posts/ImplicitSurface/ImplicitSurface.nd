@@ -1,10 +1,35 @@
+<!-- 
+title: Implicit surface
+creationDate: 01/11/2014
+lastUpdateDate: 01/11/2014
+tags: [
+    3d,
+    java,
+    geometry,
+    surfaces,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science
+]
+ -->
 _Implicit Surface_ is a simple `java` application where you can visualize surfaces of the form: 
 
     $$S = \left \{(x,y,z) \in \mathbb{R}^3 : f(x,y,z) = 0 \right \}$$
 
 Where $f: \mathbb{R}^3 \rightarrow \mathbb{R}$. A popular surface of these, is the sphere, which is defined as: 
  
-    $$x^2+y^2+z^2 -1 = 0$$
+$$
+    x^2+y^2+z^2 -1 = 0
+$$
+
+Or a double torus:
+
+$$
+    r = x^2(1 - x^2) - y^2\\
+    r^2 + z ^2 - 0.04 = 0
+$$
 
 There are many other surfaces to explore here, check the demo on the video below. Enjoy!!
  

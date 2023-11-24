@@ -1,3 +1,22 @@
+<!-- 
+title: Simple robot
+creationDate: 01/09/2014
+lastUpdateDate: 01/09/2014
+tags: [
+    3d,
+    java,
+    robotics,
+    animation,
+    kinematics,
+    rigid body,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science,
+    differential equations
+]
+ -->
 _Simple Robot_ is a `java` application that let you see a robotic arm following a ball. It works by doing a [gradient descend](https://en.wikipedia.org/wiki/Gradient_descent) on a cost function. This cost function is defined as following:
 Let $\mathbf{x} \in \mathbb{R^3}$ be the position of a ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives $\boldsymbol{\theta}$ and outputs $\mathbf{y}$ which is the end position of the tip of the Robot ( $\text{DK}$ is usually called [direct kinematics](https://en.wikipedia.org/wiki/Forward_kinematics) function). Finally the cost function is:
 $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$

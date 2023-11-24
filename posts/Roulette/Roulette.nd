@@ -1,3 +1,15 @@
+<!-- 
+title: Roulette game
+creationDate: 29/01/2022
+lastUpdateDate: 29/01/2022
+tags: [
+    js,
+    ui,
+    game,
+    experiments,
+    khan academy,
+]
+ -->
 Made this game long time ago in [khan academy](https://www.khanacademy.org/computer-programming/simple-roulette/6350614017605632). Decided to add it here. It uses [`processing.js`](https://p5js.org/). 
 
 *Better to play here than in real life !!*

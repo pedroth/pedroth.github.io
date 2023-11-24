@@ -23,7 +23,7 @@ Database.readPostsAsMap = async () => {
 Database.readSortedPosts = async () => {
     if (!database) await Database.read();
     const posts = [...database.posts];
-    return posts.sort((a, b) => date2int(b.lastUpdate) - date2int(a.lastUpdate));
+    return posts.sort((a, b) => date2int(b.lastUpdateDate) - date2int(a.lastUpdateDate));
 };
 
 Database.readRandomPosts = async () => {

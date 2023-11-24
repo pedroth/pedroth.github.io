@@ -1,6 +1,23 @@
-[Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the nabladown.js language, which is a pseudo/flavored **markdown** language. 
+<!-- 
+title: Nabladown.js a pseudo-markdown language
+creationDate: 03/05/2021
+lastUpdateDate: 15/11/2023
+tags: [
+    js,
+    ui,
+    library,
+    parsing,
+    compiler,
+    grammars,
+    experiments,
+    mathematics,
+    visualization,
+    computer science
+]
+ -->
+[Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the nabladown.js language, which is a pseudo/flavored *markdown* language. 
 
-I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I wanted a simple way to render *html documents*, with **formulas**, **code highlight**, **media**, etc. These are the main features of the language: 
+I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I wanted a simple way to render *html documents*, with *formulas*, *code highlight*, *media*, etc. These are the main features of the language: 
 
 - Simple language, like *markdown*.
 - Support *mathematical formulae*(_latex style_).
@@ -13,8 +30,7 @@ I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I w
 
 The main motivation for [Nabladown.js](https://github.com/pedroth/nabladown.js) was the rendering the posts of this website.
 
-
-Please go check its project page.
+Please check the project page, for more details.
 
 ![](/posts/Nabladown/Nabladown.webp)
 
