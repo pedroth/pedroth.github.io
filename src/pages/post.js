@@ -33,7 +33,7 @@ function renderTags(tags) {
 }
 
 function renderPostHeader(post) {
-  const { title, lastUpdate, date } = post;
+  const { title, lastUpdateDate, creationDate } = post;
   return DOM.of("div")
     .append(
       // DOM.of("div")
@@ -49,9 +49,9 @@ function renderPostHeader(post) {
         .append(
           DOM.of("small")
             .addClass("grow")
-            .inner(`Created: ${formatDate(date)}`),
+            .inner(`Created: ${formatDate(creationDate)}`),
           DOM.of("small")
-            .inner(`Updated: ${formatDate(lastUpdate)}`),
+            .inner(`Updated: ${formatDate(lastUpdateDate)}`),
         ),
       DOM.of("hr")
     );

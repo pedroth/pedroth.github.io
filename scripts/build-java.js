@@ -11,6 +11,7 @@ import {
     existsSync,
     mkdirSync,
     readFileSync,
+    unlinkSync,
     writeFileSync
 } from "fs";
 import archiver from "archiver";
@@ -103,8 +104,7 @@ function createJarsFromDocker() {
         const commands = containerPaths.map(path => {
             const containerId = `dummy${Math.floor(Math.random() * 100)}`;
             return `docker create --name ${containerId} ${imageId} && docker cp ${containerId}:${path} ${hostPath} && docker rm -f ${containerId}`
-        }
-        );
+        });
         const filesCopied = commands.map(() => false);
         commands.forEach((command, i) => {
             console.log(`Executing command ${command}`);
@@ -127,10 +127,19 @@ function createJarsFromDocker() {
     });
 }
 
+function removeJars() {
+    console.log("Removing jars...");
+    const jarsFiles = [`${HOME}/learning.jar`, `${HOME}/pedroEngine.jar`];
+    jarsFiles.forEach(jar => {
+        console.log("Removing jar...", jar);
+        unlinkSync(jar);
+    });
+}
+
 async function processJars() {
     console.log("Processing jars");
     const config = readJarsConfig();
-    await createJarsFromDocker(config);
+    await createJarsFromDocker();
     console.log("created Jars From Docker");
     config.jars.forEach(async (jar) => {
         const name = jar.id;
@@ -156,6 +165,7 @@ async function processJars() {
         await zipIt(tmpFolder, zipPath);
         rmFolder(tmpFolder);
     });
+    removeJars();
 }
 
 // function logDockerCommands() {

@@ -1,3 +1,18 @@
+<!-- 
+title: Tetra
+creationDate: 01/04/2014
+lastUpdateDate: 01/04/2014
+tags: [
+    3d,
+    java,
+    geometry,
+    procedural,
+    experiments,
+    mathematics,
+    visualization,
+    computer science,
+]
+ -->
 _Tetra_ is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), made from scratch. It lets you see some *triangular meshes*, which includes some random *planets*, as you can see in the videos below.
 
 ![Showing some *meshes*](https://youtu.be/EWfagjIxd4g)

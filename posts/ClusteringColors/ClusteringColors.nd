@@ -1,3 +1,18 @@
+<!-- 
+title: Clustering colors
+creationDate: 05/10/2022
+lastUpdateDate: 08/09/2023
+tags: [
+    js,
+    images,
+    k-means,
+    experiments,
+    mathematics,
+    computer science,
+    machine learning,
+    gaussian mixtures
+]
+ -->
 I have read [here](https://davidwalsh.name/browser-camera) that I could access the camera in the browser, so I decided to make a small demo doing some image processing. One of the simplest projects is to cluster images colors. This classification of pixels makes a nice cartoonish effect.
 
 The algorithms implemented here were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 

@@ -1,4 +1,25 @@
- *Text simplex* is a simple tool to visualize [lowbow curves](https://jmlr.csail.mit.edu/papers/volume8/lebanon07a/lebanon07a.pdf). Basically it takes a _text signal_ into a _high-dimensional curve_. This `java` application enables you to visualize these curves using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) or [barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system).
+<!-- 
+title: Text simplex
+creationDate: 11/04/2021
+lastUpdateDate: 11/04/2021
+tags: [
+    2d,
+    3d,
+    java,
+    geometry,
+    simulation,
+    eigenvalues,
+    experiments,
+    mathematics,
+    eigenvectors,
+    graph theory,
+    visualization,
+    computer science,
+    natural language processing,
+    partial differential equations
+]
+-->
+ _Text simplex_ is a simple tool to visualize [lowbow curves](https://jmlr.csail.mit.edu/papers/volume8/lebanon07a/lebanon07a.pdf). Basically it takes a _text signal_ into a _high-dimensional curve_. This `java` application enables you to visualize these curves using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) or [barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system).
 
 ![Tutorial on *lowbow* app](https://youtu.be/Fr4B4AG-q54)
 

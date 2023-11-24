@@ -1,3 +1,20 @@
+<!-- 
+title: PDE
+creationDate: 01/08/2014
+lastUpdateDate: 01/08/2014
+tags: [
+    3d,
+    java,
+    geometry,
+    surfaces,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science,
+    partial differential equations
+]
+ -->
 _PDE_ is a `java` application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation)(PDE) of the form:
 
 $$u_t(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u})$$
@@ -14,7 +31,11 @@ Famous Equations are:
 - Wave Equation : $u_{tt} = \Delta u$
 - Continuity: $u_t = -\mathbf{v} \cdot \nabla \mathbf{u}, \mathbf{v} \in \mathbb{R}^2$
 
-In the `UI` of the program, you may use the usual `syntax` to define, the initial conditions (top input text field) and evolution equations of the _PDE_. You have the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`. In the evolution input text field (the one at the bottom), more functions are available, such as `dx, dy, d2x, d2y, dxy, dt` which are $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$ respectively.
+In the `UI`, there are two main fields:
+- The text input to define the initial condition, $u(0, \mathbf{x})$
+- The text input to define the PDE
+
+In those input texts, the user can use the usual operators `+, -, *, /, ^` and functions `sin, cos, exp, tan, ln, ...`. In the PDE input, differential operators are available, such as `dx, dy, d2x, d2y, dxy, dt` which are $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$ respectively.
 
 Feel free to download the program below.
 

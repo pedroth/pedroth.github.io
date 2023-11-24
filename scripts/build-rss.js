@@ -22,7 +22,7 @@ function parseDate(dateString) {
 
 export default async () => {
     const { posts } = JSON.parse(await readFile("./database/db.json", "utf-8"));
-    const sortedPosts = posts.sort((a, b) => date2int(a.lastUpdate) - date2int(b.lastUpdate));
+    const sortedPosts = posts.sort((a, b) => date2int(a.lastUpdateDate) - date2int(b.lastUpdateDate));
     const feed = new RSS({
         title: `Pedroth's Corner`,
         description: `Pedroth's Corner: Maths.Computer Science.Philosophy`,
@@ -30,12 +30,12 @@ export default async () => {
         site_url: HOME,
         language: 'en-us'
     });
-    sortedPosts.forEach(({ title, id, lastUpdate }) => {
+    sortedPosts.forEach(({ title, id, lastUpdateDate }) => {
         feed.item({
             title,
             description: title,
             url: `${HOME}/?p=post/${id}/${id}.nd`,
-            date: parseDate(lastUpdate),
+            date: parseDate(lastUpdateDate),
             author: "Pedroth",
             enclosure: {
                 url: `${HOME}/posts/${id}/${id}_small.webp`, // URL of the image

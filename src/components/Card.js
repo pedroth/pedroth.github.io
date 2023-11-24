@@ -1,7 +1,7 @@
 import DomBuilder from "../DomBuilder.js"
 import { formatDate } from "../Utils.js";
 
-const Card = ({ id, title, lastUpdate, tags }) => {
+const Card = ({ id, title, lastUpdateDate, tags }) => {
     const url = `/?p=post/${id}`;
     const imageSrc = `posts/${id}/${id}_small.webp`;
     return DomBuilder.of("div")
@@ -10,14 +10,14 @@ const Card = ({ id, title, lastUpdate, tags }) => {
             DomBuilder.of("a")
                 .addClass("specialLink")
                 .attr("href", url)
-                .append(article({ imageSrc, title, lastUpdate, tags }))
+                .append(article({ imageSrc, title, lastUpdateDate, tags }))
         )
 }
 
-function article({ imageSrc, title, lastUpdate, tags }) {
+function article({ imageSrc, title, lastUpdateDate, tags }) {
     return DomBuilder.of("article")
         .append(cardImage({ imageSrc, title }))
-        .append(cardBody({ title, lastUpdate, tags }))
+        .append(cardBody({ title, lastUpdateDate, tags }))
 }
 
 
@@ -27,7 +27,7 @@ function cardImage({ imageSrc, title }) {
         .attr("alt", title);
 }
 
-function cardBody({ title, lastUpdate }) {
+function cardBody({ title, lastUpdateDate }) {
     return DomBuilder.of("div")
         .append(
             DomBuilder.of("h3")
@@ -35,7 +35,7 @@ function cardBody({ title, lastUpdate }) {
         )
         .append(
             DomBuilder.of("small")
-                .inner(`Updated: ${formatDate(lastUpdate)}`)
+                .inner(`Updated: ${formatDate(lastUpdateDate)}`)
         )
 }
 

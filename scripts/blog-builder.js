@@ -1,7 +1,9 @@
+import { readFileSync, writeFileSync } from "fs";
 import { Command } from "commander";
 import buildRssFeed from "./build-rss.js";
 import buildJavaPosts from "./build-java.js";
-import { updateDates } from "./build-posts.js";
+import buildPosts from "./build-posts.js";
+import buildImages from "./build-images.js";
 
 
 const program = new Command();
@@ -20,11 +22,25 @@ program.command('build-java')
     .action(() => {
         buildJavaPosts();
     });
-program.command('update-dates')
-    .description('Update dates of posts using git log info')
+program.command('build-posts')
+    .description('Create DB from posts')
     .action(() => {
-        updateDates();
+        const posts = buildPosts();
+        let db = { posts: [] };
+        try {
+            db = JSON.parse(
+                readFileSync("./database/db.json", "utf-8")
+            );
+        } catch (e) {
+            console.log("File doesn't exist")
+        }
+        db.posts = posts;
+        writeFileSync("./database/db.json", JSON.stringify(db, null, 2));
     });
-
+program.command('build-images')
+    .description('Create necessary images for blog cards')
+    .action(() => {
+        buildImages();
+    })
 
 program.parse();

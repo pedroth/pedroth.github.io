@@ -1,3 +1,19 @@
+<!-- 
+title: Implicit surface
+creationDate: 01/11/2014
+lastUpdateDate: 01/11/2014
+tags: [
+    3d,
+    java,
+    geometry,
+    surfaces,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science
+]
+ -->
 _Implicit Surface_ is a simple `java` application where you can visualize surfaces of the form: 
 
     $$S = \left \{(x,y,z) \in \mathbb{R}^3 : f(x,y,z) = 0 \right \}$$

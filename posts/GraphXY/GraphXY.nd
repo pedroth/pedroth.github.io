@@ -1,3 +1,21 @@
+<!-- 
+title: Graph XY
+creationDate: 01/06/2014
+lastUpdateDate: 01/06/2014
+tags: [
+    3d,
+    java,
+    geometry,
+    surfaces,
+    simulation,
+    experiments,
+    mathematics,
+    optimization,
+    visualization,
+    computer science,
+    differential equations
+]
+ -->
 _GraphXY_ is a simple application where you can see graphs of functions of two variables. You can also compute a gradient descend/ascend on the function.
 
 The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`.

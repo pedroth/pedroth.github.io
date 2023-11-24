@@ -1,3 +1,17 @@
+<!-- 
+title: Cellular automaton
+creationDate: 01/01/2014
+lastUpdateDate: 01/01/2014
+tags: [
+    2d,
+    java,
+    simulation,
+    experiments,
+    mathematics,
+    computer science,
+    cellular automaton
+]
+ -->
 I made a simple [*Cellular Automaton*][automaton] application long time ago. Here each pixel represents a [cellular automaton][automaton] which is *alive* if is green or *dead* if is dark. The rules for the cellular automaton to be born and to survive are defined by the $S/B$ rules: 
 - $S$ defines counts of alive neighbors necessary for a cell to survive.
 - $B$ defines counts of alive neighbors necessary for a cell to be born. 

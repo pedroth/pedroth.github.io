@@ -1,3 +1,19 @@
+ <!-- 
+title: Brownian motion
+creationDate: 01/10/2014
+lastUpdateDate: 01/10/2014
+tags: [
+    2d,
+    java,
+    physics,
+    simulation,
+    experiments,
+    mathematics,
+    brownian motion,
+    computer science,
+    differential equations
+]
+ -->
  _Brownian Motion_ is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. I made it because is fun the watch the dynamics of the system. Enjoy!
 
 ![*Brownian motion* app](/posts/BrownianMotion/BrownianMotion.webp)

@@ -1,5 +1,5 @@
 {
-  "name": "Pedroth",
+  "name": "pedroth",
   "version": "3.0.0",
   "description": "Pedroth's Corner: Math.Computer science. Philosophy",
   "main": "src/index.js",
@@ -15,14 +15,16 @@
     "textfit": "^2.4.0"
   },
   "scripts": {
+    "rss": "bun ./scripts/blog-builder rss",
     "test": "bun test",
     "serve": "bunx http-server",
-    "build-lib": "bun i; bun bundle.js;",
-    "rss": "bun ./scripts/blog-builder rss",
-    "clean": "rm -r node_modules; rm -r lib;",
     "build": "bun run build-lib; bun run build-blog;",
-    "blog-build": "bun run rss; bun run build-java",
-    "build-java": "node ./scripts/blog-builder build-java"
+    "clean": "rm -r node_modules; rm -r lib;",
+    "build-lib": "bun i; bun bundle.js;",
+    "build-blog": "bun run build-lib; bun run build-posts; bun run build-images; bun run build-java; bun run rss",
+    "build-java": "node ./scripts/blog-builder build-java",
+    "build-posts": "bun ./scripts/blog-builder build-posts",
+    "build-images": "bun ./scripts/blog-builder build-images"
   },
   "repository": {
     "type": "git",
