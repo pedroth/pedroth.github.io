@@ -110,3 +110,9 @@ The blog builder is a set of scripts designed to update the website. It updates 
 	- tags: Array<String>
 - Add `.webm` video about your post with its name equal to its *unique id*
 - Run `bun run build-posts` in the root.
+
+
+# TODO
+
+- **Add** different view on tags (like [this](https://mcyoung.xyz/tags.html))
+- Add email subscription (?)
