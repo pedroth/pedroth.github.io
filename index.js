@@ -47,7 +47,7 @@ function searchButton(isActive) {
 }
 
 function themeButton() {
-  const [getTheme, setTheme, onThemeChange] = useState(LocalStorage().getItem("theme") || "dark");
+  const [getTheme, setTheme, onThemeChange] = useState(LocalStorage.getItem("theme") || "dark");
 
   const button = DOM
     .of("button")
@@ -57,7 +57,7 @@ function themeButton() {
         let nextTheme = theme;
         if (theme === "dark") nextTheme = "light";
         else nextTheme = "dark";
-        LocalStorage().setItem("theme", nextTheme);
+        LocalStorage.setItem("theme", nextTheme);
         return nextTheme;
       });
     })
