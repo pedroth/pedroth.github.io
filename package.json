@@ -18,7 +18,7 @@
     "rss": "bun ./scripts/blog-builder rss",
     "test": "bun test",
     "serve": "bunx http-server",
-    "build": "bun run build-lib; bun run build-blog;",
+    "build": "bun run build-blog;",
     "clean": "rm -r node_modules; rm -r lib;",
     "build-lib": "bun i; bun bundle.js;",
     "build-blog": "bun run build-lib; bun run build-posts; bun run build-images; bun run build-java; bun run rss",
