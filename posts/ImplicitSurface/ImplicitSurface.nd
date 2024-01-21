@@ -51,6 +51,7 @@ This was taken from my khan academy profile [here](https://www.khanacademy.org/c
     }if(typeof draw!=="undefined")processing.draw=draw});
 </script>
 
+Use `mouse` and keys `a,w,s,d` to control the camera.
 
 ## Links
 
