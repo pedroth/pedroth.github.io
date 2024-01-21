@@ -57,6 +57,7 @@ function getSearchedPosts(posts, query) {
 function getSearchInGoogle(getQuery, onQueryChange) {
     const button = DOM.of("a")
         .addClass("center")
+        .style(getQuery() === "" ? "display:none" : "")
         .append(
             DOM.of("button")
                 .addClass("button")
@@ -71,12 +72,13 @@ function getSearchInGoogle(getQuery, onQueryChange) {
         .append(
             button
         )
-    onQueryChange(newQuery =>
+    onQueryChange(newQuery => {
         button.attr(
             "href",
             `https://www.google.com/search?q=${encodeURI(`site:https://pedroth.github.io ${newQuery}`)}`
         )
-    )
+        button.style(getQuery() === "" ? "display:none" : "");
+    })
     return container;
 }
 
