@@ -28,6 +28,7 @@
         "video",
         "docker",
         "series",
+        "project",
         "mathematics",
         "graph theory",
         "computer science",
@@ -160,7 +161,7 @@
       "id": "ImplicitSurface",
       "title": "Implicit surface",
       "creationDate": "01/11/2014",
-      "lastUpdateDate": "01/11/2014",
+      "lastUpdateDate": "20/01/2024",
       "tags": [
         "3d",
         "java",
@@ -201,10 +202,27 @@
         "ui",
         "library",
         "parsing",
+        "project",
         "compiler",
         "grammars",
         "experiments",
         "mathematics",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "NabladownServer",
+      "title": "Nabladown server",
+      "creationDate": "29/01/2024",
+      "lastUpdateDate": "29/01/2024",
+      "tags": [
+        "js",
+        "ui",
+        "server",
+        "project",
+        "experiments",
+        "web-sockets",
         "visualization",
         "computer science"
       ]
