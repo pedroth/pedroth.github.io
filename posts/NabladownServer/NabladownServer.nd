@@ -24,9 +24,9 @@ I wanted to write my personal notes with the markup language of [`nabladown`][nd
 
 The main features are:
 - List local [`.nd`][nd]
-- Render [nabladown files] with hot reloading[^1]
+- Render [nabladown files][nd] with hot reloading[^1]
 - Dark/light themes
-- Serving media
+- Serving media files, such as images and videos
 - Add optional custom css
 
 Features I like to add:
