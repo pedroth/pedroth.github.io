@@ -127,7 +127,7 @@ function footer() {
                 .inner(getSvg("/assets/rss.svg"))
             ),
           DOM.of("p")
-            .inner("© 2023 Pedroth")
+            .inner(`© ${new Date().getFullYear()} Pedroth`)
         )
     )
 }
