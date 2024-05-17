@@ -87,12 +87,9 @@ or
 
 `node scripts/...`
 
-> The `scripts/blog-builder.js build-java` only run using `node`, there is a [bug in bun](https://github.com/oven-sh/bun/issues/6992) that blocks running this particular command.
-
-
 # Dependencies
 
 - [bun.js](https://bun.sh/)
-- [node.js](https://nodejs.org/) 
-- [docker](https://www.docker.com/)
+- [node.js](https://nodejs.org/), not really a dependency, you can just use `bun`
+- [docker](https://www.docker.com/) (this is useful to run [build-java.js](./scripts/build-java.js))
 - [ffmpeg](https://www.ffmpeg.org/) (this is useful to run [webm2webp.sh](./scripts/webm2webp.sh))
