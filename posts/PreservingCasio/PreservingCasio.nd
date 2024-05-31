@@ -1,7 +1,7 @@
 <!-- 
 title: Preserving Casio software
 creationDate: 22/11/2023
-lastUpdateDate: 22/11/2023
+lastUpdateDate: 31/05/2024
 tags: [
     emulation,
     blog,
@@ -17,7 +17,7 @@ There is a problem with this kind of software, is that it just runs on the casio
 
 # Running the emulator in my computer
 
-First you need to download some `.g1m` files and upload them to the `SD Card` of the emulator. You can find some programs in my [casio programs graveyard](https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/src/casio). There is one issue with the [emulator][emulator], it just runs on `windows` and I use a `linux`. The solution was to use [wine][wine], which is something amazing that can run windows executables on linux (also good for software preservation). Just run: `wine emulator_file.exe`.
+First you need to download some `.g1m` files and upload them to the `SD Card` of the emulator. You can find some programs in my [casio programs graveyard](https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/casio). There is one issue with the [emulator][emulator], it just runs on `windows` and I use a `linux`. The solution was to use [wine][wine], which is something amazing that can run windows executables on linux (also good for software preservation). Just run: `wine emulator_file.exe`.
 ---
 ![Loading `.g1m` files into the emulator](/posts/PreservingCasio/CasioEmulator_installG1M.webm)
 ---
