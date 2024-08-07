@@ -1,0 +1,18 @@
+<!-- 
+title: Shaders without GPUs 
+creationDate: 28/05/2024
+lastUpdateDate: 28/05/2024
+tags: [
+    2d,
+    js,
+    blog,
+    animation
+    experiments,
+    visualization,
+    computer science,
+]
+ -->
+
+ *Shaders without GPUs* seems crazy, and in a sense it is. So why am I doing it? Basically to understand how things work from scratch, without the things that change (Graphical APIs), to bother us. The question I am trying to answer is, imagine that some cataclysm occurred and you want to start again with some minimal computer language, how did you write a shader?
+
+ I am using `js`, but I will not use any _fancy_ features of the language so that we could generalize  

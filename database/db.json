@@ -306,6 +306,21 @@
       ]
     },
     {
+      "id": "ShaderNoGPU",
+      "title": "Shaders without GPUs",
+      "creationDate": "28/05/2024",
+      "lastUpdateDate": "28/05/2024",
+      "tags": [
+        "2d",
+        "js",
+        "blog",
+        "animation",
+        "experiments",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
       "id": "SimplePhysics",
       "title": "Simple physics",
       "creationDate": "01/02/2014",
