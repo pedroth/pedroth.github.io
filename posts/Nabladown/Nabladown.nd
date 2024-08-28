@@ -1,7 +1,7 @@
 <!-- 
 title: Nabladown.js a pseudo-markdown language
 creationDate: 03/05/2021
-lastUpdateDate: 15/11/2023
+lastUpdateDate: 28/08/2024
 tags: [
     js,
     ui,
@@ -24,7 +24,7 @@ I have made [Nabladown.js](https://github.com/pedroth/nabladown.js), because I w
 - Support *mathematical formulae*(_latex style_).
 - Support *code highlight*
 - Support regular *html*
-- Support *custom* space.
+- Support [*macros*][macros].
 - Should expose the *parser* of the language 
 - Easy way to write multiple *renders*
 - Easy to install/use
@@ -48,3 +48,5 @@ Please check the project page, for more details.
         </button>
     </a>
 </div>
+
+[macros]: https://en.wikipedia.org/wiki/Metaprogramming#Uses_in_programming_languages

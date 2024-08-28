@@ -9,7 +9,7 @@
     "child_process": "^1.0.2",
     "commander": "^11.1.0",
     "eslint": "^8.53.0",
-    "nabladown.js": "^2.0.23",
+    "nabladown.js": "^3.0.1",
     "rimraf": "^5.0.5",
     "rss": "^1.2.2",
     "textfit": "^2.4.0"

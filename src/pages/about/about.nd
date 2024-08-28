@@ -1,3 +1,4 @@
+:: import "./macros.js"; ::
 # About
 
 Hello world, I am Pedroth, Catholic, searcher of the *Good*, the *Truth* and the *Beauty*. 
@@ -159,9 +160,9 @@ function animateEmail() {
 animateEmail();
 </script>
 
-[quote]:::
+[quote]::
     This website *doesn't retrieve any information* from the user, it is made from _scratch_ and is [_*open source*_](https://github.com/pedroth/pedroth.github.io).
-:::
+::
 
 
 Thank you for visiting!
