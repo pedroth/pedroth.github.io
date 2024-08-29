@@ -1,7 +1,7 @@
 <!-- 
 title: Bit Calculator
 creationDate: 05/05/2021
-lastUpdateDate: 01/11/2023
+lastUpdateDate: 25/07/2024
 tags: [
     js,
     ui,
@@ -14,7 +14,7 @@ tags: [
     computer science
 ]
  -->
-_Bit Calculator_ is a simple _parser_ and _evaluator_ for mathematical expressions in binary. My main motivation for this was to study [formal grammars](https://en.wikipedia.org/wiki/Formal_grammar), [parsers](https://en.wikipedia.org/wiki/Recursive_descent_parser) and [compilers](https://en.wikipedia.org/wiki/Compiler). I tried to build the simplest parser I could, using no dependencies. The parser that was implemented is similar to a [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator). With the practice I have got from this I started to write the [Nabladown language](https://github.com/pedroth/nabladown.js).
+_Bit Calculator_ is a simple _parser_ and _evaluator_ for mathematical expressions in binary. My main motivation for creating this, was to study [formal grammars](https://en.wikipedia.org/wiki/Formal_grammar), [parsers](https://en.wikipedia.org/wiki/Recursive_descent_parser) and [compilers](https://en.wikipedia.org/wiki/Compiler). To achieve this, I tried to build the simplest parser I could, using no dependencies. The parser that was implemented is similar to a [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator). With the practice I have got from this I started to write the [Nabladown language](https://github.com/pedroth/nabladown.js).
 
 Please go check the project page.
 

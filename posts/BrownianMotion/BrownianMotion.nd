@@ -1,3 +1,4 @@
+:: import "./macros.js"; ::
  <!-- 
 title: Brownian motion
 creationDate: 01/10/2014
@@ -14,6 +15,7 @@ tags: [
     differential equations
 ]
  -->
+
  _Brownian Motion_ is `java` application where particles collide with each other. In this program you are able to control the direction of a constant length force field. I made it because is fun the watch the dynamics of the system. Enjoy!
 
 ![*Brownian motion* app](/posts/BrownianMotion/BrownianMotion.webp)
@@ -47,9 +49,9 @@ All balls have the same size and start in a random position and velocity. They c
 
 $$ \ddot p_i = X $$
 
-[quote]:::
+[quote]::
     $p_i$ is the position of the ball.
-:::
+::
 
 The interesting behavior is when there is a *collision* between two balls. In this regime the ball velocity will be updated as follows:
 

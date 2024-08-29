@@ -67,7 +67,7 @@ function themeButton() {
       document.documentElement.style.setProperty("--background-color", "rgb(24,24,24)");
       document.documentElement.style.setProperty("--text-color", "rgba(255,255,255,0.9)");
     } else {
-      document.documentElement.style.setProperty("--background-color", "rgb(255,255,255)");
+      document.documentElement.style.setProperty("--background-color", "rgb(254 253 245)");
       document.documentElement.style.setProperty("--text-color", "rgba(24,24,24,0.9)");
     }
   }
