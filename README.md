@@ -58,14 +58,11 @@ DB := {
 Post := {
 	id: String,
 	title: String,
-	date: Date(String),
-	lastUpdate: Date(String),
-	src: Address(String),
+	creationDate: String<Date: dd/mm/yyyy>,
+	lastUpdateDate: String<Date: dd/mm/yyyy>,
 	tags: Array<String>
 }
 ```
-
-> `date` should be the creation date
 
 ## Js first
 
@@ -89,7 +86,35 @@ or
 
 # Dependencies
 
+## General dependencies 
 - [bun.js](https://bun.sh/)
-- [node.js](https://nodejs.org/), not really a dependency, you can just use `bun`
-- [docker](https://www.docker.com/) (this is useful to run [build-java.js](./scripts/build-java.js))
-- [ffmpeg](https://www.ffmpeg.org/) (this is useful to run [webm2webp.sh](./scripts/webm2webp.sh))
+- [node.js](https://nodejs.org/) // to be removed after [bug](https://github.com/oven-sh/bun/issues/6992) is solved.
+- [docker](https://www.docker.com/)
+- [ffmpeg](https://www.ffmpeg.org/) (this is useful to run [build-images.js](./scripts/build-images.js))
+
+## Js dependencies
+- nabladown.js
+- textFit
+
+
+# Using Blog Builder
+
+The blog builder is a set of scripts designed to update the website. It updates the database, creates the images in various resolutions, create/updates various artifacts (e.g the [build-java script](/scripts/build-java.js))
+
+## Creating a new post
+
+- Create new _folder_ with the *unique id* of the post in _posts folder_
+- Inside this _folder_ create a `.nd` file with the name equal to its *unique id*
+- The first lines the `.nd` file, should be a comment with the following format:
+	- title: String
+	- creationDate: String<Date: dd/mm/yyyy> (note: dd=00..31 / mm=01..12 / yyyy=0000....9999)
+	- lastUpdateDate: String<Date: dd/mm/yyyy>
+	- tags: Array<String>
+- Add `.webm` video about your post with its name equal to its *unique id*
+- Run `bun run build-posts` in the root.
+
+
+# TODO
+
+- **Add** different view on tags (like [this](https://mcyoung.xyz/tags.html))
+- Add email subscription (?)

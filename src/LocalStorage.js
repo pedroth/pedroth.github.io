@@ -1,4 +1,4 @@
-const LocalStorage = () => {
+const LocalStorage = (() => {
     const namespace = "pedroth";
     return {
         getItem: key => {
@@ -12,6 +12,6 @@ const LocalStorage = () => {
             return this;
         }
     };
-};
+})();
 
 export default LocalStorage;

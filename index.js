@@ -47,36 +47,35 @@ function searchButton(isActive) {
 }
 
 function themeButton() {
-  const [getTheme, setTheme, onThemeChange] = useState(LocalStorage().getItem("theme") || "dark");
+  const [getTheme, setTheme, onThemeChange] = useState(LocalStorage.getItem("theme") || "dark");
 
   const button = DOM
     .of("button")
     .addClass("specialIcon")
     .event("click", () => {
       setTheme(theme => {
-        let nextTheme = theme;
-        if (theme === "dark") nextTheme = "light";
-        else nextTheme = "dark";
-        LocalStorage().setItem("theme", nextTheme);
+        const nextTheme = theme === "dark" ? "light" : "dark";
+        LocalStorage.setItem("theme", nextTheme);
         return nextTheme;
       });
     })
 
   const updateTheme = (aTheme) => {
-    if (aTheme === "light") button.inner(getSvg("/assets/dark_mode.svg"));
-    else button.inner(getSvg("/assets/light_mode.svg"));
-    if (aTheme === "light") {
-      document.body.style.backgroundColor = "var(--background-color-light)";
-      document.body.style.color = "var(--text-color-light)";
+    const isDark = aTheme === "dark";
+    button.inner(isDark ? getSvg("/assets/light_mode.svg") : getSvg("/assets/dark_mode.svg"))
+    if (isDark) {
+      document.documentElement.style.setProperty("--background-color", "rgb(24,24,24)");
+      document.documentElement.style.setProperty("--text-color", "rgba(255,255,255,0.9)");
     } else {
-      document.body.style.backgroundColor = "var(--background-color)";
-      document.body.style.color = "var(--text-color)";
+      document.documentElement.style.setProperty("--background-color", "rgb(254 253 245)");
+      document.documentElement.style.setProperty("--text-color", "rgba(24,24,24,0.9)");
     }
   }
 
   onThemeChange(newTheme => {
     updateTheme(newTheme);
   })
+  // first render
   updateTheme(getTheme());
   return button;
 }
@@ -128,7 +127,7 @@ function footer() {
                 .inner(getSvg("/assets/rss.svg"))
             ),
           DOM.of("p")
-            .inner("© 2023 Pedroth")
+            .inner(`© ${new Date().getFullYear()} Pedroth`)
         )
     )
 }

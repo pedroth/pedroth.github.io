@@ -1,372 +1,386 @@
 {
-   "posts": [
-      {
-         "id": "ArcSummary",
-         "title": "Arc Summary",
-         "date": "24/11/2019",
-         "lastUpdate": "28/12/2021",
-         "tags": [
-            "ui",
-            "blog",
-            "video",
-            "docker",
-            "series",
-            "summary",
-            "clustering",
-            "mathematics",
-            "graph theory",
-            "computer science",
-            "machine learning",
-            "signal processing",
-            "natural language processing"
-         ]
-      },
-      {
-         "id": "BrownianMotion",
-         "title": "Brownian Motion",
-         "date": "1/10/2014",
-         "lastUpdate": "1/10/2014",
-         "tags": [
-            "2d",
-            "java",
-            "physics",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "brownian motion",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "CellularAutomaton",
-         "title": "Cellular Automaton",
-         "date": "1/01/2014",
-         "lastUpdate": "1/01/2014",
-         "tags": [
-            "2d",
-            "java",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "computer science",
-            "cellular automaton"
-         ]
-      },
-      {
-         "id": "CubeChaos",
-         "title": "Cube Chaos",
-         "date": "1/05/2014",
-         "lastUpdate": "1/05/2014",
-         "tags": [
-            "3d",
-            "java",
-            "chaos",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "vector fields",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "GraphXY",
-         "title": "Graph XY",
-         "date": "1/06/2014",
-         "lastUpdate": "1/06/2014",
-         "tags": [
-            "3d",
-            "java",
-            "geometry",
-            "surfaces",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "optimization",
-            "visualization",
-            "computer science",
-            "gradient descend"
-         ]
-      },
-      {
-         "id": "ImplicitSurface",
-         "title": "Implicit Surface",
-         "date": "1/11/2014",
-         "lastUpdate": "1/11/2014",
-         "tags": [
-            "3d",
-            "java",
-            "geometry",
-            "surfaces",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science",
-            "implicit surfaces"
-         ]
-      },
-      {
-         "id": "LinesSurfaces",
-         "title": "Lines and Surfaces",
-         "date": "1/07/2014",
-         "lastUpdate": "1/07/2014",
-         "tags": [
-            "3d",
-            "java",
-            "curves",
-            "geometry",
-            "surfaces",
-            "OBJ files",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science"
-         ]
-      },
-      {
-         "id": "PDE",
-         "title": "PDE",
-         "date": "1/08/2014",
-         "lastUpdate": "1/08/2014",
-         "tags": [
-            "3d",
-            "java",
-            "geometry",
-            "surfaces",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "heat equation",
-            "visualization",
-            "wave equation",
-            "curvature flow",
-            "computer science",
-            "partial differential equations"
-         ]
-      },
-      {
-         "id": "RandomCurve",
-         "title": "Random Curve",
-         "date": "1/03/2014",
-         "lastUpdate": "1/03/2014",
-         "tags": [
-            "2d",
-            "java",
-            "curves",
-            "random",
-            "geometry",
-            "curvature",
-            "procedural",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "SimplePhysics",
-         "title": "Simple Physics",
-         "date": "1/02/2014",
-         "lastUpdate": "1/02/2014",
-         "tags": [
-            "2d",
-            "java",
-            "physics",
-            "procedural",
-            "rigid body",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "SimpleRobot",
-         "title": "Simple Robot",
-         "date": "1/09/2014",
-         "lastUpdate": "1/09/2014",
-         "tags": [
-            "3d",
-            "java",
-            "robotics",
-            "animation",
-            "kinematics",
-            "rigid body",
-            "simulation",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "Tetra",
-         "title": "Tetra",
-         "date": "1/04/2014",
-         "lastUpdate": "1/04/2014",
-         "tags": [
-            "3d",
-            "java",
-            "geometry",
-            "procedural",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science"
-         ]
-      },
-      {
-         "id": "EigenSimulation",
-         "title": "Eigen Simulation",
-         "date": "24/11/2017",
-         "lastUpdate": "24/11/2017",
-         "tags": [
-            "3d",
-            "java",
-            "simulation",
-            "eigenvalues",
-            "experiments",
-            "mathematics",
-            "eigenvectors",
-            "optimization",
-            "vector fields",
-            "visualization",
-            "computer science",
-            "gradient descend",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "ClusteringColors",
-         "title": "Clustering Colors",
-         "date": "05/10/2022",
-         "lastUpdate": "08/09/2023",
-         "tags": [
-            "js",
-            "images",
-            "k-means",
-            "experiments",
-            "mathematics",
-            "optimization",
-            "computer science",
-            "machine learning",
-            "gaussian mixtures"
-         ]
-      },
-      {
-         "id": "3DRoute",
-         "title": "3D Route",
-         "date": "22/12/2021",
-         "lastUpdate": "22/12/2021",
-         "tags": [
-            "3d",
-            "js",
-            "mobile",
-            "sensors",
-            "experiments",
-            "mathematics",
-            "computer science",
-            "differential equations"
-         ]
-      },
-      {
-         "id": "PublicChat",
-         "title": "Public Chat",
-         "date": "27/12/2021",
-         "lastUpdate": "27/12/2021",
-         "tags": [
-            "js",
-            "ui",
-            "chat",
-            "java",
-            "docker",
-            "server",
-            "simple",
-            "pooling",
-            "experiments",
-            "open source",
-            "computer science"
-         ]
-      },
-      {
-         "id": "TextSimplex",
-         "title": "Text Simplex",
-         "date": "11/04/2021",
-         "lastUpdate": "11/04/2021",
-         "tags": [
-            "2d",
-            "3d",
-            "java",
-            "geometry",
-            "simulation",
-            "eigenvalues",
-            "experiments",
-            "mathematics",
-            "eigenvectors",
-            "graph theory",
-            "heat equation",
-            "visualization",
-            "computer science",
-            "signal processing",
-            "natural language processing",
-            "partial differential equations"
-         ]
-      },
-      {
-         "id": "Nabladown",
-         "title": "Nabladown.js a pseudo-markdown language",
-         "date": "03/05/2021",
-         "lastUpdate": "15/11/2023",
-         "tags": [
-            "js",
-            "ui",
-            "library",
-            "parsing",
-            "compiler",
-            "grammars",
-            "experiments",
-            "mathematics",
-            "visualization",
-            "computer science"
-         ]
-      },
-      {
-         "id": "SimpleCalculator",
-         "title": "Simple Calculator Parser",
-         "date": "05/05/2021",
-         "lastUpdate": "01/11/2023",
-         "tags": [
-            "js",
-            "ui",
-            "parsing",
-            "compiler",
-            "grammars",
-            "calculator",
-            "experiments",
-            "mathematics",
-            "computer science"
-         ]
-      },
-      {
-         "id": "Roulette",
-         "title": "Roullete game",
-         "date": "29/01/2022",
-         "lastUpdate": "29/01/2022",
-         "tags": [
-            "js",
-            "ui",
-            "game",
-            "processing",
-            "experiments",
-            "khan academy"
-         ]
-      }
-   ]
+  "posts": [
+    {
+      "id": "3DRoute",
+      "title": "3D Route",
+      "creationDate": "22/12/2021",
+      "lastUpdateDate": "22/12/2021",
+      "tags": [
+        "3d",
+        "js",
+        "mobile",
+        "sensors",
+        "experiments",
+        "mathematics",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "ArcSummary",
+      "title": "Arc Summary",
+      "creationDate": "24/11/2019",
+      "lastUpdateDate": "28/12/2021",
+      "tags": [
+        "ai",
+        "ui",
+        "blog",
+        "video",
+        "docker",
+        "series",
+        "project",
+        "mathematics",
+        "graph theory",
+        "computer science",
+        "machine learning",
+        "natural language processing"
+      ]
+    },
+    {
+      "id": "BitCalculator",
+      "title": "Bit Calculator",
+      "creationDate": "05/05/2021",
+      "lastUpdateDate": "25/07/2024",
+      "tags": [
+        "js",
+        "ui",
+        "parsing",
+        "grammars",
+        "compilers",
+        "calculator",
+        "experiments",
+        "mathematics",
+        "computer science"
+      ]
+    },
+    {
+      "id": "BrownianMotion",
+      "title": "Brownian motion",
+      "creationDate": "01/10/2014",
+      "lastUpdateDate": "01/10/2014",
+      "tags": [
+        "2d",
+        "java",
+        "physics",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "brownian motion",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "CellularAutomaton",
+      "title": "Cellular automaton",
+      "creationDate": "01/01/2014",
+      "lastUpdateDate": "01/01/2014",
+      "tags": [
+        "2d",
+        "java",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "computer science",
+        "cellular automaton"
+      ]
+    },
+    {
+      "id": "ClusteringColors",
+      "title": "Clustering colors",
+      "creationDate": "05/10/2022",
+      "lastUpdateDate": "08/09/2023",
+      "tags": [
+        "js",
+        "images",
+        "k-means",
+        "experiments",
+        "mathematics",
+        "computer science",
+        "machine learning",
+        "gaussian mixtures"
+      ]
+    },
+    {
+      "id": "CubeChaos",
+      "title": "Cube Chaos",
+      "creationDate": "01/05/2014",
+      "lastUpdateDate": "01/05/2014",
+      "tags": [
+        "3d",
+        "java",
+        "chaos",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "vector fields",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "EigenSimulation",
+      "title": "Eigen simulation",
+      "creationDate": "24/11/2017",
+      "lastUpdateDate": "24/11/2017",
+      "tags": [
+        "3d",
+        "java",
+        "simulation",
+        "eigenvalues",
+        "experiments",
+        "mathematics",
+        "eigenvectors",
+        "optimization",
+        "vector fields",
+        "visualization",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "GraphXY",
+      "title": "Graph XY",
+      "creationDate": "01/06/2014",
+      "lastUpdateDate": "01/06/2014",
+      "tags": [
+        "3d",
+        "java",
+        "geometry",
+        "surfaces",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "optimization",
+        "visualization",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "ImplicitSurface",
+      "title": "Implicit surface",
+      "creationDate": "01/11/2014",
+      "lastUpdateDate": "20/01/2024",
+      "tags": [
+        "3d",
+        "java",
+        "geometry",
+        "surfaces",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "LinesSurfaces",
+      "title": "Lines and surfaces",
+      "creationDate": "01/07/2014",
+      "lastUpdateDate": "01/07/2014",
+      "tags": [
+        "3d",
+        "java",
+        "curves",
+        "geometry",
+        "surfaces",
+        "OBJ files",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "Nabladown",
+      "title": "Nabladown.js a pseudo-markdown language",
+      "creationDate": "03/05/2021",
+      "lastUpdateDate": "28/08/2024",
+      "tags": [
+        "js",
+        "ui",
+        "library",
+        "parsing",
+        "project",
+        "compiler",
+        "grammars",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "NabladownServer",
+      "title": "Nabladown server",
+      "creationDate": "29/01/2024",
+      "lastUpdateDate": "29/01/2024",
+      "tags": [
+        "js",
+        "ui",
+        "server",
+        "project",
+        "experiments",
+        "web-sockets",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "PDE",
+      "title": "PDE",
+      "creationDate": "01/08/2014",
+      "lastUpdateDate": "01/08/2014",
+      "tags": [
+        "3d",
+        "java",
+        "geometry",
+        "surfaces",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "partial differential equations"
+      ]
+    },
+    {
+      "id": "PreservingCasio",
+      "title": "Preserving Casio software",
+      "creationDate": "22/11/2023",
+      "lastUpdateDate": "31/05/2024",
+      "tags": [
+        "blog",
+        "emulation",
+        "calculator"
+      ]
+    },
+    {
+      "id": "PublicChat",
+      "title": "Public chat",
+      "creationDate": "27/12/2021",
+      "lastUpdateDate": "15/11/2023",
+      "tags": [
+        "js",
+        "ui",
+        "chat",
+        "java",
+        "docker",
+        "server",
+        "experiments",
+        "computer science"
+      ]
+    },
+    {
+      "id": "RandomCurve",
+      "title": "Random curve",
+      "creationDate": "01/03/2014",
+      "lastUpdateDate": "01/03/2014",
+      "tags": [
+        "2d",
+        "java",
+        "curves",
+        "random",
+        "geometry",
+        "procedural",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "Roulette",
+      "title": "Roulette game",
+      "creationDate": "29/01/2022",
+      "lastUpdateDate": "29/01/2022",
+      "tags": [
+        "js",
+        "ui",
+        "game",
+        "experiments",
+        "khan academy"
+      ]
+    },
+    {
+      "id": "SimplePhysics",
+      "title": "Simple physics",
+      "creationDate": "01/02/2014",
+      "lastUpdateDate": "01/02/2014",
+      "tags": [
+        "2d",
+        "java",
+        "physics",
+        "procedural",
+        "rigid body",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "SimpleRobot",
+      "title": "Simple robot",
+      "creationDate": "01/09/2014",
+      "lastUpdateDate": "01/09/2014",
+      "tags": [
+        "3d",
+        "java",
+        "robotics",
+        "animation",
+        "kinematics",
+        "rigid body",
+        "simulation",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "differential equations"
+      ]
+    },
+    {
+      "id": "Tetra",
+      "title": "Tetra",
+      "creationDate": "01/04/2014",
+      "lastUpdateDate": "01/04/2014",
+      "tags": [
+        "3d",
+        "java",
+        "geometry",
+        "procedural",
+        "experiments",
+        "mathematics",
+        "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "TextSimplex",
+      "title": "Text simplex",
+      "creationDate": "11/04/2021",
+      "lastUpdateDate": "11/04/2021",
+      "tags": [
+        "2d",
+        "3d",
+        "java",
+        "geometry",
+        "simulation",
+        "eigenvalues",
+        "experiments",
+        "mathematics",
+        "eigenvectors",
+        "graph theory",
+        "visualization",
+        "computer science",
+        "natural language processing",
+        "partial differential equations"
+      ]
+    }
+  ]
 }

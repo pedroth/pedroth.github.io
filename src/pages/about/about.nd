@@ -1,3 +1,4 @@
+:: import "./macros.js"; ::
 # About
 
 Hello world, I am Pedroth, Catholic, searcher of the *Good*, the *Truth* and the *Beauty*. 
@@ -147,7 +148,7 @@ function animateEmail() {
             iterations++;
             const expT = 1 - Math.exp(-t);
             t = expT < 0.9 ? expT : 0.9999999 + 1e-9 * (iterations-140); 
-            const is2Stop = Math.abs(t-1) < 1e-9;
+            const is2Stop = Math.abs(t-1) < 1e-6;
             if(is2Stop) anime(1.0, true);
             else anime(t);
             if(!is2Stop) play();
@@ -159,9 +160,9 @@ function animateEmail() {
 animateEmail();
 </script>
 
-[quote]:::
+[quote]::
     This website *doesn't retrieve any information* from the user, it is made from _scratch_ and is [_*open source*_](https://github.com/pedroth/pedroth.github.io).
-:::
+::
 
 
 Thank you for visiting!

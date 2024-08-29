@@ -1,3 +1,21 @@
+<!-- 
+title: Simple physics
+creationDate: 01/02/2014
+lastUpdateDate: 01/02/2014
+tags: [
+    2d,
+    java,
+    physics,
+    procedural,
+    rigid body,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science,
+    differential equations
+]
+ -->
 _SimplePhysics_ is a `java` application that let you kind of simulate the physics of a rigid square, in different landscapes. There are formidable landscapes to explore :D.
 
 Feel free to download the program below.

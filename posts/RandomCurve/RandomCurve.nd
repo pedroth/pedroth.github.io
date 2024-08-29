@@ -1,3 +1,22 @@
+<!-- 
+title: Random curve
+creationDate: 01/03/2014
+lastUpdateDate: 01/03/2014
+tags: [
+    2d,
+    java,
+    curves,
+    random,
+    geometry,
+    procedural,
+    simulation,
+    experiments,
+    mathematics,
+    visualization,
+    computer science,
+    differential equations
+]
+ -->
 _RandomCurve_ is a `java` application that generates a *random* curve in time. The *random* curve $\gamma$ is generated as follows:
 
 $$X\sim \text{Uniform}(0,1)$$

@@ -447,16 +447,17 @@
         const numeroDePessoas = new Variable("n", 3);
         const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
         const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
-        const distanciaCasaMovai = new Constant(17.5).mul(new Symbol("km"));
-        const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
+        const distanciaIda = new Variable("d", 17.5);
+        const distanciaIdaEVolta = distanciaIda.mul(2).mul(new Symbol("km"));
         const preçoGasolina = new Variable("x", 1.763);
         const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
-            .mul(distanciaCasaMovaiDouble)
+            .mul(distanciaIdaEVolta)
             .mul(consumoMedioLitroKm);
         const preçoFinalShared = preçoFinal.div(numeroDePessoas).simplify();
 
         const table = {
             "Preço da Gasolina 95 Simples(€/l)": preçoGasolina,
+            "Distancia Ida (km)": distanciaIda,
             "Nº pessoas": numeroDePessoas,
             "Preço Final € / Nº Pessoas": preçoFinalShared
         };

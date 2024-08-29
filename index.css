@@ -1,13 +1,11 @@
 :root {
-    --primary-color: rgb(52, 152, 219);
-    --secondary-color: rgb(231, 76, 60);
-    --tertiary-color: rgb(60, 231, 63);
-    --background-color: rgb(24, 24, 24);
-    --background-color-light: rgb(255, 255, 255);
-    --text-color: rgba(255, 255, 255, 0.9);
-    --text-color-light: rgba(24, 24, 24, 0.9);
     --fast-transition: 0.3s;
     --faster-transition: 0.1s;
+    --secondary-color: rgb(231, 76, 60);
+    --primary-color: rgb(52, 152, 219);
+    --tertiary-color: rgb(60, 231, 63);
+    --background-color: rgb(24, 24, 24);
+    --text-color: rgba(255, 255, 255, 0.9);
 }
 
 /* GENERAL  */
@@ -214,7 +212,6 @@ dialog {
 .cardsRow {
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
@@ -310,9 +307,8 @@ dialog {
 .button {
     background-color: var(--primary-color);
     color: var(--text-color);
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 0.5rem;
     font-size: 1.25rem;
-    line-height: 1.5;
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;

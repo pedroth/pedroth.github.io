@@ -1,3 +1,22 @@
+<!-- 
+title: Eigen simulation
+creationDate: 24/11/2017
+lastUpdateDate: 24/11/2017
+tags: [
+    3d,
+    java,
+    simulation,
+    eigenvalues,
+    experiments,
+    mathematics,
+    eigenvectors,
+    optimization,
+    vector fields,
+    visualization,
+    computer science,
+    differential equations
+]
+-->
  _Eigen Simulation_ is a `java` application that lets you visualize three algorithms for finding _real eigenvectors_. 
  
 For starters eigenvectors are vectors that have the following property:
