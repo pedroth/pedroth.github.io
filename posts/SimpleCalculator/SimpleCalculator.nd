@@ -1,3 +1,13 @@
+:: import "./macros.js"; ::
+<!-- 
+title: Simple Calculator
+creationDate: 29/01/2024
+lastUpdateDate: 29/01/2024
+tags: [
+    js,
+    computer science
+]
+-->
 <style>
     .grammar .katex-display {
         border: dashed;
@@ -10,11 +20,11 @@
 
 I really want to learn about [formal grammars][grammar], [parsers][parser] and [compilers][compiler] for my future projects. Therefore, I need a simple project to apply those concepts. Hence, I decided to implement a parser and evaluator for basic mathematical expressions.
 
-[quote]:::
+[quote]::
     _What I cannot create, I do not understand_
 
     <div style="flex; text-align: right">Richard Feynman</div>
-:::
+::
 
 
 ![Calculator demo](/posts/SimpleCalculator/SimpleCalculator.webp)
@@ -39,7 +49,7 @@ Having this kind of structure it would be simple to evaluate the expression. Get
 ![Top view of calculator](/posts/SimpleCalculator/assets/top_view_calculator.jpeg)
 
 ## Grammars
-[grammar]:::
+[c grammar]::
 
 From the picture above a `parser` is a function that takes a `string` and returns a `tree` structure, that represents in a abstract way what a computation is. That is great but, how to build it? It seems really hard to start building this from scratch, so we need explore the problem further. What are we trying to parse? Math expressions, right? So, what is really a mathematical expression? The example that we gave is something like:
 
@@ -116,10 +126,10 @@ $$
 \text{Mul} \rightarrow \text{ (Mul * Mul) || (Mul / Mul) || Number}\\
 \text{Number} \rightarrow \text{ 0Number || 1Number || ... || 9Number || } \varepsilon\\
 $$
-:::
-[quote]:::
+::
+[quote]::
     The symbol $\boldsymbol{\varepsilon}$ represents the *null* character.
-:::
+::
 
 Let us simulate this grammar:
 

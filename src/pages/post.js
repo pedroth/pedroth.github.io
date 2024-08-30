@@ -116,11 +116,13 @@ export default async function post(page) {
   const post = postsMap[id];
   const filePath = `/posts/${id}/${id}.nd`;
   const content = await fetch(filePath)
-    .then(data =>
-      data.ok ?
+    .then(data => {
+      return data.ok ?
         data.text() :
         `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
+    }
     );
+  console.log(">>>>", content);
   return DOM.of("div")
     .append(
       renderPostHeader(post),

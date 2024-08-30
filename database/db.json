@@ -306,6 +306,16 @@
       ]
     },
     {
+      "id": "SimpleCalculator",
+      "title": "Simple Calculator",
+      "creationDate": "29/08/2024",
+      "lastUpdateDate": "29/08/2024",
+      "tags": [
+        "js",
+        "computer science"
+      ]
+    },
+    {
       "id": "SimplePhysics",
       "title": "Simple physics",
       "creationDate": "01/02/2014",
