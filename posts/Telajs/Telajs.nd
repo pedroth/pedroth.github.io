@@ -1,0 +1,55 @@
+:: import "./macros.js"; ::
+ <!-- 
+title: Tela.js
+creationDate: 16/09/2024
+lastUpdateDate: 16/09/2024
+tags: [
+    2d,
+    3d,
+    ODEs,
+    PDEs,
+    curves
+    physics,
+    surfaces,
+    dynamics,
+    simulation,
+    mathematics,
+    visualization,
+    computer graphics,
+    computer science,
+]
+ -->
+
+ [`tela.js`][tela.js] is an experimental graphics library, *made from scratch* (software-only), featuring reference implementations of computer graphics algorithms. Its purpose is to generate images in a computational way, with *minimal dependencies*, such that the readable graphical algorithms shine instead of opaque graphical APIs. With this graphics engine, users can build a wide range of graphical applications, including _user interfaces_, _advanced physical simulations_, _data visualizations_, and _video games_.
+
+ Since [tela.js][tela.js] does not utilize the GPU, it is relatively slower compared to modern GPU technology. However, by employing multiple threads and working with lower resolution images, its performance can be significantly improved.
+
+![Tela.js playground](/posts/Telajs/Telajs.webm)
+
+There are many features implemented, here are a few:
+
+- ![Shaders in pure js](/posts/Telajs/shaders_in_js.mp4)
+- ![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
+- ![Ray Tracing](/posts/Telajs/raytrace.png)
+- ![Parser and render of SVGs](/posts/Telajs/svg.mp4)
+- ![Volumetric noise](/posts/Telajs/volumetric.mp4)
+- ![Text editor demo in native OS window](/posts/Telajs/text_editor.mp4)
+
+There are many more examples, go check it out!
+ 
+## Project
+
+<div style="display: flex;flex-direction: column">
+    <a target="_blank" href="https://github.com/pedroth/tela.js" style="align-self: center; margin: 20px">
+        <button class="button">
+            Project Page
+        </button>
+    </a>
+    <a target="_blank" href="https://pedroth.github.io/tela.js" style="align-self: center">
+        <button class="button">
+            Tela playground
+        </button>
+    </a>
+</div>
+
+[tela.js]: https://github.com/pedroth/tela.js

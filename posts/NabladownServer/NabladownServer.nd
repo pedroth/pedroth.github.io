@@ -1,7 +1,7 @@
-<!-- 
+<!--
 title: Nabladown server
 creationDate: 29/01/2024
-lastUpdateDate: 29/01/2024
+lastUpdateDate: 29/06/2024
 tags: [
     js,
     ui,
@@ -20,7 +20,7 @@ tags: [
 
 ## Motivation
 
-I wanted to write my personal notes with the markup language of [`nabladown`][nd], but nabladown.js is a library to parse and render, it is not a tool to view files. So I decided to create a tool to view these `.nd` files. 
+I wanted to write my personal notes with the markup language of [`nabladown`][nd], but nabladown.js is a library to parse and render, it is not a tool to view files. So I decided to create a tool to view these `.nd` files.
 
 The main features are:
 - List local [`.nd`][nd]
@@ -28,20 +28,17 @@ The main features are:
 - Dark/light themes
 - Serving media files, such as images and videos
 - Add optional custom css
+- Simple editor `ui`
 
-Features I like to add:
-- Simple editor in UI
-- Adding custom [`nabladown`][nd] renders
-
-For more go check on the github page.
+For more, go check on the GitHub page.
 
 ## Project
 <div style="display: flex;flex-direction: column">
-    <a target="_blank" href="https://github.com/pedroth/nabladown-server" style="align-self: center; margin: 20px">
-        <button class="button">
-            Project Page
-        </button>
-    </a>
+<a target="_blank" href="https://github.com/pedroth/nabladown-server" style="align-self: center; margin: 20px">
+<button class="button">
+Project Page
+</button>
+</a>
 </div>
 
 [nd-server]: https://github.com/pedroth/nabladown-server

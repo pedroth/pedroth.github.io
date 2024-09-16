@@ -6,8 +6,9 @@ tags: [
     js,
     ui,
     game,
+    physics,
     experiments,
-    khan academy,
+    khan academy
 ]
  -->
 Made this game long time ago in [khan academy](https://www.khanacademy.org/computer-programming/simple-roulette/6350614017605632). Decided to add it here. It uses [`processing.js`](https://p5js.org/). 

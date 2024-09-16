@@ -10,7 +10,7 @@ tags: [
     experiments,
     mathematics,
     computer science,
-    differential equations
+    dynamics
 ]
  -->
 After discovering that phone sensor data can be accessed from the browser[^hardware], I decided to do a project with that. This project is a way to visualize this sensor data. In this demo, you will see a wireframe abstraction of a phone, moving in space, with its movement tracing a path.
