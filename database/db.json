@@ -294,6 +294,22 @@
       ]
     },
     {
+      "id": "RayTraceDemo",
+      "title": "Ray trace demo",
+      "creationDate": "01/09/2024",
+      "lastUpdateDate": "01/09/2024",
+      "tags": [
+        "2d",
+        "3d",
+        "dynamics",
+        "simulation",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "computer graphics"
+      ]
+    },
+    {
       "id": "Roulette",
       "title": "Roulette game",
       "creationDate": "29/01/2022",
