@@ -5,6 +5,7 @@ lastUpdateDate: 28/12/2021
 tags: [
     ai,
     ui,
+    nlp,
     blog,
     video,
     docker,
@@ -14,7 +15,6 @@ tags: [
     graph theory,
     computer science,
     machine learning,
-    natural language processing
 ]
  -->
 This blog entry redirects you to my masters thesis about _"Arc Summaries of TV Series"_. Although I _couldn't test it properly_, in the paper there are a good description of the algorithms that were developed/used for *segmentation*, *clustering* and *summarization* of text signals. In the paper we used [Spectral Graph Theory](https://en.wikipedia.org/wiki/Spectral_graph_theory) framework to solve most of the problems, relating this area with glimpses of other fields such as [Discrete Exterior Calculus](https://en.wikipedia.org/wiki/Discrete_exterior_calculus), [Functional Data Analysis](https://en.wikipedia.org/wiki/Functional_data_analysis).

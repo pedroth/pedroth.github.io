@@ -10,10 +10,10 @@
         "js",
         "mobile",
         "sensors",
+        "dynamics",
         "experiments",
         "mathematics",
-        "computer science",
-        "differential equations"
+        "computer science"
       ]
     },
     {
@@ -24,6 +24,7 @@
       "tags": [
         "ai",
         "ui",
+        "nlp",
         "blog",
         "video",
         "docker",
@@ -32,8 +33,7 @@
         "mathematics",
         "graph theory",
         "computer science",
-        "machine learning",
-        "natural language processing"
+        "machine learning"
       ]
     },
     {
@@ -62,12 +62,12 @@
         "2d",
         "java",
         "physics",
+        "dynamics",
         "simulation",
         "experiments",
         "mathematics",
         "brownian motion",
-        "computer science",
-        "differential equations"
+        "computer science"
       ]
     },
     {
@@ -108,14 +108,15 @@
       "lastUpdateDate": "01/05/2014",
       "tags": [
         "3d",
+        "ODEs",
         "java",
         "chaos",
+        "dynamics",
         "simulation",
         "experiments",
         "mathematics",
         "vector fields",
-        "computer science",
-        "differential equations"
+        "computer science"
       ]
     },
     {
@@ -125,6 +126,7 @@
       "lastUpdateDate": "24/11/2017",
       "tags": [
         "3d",
+        "ODEs",
         "java",
         "simulation",
         "eigenvalues",
@@ -134,8 +136,7 @@
         "optimization",
         "vector fields",
         "visualization",
-        "computer science",
-        "differential equations"
+        "computer science"
       ]
     },
     {
@@ -145,6 +146,7 @@
       "lastUpdateDate": "01/06/2014",
       "tags": [
         "3d",
+        "ODEs",
         "java",
         "geometry",
         "surfaces",
@@ -153,8 +155,20 @@
         "mathematics",
         "optimization",
         "visualization",
-        "computer science",
-        "differential equations"
+        "computer science"
+      ]
+    },
+    {
+      "id": "HyperMatch3D",
+      "title": "Hyper Match 3D demo",
+      "creationDate": "15/08/2024",
+      "lastUpdateDate": "15/08/2024",
+      "tags": [
+        "3d",
+        "game",
+        "simulation",
+        "visualization",
+        "computer graphics"
       ]
     },
     {
@@ -215,7 +229,7 @@
       "id": "NabladownServer",
       "title": "Nabladown server",
       "creationDate": "29/01/2024",
-      "lastUpdateDate": "29/01/2024",
+      "lastUpdateDate": "29/06/2024",
       "tags": [
         "js",
         "ui",
@@ -234,6 +248,7 @@
       "lastUpdateDate": "01/08/2014",
       "tags": [
         "3d",
+        "PDEs",
         "java",
         "geometry",
         "surfaces",
@@ -241,8 +256,7 @@
         "experiments",
         "mathematics",
         "visualization",
-        "computer science",
-        "partial differential equations"
+        "computer science"
       ]
     },
     {
@@ -279,6 +293,7 @@
       "lastUpdateDate": "01/03/2014",
       "tags": [
         "2d",
+        "ODEs",
         "java",
         "curves",
         "random",
@@ -288,8 +303,23 @@
         "experiments",
         "mathematics",
         "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "RayTraceDemo",
+      "title": "Ray trace demo",
+      "creationDate": "01/08/2024",
+      "lastUpdateDate": "01/08/2024",
+      "tags": [
+        "2d",
+        "3d",
+        "dynamics",
+        "simulation",
+        "mathematics",
+        "visualization",
         "computer science",
-        "differential equations"
+        "computer graphics"
       ]
     },
     {
@@ -301,6 +331,7 @@
         "js",
         "ui",
         "game",
+        "physics",
         "experiments",
         "khan academy"
       ]
@@ -312,6 +343,7 @@
       "lastUpdateDate": "01/02/2014",
       "tags": [
         "2d",
+        "ODEs",
         "java",
         "physics",
         "procedural",
@@ -320,8 +352,7 @@
         "experiments",
         "mathematics",
         "visualization",
-        "computer science",
-        "differential equations"
+        "computer science"
       ]
     },
     {
@@ -331,6 +362,7 @@
       "lastUpdateDate": "01/09/2014",
       "tags": [
         "3d",
+        "ODEs",
         "java",
         "robotics",
         "animation",
@@ -340,8 +372,28 @@
         "experiments",
         "mathematics",
         "visualization",
+        "computer science"
+      ]
+    },
+    {
+      "id": "Telajs",
+      "title": "Tela.js",
+      "creationDate": "16/09/2024",
+      "lastUpdateDate": "16/09/2024",
+      "tags": [
+        "2d",
+        "3d",
+        "ODEs",
+        "PDEs",
+        "curves",
+        "physics",
+        "dynamics",
+        "surfaces",
+        "simulation",
+        "mathematics",
+        "visualization",
         "computer science",
-        "differential equations"
+        "computer graphics"
       ]
     },
     {
@@ -368,6 +420,8 @@
       "tags": [
         "2d",
         "3d",
+        "NLP",
+        "PDEs",
         "java",
         "geometry",
         "simulation",
@@ -377,9 +431,7 @@
         "eigenvectors",
         "graph theory",
         "visualization",
-        "computer science",
-        "natural language processing",
-        "partial differential equations"
+        "computer science"
       ]
     }
   ]
