@@ -159,6 +159,19 @@
       ]
     },
     {
+      "id": "HyperMatch3D",
+      "title": "Hyper Match 3D demo",
+      "creationDate": "15/08/2024",
+      "lastUpdateDate": "15/08/2024",
+      "tags": [
+        "3d",
+        "game",
+        "simulation",
+        "visualization",
+        "computer graphics"
+      ]
+    },
+    {
       "id": "ImplicitSurface",
       "title": "Implicit surface",
       "creationDate": "01/11/2014",
@@ -296,8 +309,8 @@
     {
       "id": "RayTraceDemo",
       "title": "Ray trace demo",
-      "creationDate": "01/09/2024",
-      "lastUpdateDate": "01/09/2024",
+      "creationDate": "01/08/2024",
+      "lastUpdateDate": "01/08/2024",
       "tags": [
         "2d",
         "3d",

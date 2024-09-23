@@ -1,8 +1,8 @@
 :: import "./macros.js"; ::
 <!-- 
 title: Ray trace demo
-creationDate: 01/09/2024
-lastUpdateDate: 01/09/2024
+creationDate: 01/08/2024
+lastUpdateDate: 01/08/2024
 tags: [
 	2d,
 	3d,

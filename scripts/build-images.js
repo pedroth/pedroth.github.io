@@ -16,7 +16,7 @@ function checkFileExists(path) {
 
 function createImage(fromPath, toPath, scale = [1980, 1080]) {
     try {
-        execSync(`ffmpeg -c:v libvpx -i ${fromPath} -vf "scale=${scale.join(":")}" ${toPath}`)
+        execSync(`ffmpeg -c:v libvpx-vp9 -i ${fromPath} -vf "scale=${scale.join(":")}" ${toPath}`)
         console.log(`Created image ${toPath} from ${fromPath}`)
     } catch (e) {
         console.log(`Something went wrong, when generating ${toPath} from ${fromPath}`);

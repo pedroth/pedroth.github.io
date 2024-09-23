@@ -1,0 +1,31 @@
+:: import "./macros.js"; ::
+<!-- 
+title: Hyper Match 3D demo
+creationDate: 15/08/2024
+lastUpdateDate: 15/08/2024
+tags: [
+	3d,
+    game,
+	simulation,
+	visualization,
+	computer graphics,
+]
+-->
+After working on the [Ray-Tracing Demo][ray-trace], I wanted to take things further and create a simple game. That’s how Hyper Match 3D was born(more of a demo, really). It uses much of the same technology, and in the process, helped refine both [tela.js][tela] and the [Ray-Tracing Demo][ray-trace] itself.
+
+![HyperMatch3D game play speed up](/posts/HyperMatch3D/HyperMatch3D_medium.webp)
+
+For full details, you can explore the game’s repository below. Check it out!
+
+## Project
+
+<div style="display: flex;flex-direction: column">
+	<a target="_blank" href="https://github.com/pedroth/ray-trace-demo" style="align-self: center; margin: 20px">
+		<button class="button">
+			Project Page
+		</button>
+	</a>
+</div>
+
+[ray-trace]: https://github.com/pedroth/ray-trace-demo
+[tela]: https://github.com/pedroth/tela.js
