@@ -20,7 +20,7 @@ For full details, you can explore the game’s repository below. Check it out!
 ## Project
 
 <div style="display: flex;flex-direction: column">
-	<a target="_blank" href="https://github.com/pedroth/ray-trace-demo" style="align-self: center; margin: 20px">
+	<a target="_blank" href="https://github.com/pedroth/hyper-match-3d" style="align-self: center; margin: 20px">
 		<button class="button">
 			Project Page
 		</button>
