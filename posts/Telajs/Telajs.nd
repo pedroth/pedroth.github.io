@@ -2,7 +2,7 @@
  <!-- 
 title: Tela.js
 creationDate: 16/09/2024
-lastUpdateDate: 16/09/2024
+lastUpdateDate: 12/01/2025
 tags: [
     2d,
     3d,
@@ -32,8 +32,13 @@ There are many features implemented, here are a few:
 - ![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
 - ![Ray Tracing](/posts/Telajs/raytrace.png)
 - ![Parser and render of SVGs](/posts/Telajs/svg.mp4)
-- ![Volumetric noise](/posts/Telajs/volumetric.mp4)
-- ![Text editor demo in native OS window](/posts/Telajs/text_editor.mp4)
+
+There are also some demos:
+- ![Signed distance function editor](/posts/Telajs/telaSDF.mp4)
+- ![Volumetric noise ](/posts/Telajs/volumetric.mp4)
+- ![Text editor in native OS window](/posts/Telajs/text_editor.mp4)
+- ![Soft-body physics](/posts/Telajs/physics4.mp4)
+- ![Turing patterns demo](/posts/Telajs/turing_patterns.mp4)
 
 There are many more examples, go check it out!
  
