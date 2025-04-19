@@ -28,9 +28,10 @@ export default function buildImages() {
         .filter(f => f.isDirectory())
         .forEach(folder => {
             const id = folder.name;
-            const filePath = `./${baseFolder}/${id}/${id}`;
+            const filePath = `./${baseFolder}${id}/${id}`;
             try {
                 if (!checkFileExists(`${filePath}.webp`)) createImage(`${filePath}.webm`, `${filePath}.webp`, [1980, 1080])
+                if (!checkFileExists(`${filePath}_medium.webp`)) createImage(`${filePath}.webm`, `${filePath}_medium.webp`, [990, 540])
                 if (!checkFileExists(`${filePath}_medium.webp`)) createImage(`${filePath}.webm`, `${filePath}_medium.webp`, [990, 540])
                 if (!checkFileExists(`${filePath}_small.webp`)) createImage(`${filePath}.webm`, `${filePath}_small.webp`, [495, 270])
             } catch (e) {

@@ -2,7 +2,7 @@
  <!-- 
 title: Tela.js
 creationDate: 16/09/2024
-lastUpdateDate: 12/01/2025
+lastUpdateDate: 20/04/2025
 tags: [
     2d,
     3d,
@@ -31,6 +31,7 @@ There are many features implemented, here are a few:
 - ![Shaders in pure js](/posts/Telajs/shaders_in_js.mp4)
 - ![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
 - ![Ray Tracing](/posts/Telajs/raytrace.png)
+- ![Ray Tracing II](/posts/Telajs/glass_bunny.mp4)
 - ![Parser and render of SVGs](/posts/Telajs/svg.mp4)
 
 There are also some demos:

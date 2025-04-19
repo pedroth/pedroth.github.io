@@ -1,7 +1,7 @@
 <!-- 
 title: Public chat
 creationDate: 27/12/2021
-lastUpdateDate: 15/11/2023
+lastUpdateDate: 19/04/2025
 tags: [
     js,
     ui,
@@ -65,6 +65,38 @@ Then open `localhost`. If you want to change the port just write `docker run -it
 Since raspberry Pi, have a `arm` processor I made a different image:
 
 `docker run -it -p 80:8080 --name public-chat pedroth/public-chat:linux-arm-v6`
+
+## Update with AI
+
+I made a great update with the help of AI, mainly the style `css`, the rest is still mainly the old code. Still added a new features:
+- Upload media preview
+- Youtube preview
+- Drag files to input to upload them
+- Removed bootstrap dependency
+
+Compare previous version:
+
+ <style>
+    .image-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px; /* 👈 spacing between images */
+    }
+
+    .image-row img {
+      flex: 1 1 calc(50% - 10px); /* subtract gap to avoid wrapping */
+      max-width: calc(50% - 10px);
+      height: auto;
+      box-sizing: border-box; /* ensures padding/border don't mess up sizing */
+    }
+  </style>
+
+<div class="image-row">
+  <img src="/posts/PublicChat/PublicChat_old.webp" />
+  <img src="/posts/PublicChat/PublicChat.webp" />
+</div>
+
+Old and new *PublicChats* respectively. 
 
 ## Github
 
