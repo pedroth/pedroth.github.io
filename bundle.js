@@ -4,8 +4,8 @@ const build = await Bun.build({
         "./src/imports.js",
     ],
     outdir: "./lib",
+    minify: true,
     // target: "web",
-    // minify: true,
     // sourcemap: "external",
     // splitting: true // not working
 })
