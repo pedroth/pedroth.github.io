@@ -54,6 +54,16 @@ Copy paste to a terminal:
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.ParallelCellularAutomaton"
 ```
 
+## Java web emulation
+
+<div style="display: flex;flex-direction: column">
+<a href="posts/CellularAutomaton/java-emulation.html" target="_blank" style="align-self: center;">
+    <button class="button">
+       Launch emulation
+    </button>
+</a>
+</div>
+
 [rules]: https://web.archive.org/web/20210512105747/http://psoup.math.wisc.edu/mcell/rullex_life.html
 [automaton]: https://en.wikipedia.org/wiki/Cellular_automaton
 

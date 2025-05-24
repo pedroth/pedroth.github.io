@@ -165,7 +165,7 @@ async function processJars() {
         await zipIt(tmpFolder, zipPath);
         rmFolder(tmpFolder);
     });
-    removeJars();
+    // removeJars();
 }
 
 // function logDockerCommands() {

@@ -56,3 +56,14 @@ Copy paste to a terminal:
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Cube"
 ```
+
+## Java web emulation
+
+<div style="display: flex;flex-direction: column">
+<a href="posts/CubeChaos/java-emulation.html" target="_blank" style="align-self: center;">
+    <button class="button">
+       Launch emulation
+    </button>
+</a>
+</div>
+

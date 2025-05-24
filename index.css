@@ -47,6 +47,14 @@ article img {
     border-radius: 0.5rem;
 }
 
+article h1 {
+    border-bottom: 1px solid var(--text-color);
+}
+
+article h2 {
+    margin-top: 3rem;
+    border-bottom: 1px solid var(--text-color);
+}
 
 nav {
     align-self: center;
@@ -215,6 +223,7 @@ dialog {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
 
 @media (max-width: 800px) {
     .cardsRow {

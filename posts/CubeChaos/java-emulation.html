@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CubeChaos Emulation</title>
+    <script src="https://cjrtnc.leaningtech.com/4.0/loader.js"></script>
+    <style>
+      /* Ensure the page takes up the full viewport height */
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      /* Use Flexbox to center the display div */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Optional: Set dimensions for the display div */
+      #display {
+        width: 800px;
+        height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="display"></div>
+    <script>
+      (async function () {
+        const display = document.getElementById("display");
+        await cheerpjInit({ version: 11 });
+        cheerpjCreateDisplay(800, 600, display);
+        await cheerpjRunMain("apps.Cube", "/app/scripts/build-java/learning.jar");
+      })();
+    </script>
+  </body>
+</html>

@@ -43,6 +43,16 @@ Copy paste to a terminal:
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.BrownianMotion"
 ```
 
+## Java web emulation
+
+<div style="display: flex;flex-direction: column">
+<a href="posts/BrownianMotion/java-emulation.html" target="_blank" style="align-self: center;">
+    <button class="button">
+       Launch emulation
+    </button>
+</a>
+</div>
+
 ## Details
 
 All balls have the same size and start in a random position and velocity. They can be accelerated by a constant force field $X$, controlled by the user. When a ball is moving in free space it moves as an accelerated object:
