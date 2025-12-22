@@ -17,7 +17,7 @@ class DomBuilder {
     this.element = element;
   }
 
-  attr(name, value) {
+  attr(name, value = "") {
     this.element.setAttribute(name, value);
     return this;
   }

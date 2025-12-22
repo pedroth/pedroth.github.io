@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Animation Gallery</title>
+    <link rel="stylesheet" href="/index.css">
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: var(--background-color, #181818);
+            color: var(--text-color, #fff);
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5em;
+            color: var(--primary-color, #3498db);
+            text-align: center;
+        }
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        .card {
+            background: rgba(40, 40, 40, 0.98);
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px 0 rgba(52, 152, 219, 0.15);
+            padding: 1.5rem 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 32px 0 rgba(52, 152, 219, 0.25);
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary-color, #e74c3c);
+            text-align: center;
+        }
+        .card embed {
+            width: 300px;
+            height: 220px;
+            border-radius: 0.5rem;
+            background: #222;
+            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.25);
+        }
+        @media (max-width: 600px) {
+            .container { padding: 0.5rem; }
+            .card embed { width: 100%; height: 180px; }
+        }
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #aaa;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Flash Animation Gallery</h1>
+        <div class="gallery">
+            <div class="card">
+                <div class="card-title">Abestrato</div>
+                <embed src="./abestrato.swf">
+            </div>
+            <div class="card">
+                <div class="card-title">GOD OF WAR</div>
+                <embed src="./GOD OF WAR.swf">
+            </div>
+            <div class="card">
+                <div class="card-title">Expriências</div>
+                <embed src="./expriências.swf">
+            </div>
+            <div class="card">
+                <div class="card-title">Stick Jump</div>
+                <embed src="./stick jump.swf">
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        &copy; 2025 Flash Animation Gallery &mdash; Powered by Ruffle
+    </div>
+</body>
+
+</html>

@@ -41,7 +41,7 @@
     }
 
     function maybe(x) {
-        if (!!x) {
+        if (x) {
             return just(x);
         }
         return none(x)
@@ -443,13 +443,13 @@
         return outTable;
     }
 
-    function getSimpleTable() {
+    function getSimpleTable(price, distance) {
         const numeroDePessoas = new Variable("n", 3);
         const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
         const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
-        const distanciaIda = new Variable("d", 17.5);
+        const distanciaIda = new Variable("d", distance);
         const distanciaIdaEVolta = distanciaIda.mul(2).mul(new Symbol("km"));
-        const preçoGasolina = new Variable("x", 1.763);
+        const preçoGasolina = new Variable("x", price);
         const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
             .mul(distanciaIdaEVolta)
             .mul(consumoMedioLitroKm);
@@ -465,13 +465,13 @@
         return simpleTable;
     }
 
-    function getExplainedTable() {
+    function getExplainedTable(price, distance) {
         const numeroDePessoas = new Variable("n", 3);
         const consumoMedioLitro100Km = new Constant(7.7).mul(new Symbol("l")).div(new Constant(100).mul(new Symbol("km")));
         const consumoMedioLitroKm = consumoMedioLitro100Km.simplify();
-        const distanciaCasaMovai = new Constant(17.5).mul(new Symbol("km"));
+        const distanciaCasaMovai = new Constant(distance).mul(new Symbol("km"));
         const distanciaCasaMovaiDouble = distanciaCasaMovai.mul(2);
-        const preçoGasolina = new Variable("x", 1.763);
+        const preçoGasolina = new Variable("x", price);
         const preçoFinal = preçoGasolina.mul(new Symbol("€")).div(new Symbol("l"))
             .mul(distanciaCasaMovaiDouble)
             .mul(consumoMedioLitroKm);
@@ -515,13 +515,75 @@
         return div;
     }
 
+    async function getGasolina95Simples() {
+        try {
+            const proxyUrl = "https://corsproxy.io/?https://www.maisgasolina.com/";
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error("Failed to fetch MaisGasolina");
+
+            const html = (await response.text()).toLowerCase();
+
+            // Match "Gasolina 95 simples" followed by optional space and any non-digit, then a number
+            const regex = /gasolina\s*95\s*simples[^\d]*([\d.,]+)/gi;
+            const matches = [...html.matchAll(regex)];
+
+            if (!matches.length) {
+                throw new Error("No Gasolina 95 Simples prices found");
+            }
+
+            // Convert matched prices to float
+            const prices = matches.map(m => parseFloat(m[1].replace(",", ".")));
+
+            // Return lowest price (or first)
+            const finalPrice = prices[1];
+
+            return finalPrice;
+
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
+    async function geocode(address) {
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+        const response = await fetch(url, {
+            headers: { "User-Agent": "DistanceScript/1.0" }
+        });
+        const data = await response.json();
+        if (!data.length) throw new Error("Address not found");
+        const coordinates = [parseFloat(data[0].lon), parseFloat(data[0].lat)];
+        return coordinates;
+    }
+
+    async function getDistanceOSRM(originCoords, destCoords) {
+        const url = `https://router.project-osrm.org/route/v1/driving/${originCoords[0]},${originCoords[1]};${destCoords[0]},${destCoords[1]}?overview=false`;
+        const response = await fetch(url);
+        const data = await response.json();
+        const route = data.routes[0];
+        return {
+            distance: (route.distance / 1000).toFixed(2), // in km
+            duration: (route.duration / 60).toFixed(0) // in minutes
+        };
+    }
+
+    async function getDistance(origin, destination) {
+        const originCoords = await geocode(origin);
+        const destCoords = await geocode(destination);
+        const result = await getDistanceOSRM(originCoords, destCoords);
+        return result.distance;
+    }
+
     (async () => {
+        const price = await getGasolina95Simples();
+        const distance = await getDistance("praça nuno rodrigues dos santos", "oer-00259, avenida professor doutor cavaco silva, taguspark - parque de ciência e tecnologia, porto salvo, oeiras, lisbon, 2740-122, portugal");
+        console.log("Distance Casa <-> Movai:", distance, "km");
         const header = document.createElement("h1");
         header.innerText = "Custos da Viagem (Casa < == > Movai)";
         document.body.appendChild(header);
         document.body.appendChild(getGasolineWidget());
-        document.body.appendChild(getSimpleTable());
-        document.body.appendChild(getExplainedTable())
+        document.body.appendChild(getSimpleTable(price, distance));
+        document.body.appendChild(getExplainedTable(price, distance))
     })();
 </script>
 
