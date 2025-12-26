@@ -16,7 +16,7 @@ tags: [
 
 [Nabladown server][nd-server] is a tool to visualize [`nabladown`][nd] files, through a hot reloading server[^1].
 
-[![Nabladown server quick start](/posts/NabladownServer/NabladownServer.webp)][nd-server]
+![Nabladown server quick start](/posts/NabladownServer/NabladownServer.webm)
 
 ## Motivation
 

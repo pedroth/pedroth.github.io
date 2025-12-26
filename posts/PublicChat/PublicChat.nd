@@ -51,7 +51,7 @@ fetch(url)
     })
 </script>
 
-![*Public Chat* app](/posts/PublicChat/PublicChat.webp)
+![*Public Chat* app](/posts/PublicChat/PublicChat.webm)
 
 
 ## Run with docker
@@ -77,23 +77,28 @@ I made a great update with the help of AI, mainly the style `css`, the rest is s
 Compare previous version:
 
  <style>
-    .image-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px; /* 👈 spacing between images */
-    }
+.image-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
-    .image-row img {
-      flex: 1 1 calc(50% - 10px); /* subtract gap to avoid wrapping */
-      max-width: calc(50% - 10px);
-      height: auto;
-      box-sizing: border-box; /* ensures padding/border don't mess up sizing */
-    }
-  </style>
+.image-row video {
+  width: 100%;
+  max-width: 480px;
+  object-fit: cover;
+}
+</style>
 
 <div class="image-row">
-  <img src="/posts/PublicChat/PublicChat_old.webp" />
-  <img src="/posts/PublicChat/PublicChat.webp" />
+  <video autoplay loop muted>
+    <source src="/posts/PublicChat/PublicChat_old.webm" type="video/webm" />
+  </video>
+  <video autoplay loop muted>
+    <source src="/posts/PublicChat/PublicChat.webm" type="video/webm" />
+  </video>
 </div>
 
 Old and new *PublicChats* respectively. 

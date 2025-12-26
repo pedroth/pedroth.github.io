@@ -13,7 +13,7 @@ tags: [
 -->
 After working on the [Ray-Tracing Demo][ray-trace], I wanted to take things further and create a simple game. That’s how Hyper Match 3D was born(more of a demo, really). It uses much of the same technology, and in the process, helped refine both [tela.js][tela] and the [Ray-Tracing Demo][ray-trace] itself.
 
-![HyperMatch3D game play speed up](/posts/HyperMatch3D/HyperMatch3D_medium.webp)
+![HyperMatch3D game play speed up](/posts/HyperMatch3D/HyperMatch3D.webm)
 
 For full details, you can explore the game’s repository below. Check it out!
 

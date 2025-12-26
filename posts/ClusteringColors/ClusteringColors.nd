@@ -20,7 +20,7 @@ The algorithms implemented here were [Kmeans](https://en.wikipedia.org/wiki/K-me
 
 More details can be found in the project section.
 
-![Gif of the clustering colors demo](/posts/ClusteringColors/ClusteringColors.webp)
+![Video of the clustering colors demo](/posts/ClusteringColors/ClusteringColors.webm)
 
 ## Project
 <div style="display: flex;flex-direction: column">
