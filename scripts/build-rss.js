@@ -1,52 +1,64 @@
-
-import { writeFile, readFile } from "fs/promises";
-import { default as RSS } from "rss";
+import { writeFile, readFile, stat } from "fs/promises";
+import RSS from "rss";
 import { date2int } from "../src/Utils.js";
 
-const HOME = `https://pedroth.github.io`
+const HOME = "https://pedroth.github.io";
+const FEED_URL = `${HOME}/feed/rss.xml`;
 
-function parseDate(dateString) {
-    const parts = dateString.split('/');
-    if (parts.length === 3) {
-        const day = parseInt(parts[0]);
-        const month = parseInt(parts[1]) - 1; // Month is 0-based (0 = January, 1 = February, ...)
-        const year = parseInt(parts[2]);
-
-        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-            return new Date(year, month, day);
-        }
+function parseDateUTC(dateString) {
+    // expected format: DD/MM/YYYY
+    const [day, month, year] = dateString.split("/").map(Number);
+    if (day && month && year) {
+        return new Date(Date.UTC(year, month - 1, day));
     }
-
     return new Date();
 }
 
 export default async () => {
-    const { posts } = JSON.parse(await readFile("./database/db.json", "utf-8"));
-    const sortedPosts = posts.sort((a, b) => date2int(a.lastUpdateDate) - date2int(b.lastUpdateDate));
+    const { posts } = JSON.parse(
+        await readFile("./database/db.json", "utf-8")
+    );
+
+    // newest first
+    const sortedPosts = posts.sort(
+        (a, b) => date2int(b.lastUpdateDate) - date2int(a.lastUpdateDate)
+    );
+
     const feed = new RSS({
-        title: `Pedroth's Corner`,
-        description: `Pedroth's Corner: Maths.Computer Science.Philosophy`,
-        feed_url: `${HOME}/feed/rss.xml`,
+        title: "Pedroth's Corner",
+        description: "Pedroth's Corner: Maths. Computer Science. Philosophy",
+        feed_url: FEED_URL,        // MUST match actual feed URL
         site_url: HOME,
-        language: 'en-us'
+        language: "en-US",
+        generator: "Pedroth RSS Generator"
     });
-    sortedPosts.forEach(({ title, id, lastUpdateDate }) => {
+
+    for (const { title, id, lastUpdateDate } of sortedPosts) {
+        const imagePath = `./posts/${id}/${id}_small.webp`;
+        const imageUrl = `${HOME}/posts/${id}/${id}_small.webp`;
+
+        let enclosure;
+        try {
+            const { size } = await stat(imagePath);
+            enclosure = {
+                url: imageUrl,
+                type: "image/webp",
+                length: size
+            };
+        } catch {
+            enclosure = undefined;
+        }
+
         feed.item({
             title,
-            description: title,
+            description: `Demo and notes about ${title}.`,
             url: `${HOME}/?p=post/${id}/${id}.nd`,
-            date: parseDate(lastUpdateDate),
+            guid: `${HOME}/?p=post/${id}/${id}.nd`,
+            date: parseDateUTC(lastUpdateDate),
             author: "Pedroth",
-            enclosure: {
-                url: `${HOME}/posts/${id}/${id}_small.webp`, // URL of the image
-                type: 'image/webp', // Mime type of the image
-            }
+            enclosure
         });
-    })
+    }
 
-    // Generate the XML content of the feed
-    const xml = feed.xml();
-
-    // Write the XML content to a file
-    writeFile('./feed/rss.xml', xml);
-}
+    await writeFile("./feed/rss.xml", feed.xml({ indent: true }));
+};
