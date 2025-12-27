@@ -1,0 +1,38 @@
+:: import "./macros.js"; ::
+<!-- 
+title: Remote Control
+creationDate: 26/12/2025
+lastUpdateDate: 26/12/2025
+tags: [
+	automation,
+    remote control,
+    robotics,
+	ui,
+	computer science,
+]
+-->
+
+Remote control is a simple project I made to control my raspberry pi from my cell phone it turns out to be a failure, but it still works to control my computer from my cell phone.
+
+![Remote control demo](/posts/RemoteC	ontrol/RemoteControl.webm)
+
+Check out the project below.
+
+## Project
+
+<div style="display: flex;flex-direction: column">
+	<a target="_blank" href="https://github.com/pedroth/remote-control" style="align-self: center; margin: 20px">
+		<button class="button">
+			Project Page
+		</button>
+	</a>
+</div>
+
+## Implementation details
+
+Most of the program was `vibe coded`. I used `vscode`, `gemini3`, and `chatgpt`. After a few iterations, it was able to produce an initial prototype. The good part was that it got the main architecture right: WebSocket communication, the _libs_ for controlling the keyboard and mouse, and even some of the more challenging mouse control logic. 
+
+The downside was that it required a lot of manual fixing, testing, and debugging to get it right. It also created some redundant files and dependencies, in general, it was not a minimal codebase as I asked. The codebase ended up being quite unmaintainable (for me, at least). In the end, I mostly rewrote everything on top of the original prototype.
+
+Overall, it was a good experience, and I don’t think I could have done it without the help of AI (or at least it would have taken me much longer).
+

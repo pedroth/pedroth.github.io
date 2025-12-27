@@ -113,7 +113,7 @@ The blog builder is a set of scripts designed to update the website. It updates 
 	- lastUpdateDate: String<Date: dd/mm/yyyy>
 	- tags: Array<String>
 - Add `.webm` video about your post with its name equal to its *unique id*
-- Run `bun run build-posts` in the root.
+- Run `bun run build-blog` in the root.
 
 
 # TODO

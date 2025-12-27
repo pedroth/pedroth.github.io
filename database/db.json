@@ -323,6 +323,19 @@
       ]
     },
     {
+      "id": "RemoteControl",
+      "title": "Remote Control",
+      "creationDate": "26/12/2025",
+      "lastUpdateDate": "26/12/2025",
+      "tags": [
+        "ui",
+        "robotics",
+        "automation",
+        "remote control",
+        "computer science"
+      ]
+    },
+    {
       "id": "Roulette",
       "title": "Roulette game",
       "creationDate": "29/01/2022",
