@@ -64,6 +64,9 @@ Then open `localhost`. If you want to change the port just write `docker run -it
 
 Since raspberry Pi, have a `arm` processor I made a different image:
 
+`docker run -it -p 80:8080 --name public-chat pedroth/public-chat:linux-arm-v7_v2`
+
+For old raspberry Pi (arm v6):
 `docker run -it -p 80:8080 --name public-chat pedroth/public-chat:linux-arm-v6`
 
 ## Update with AI

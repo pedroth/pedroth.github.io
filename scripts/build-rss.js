@@ -27,7 +27,7 @@ export default async () => {
     const feed = new RSS({
         title: "Pedroth's Corner",
         description: "Pedroth's Corner: Maths. Computer Science. Philosophy",
-        feed_url: FEED_URL,        // MUST match actual feed URL
+        feed_url: FEED_URL,
         site_url: HOME,
         language: "en-US",
         generator: "Pedroth RSS Generator"
