@@ -4,9 +4,18 @@
         <description><![CDATA[Pedroth's Corner: Maths. Computer Science. Philosophy]]></description>
         <link>https://pedroth.github.io</link>
         <generator>Pedroth RSS Generator</generator>
-        <lastBuildDate>Wed, 18 Feb 2026 18:03:16 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 12 Mar 2026 11:42:40 GMT</lastBuildDate>
         <atom:link href="https://pedroth.github.io/feed/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en-US]]></language>
+        <item>
+            <title><![CDATA[Ported a JS software rendering engine to C]]></title>
+            <description><![CDATA[Demo and notes about Ported a JS software rendering engine to C.]]></description>
+            <link>https://pedroth.github.io/?p=post/Telac/Telac.nd</link>
+            <guid isPermaLink="false">https://pedroth.github.io/?p=post/Telac/Telac.nd</guid>
+            <dc:creator><![CDATA[Pedroth]]></dc:creator>
+            <pubDate>Tue, 10 Mar 2026 00:00:00 GMT</pubDate>
+            <enclosure url="https://pedroth.github.io/posts/Telac/Telac_small.webp" length="0" type="image/webp"/>
+        </item>
         <item>
             <title><![CDATA[Remote Control]]></title>
             <description><![CDATA[Demo and notes about Remote Control.]]></description>

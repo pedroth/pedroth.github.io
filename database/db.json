@@ -389,6 +389,28 @@
       ]
     },
     {
+      "id": "Telac",
+      "title": "Ported a JS software rendering engine to C",
+      "creationDate": "10/03/2026",
+      "lastUpdateDate": "10/03/2026",
+      "tags": [
+        "2d",
+        "3d",
+        "ODEs",
+        "PDEs",
+        "curves",
+        "physics",
+        "dynamics",
+        "surfaces",
+        "obj files",
+        "simulation",
+        "mathematics",
+        "visualization",
+        "computer science",
+        "computer graphics"
+      ]
+    },
+    {
       "id": "Telajs",
       "title": "Tela.js",
       "creationDate": "16/09/2024",
