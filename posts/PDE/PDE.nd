@@ -4,15 +4,12 @@ creationDate: 01/08/2014
 lastUpdateDate: 01/08/2014
 tags: [
     3d,
-    PDEs,
     java,
+    PDEs,
     geometry,
-    surfaces,
     simulation,
-    experiments,
     mathematics,
-    visualization,
-    computer science,
+    experiment
 ]
  -->
 _PDE_ is a `java` application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation)(PDE) of the form:

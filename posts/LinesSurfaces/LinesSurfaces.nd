@@ -5,14 +5,12 @@ lastUpdateDate: 01/07/2014
 tags: [
     3d,
     java,
-    curves,
     geometry,
+    curves,
     surfaces,
-    OBJ files,
-    experiments,
     mathematics,
     visualization,
-    computer science
+    experiment
 ]
  -->
 _Lines and Surfaces_ is a `java` application that lets you see parametrized surfaces and curves in 3 dimensions.

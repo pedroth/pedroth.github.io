@@ -4,13 +4,9 @@ creationDate: 27/12/2021
 lastUpdateDate: 19/04/2025
 tags: [
     js,
-    ui,
-    chat,
     java,
-    docker,
     server,
-    experiments,
-    computer science
+    docker
 ]
  -->
 _Public Chat_ is a chat web application, that I made, to learn about `http server` features of `java`.

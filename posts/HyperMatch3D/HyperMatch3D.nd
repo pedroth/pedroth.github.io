@@ -5,10 +5,11 @@ creationDate: 15/08/2024
 lastUpdateDate: 15/08/2024
 tags: [
 	3d,
-    game,
-	simulation,
-	visualization,
+	js,
+	game,
 	computer graphics,
+	simulation,
+	visualization
 ]
 -->
 After working on the [Ray-Tracing Demo][ray-trace], I wanted to take things further and create a simple game. That’s how Hyper Match 3D was born(more of a demo, really). It uses much of the same technology, and in the process, helped refine both [tela.js][tela] and the [Ray-Tracing Demo][ray-trace] itself.

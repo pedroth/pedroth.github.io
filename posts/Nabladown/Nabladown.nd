@@ -4,16 +4,12 @@ creationDate: 03/05/2021
 lastUpdateDate: 28/08/2024
 tags: [
     js,
-    ui,
     library,
-    project,
     parsing,
     compiler,
-    grammars,
-    experiments,
     mathematics,
     visualization,
-    computer science
+    project
 ]
  -->
 [Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the nabladown.js language, which is a pseudo/flavored *markdown* language. 

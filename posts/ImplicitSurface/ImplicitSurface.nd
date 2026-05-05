@@ -5,13 +5,12 @@ lastUpdateDate: 20/01/2024
 tags: [
     3d,
     java,
+    js,
     geometry,
     surfaces,
-    simulation,
-    experiments,
     mathematics,
     visualization,
-    computer science
+    experiment
 ]
  -->
 _Implicit Surface_ is a simple `java` application where you can visualize surfaces of the form: 

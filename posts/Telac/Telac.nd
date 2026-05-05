@@ -4,20 +4,13 @@ title: Ported a JS software rendering engine to C
 creationDate: 10/03/2026
 lastUpdateDate: 10/03/2026
 tags: [
-    2d,
     3d,
-    ODEs,
-    PDEs,
-    curves
-    physics,
-    surfaces,
-    dynamics,
-    obj files,
-    simulation,
-    mathematics,
-    visualization,
+    c,
+    js,
     computer graphics,
-    computer science,
+    simulation,
+    visualization,
+    project
 ]
  -->
 ::

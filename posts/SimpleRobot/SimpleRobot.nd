@@ -4,17 +4,14 @@ creationDate: 01/09/2014
 lastUpdateDate: 01/09/2014
 tags: [
     3d,
-    ODEs,
     java,
     robotics,
-    animation,
-    kinematics,
-    rigid body,
     simulation,
-    experiments,
+    kinematics,
+    optimization,
     mathematics,
     visualization,
-    computer science,
+    experiment
 ]
  -->
 _Simple Robot_ is a `java` application that let you see a robotic arm following a ball. It works by doing a [gradient descend](https://en.wikipedia.org/wiki/Gradient_descent) on a cost function. This cost function is defined as following:

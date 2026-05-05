@@ -5,11 +5,10 @@ lastUpdateDate: 01/01/2014
 tags: [
     2d,
     java,
+    cellular automaton,
     simulation,
-    experiments,
     mathematics,
-    computer science,
-    cellular automaton
+    experiment
 ]
  -->
 I made a simple [*Cellular Automaton*][automaton] application long time ago. Here each pixel represents a [cellular automaton][automaton] which is *alive* if is green or *dead* if is dark. The rules for the cellular automaton to be born and to survive are defined by the $S/B$ rules: 

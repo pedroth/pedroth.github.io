@@ -5,16 +5,11 @@ lastUpdateDate: 24/11/2017
 tags: [
     3d,
     java,
-    ODEs,
-    simulation,
-    eigenvalues,
-    experiments,
-    mathematics,
-    eigenvectors,
+    linear algebra,
     optimization,
-    vector fields,
+    mathematics,
     visualization,
-    computer science,
+    experiment
 ]
 -->
  _Eigen Simulation_ is a `java` application that lets you visualize three algorithms for finding _real eigenvectors_. 
