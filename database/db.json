@@ -339,7 +339,6 @@
         "c",
         "3d",
         "js",
-        "library",
         "project",
         "simulation",
         "visualization",
@@ -382,8 +381,6 @@
       "creationDate": "11/04/2021",
       "lastUpdateDate": "11/04/2021",
       "tags": [
-        "2d",
-        "3d",
         "NLP",
         "java",
         "geometry",

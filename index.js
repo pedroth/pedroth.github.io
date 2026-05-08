@@ -170,6 +170,7 @@ function footer() {
     content = await mainModule.default();
   }
 
+  // important optimization, instead of re-rendering the whole page we just change the content of the page container, this way we keep the header and footer intact and avoid re-rendering them. 
   contentContainer
     .removeChildren()
     .append(content);

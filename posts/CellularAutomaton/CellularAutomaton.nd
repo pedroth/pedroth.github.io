@@ -13,17 +13,20 @@ tags: [
  -->
 I made a simple [*Cellular Automaton*][automaton] application long time ago. Here each pixel represents a [cellular automaton][automaton] which is *alive* if is green or *dead* if is dark. The rules for the cellular automaton to be born and to survive are defined by the $S/B$ rules: 
 - $S$ defines counts of alive neighbors necessary for a cell to survive.
-- $B$ defines counts of alive neighbors necessary for a cell to be born. 
+- $B$ defines counts of alive neighbors necessary for a cell to be born.
+
+If cell is not born or does not survive, then it dies or remains dead.
 
 In this _app_ you can try several [cellular automata rules][rules]:
 
-- Maze: `12345/3`
-- 34 Life: `34/34`
-- Coral: `45678/3`
-- Coagulation: `2335678/378`
-- Pseudo life: `238/357`
-- Replicator: `1357/1357`
-- Total Random rules
+- Maze: `12345/3` *[key 1]*
+- 34 Life: `34/34` *[key 2]*
+- Coral: `45678/3` *[key 5]*
+- Coagulation: `235678/378` *[key 6]*
+- Replicator: `1357/1357` *[key 7]*
+- Gnarl: `1/1` *[key 8]*
+- Flakes: `	012345678/3` *[key 9]*
+- Total Random rules *[key 0]*
 
 ![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
