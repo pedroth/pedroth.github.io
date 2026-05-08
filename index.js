@@ -1,13 +1,14 @@
 import DOM from "/src/DomBuilder.js";
 import LocalStorage from "./src/LocalStorage.js";
 import { useState } from "./src/Utils.js";
-import getSvg from "./src/Svgs.js";
-import posts from "./src/pages/posts.js";
-import post from "./src/pages/post.js";
-import tags from "./src/pages/tags.js";
-import about from "./src/pages/about/about.js";
-import search from "./src/pages/search.js";
-import main from "./src/pages/main.js";
+import { memo } from "./src/Utils.js";
+
+// super optimization, instead of import getSvg from "./src/Svgs.js" we inline it here.
+async function _getSvg(url) {
+    const data = await fetch(url);
+    return await data.text();
+}
+const getSvg = memo(_getSvg);
 
 function title() {
   return DOM.of("a")
@@ -143,21 +144,34 @@ function footer() {
   const pageParam = urlParams.get("p") || "";
   const split = pageParam.split("/");
   const page = split.length > 0 ? split[0] : pageParam;
-  const navMap = {
-    post,
-    tags,
-    about,
-    posts,
-    search,
-  }
-  const content = page in navMap ?
-    await navMap[page](pageParam) :
-    await main();
 
-  DOM.ofId("root")
+  const root = DOM.ofId("root");
+  const contentContainer = DOM.of("section").addClass("pageContent");
+  root
     .append(header(page))
-    .append(content)
+    .append(contentContainer)
     .append(footer())
-    .addClass("loaded")
+    .addClass("loaded");
+
+  const routeLoaders = {
+    post: () => import("./src/pages/post.js"),
+    tags: () => import("./src/pages/tags.js"),
+    about: () => import("./src/pages/about/about.js"),
+    posts: () => import("./src/pages/posts.js"),
+    search: () => import("./src/pages/search.js"),
+  };
+
+  let content;
+  if (page in routeLoaders) {
+    const routeModule = await routeLoaders[page]();
+    content = await routeModule.default(pageParam);
+  } else {
+    const mainModule = await import("./src/pages/main.js");
+    content = await mainModule.default();
+  }
+
+  contentContainer
+    .removeChildren()
+    .append(content);
 
 })();

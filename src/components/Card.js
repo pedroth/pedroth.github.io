@@ -24,7 +24,11 @@ function article({ imageSrc, title, lastUpdateDate, tags }) {
 function cardImage({ imageSrc, title }) {
     return DomBuilder.of("img")
         .attr("src", imageSrc)
-        .attr("alt", title);
+        .attr("alt", title)
+        .attr("width", "1600")
+        .attr("height", "900")
+        .attr("loading", "lazy")
+        .attr("decoding", "async");
 }
 
 function cardBody({ title, lastUpdateDate }) {
