@@ -2,8 +2,7 @@ import DOM from "./DomBuilder.js";
 
 export default async function renderFromString(str) {
     // Lazy-load markdown parser only when needed (post pages)
-    const { parse, Render, buildDom } = await import("../lib/importsMarkdown.js");
-    const { str2dom } = await import("./Utils.js");
+    const { parse, Render, buildDom } = await import("../lib/importsND.js");
     
     class PedrothRender extends Render {
         renderBlockCode(blockCode, context) {
@@ -71,5 +70,6 @@ export default async function renderFromString(str) {
         return randomID;
     }
 
-    return str2dom(new PedrothRender().render(parse(str)));
+    const parsed = parse(str);
+    return await new PedrothRender().render(parsed);
 }

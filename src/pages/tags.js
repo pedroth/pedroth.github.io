@@ -1,5 +1,5 @@
 import DOM from "../DomBuilder.js";
-import textFit from "textfit";
+import { textFit } from "../../lib/imports.js";
 import Database from "../Database.js";
 
 //========================================================================================

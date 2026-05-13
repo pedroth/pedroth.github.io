@@ -1,12 +1,11 @@
 // eslint-disable-next-line no-undef
 const build = await Bun.build({
     entrypoints: [
-        "./src/importsMarkdown.js", // split chunk for nabladown
+        "./src/imports.js",
+        "./src/importsND.js",
     ],
     outdir: "./lib",
     minify: true,
     splitting: true,
-    // target: "web",
-    // sourcemap: "external",
 })
 console.log(build);

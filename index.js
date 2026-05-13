@@ -145,14 +145,6 @@ function footer() {
   const split = pageParam.split("/");
   const page = split.length > 0 ? split[0] : pageParam;
 
-  const root = DOM.ofId("root");
-  const contentContainer = DOM.of("section").addClass("pageContent");
-  root
-    .append(header(page))
-    .append(contentContainer)
-    .append(footer())
-    .addClass("loaded");
-
   const routeLoaders = {
     post: () => import("./src/pages/post.js"),
     tags: () => import("./src/pages/tags.js"),
@@ -170,9 +162,11 @@ function footer() {
     content = await mainModule.default();
   }
 
-  // important optimization, instead of re-rendering the whole page we just change the content of the page container, this way we keep the header and footer intact and avoid re-rendering them. 
-  contentContainer
-    .removeChildren()
-    .append(content);
+  const root = DOM.ofId("root");
+  root
+    .append(header(page))
+    .append(content)
+    .append(footer())
+    .addClass("loaded");
 
 })();

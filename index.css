@@ -135,10 +135,6 @@ dialog {
     display: contents;
 }
 
-.pageContent {
-    min-height: 90vh;
-}
-
 .specialLink {
     margin-left: 5px;
     margin-right: 5px;
@@ -254,6 +250,29 @@ dialog {
         grid-template-columns: 1fr;
         width: 100%;
         height: auto;
+        gap: 1.5rem;
+    }
+
+    .card {
+        max-height: 400px;
+    }
+
+    .card img {
+        height: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cardsRow {
+        gap: 1rem;
+    }
+
+    .card {
+        max-height: 350px;
+    }
+
+    .card img {
+        height: 200px;
     }
 }
 
