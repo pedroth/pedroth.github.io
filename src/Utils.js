@@ -87,7 +87,14 @@ export function debounce(lambda, debounceTimeInMillis = 500) {
 }
 
 export function str2dom(string) {
-        const dom = new DOMParser().parseFromString(string, 'text/html').body.children[0];
+        const parsed = new DOMParser().parseFromString(string, 'text/html').body.children[0];
+        if (!parsed) {
+            // Fallback: return wrapper if no root element
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = string;
+            return wrapper;
+        }
+        const dom = parsed;
         Array(...dom.getElementsByTagName("script")).forEach(async scriptEl => {
             await evalScriptTag(scriptEl);
         })

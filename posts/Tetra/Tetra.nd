@@ -55,4 +55,4 @@ xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$
 </div>
 
 
-[^1]: Just used standard Java8 without any dependencies or OpenGL
+[^1]: Software render made from scratch using standard Java8 without any dependencies or OpenGL
