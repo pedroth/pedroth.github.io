@@ -32,8 +32,7 @@ export default function buildImages() {
             try {
                 if (!checkFileExists(`${filePath}.webp`)) createImage(`${filePath}.webm`, `${filePath}.webp`, [1980, 1080])
                 if (!checkFileExists(`${filePath}_medium.webp`)) createImage(`${filePath}.webm`, `${filePath}_medium.webp`, [990, 540])
-                if (!checkFileExists(`${filePath}_medium.webp`)) createImage(`${filePath}.webm`, `${filePath}_medium.webp`, [990, 540])
-                if (!checkFileExists(`${filePath}_small.webp`)) createImage(`${filePath}.webm`, `${filePath}_small.webp`, [495, 270])
+                if (!checkFileExists(`${filePath}_small.webp`)) createImage(`${filePath}.webm`, `${filePath}_small.webp`, [293, 160])
             } catch (e) {
                 console.log("Something went wrong, while trying to generate images");
             }
