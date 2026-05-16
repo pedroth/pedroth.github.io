@@ -14,12 +14,12 @@ tags: [
     experiment
 ]
  -->
-_Simple Robot_ is a `java` application that let you see a robotic arm following a ball. It works by doing a [gradient descend](https://en.wikipedia.org/wiki/Gradient_descent) on a cost function. This cost function is defined as following:
-Let $\mathbf{x} \in \mathbb{R^3}$ be the position of a ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the degrees of freedom of the Robot (angles of the joints) and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives $\boldsymbol{\theta}$ and outputs $\mathbf{y}$ which is the end position of the tip of the Robot ( $\text{DK}$ is usually called [direct kinematics](https://en.wikipedia.org/wiki/Forward_kinematics) function). Finally the cost function is:
+_Simple Robot_ is a `Java` application that lets you see a robotic arm following a ball. It works by performing [gradient descent](https://en.wikipedia.org/wiki/Gradient_descent) on a cost function. This cost function is defined as follows:
+Let $\mathbf{x} \in \mathbb{R}^3$ be the position of a ball, $\boldsymbol{\theta} \in \mathbb{R}^4$ be the robot's degrees of freedom (joint angles), and $\text{DK}(\boldsymbol{\theta}) \rightarrow  \mathbf{y} \in \mathbb{R}^3$ be a function that receives $\boldsymbol{\theta}$ and outputs $\mathbf{y}$, the end position of the robot arm tip ($\text{DK}$ is usually called the [direct kinematics](https://en.wikipedia.org/wiki/Forward_kinematics) function). Finally, the cost function is:
 $$\min_{\boldsymbol{\theta}} |\text{DK}(\boldsymbol{\theta}) - \mathbf{x}|^2$$
 $$\text{s.t} \;\;\; C_i(\boldsymbol{\theta}) > 0, \forall i \in \{1,\dots, k \}$$
 
-Where $C_i$ are functions that constraint the degrees of freedom, *e.g*: $\theta_1 > 0 \text{ and } \theta_1 < 2 \pi$.
+Here, $C_i$ are functions that constrain the degrees of freedom, *e.g.*: $\theta_1 > 0 \text{ and } \theta_1 < 2 \pi$.
 
 Feel free to download the program below.
                 
@@ -40,9 +40,9 @@ Feel free to download the program below.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Robot"

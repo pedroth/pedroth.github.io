@@ -12,20 +12,20 @@ tags: [
     experiment
 ]
 -->
- _Eigen Simulation_ is a `java` application that lets you visualize three algorithms for finding _real eigenvectors_. 
+ _Eigen Simulation_ is a `Java` application that lets you visualize three algorithms for finding _real eigenvectors_.
  
-For starters eigenvectors are vectors that have the following property:
-Let $A \in \mathbb{R}^{n \times n}$ be a matrix and $\mathbf{v} \in \mathbb{R}^n$ a vector then $\mathbf{v}$ is a not trivial solution ( that means $\mathbf{v} \neq \mathbf{0}$) of the equation below.
+For starters, an eigenvector is a vector with the following property:
+Let $A \in \mathbb{R}^{n \times n}$ be a matrix and $\mathbf{v} \in \mathbb{R}^n$ be a vector. Then $\mathbf{v}$ is a non-trivial solution (that is, $\mathbf{v} \neq \mathbf{0}$) of the equation below.
 
 $$A\mathbf{v} = \lambda \mathbf{v}\;\;\;(1)$$
 
-These eigenvectors and eigenvalues (the $\lambda$ 's in (1)) are essential to *Mathematics* and are very useful in different fields such as *Physics*, *Optimization*, *Machine Learning*, etc. Here I explore three algorithms that compute a special kind of eigenvectors called *real eigenvectors*. For these *eigenvectors* the matrix in (1) has the constraint of $A = A^T$. Those matrices are called [symmetric matrices](https://en.wikipedia.org/wiki/Symmetric_matrix) and guarantee the existence of *real eigenvectors and eigenvalues*. The first method is the [power method](https://en.wikipedia.org/wiki/Power_iteration) and the other two are based on a constraint optimization problem:
+These eigenvectors and eigenvalues (the $\lambda$ values in (1)) are essential in *Mathematics* and very useful in fields such as *Physics*, *Optimization*, and *Machine Learning*. Here I explore three algorithms that compute a special kind of eigenvectors called *real eigenvectors*. For these *eigenvectors*, the matrix in (1) must satisfy $A = A^T$. These matrices are called [symmetric matrices](https://en.wikipedia.org/wiki/Symmetric_matrix), and they guarantee the existence of *real eigenvectors and eigenvalues*. The first method is the [power method](https://en.wikipedia.org/wiki/Power_iteration), and the other two are based on a constrained optimization problem:
 $$\min_{\mathbf{x}\in \mathbb{R}^n} \text{ or } \max_{\mathbf{x}\in \mathbb{R}^n} \left < \mathbf{x}, A \mathbf{x}\right >$$
 $$\text{such that  } \;\;|\mathbf{x}|^2 = 1 \;\;\; (2)$$
 
-To visualize these algorithms, the application will draw a sphere (which is the space of the constraint in (2)) painted with some colors. This color represents the value of the cost function in (2). A brighter color means higher cost, while dark colors mean lower costs.
+To visualize these algorithms, the application draws a sphere (the constraint space in (2)) painted with colors. The color represents the value of the cost function in (2). Brighter colors mean higher cost, while darker colors mean lower cost.
 
-In the application you can press the keyboard button `3`, to see the gradient vector field of this cost function on the sphere. In the video below you will see a demo of this program.
+In the application, you can press the `3` key to see the gradient vector field of this cost function on the sphere. The video below shows a demo of this program.
 
 Feel free to download the program below.
 
@@ -46,9 +46,9 @@ Feel free to download the program below.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ``` sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp pedroEngine/pedroEngine.jar apps.EigenSimulation"

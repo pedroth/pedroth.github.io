@@ -13,7 +13,7 @@ tags: [
     experiment
 ]
  -->
-_Cube Chaos_ is simple application where you can see several particles being driven by force or velocity vector fields. It is called *chaos* because one of the vector field is the [Lorenz attractor](https://en.wikipedia.org/wiki/Lorenz_system) from [chaos theory](https://en.wikipedia.org/wiki/Chaos_theory). 
+_Cube Chaos_ is a simple application where you can see several particles being driven by force or velocity vector fields. It is called *chaos* because one of the vector fields is the [Lorenz attractor](https://en.wikipedia.org/wiki/Lorenz_system) from [chaos theory](https://en.wikipedia.org/wiki/Chaos_theory).
 
 
 Feel free to download the program below.
@@ -31,7 +31,7 @@ $$
 \end{equation}
 $$
 
-Where $\sigma, \rho$ and $\beta$ are free parameters of the model. 
+Here, $\sigma$, $\rho$, and $\beta$ are free parameters of the model.
 ## Links
 
 <div style="display: flex;flex-direction: column">
@@ -47,9 +47,9 @@ Where $\sigma, \rho$ and $\beta$ are free parameters of the model.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Cube"

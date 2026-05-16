@@ -12,27 +12,27 @@ tags: [
     experiment
 ]
  -->
-_PDE_ is a `java` application that let you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation)(PDE) of the form:
+_PDE_ is a `Java` application that lets you run [partial differential equations](https://en.wikipedia.org/wiki/Partial_differential_equation) (PDEs) of the form:
 
 $$u_t(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u})$$
-Or 
+or
 $$u_{tt}(t,\mathbf{x}) = f(t,\mathbf{x},u,\nabla\mathbf{u}, \nabla^2\mathbf{u}, u_t)$$
 
-Where $\mathbf{x} \in \mathbb{R}^2$, $u_{xy} = \frac{\partial u}{\partial x\partial y}$, $\nabla\mathbf{u} = (u_x, u_y)^T$, $\nabla^2\mathbf{u} = \begin{bmatrix}
+Here, $\mathbf{x} \in \mathbb{R}^2$, $u_{xy} = \frac{\partial u}{\partial x\partial y}$, $\nabla\mathbf{u} = (u_x, u_y)^T$, $\nabla^2\mathbf{u} = \begin{bmatrix}
  u_{xx}&  u_{xy}\\
  u_{yx}&  u_{yy}    
 \end{bmatrix}$. You may also edit the initial condition of $u(0, \mathbf{x})$.
 
-Famous Equations are:
-- Heat Equation : $u_t = \Delta u = \text{div}(\nabla u) = \text{tr}(\nabla^2\mathbf{u}) = u_{xx} + u_{yy}$
-- Wave Equation : $u_{tt} = \Delta u$
-- Continuity: $u_t = -\mathbf{v} \cdot \nabla \mathbf{u}, \mathbf{v} \in \mathbb{R}^2$
+Famous equations include:
+- Heat equation: $u_t = \Delta u = \text{div}(\nabla u) = \text{tr}(\nabla^2\mathbf{u}) = u_{xx} + u_{yy}$
+- Wave equation: $u_{tt} = \Delta u$
+- Continuity equation: $u_t = -\mathbf{v} \cdot \nabla \mathbf{u}, \mathbf{v} \in \mathbb{R}^2$
 
 In the `UI`, there are two main fields:
 - The text input to define the initial condition, $u(0, \mathbf{x})$
 - The text input to define the PDE
 
-In those input texts, the user can use the usual operators `+, -, *, /, ^` and functions `sin, cos, exp, tan, ln, ...`. In the PDE input, differential operators are available, such as `dx, dy, d2x, d2y, dxy, dt` which are $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$ respectively.
+In those input fields, the user can use the usual operators `+, -, *, /, ^` and functions `sin, cos, exp, tan, ln, ...`. In the PDE input, differential operators are available, such as `dx, dy, d2x, d2y, dxy, dt`, which correspond to $u_x, u_y, u_{xx}, u_{yy}, u_{xy}, u_t$, respectively.
 
 Feel free to download the program below.
 
@@ -53,9 +53,9 @@ Feel free to download the program below.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.PDEGUI"

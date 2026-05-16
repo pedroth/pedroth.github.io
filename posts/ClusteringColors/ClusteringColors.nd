@@ -10,12 +10,11 @@ tags: [
     experiment
 ]
  -->
-I have read [here](https://davidwalsh.name/browser-camera) that I could access the camera in the browser, so I decided to make a small demo doing some image processing. One of the simplest projects is to cluster images colors. This classification of pixels makes a nice cartoonish effect.
+I read [here](https://davidwalsh.name/browser-camera) that I could access the camera from the browser, so I decided to build a small image-processing demo. One of the simplest projects is color clustering. This pixel classification creates a nice cartoonish effect.
 
-The algorithms implemented here were [Kmeans](https://en.wikipedia.org/wiki/K-means_clustering) and a simplified [Gaussian mixture model](https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model). 
+The algorithms implemented here are [K-means][kmeans] and a simplified [Gaussian mixture model][gaussian].
 
-
-More details can be found in the project section.
+Check the cool demo below!
 
 ![Video of the clustering colors demo](/posts/ClusteringColors/ClusteringColors.webm)
 
@@ -32,3 +31,22 @@ More details can be found in the project section.
         </button>
     </a>
 </div>
+
+## Details
+
+In this demo, we try to transform each pixel from an image into a set of $K$ representative colors. The $K$ colors are selected to reconstruct the original image with minimal error. It is basically a compression algorithm where, instead of each pixel representing a 32-bit number, it is _quantized_ into just $K$ distinct colors. For example, if $K = 8$, then each color can be encoded with 3 bits ($\log_2 8 = 3$) instead of 32.
+
+We use two algorithms for this demo: [K-means][kmeans] and a simplified version of a [Gaussian mixture model][gaussian].
+
+Here we use an isotropic Gaussian, which means that the covariance matrix is a scalar multiple of the identity matrix.
+
+The probability density function of the simplified mixture model is:
+
+$$f(x) = \sum_{i=1}^{K} \frac{\phi_i}{(2\pi)^{d/2} \sigma_i^d} \exp\left(-\frac{1}{2\sigma_i^2}\|x - \mu_i\|^2\right)$$
+
+Here, $\phi_i$ ($\phi_i > 0$ and $\sum_{i=1}^{K} \phi_i = 1$) is the weight of the $i$-th Gaussian component, $\mu_i$ is the mean vector of the $i$-th Gaussian component, and $\sigma_i^2$ is the variance of the $i$-th Gaussian component.
+
+
+
+[kmeans]: https://en.wikipedia.org/wiki/K-means_clustering
+[gaussian]: https://en.wikipedia.org/wiki/K-means_clustering#Gaussian_mixture_model

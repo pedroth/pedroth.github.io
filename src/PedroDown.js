@@ -71,5 +71,5 @@ export default async function renderFromString(str) {
     }
 
     const parsed = parse(str);
-    return await new PedrothRender().render(parsed);
+    return await (new PedrothRender().render(parsed));
 }

@@ -9,20 +9,20 @@ tags: [
     docker
 ]
  -->
-_Public Chat_ is a chat web application, that I made, to learn about `http server` features of `java`.
+_Public Chat_ is a web chat application that I built to learn about `HTTP server` features in `Java`.
 
 My goals with this project were:
 
 - Learning how to build a `java server` with minimal dependencies.
 - Learning about setting up a website from home using some tools:
- - The amazing [duckdns](https://www.duckdns.org/) free dynamic DNS.
+ - The amazing [DuckDNS](https://www.duckdns.org/) free dynamic DNS.
  - Router port-forwarding.
- - Setting a [Raspberry Pi](https://www.raspberrypi.com/) server
+ - Setting up a [Raspberry Pi](https://www.raspberrypi.com/) server.
 - Implementing upload from scratch.
 - Creating a chat with a public delete button.
-- Testing pooling http requests to simulate web-sockets (*conclusion*: just use web-sockets).
-- Creating open source project
-- Dockerize app
+- Testing polling HTTP requests to simulate WebSockets (*conclusion*: just use WebSockets).
+- Creating an open-source project.
+- Dockerizing the app.
 
 
 The [server](http://pedroth.duckdns.org/) is <span id="serverStatus" style="background:gray; color:white; border-radius:0.5rem; padding:0 1em">...loading</span>.
@@ -50,26 +50,26 @@ fetch(url)
 ![*Public Chat* app](/posts/PublicChat/PublicChat.webm)
 
 
-## Run with docker
+## Run with Docker
 
 `docker run -it -p 80:8080 --name public-chat pedroth/public-chat`
 
-Then open `localhost`. If you want to change the port just write `docker run -it -p < port >:8080 ...`.
+Then open `localhost`. If you want to change the port, just run `docker run -it -p <port>:8080 ...`.
 
-### Running docker in raspberry Pi
+### Running Docker on Raspberry Pi
 
-Since raspberry Pi, have a `arm` processor I made a different image:
+Since Raspberry Pi has an `ARM` processor, I built a different image:
 
 `docker run -it -p 80:8080 --name public-chat pedroth/public-chat:linux-arm-v7_v2`
 
-For old raspberry Pi (arm v6):
+For older Raspberry Pi devices (`ARM v6`):
 `docker run -it -p 80:8080 --name public-chat pedroth/public-chat:linux-arm-v6`
 
 ## Update with AI
 
-I made a great update with the help of AI, mainly the style `css`, the rest is still mainly the old code. Still added a new features:
+I made a great update with the help of AI, mainly on the `CSS` styling; the rest is still mostly the old code. I also added new features:
 - Upload media preview
-- Youtube preview
+- YouTube preview
 - Drag files to input to upload them
 - Removed bootstrap dependency
 
@@ -100,9 +100,9 @@ Compare previous version:
   </video>
 </div>
 
-Old and new *PublicChats* respectively. 
+Old and new *Public Chat* versions, respectively.
 
-## Github
+## GitHub
 
 <div style="display: flex;flex-direction: column">
     <a target="_blank" href="https://github.com/pedroth/PublicChat" style="align-self: center">

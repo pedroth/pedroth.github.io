@@ -17,14 +17,14 @@ _GraphXY_ is a simple application where you can see graphs of functions of two v
 
 $$z = f(x, y)$$
 
-You can also compute a gradient descend/ascend on the function.
+You can also compute gradient descent/ascent on the function.
 
 $$ \dot{\mathbf{p}} = \alpha \nabla f(\mathbf{p}) $$
 
 
-For a point $\mathbf{p}$, where $\alpha \in [-1, 1]$ is a constant that determines if it is gradient descent or ascent.
+For a point $\mathbf{p}$, $\alpha \in [-1, 1]$ is a constant that determines whether it is gradient descent or ascent.
 
-The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`.
+The `UI` accepts the usual syntax for defining functions. It supports the operators `+, -, *, /, ^` and functions such as `sin, cos, exp, tan, ln, ...`.
 
 Feel free to download the program below.
 
@@ -45,9 +45,9 @@ Feel free to download the program below.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.GraphXY"

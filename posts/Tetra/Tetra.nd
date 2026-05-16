@@ -11,12 +11,11 @@ tags: [
     experiment
 ]
  -->
-_Tetra_ is a simple application that was made to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), made from scratch[^1]. It lets you see some *triangular meshes*, which includes some random *planets*, as you can see in the videos below.
+_Tetra_ is a simple application created to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), built from scratch[^1]. It lets you view some *triangular meshes*, including random *planets*, as shown in the videos below.
 
 ![Showing some *meshes*](https://youtu.be/EWfagjIxd4g)
 
 ![Showing some **planets**](https://youtu.be/SeJcezzg_ow)
-
 
 
 Feel free to download the program below.
@@ -36,9 +35,9 @@ Feel free to download the program below.
 </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.Tetra"
@@ -55,4 +54,4 @@ xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$
 </div>
 
 
-[^1]: Software render made from scratch using standard Java8 without any dependencies or OpenGL
+[^1]: A software renderer built from scratch using standard Java 8, without any dependencies or OpenGL.

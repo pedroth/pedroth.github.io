@@ -15,20 +15,20 @@ tags: [
 ]
  -->
 
- [`tela.js`][tela.js] is an experimental graphics library, *made from scratch* (software-only), featuring reference implementations of computer graphics algorithms. Its purpose is to generate images in a computational way, with *minimal dependencies*, such that the readable graphical algorithms shine instead of opaque graphical APIs. With this graphics engine, users can build a wide range of graphical applications, including _user interfaces_, _advanced physical simulations_, _data visualizations_, and _video games_.
+ [`tela.js`][tela.js] is an experimental graphics library, *made from scratch* (software-only), featuring reference implementations of computer graphics algorithms. Its purpose is to generate images computationally, with *minimal dependencies*, so that readable graphics algorithms can shine instead of opaque graphical APIs. With this graphics engine, users can build a wide range of graphical applications, including _user interfaces_, _advanced physical simulations_, _data visualizations_, and _video games_.
 
- Since [tela.js][tela.js] does not utilize the GPU, it is relatively slower compared to modern GPU technology. However, by employing multiple threads and working with lower resolution images, its performance can be significantly improved.
+ Since [tela.js][tela.js] does not use the GPU, it is relatively slower than modern GPU-based approaches. However, by using multiple threads and working with lower-resolution images, its performance can be significantly improved.
 
 ![Tela.js playground](/posts/Telajs/Telajs.webm)
 
-There are many features implemented, here are a few:
+There are many implemented features; here are a few:
 
 - ![Shaders in pure js](/posts/Telajs/shaders_in_js.mp4)
 - ![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
 - ![Ray Tracing](/posts/Telajs/raytrace.png)
 - ![Ray Tracing II](/posts/Telajs/glass_bunny.mp4)
 - ![Ray Tracing III](/posts/Telajs/bunny_glass.mp4)
-- ![Parser and render of SVGs](/posts/Telajs/svg.mp4)
+- ![SVG parsing and rendering](/posts/Telajs/svg.mp4)
 
 There are also some demos:
 - ![Signed distance function editor](/posts/Telajs/telaSDF.mp4)
@@ -37,7 +37,7 @@ There are also some demos:
 - ![Soft-body physics](/posts/Telajs/physics4.mp4)
 - ![Turing patterns demo](/posts/Telajs/turing_patterns.mp4)
 
-There are many more examples, go check it out!
+There are many more examples, so check them out!
  
 ## Project
 

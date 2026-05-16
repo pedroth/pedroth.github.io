@@ -12,12 +12,12 @@ tags: [
 	visualization
 ]
 -->
-Made this demo to study ray-tracing using just `CPU`. 
+I made this demo to study ray tracing using only the `CPU`.
 
-To learn about ray tracing I used many resources, like:
-- [The classic ray trace in one weekend](https://raytracing.github.io/)
-- [Sebastian Langue video](https://www.youtube.com/watch?v=Qz0KTGYJtUk)
-- [Keenan crane course in computer graphics](http://15462.courses.cs.cmu.edu/fall2021/)
+To learn about ray tracing, I used many resources, such as:
+- [The classic Ray Tracing in One Weekend](https://raytracing.github.io/)
+- [Sebastian Lague's video](https://www.youtube.com/watch?v=Qz0KTGYJtUk)
+- [Keenan Crane's course in computer graphics](http://15462.courses.cs.cmu.edu/fall2021/)
 	- [Slides](http://15462.courses.cs.cmu.edu/fall2021/lecture/renderingequation)
 	- [Video](https://www.youtube.com/watch?v=Ttxdbn7TSLI)
 

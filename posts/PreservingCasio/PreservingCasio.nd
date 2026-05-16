@@ -9,15 +9,15 @@ tags: [
 ] 
  -->
 
-One of my first [Youtube][youtube] videos, was about a 3d engine made in my [Casio][casio] calculator. I was bored with some high school classes and started doing lots of programs in the calculator.
+One of my first [YouTube][youtube] videos was about a 3D engine I made on my [Casio][casio] calculator. I was bored in some high school classes and started writing lots of programs on the calculator.
 
-![The famous youtube video](https://youtu.be/ge2o3HtHDKA?si=I5_mUEHxS4UBpbWS)
+![The famous YouTube video](https://youtu.be/ge2o3HtHDKA?si=I5_mUEHxS4UBpbWS)
 
-There is a problem with this kind of software, is that it just runs on the casio, but I want to running it in my computer in 2023. Then I found an [emulator][emulator]! Emulators are amazing! They are one of the best tools for preserving software, including my casio programs. There are a lot of emulators and they are really famous in the [retro gaming](https://www.youtube.com/watch?v=PCTAVbWdS5o) community.
+The problem with this kind of software is that it only runs on the Casio, but I wanted to run it on my computer in 2023. Then I found an [emulator][emulator]! Emulators are amazing. They are one of the best tools for preserving software, including my Casio programs. There are many emulators, and they are very popular in the [retro gaming](https://www.youtube.com/watch?v=PCTAVbWdS5o) community.
 
-# Running the emulator in my computer
+# Running the emulator on my computer
 
-First you need to download some `.g1m` files and upload them to the `SD Card` of the emulator. You can find some programs in my [casio programs graveyard](https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/casio). There is one issue with the [emulator][emulator], it just runs on `windows` and I use a `linux`. The solution was to use [wine][wine], which is something amazing that can run windows executables on linux (also good for software preservation). Just run: `wine emulator_file.exe`.
+First, you need to download some `.g1m` files and upload them to the emulator SD card. You can find some programs in my [casio programs graveyard](https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/casio). There is one issue with the [emulator][emulator]: it only runs on `Windows`, and I use `Linux`. The solution was to use [Wine][wine], which can run Windows executables on Linux (also great for software preservation). Just run `wine emulator_file.exe`.
 ---
 ![Loading `.g1m` files into the emulator](/posts/PreservingCasio/CasioEmulator_installG1M.webm)
 ---

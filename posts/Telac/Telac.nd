@@ -18,21 +18,21 @@ import "./macros.js";
 ::
 
 @quote(6) {
-    *TLDR*: I ported my software rendering engine from `js` to `C` using AI assistance. I was amazed by the performance improvement, how straightforward it was to add parallelism, and the ability to compile it into an executable. An obvious thing for the regular `C` developer, but for the average `js` developer is a big deal. 
+    *TLDR*: I ported my software rendering engine from `js` to `C` using AI assistance. I was amazed by the performance improvement, how straightforward it was to add parallelism, and the ability to compile it into an executable. This may be obvious to experienced `C` developers, but for the average `js` developer, it is a big deal.
 }
 
 
 In 2024 I developed a software rendering engine in `js` (I know, it's crazy!) called [`tela.js`][tela.js]. I built it because I wanted to learn computer graphics from scratch. With some luck, I also hoped to end up with a graphical engine that could be used for animations, games, simulations, etc.
 
-In terms of learning, it was a success. However, the performance was not great. It might work for animations (since they can be rendered offline), but for games and simulations it is only practical at low resolutions or with very small scenes.
+In terms of learning, it was a success. However, the performance was not great. It might work for animations (since they can be rendered offline), but for games and simulations, it is only practical at low resolutions or with very small scenes.
 
 After finishing it, I wanted to port the engine to a more performant language. After looking into several modern high-performance languages, I decided to go with the classic `C`.
 
 I chose `C` because it is a mature language that has been battle-tested for decades, and I had learned it in the past. However, I was a bit rusty. With the advent of AI, though, the port suddenly seemed much more feasible.
 
-Maybe I could have done it with a single prompt, but I wanted to actually understand the code. So I went step by step, asking AI to translate functions one by one. Since there are major differences between the languages, I also had to research techniques for doing in `C` some things I was used to doing in `js`. AI helped me with that as well.
+Maybe I could have done it with a single prompt, but I wanted to actually understand the code. So I went step by step, asking AI to translate functions one by one. Since there are major differences between the languages, I also had to research techniques for doing in `C` some things I was used to doing in `js`. AI helped me with that too.
 
-Now let's look at what we achieved, and the performance improvement, which is probably what you came for.
+Now let's look at what we achieved and the performance improvement, which is probably what you came for.
 
 Rendering *Summer Forest* from [*Spyro 2*](https://en.wikipedia.org/wiki/Spyro_2:_Ripto%27s_Rage!) at *640×480* resolution:
 
@@ -40,15 +40,15 @@ Rendering *Summer Forest* from [*Spyro 2*](https://en.wikipedia.org/wiki/Spyro_2
 
 ![`C` version](/posts/Telac/summer_forest_c.mp4)
 
-As you see the `C` version is almost _10x_ times faster than the `js` version, and this is just a single-threaded version.
+As you can see, the `C` version is almost _10x_ faster than the `js` version, and this is just the single-threaded version.
 
-Now for a parallelism comparison, rendering a path tracer with with 3 sample per pixel at *320x240* resolution:
+Now for a parallelism comparison: rendering a path tracer with 3 samples per pixel at *320x240* resolution:
 
 ![`js` version](/posts/Telac/glass_js.mp4)
 
 ![`C` version](/posts/Telac/glass_c.mp4)
 
-We see a 5~10x improvement in performance in the `C` version, and this is with a naive parallelism implementation, using [`OpenMP`](https://www.openmp.org/)
+We see a 5~10x performance improvement in the `C` version, and this is with a naive parallelism implementation using [`OpenMP`](https://www.openmp.org/).
 
 Here I show a few more examples of the performance improvement:
 
@@ -65,9 +65,9 @@ And another one:
 }
 
 
-As you can see the performance improvement is amazing, which makes me wonder how much we lose to have a simplified language like `js` or `python`. Maybe in the future these languages will be able to achieve such performance. Maybe it is simply not possible due to the dynamic nature of these languages.
+As you can see, the performance improvement is amazing, which makes me wonder how much we give up by using simplified languages like `js` or `python`. Maybe in the future these languages will be able to achieve this kind of performance. Or maybe it is simply not possible due to their dynamic nature.
 
-Concluding, I had a lot of fun porting this engine, I learned a lot about `C`. I am sure I could have learn more without the help of AI, but it would have taken much more time. The experience made me wonder if there is a space for a language that combines the best of both languages. Maybe that language is `zig`, `rust` or `odin`. Or maybe it's a new language that we haven't seen yet, maybe my next project &#128514;.
+In conclusion, I had a lot of fun porting this engine, and I learned a lot about `C`. I am sure I could have learned more without the help of AI, but it would have taken much more time. The experience made me wonder whether there is room for a language that combines the best of both worlds. Maybe that language is `zig`, `rust`, or `odin`. Or maybe it is a new language that we have not seen yet, maybe my next project &#128514;.
 
 ## Project
 

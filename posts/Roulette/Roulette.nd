@@ -10,9 +10,9 @@ tags: [
     experiment
 ]
  -->
-Made this game long time ago in [khan academy](https://www.khanacademy.org/computer-programming/simple-roulette/6350614017605632). Decided to add it here. It uses [`processing.js`](https://p5js.org/). 
+I made this game a long time ago on [Khan Academy](https://www.khanacademy.org/computer-programming/simple-roulette/6350614017605632). I decided to add it here. It uses [`processing.js`](https://p5js.org/).
 
-*Better to play here than in real life !!*
+*Better to play here than in real life!!*
 
 <div align="center">
     <canvas id="canvas" width="560" height="400"></canvas>

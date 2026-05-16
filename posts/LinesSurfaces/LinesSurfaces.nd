@@ -13,15 +13,15 @@ tags: [
     experiment
 ]
  -->
-_Lines and Surfaces_ is a `java` application that lets you see parametrized surfaces and curves in 3 dimensions.
+_Lines and Surfaces_ is a `Java` application that lets you view parametrized surfaces and curves in three dimensions.
 
 These are *surfaces* given by a function $\mathbf{f}$:
 $$ \mathbf{f}:(u,v)\in \mathbb{R^2} \rightarrow (f_1(u,v), f_2(u,v), f_3(u,v))^{T}$$
-*Curves* given by a function $\boldsymbol{\gamma}$:
+These are *curves* given by a function $\boldsymbol{\gamma}$:
 
 $$\boldsymbol{\gamma}:t\in\mathbb{R}\rightarrow(\gamma_1(t), \gamma_2(t), \gamma_3(t))^{T}$$
 
-The `UI` accepts the usual syntax to define functions, it has the operators `+, -, *, /, ^`, and the functions `sin, cos, exp, tan, ln, ...`.After setting up your _curve_ or _surface_ you can generate a `.obj` file by pressing key `g`. 
+The `UI` accepts the usual syntax for defining functions. It supports the operators `+, -, *, /, ^` and functions such as `sin, cos, exp, tan, ln, ...`. After setting up your _curve_ or _surface_, you can generate a `.obj` file by pressing the `g` key.
 
 Feel free to download the program below.
 
@@ -42,9 +42,9 @@ Feel free to download the program below.
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.LinesSurfaces"

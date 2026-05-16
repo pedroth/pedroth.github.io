@@ -10,21 +10,21 @@ tags: [
 ]
 -->
 
-[Nabladown server][nd-server] is a tool to visualize [`nabladown`][nd] files, through a hot reloading server[^1].
+[Nabladown server][nd-server] is a tool for visualizing [`nabladown`][nd] files through a hot-reloading server[^1].
 
 ![Nabladown server quick start](/posts/NabladownServer/NabladownServer.webm)
 
 ## Motivation
 
-I wanted to write my personal notes with the markup language of [`nabladown`][nd], but nabladown.js is a library to parse and render, it is not a tool to view files. So I decided to create a tool to view these `.nd` files.
+I wanted to write my personal notes using the [`nabladown`][nd] markup language, but `nabladown.js` is a parsing and rendering library, not a file viewer. So I decided to create a tool to view these `.nd` files.
 
 The main features are:
-- List local [`.nd`][nd]
+- List local [`.nd`][nd] files
 - Render [nabladown files][nd] with hot reloading[^1]
 - Dark/light themes
-- Serving media files, such as images and videos
-- Add optional custom css
-- Simple editor `ui`
+- Serve media files, such as images and videos
+- Add optional custom CSS
+- Simple editor `UI`
 
 For more, go check on the GitHub page.
 
@@ -41,5 +41,5 @@ Project Page
 [nd]: https://github.com/pedroth/nabladown.js
 
 
-[^1]: hot reloading: is the ability to reload the file without losing state of the app.
+[^1]: Hot reloading is the ability to reload a file without losing the app state.
 

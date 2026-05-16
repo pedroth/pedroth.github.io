@@ -11,13 +11,13 @@ tags: [
     experiment
 ]
  -->
-I made a simple [*Cellular Automaton*][automaton] application long time ago. Here each pixel represents a [cellular automaton][automaton] which is *alive* if is green or *dead* if is dark. The rules for the cellular automaton to be born and to survive are defined by the $S/B$ rules: 
-- $S$ defines counts of alive neighbors necessary for a cell to survive.
-- $B$ defines counts of alive neighbors necessary for a cell to be born.
+I made a simple [*Cellular Automaton*][automaton] application a long time ago. Here, each pixel represents a [cellular automaton][automaton], which is *alive* if it is green and *dead* if it is dark. The rules for a cellular automaton to be born and to survive are defined by the $S/B$ notation:
+- $S$ defines the numbers of live neighbors required for a cell to survive.
+- $B$ defines the numbers of live neighbors required for a cell to be born.
 
-If cell is not born or does not survive, then it dies or remains dead.
+If a cell is not born or does not survive, then it dies or remains dead.
 
-In this _app_ you can try several [cellular automata rules][rules]:
+In this _app_, you can try several [cellular automata rules][rules]:
 
 - Maze: `12345/3` *[key 1]*
 - 34 Life: `34/34` *[key 2]*
@@ -25,12 +25,12 @@ In this _app_ you can try several [cellular automata rules][rules]:
 - Coagulation: `235678/378` *[key 6]*
 - Replicator: `1357/1357` *[key 7]*
 - Gnarl: `1/1` *[key 8]*
-- Flakes: `	012345678/3` *[key 9]*
-- Total Random rules *[key 0]*
+- Flakes: `012345678/3` *[key 9]*
+- Totally random rules *[key 0]*
 
 ![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
 
-In the beginning you are able to draw the initial condition of the cells, then press `space bar` to start the animation. 
+At the beginning, you can draw the initial state of the cells, then press the `space bar` to start the animation.
 
 
 ## Links
@@ -48,9 +48,9 @@ In the beginning you are able to draw the initial condition of the cells, then p
     </a>
 </div>
 
-## Running with docker
+## Running with Docker
 
-Copy paste to a terminal:
+Copy and paste this into a terminal:
 
 ```sh
 xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c "java -cp Learning/learning.jar apps.ParallelCellularAutomaton"

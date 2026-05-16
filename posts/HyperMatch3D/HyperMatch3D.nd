@@ -12,11 +12,24 @@ tags: [
 	visualization
 ]
 -->
-After working on the [Ray-Tracing Demo][ray-trace], I wanted to take things further and create a simple game. That’s how Hyper Match 3D was born(more of a demo, really). It uses much of the same technology, and in the process, helped refine both [tela.js][tela] and the [Ray-Tracing Demo][ray-trace] itself.
+After working on the [Ray-Tracing Demo][ray-trace], I wanted to take things further and create a simple game. That’s how Hyper Match 3D was born (more of a demo, really). It uses much of the same technology and, in the process, helped refine both [tela.js][tela] and the [Ray-Tracing Demo][ray-trace] itself.
 
-![HyperMatch3D game play speed up](/posts/HyperMatch3D/HyperMatch3D.webm)
+![HyperMatch3D gameplay sped up](/posts/HyperMatch3D/HyperMatch3D.webm)
 
 For full details, you can explore the game’s repository below. Check it out!
+
+## Gameplay
+
+HyperMatch 3D is a manifold match-3 game where you swap sphere positions so that neighboring spheres have the same color. Joining three spheres of the same color makes them disappear. The goal is to remove 10% of the spheres in the shortest time possible.
+
+### Controls
+
+- `Left click` to select a sphere
+- `Right click` to move the camera
+
+By selecting two adjacent spheres, you can swap them. If three or more spheres of the same color are connected, they will be removed from the mesh.
+
+That's it! Have fun!
 
 ## Project
 
