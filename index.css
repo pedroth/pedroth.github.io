@@ -111,8 +111,8 @@ dialog {
 /* CLASSES */
 
 .card {
-    display: flex;
-    height: 100%;
+    display: block;
+    height: auto;
     margin: 0;
     min-width: 0;
 }
@@ -252,27 +252,11 @@ dialog {
         height: auto;
         gap: 1.5rem;
     }
-
-    .card {
-        max-height: 400px;
-    }
-
-    .card img {
-        height: 250px;
-    }
 }
 
 @media (max-width: 600px) {
     .cardsRow {
         gap: 1rem;
-    }
-
-    .card {
-        max-height: 350px;
-    }
-
-    .card img {
-        height: 200px;
     }
 }
 
