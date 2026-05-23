@@ -116,26 +116,24 @@ export default async function post(page) {
   const post = postsMap[id];
   const htmlPath = `/posts/${id}/index.html`;
   const htmlRes = await fetch(htmlPath);
+  let postContent = undefined;
   if (htmlRes.ok) {
     const html = await htmlRes.text();
-    return DOM.of("div")
-      .append(
-        renderPostHeader(post),
-        str2dom(`<div>${html}</div>`),
-        ...renderPostFooter(post),
+    postContent = str2dom(`<div>${html}</div>`);
+  } else {
+    const filePath = `/posts/${id}/${id}.nd`;
+    const ndFile = await fetch(filePath)
+      .then(data =>
+        data.ok ?
+          data.text() :
+          `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
       );
+    postContent = await renderFromString(ndFile);
   }
-  const filePath = `/posts/${id}/${id}.nd`;
-  const content = await fetch(filePath)
-    .then(data =>
-      data.ok ?
-        data.text() :
-        `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
-    );
   return DOM.of("div")
     .append(
       renderPostHeader(post),
-      await renderFromString(content),
+      postContent,
       ...renderPostFooter(post),
     );
 }

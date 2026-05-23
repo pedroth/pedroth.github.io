@@ -87,38 +87,37 @@ export function debounce(lambda, debounceTimeInMillis = 500) {
 }
 
 export function str2dom(string) {
-        const parsed = new DOMParser().parseFromString(string, 'text/html').body.children[0];
-        if (!parsed) {
-            // Fallback: return wrapper if no root element
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = string;
-            return wrapper;
-        }
-        const dom = parsed;
-        // Run scripts sequentially so src scripts finish loading before inline
-        // scripts that depend on them run, but don't block str2dom so the DOM
-        // is mounted before any script executes.
-        Array.from(dom.getElementsByTagName("script")).reduce(
-            (promise, scriptEl) => promise.then(() => evalScriptTag(scriptEl)),
-            Promise.resolve()
-        );
-        return dom;
-        return dom;
+    const parsed = new DOMParser().parseFromString(string, 'text/html').body.children[0];
+    if (!parsed) {
+        // Fallback: return wrapper if no root element
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = string;
+        return wrapper;
+    }
+    const dom = parsed;
+    // Run scripts sequentially so src scripts finish loading before inline
+    // scripts that depend on them run, but don't block str2dom so the DOM
+    // is mounted before any script executes.
+    Array.from(dom.getElementsByTagName("script")).reduce(
+        (promise, scriptEl) => promise.then(() => evalScriptTag(scriptEl)),
+        Promise.resolve()
+    );
+    return dom;
 }
 
 export function evalScriptTag(scriptTag) {
     const globalEval = eval;
     const srcUrl = scriptTag?.attributes["src"]?.textContent;
     if (srcUrl) {
-      return fetch(srcUrl)
-        .then(code => code.text())
-        .then(code => {
-          globalEval(code);
-        });
+        return fetch(srcUrl)
+            .then(code => code.text())
+            .then(code => {
+                globalEval(code);
+            });
     } else {
-      return new Promise((re) => {
-        globalEval(scriptTag.innerText);
-        re(true);
-      });
+        return new Promise((re) => {
+            globalEval(scriptTag.innerText);
+            re(true);
+        });
     }
-  }
+}
