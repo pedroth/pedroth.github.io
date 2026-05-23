@@ -64,10 +64,18 @@ And another one:
     ![`C`](/posts/Telac/sky_c.mp4)
 }
 
-
 As you can see, the performance improvement is amazing, which makes me wonder how much we give up by using simplified languages like `js` or `python`. Maybe in the future these languages will be able to achieve this kind of performance. Or maybe it is simply not possible due to their dynamic nature.
 
 In conclusion, I had a lot of fun porting this engine, and I learned a lot about `C`. I am sure I could have learned more without the help of AI, but it would have taken much more time. The experience made me wonder whether there is room for a language that combines the best of both worlds. Maybe that language is `zig`, `rust`, or `odin`. Or maybe it is a new language that we have not seen yet, maybe my next project &#128514;.
+
+---
+
+Some cool offline video rendering examples:
+@split() {
+    ![](/posts/Telac/cornell_box_video.mp4)
+    ![](/posts/Telac/cornell_box_video_wave.mp4)
+    ![](/posts/Telac/cornell_box_video_wave_sky.mp4)
+}
 
 ## Project
 

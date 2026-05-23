@@ -4,9 +4,17 @@
         <description><![CDATA[Pedroth's Corner: Maths. Computer Science. Philosophy]]></description>
         <link>https://pedroth.github.io</link>
         <generator>Pedroth RSS Generator</generator>
-        <lastBuildDate>Sat, 16 May 2026 23:48:51 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 22 May 2026 21:56:28 GMT</lastBuildDate>
         <atom:link href="https://pedroth.github.io/feed/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en-US]]></language>
+        <item>
+            <title><![CDATA[You don't need React: creating a minimal UI library]]></title>
+            <description><![CDATA[Demo and notes about You don't need React: creating a minimal UI library.]]></description>
+            <link>https://pedroth.github.io/?p=post/NoNeedReact/NoNeedReact.nd</link>
+            <guid isPermaLink="false">https://pedroth.github.io/?p=post/NoNeedReact/NoNeedReact.nd</guid>
+            <dc:creator><![CDATA[Pedroth]]></dc:creator>
+            <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Ported a JS software rendering engine to C]]></title>
             <description><![CDATA[Demo and notes about Ported a JS software rendering engine to C.]]></description>

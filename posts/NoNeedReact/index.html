@@ -1,0 +1,1585 @@
+<article><style>/* node_modules/highlight.js/styles/github-dark.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-built_in, .hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-code, .hljs-comment, .hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* src/CodeRender/CodeRender.css */
+.base_code {
+  box-sizing: border-box;
+  color: #f5f5f5;
+  background-color: #232323;
+  border: hidden;
+  border-radius: 6px;
+  font-size: 85%;
+}
+
+.line_code {
+  color: orange;
+  padding: .2em .4em;
+}
+
+.block_code {
+  overflow: auto;
+  padding: 16px;
+}
+
+.nd_copied {
+  color: #22c55e;
+}
+
+span.nd_copy {
+  margin-right: .25rem;
+}
+
+svg.nd_copy {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+button.nd_copy {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: #0000;
+  border: 0 solid #0000;
+  margin: .5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  top: 0;
+  right: 0;
+}
+</style><link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css"  integrity="sha384-qCEsSYDSH0x5I45nNW4oXemORUZnYFtPy/FqB/OjqxabTMW5HVaaH9USK4fN3goV"  crossorigin="anonymous" ></link><p><span></span></p><p><span></span></p><p><span></span></p><p><span><span>React is an amazing library, that revolutionized the way to build UIs. It popularized the idea of immediate mode UI programming (at least to a big audience), where the UI is a function of the state.</span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">UI</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord text"><span class="mord">state</span></span><span class="mclose">)</span></span></span></span></span></span></span></p><p><span><span>This enables to build complex UIs in a simple way. We can use ifs and loops to render the UI, without worrying about details.</span></span></p><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-js" ><span class="hljs-comment">// example of immediate mode UI pseudo-code</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">renderUI</span>(<span class="hljs-params">state</span>) {
+    <span class="hljs-keyword">if</span>(state.<span class="hljs-property">loading</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">`&lt;div&gt;Loading...&lt;/div&gt;`</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-string">`
+        &lt;div&gt;
+            &lt;h1&gt;<span class="hljs-subst">${state.title}</span>&lt;/h1&gt;
+            &lt;p&gt;<span class="hljs-subst">${state.description}</span>&lt;/p&gt;
+            <span class="hljs-subst">${state.items.map(item =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${item}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">&quot;&quot;</span>)}</span>
+        &lt;/div&gt;
+    `</span>;
+}
+
+</code></pre><div><button class="nd_copy"  id="nd_btn_1"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_1" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_1" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_1');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("// example of immediate mode UI pseudo-code\nfunction renderUI(state) {\n    if(state.loading) {\n        return `<div>Loading...<\/div>`;\n    }\n    return `\n        <div>\n            <h1>${state.title}<\/h1>\n            <p>${state.description}<\/p>\n            ${state.items.map(item => `<li>${item}<\/li>`).join(\"\")}\n        <\/div>\n    `;\n}\n\n");
+    var t = document.getElementById('nd_ct_1');
+    var s = document.getElementById('nd_sv_1');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p><p><span><span>The only issue with immediate mode is maybe performance, since we need to re-render the entire UI on every state change. Still there are many technique to optimize this. The others things that made React good in my opinion are the way that it unites </span><code class="base_code line_code" >html</code><span> with </span><code class="base_code line_code" >js</code><span>, and the reactive programming model. But does these 3 concepts require such a big library? Can we do something similar with just a few lines of code? The answer is yes, and that’s what I want to show in this post. I will try to recreate the </span><code class="base_code line_code" >React</code><span> tutorial with a minimal UI library.</span></span></p><p><span><span>In summary we want three concepts in our minimal library:</span></span></p><ul><li><span><span>Immediate mode UI: the UI is a function of the state.</span></span></li><li><span><span>Uniting </span><code class="base_code line_code" >HTML</code><span> with </span><code class="base_code line_code" >JS</code><span>, but we don't need new syntax, we can just use regular </span><code class="base_code line_code" >JS</code><span> (it will be good).</span></span></li><li><span><span>A simple reactive programming model, just some publish-subscribe mechanism in to variables. From my understanding it could be something similar to </span><strong><span><span>signals</span></span></strong><span> in </span><code class="base_code line_code" >Solid.js</code><span> or something from </span><code class="base_code line_code" >RxJS</code><span>.</span></span></li></ul><p><h2 id="our-minimal-ui-library" ><span><span>Our minimal UI library</span></span></h2></p><p><span><span>Creating dom nodes using a composable </span><code class="base_code line_code" >JS</code><span> API.</span></span></p><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-js" ><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_URL</span> = <span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_TAGS</span> = [<span class="hljs-string">&quot;svg&quot;</span>, <span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-string">&quot;circle&quot;</span>, <span class="hljs-string">&quot;ellipse&quot;</span>, <span class="hljs-string">&quot;line&quot;</span>, <span class="hljs-string">&quot;path&quot;</span>, <span class="hljs-string">&quot;polygon&quot;</span>, <span class="hljs-string">&quot;polyline&quot;</span>, <span class="hljs-string">&quot;rect&quot;</span>];
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DomBuilder</span> {
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = element; }
+    <span class="hljs-title function_">attr</span>(<span class="hljs-params">name, value = <span class="hljs-string">&quot;&quot;</span></span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(name, value); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">style</span>(<span class="hljs-params">styleStr</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;style&quot;</span>, styleStr); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">append</span>(<span class="hljs-params">...elements</span>) {
+        elements.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+            <span class="hljs-keyword">if</span> (!e) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(e)) {
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(e)) {
+                e.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">actualElem</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">append</span>(actualElem));
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e.<span class="hljs-title function_">build</span>());
+            }
+        })
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">inner</span>(<span class="hljs-params">value</span>) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(value)) {
+            value.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = v);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = value;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">removeChildren</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">firstChild</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">lastChild</span>); }
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">event</span>(<span class="hljs-params">eventName, lambda</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">addEventListener</span>(eventName, lambda); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) { <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>; }
+    <span class="hljs-title function_">addClass</span>(<span class="hljs-params">className</span>) {
+        <span class="hljs-keyword">if</span> (!className) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        className.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c).<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(c));
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-keyword">static</span> <span class="hljs-title function_">of</span>(<span class="hljs-params">elem</span>) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(elem)) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(elem);
+        <span class="hljs-keyword">const</span> isSvg = <span class="hljs-variable constant_">SVG_TAGS</span>.<span class="hljs-title function_">includes</span>(elem);
+        <span class="hljs-keyword">const</span> element = isSvg ? <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElementNS</span>(<span class="hljs-variable constant_">SVG_URL</span>, elem) : <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(elem);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(element);
+    }
+    <span class="hljs-keyword">static</span> <span class="hljs-title function_">ofId</span>(<span class="hljs-params">id</span>) { <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id)); }
+}
+
+<span class="hljs-comment">// some utilities</span>
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isElement</span>(<span class="hljs-params">o</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> <span class="hljs-title class_">HTMLElement</span> === <span class="hljs-string">&quot;object&quot;</span> ? o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span> : o &amp;&amp; <span class="hljs-keyword">typeof</span> o === <span class="hljs-string">&quot;object&quot;</span> &amp;&amp; o !== <span class="hljs-literal">null</span> &amp;&amp; o.<span class="hljs-property">nodeType</span> === <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">typeof</span> o.<span class="hljs-property">nodeName</span> === <span class="hljs-string">&quot;string&quot;</span>;
+}
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isPromise</span>(<span class="hljs-params">o</span>) { <span class="hljs-keyword">return</span> o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Promise</span>; }
+</code></pre><div><button class="nd_copy"  id="nd_btn_2"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_2" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_2" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_2');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("const SVG_URL = \"http://www.w3.org/2000/svg\";\nconst SVG_TAGS = [\"svg\", \"g\", \"circle\", \"ellipse\", \"line\", \"path\", \"polygon\", \"polyline\", \"rect\"];\nclass DomBuilder {\n    constructor(element) { this.element = element; }\n    attr(name, value = \"\") { this.element.setAttribute(name, value); return this; }\n    style(styleStr) { this.element.setAttribute(\"style\", styleStr); return this; }\n    append(...elements) {\n        elements.forEach(e => {\n            if (!e) return;\n            if (isElement(e)) {\n                this.element.appendChild(e);\n            } else if (isPromise(e)) {\n                e.then(actualElem => this.append(actualElem));\n            } else {\n                this.element.appendChild(e.build());\n            }\n        })\n        return this;\n    }\n    inner(value) {\n        if (isPromise(value)) {\n            value.then(v => this.element.innerHTML = v);\n        } else {\n            this.element.innerHTML = value;\n        }\n        return this;\n    }\n    removeChildren() {\n        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }\n        return this;\n    }\n    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }\n    build() { return this.element; }\n    addClass(className) {\n        if (!className) return this;\n        className.split(\" \").filter(c => c).forEach(c => this.element.classList.add(c));\n        return this;\n    }\n    static of(elem) {\n        if (isElement(elem)) return new DomBuilder(elem);\n        const isSvg = SVG_TAGS.includes(elem);\n        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);\n        return new DomBuilder(element);\n    }\n    static ofId(id) { return new DomBuilder(document.getElementById(id)); }\n}\n\n// some utilities\nfunction isElement(o) {\n    return typeof HTMLElement === \"object\" ? o instanceof HTMLElement : o && typeof o === \"object\" && o !== null && o.nodeType === 1 && typeof o.nodeName === \"string\";\n}\nfunction isPromise(o) { return o instanceof Promise; }\n");
+    var t = document.getElementById('nd_ct_2');
+    var s = document.getElementById('nd_sv_2');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p><p><span><span>A simple reactive state management system.</span></span></p><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-js" ><span class="hljs-keyword">function</span> <span class="hljs-title function_">useState</span>(<span class="hljs-params">defaultState</span>) {
+    <span class="hljs-keyword">let</span> state = defaultState;
+    <span class="hljs-keyword">let</span> onChangeLambda = [];
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">onChange</span> = lambda =&gt; {
+        onChangeLambda.<span class="hljs-title function_">push</span>(lambda);
+    }
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">setState</span> = lambda =&gt; {
+        state = <span class="hljs-title function_">lambda</span>(state);
+        onChangeLambda.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">func</span> =&gt;</span> {
+            <span class="hljs-title function_">func</span>(state)
+        });
+    }
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">getState</span> = (<span class="hljs-params"></span>) =&gt; state;
+    <span class="hljs-keyword">return</span> [getState, setState, onChange];
+}
+</code></pre><div><button class="nd_copy"  id="nd_btn_3"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_3" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_3" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_3');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("function useState(defaultState) {\n    let state = defaultState;\n    let onChangeLambda = [];\n    const onChange = lambda => {\n        onChangeLambda.push(lambda);\n    }\n    const setState = lambda => {\n        state = lambda(state);\n        onChangeLambda.forEach(func => {\n            func(state)\n        });\n    }\n    const getState = () => state;\n    return [getState, setState, onChange];\n}\n");
+    var t = document.getElementById('nd_ct_3');
+    var s = document.getElementById('nd_sv_3');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p><p><h2 id="tic-tac-toe-example" ><span><span>Tic tac toe example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Tic tac toe example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-ugib38s1qxd','code')"  class="active"  id="nd-ugib38s1qxd-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-ugib38s1qxd','preview')"  id="nd-ugib38s1qxd-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-ugib38s1qxd-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" >
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
+    <span class="hljs-selector-id">#example</span> {
+        <span class="hljs-attribute">background</span>: white;
+        <span class="hljs-attribute">padding</span>: <span class="hljs-number">2rem</span>;
+        <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">12px</span>;
+        <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">4px</span> <span class="hljs-number">20px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.1</span>);
+        <span class="hljs-attribute">text-align</span>: center;
+    }
+
+    <span class="hljs-selector-class">.status</span> {
+        <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">20px</span>;
+        <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+        <span class="hljs-attribute">font-weight</span>: bold;
+        <span class="hljs-attribute">color</span>: <span class="hljs-number">#333</span>;
+    }
+
+    <span class="hljs-selector-class">.board-row</span> {
+        <span class="hljs-attribute">display</span>: flex;
+        <span class="hljs-attribute">justify-content</span>: center;
+    }
+
+    <span class="hljs-selector-class">.square</span> {
+        <span class="hljs-attribute">width</span>: <span class="hljs-number">80px</span>;
+        <span class="hljs-attribute">height</span>: <span class="hljs-number">80px</span>;
+        <span class="hljs-attribute">background</span>: <span class="hljs-number">#fff</span>;
+        <span class="hljs-attribute">border</span>: <span class="hljs-number">2px</span> solid <span class="hljs-number">#ddd</span>;
+        <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+        <span class="hljs-attribute">font-weight</span>: bold;
+        <span class="hljs-attribute">line-height</span>: <span class="hljs-number">80px</span>;
+        <span class="hljs-attribute">margin</span>: -<span class="hljs-number">1px</span>;
+        <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+        <span class="hljs-attribute">cursor</span>: pointer;
+        <span class="hljs-attribute">transition</span>: background <span class="hljs-number">0.2s</span>;
+        <span class="hljs-attribute">display</span>: flex;
+        <span class="hljs-attribute">justify-content</span>: center;
+        <span class="hljs-attribute">align-items</span>: center;
+    }
+
+    <span class="hljs-selector-class">.square</span><span class="hljs-selector-pseudo">:hover</span> {
+        <span class="hljs-attribute">background</span>: <span class="hljs-number">#f9f9f9</span>;
+    }
+
+    <span class="hljs-selector-class">.square</span><span class="hljs-selector-pseudo">:focus</span> {
+        <span class="hljs-attribute">outline</span>: none;
+        <span class="hljs-attribute">background</span>: <span class="hljs-number">#eef</span>;
+    }
+
+    <span class="hljs-selector-class">.reset-btn</span> {
+        <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">20px</span>;
+        <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;
+        <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+        <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#007bff</span>;
+        <span class="hljs-attribute">color</span>: white;
+        <span class="hljs-attribute">border</span>: none;
+        <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;
+        <span class="hljs-attribute">cursor</span>: pointer;
+        <span class="hljs-attribute">transition</span>: background <span class="hljs-number">0.3s</span>;
+    }
+
+    <span class="hljs-selector-class">.reset-btn</span><span class="hljs-selector-pseudo">:hover</span> {
+        <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#0056b3</span>;
+    }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;example&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
+    <span class="hljs-comment">// --- Framework Utilities provided by user ---</span>
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">useState</span>(<span class="hljs-params">defaultState</span>) {
+        <span class="hljs-keyword">let</span> state = defaultState;
+        <span class="hljs-keyword">let</span> onChangeLambda = [];
+        <span class="hljs-keyword">const</span> <span class="hljs-title function_">onChange</span> = lambda =&gt; {
+            onChangeLambda.<span class="hljs-title function_">push</span>(lambda);
+        }
+        <span class="hljs-keyword">const</span> <span class="hljs-title function_">setState</span> = lambda =&gt; {
+            state = <span class="hljs-title function_">lambda</span>(state);
+            onChangeLambda.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">func</span> =&gt;</span> {
+                <span class="hljs-title function_">func</span>(state)
+            });
+        }
+        <span class="hljs-keyword">const</span> <span class="hljs-title function_">getState</span> = (<span class="hljs-params"></span>) =&gt; state;
+        <span class="hljs-keyword">return</span> [getState, setState, onChange];
+    }
+
+    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_URL</span> = <span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span>;
+    <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_TAGS</span> = [<span class="hljs-string">&quot;svg&quot;</span>, <span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-string">&quot;circle&quot;</span>, <span class="hljs-string">&quot;ellipse&quot;</span>, <span class="hljs-string">&quot;line&quot;</span>, <span class="hljs-string">&quot;path&quot;</span>, <span class="hljs-string">&quot;polygon&quot;</span>, <span class="hljs-string">&quot;polyline&quot;</span>, <span class="hljs-string">&quot;rect&quot;</span>];
+
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">DomBuilder</span> {
+        <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = element; }
+        <span class="hljs-title function_">attr</span>(<span class="hljs-params">name, value = <span class="hljs-string">&quot;&quot;</span></span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(name, value); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+        <span class="hljs-title function_">style</span>(<span class="hljs-params">styleStr</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;style&quot;</span>, styleStr); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+        <span class="hljs-title function_">append</span>(<span class="hljs-params">...elements</span>) {
+            elements.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+                <span class="hljs-keyword">if</span> (!e) <span class="hljs-keyword">return</span>;
+                <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(e)) {
+                    <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e);
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(e)) {
+                    e.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">actualElem</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">append</span>(actualElem));
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e.<span class="hljs-title function_">build</span>());
+                }
+            })
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        }
+        <span class="hljs-title function_">inner</span>(<span class="hljs-params">value</span>) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(value)) {
+                value.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = v);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = value;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        }
+        <span class="hljs-title function_">removeChildren</span>(<span class="hljs-params"></span>) {
+            <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">firstChild</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">lastChild</span>); }
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        }
+        <span class="hljs-title function_">event</span>(<span class="hljs-params">eventName, lambda</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">addEventListener</span>(eventName, lambda); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+        <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) { <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>; }
+        <span class="hljs-title function_">addClass</span>(<span class="hljs-params">className</span>) {
+            <span class="hljs-keyword">if</span> (!className) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+            className.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c).<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(c));
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        }
+        <span class="hljs-keyword">static</span> <span class="hljs-title function_">of</span>(<span class="hljs-params">elem</span>) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(elem)) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(elem);
+            <span class="hljs-keyword">const</span> isSvg = <span class="hljs-variable constant_">SVG_TAGS</span>.<span class="hljs-title function_">includes</span>(elem);
+            <span class="hljs-keyword">const</span> element = isSvg ? <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElementNS</span>(<span class="hljs-variable constant_">SVG_URL</span>, elem) : <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(elem);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(element);
+        }
+        <span class="hljs-keyword">static</span> <span class="hljs-title function_">ofId</span>(<span class="hljs-params">id</span>) { <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id)); }
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">isElement</span>(<span class="hljs-params">o</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> <span class="hljs-title class_">HTMLElement</span> === <span class="hljs-string">&quot;object&quot;</span> ? o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span> : o &amp;&amp; <span class="hljs-keyword">typeof</span> o === <span class="hljs-string">&quot;object&quot;</span> &amp;&amp; o !== <span class="hljs-literal">null</span> &amp;&amp; o.<span class="hljs-property">nodeType</span> === <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">typeof</span> o.<span class="hljs-property">nodeName</span> === <span class="hljs-string">&quot;string&quot;</span>;
+    }
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">isPromise</span>(<span class="hljs-params">o</span>) { <span class="hljs-keyword">return</span> o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Promise</span>; }
+
+    <span class="hljs-comment">// --- Tic-Tac-Toe Game Logic ---</span>
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">calculateWinner</span>(<span class="hljs-params">squares</span>) {
+        <span class="hljs-keyword">const</span> lines = [
+            [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>], <span class="hljs-comment">// rows</span>
+            [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>], <span class="hljs-comment">// cols</span>
+            [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]             <span class="hljs-comment">// diagonals</span>
+        ];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; lines.<span class="hljs-property">length</span>; i++) {
+            <span class="hljs-keyword">const</span> [a, b, c] = lines[i];
+            <span class="hljs-keyword">if</span> (squares[a] &amp;&amp; squares[a] === squares[b] &amp;&amp; squares[a] === squares[c]) {
+                <span class="hljs-keyword">return</span> squares[a];
+            }
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-comment">// --- Components ---</span>
+
+    <span class="hljs-keyword">const</span> [getGameState, setGameState, onGameUpdate] = <span class="hljs-title function_">useState</span>({
+        <span class="hljs-attr">squares</span>: <span class="hljs-title class_">Array</span>(<span class="hljs-number">9</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-literal">null</span>),
+        <span class="hljs-attr">xIsNext</span>: <span class="hljs-literal">true</span>
+    });
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">Square</span>(<span class="hljs-params">i</span>) {
+        <span class="hljs-keyword">const</span> value = <span class="hljs-title function_">getGameState</span>().<span class="hljs-property">squares</span>[i];
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;button&#x27;</span>)
+            .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;square&#x27;</span>)
+            .<span class="hljs-title function_">inner</span>(value || <span class="hljs-string">&#x27;&#x27;</span>)
+            .<span class="hljs-title function_">event</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">handleClick</span>(i));
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">StatusDisplay</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+        <span class="hljs-keyword">const</span> winner = <span class="hljs-title function_">calculateWinner</span>(state.<span class="hljs-property">squares</span>);
+
+        <span class="hljs-keyword">let</span> status;
+        <span class="hljs-keyword">if</span> (winner) {
+            status = <span class="hljs-string">`Winner: <span class="hljs-subst">${winner}</span>`</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!state.<span class="hljs-property">squares</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-literal">null</span>)) {
+            status = <span class="hljs-string">&quot;Draw!&quot;</span>;
+        } <span class="hljs-keyword">else</span> {
+            status = <span class="hljs-string">`Next player: <span class="hljs-subst">${state.xIsNext ? <span class="hljs-string">&#x27;X&#x27;</span> : <span class="hljs-string">&#x27;O&#x27;</span>}</span>`</span>;
+        }
+
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>)
+            .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;status&#x27;</span>)
+            .<span class="hljs-title function_">inner</span>(status);
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">Board</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">const</span> board = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">3</span>; r++) {
+            <span class="hljs-keyword">const</span> row = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>).<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;board-row&#x27;</span>);
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">3</span>; c++) {
+                row.<span class="hljs-title function_">append</span>(<span class="hljs-title class_">Square</span>(r * <span class="hljs-number">3</span> + c));
+            }
+            board.<span class="hljs-title function_">append</span>(row);
+        }
+        <span class="hljs-keyword">return</span> board;
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">ResetButton</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;button&#x27;</span>)
+            .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;reset-btn&#x27;</span>)
+            .<span class="hljs-title function_">inner</span>(<span class="hljs-string">&#x27;Reset Game&#x27;</span>)
+            .<span class="hljs-title function_">event</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+                <span class="hljs-title function_">setGameState</span>(<span class="hljs-function">() =&gt;</span> ({
+                    <span class="hljs-attr">squares</span>: <span class="hljs-title class_">Array</span>(<span class="hljs-number">9</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-literal">null</span>),
+                    <span class="hljs-attr">xIsNext</span>: <span class="hljs-literal">true</span>
+                }));
+            });
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleClick</span>(<span class="hljs-params">i</span>) {
+        <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+        <span class="hljs-keyword">const</span> squares = [...state.<span class="hljs-property">squares</span>];
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">calculateWinner</span>(squares) || squares[i]) {
+            <span class="hljs-keyword">return</span>;
+        }
+
+        squares[i] = state.<span class="hljs-property">xIsNext</span> ? <span class="hljs-string">&#x27;X&#x27;</span> : <span class="hljs-string">&#x27;O&#x27;</span>;
+
+        <span class="hljs-title function_">setGameState</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> ({
+            <span class="hljs-attr">squares</span>: squares,
+            <span class="hljs-attr">xIsNext</span>: !prev.<span class="hljs-property">xIsNext</span>
+        }));
+    }
+
+    <span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">const</span> root = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">ofId</span>(<span class="hljs-string">&#x27;example&#x27;</span>).<span class="hljs-title function_">removeChildren</span>();
+
+        root.<span class="hljs-title function_">append</span>(
+            <span class="hljs-title class_">StatusDisplay</span>(),
+            <span class="hljs-title class_">Board</span>(),
+            <span class="hljs-title class_">ResetButton</span>()
+        );
+    }
+
+    <span class="hljs-comment">// Initial render and subscription</span>
+    <span class="hljs-title function_">onGameUpdate</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">render</span>());
+    <span class="hljs-title function_">render</span>();
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre><div><button class="nd_copy"  id="nd_btn_4"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_4" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_4" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_4');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("\n<style>\n    #example {\n        background: white;\n        padding: 2rem;\n        border-radius: 12px;\n        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\n        text-align: center;\n    }\n\n    .status {\n        margin-bottom: 20px;\n        font-size: 1.5rem;\n        font-weight: bold;\n        color: #333;\n    }\n\n    .board-row {\n        display: flex;\n        justify-content: center;\n    }\n\n    .square {\n        width: 80px;\n        height: 80px;\n        background: #fff;\n        border: 2px solid #ddd;\n        font-size: 2rem;\n        font-weight: bold;\n        line-height: 80px;\n        margin: -1px;\n        padding: 0;\n        cursor: pointer;\n        transition: background 0.2s;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n    }\n\n    .square:hover {\n        background: #f9f9f9;\n    }\n\n    .square:focus {\n        outline: none;\n        background: #eef;\n    }\n\n    .reset-btn {\n        margin-top: 20px;\n        padding: 10px 20px;\n        font-size: 1rem;\n        background-color: #007bff;\n        color: white;\n        border: none;\n        border-radius: 6px;\n        cursor: pointer;\n        transition: background 0.3s;\n    }\n\n    .reset-btn:hover {\n        background-color: #0056b3;\n    }\n<\/style>\n<div id=\"example\"><\/div>\n\n<script type=\"module\">\n    // --- Framework Utilities provided by user ---\n\n    function useState(defaultState) {\n        let state = defaultState;\n        let onChangeLambda = [];\n        const onChange = lambda => {\n            onChangeLambda.push(lambda);\n        }\n        const setState = lambda => {\n            state = lambda(state);\n            onChangeLambda.forEach(func => {\n                func(state)\n            });\n        }\n        const getState = () => state;\n        return [getState, setState, onChange];\n    }\n\n    const SVG_URL = \"http://www.w3.org/2000/svg\";\n    const SVG_TAGS = [\"svg\", \"g\", \"circle\", \"ellipse\", \"line\", \"path\", \"polygon\", \"polyline\", \"rect\"];\n\n    class DomBuilder {\n        constructor(element) { this.element = element; }\n        attr(name, value = \"\") { this.element.setAttribute(name, value); return this; }\n        style(styleStr) { this.element.setAttribute(\"style\", styleStr); return this; }\n        append(...elements) {\n            elements.forEach(e => {\n                if (!e) return;\n                if (isElement(e)) {\n                    this.element.appendChild(e);\n                } else if (isPromise(e)) {\n                    e.then(actualElem => this.append(actualElem));\n                } else {\n                    this.element.appendChild(e.build());\n                }\n            })\n            return this;\n        }\n        inner(value) {\n            if (isPromise(value)) {\n                value.then(v => this.element.innerHTML = v);\n            } else {\n                this.element.innerHTML = value;\n            }\n            return this;\n        }\n        removeChildren() {\n            while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }\n            return this;\n        }\n        event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }\n        build() { return this.element; }\n        addClass(className) {\n            if (!className) return this;\n            className.split(\" \").filter(c => c).forEach(c => this.element.classList.add(c));\n            return this;\n        }\n        static of(elem) {\n            if (isElement(elem)) return new DomBuilder(elem);\n            const isSvg = SVG_TAGS.includes(elem);\n            const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);\n            return new DomBuilder(element);\n        }\n        static ofId(id) { return new DomBuilder(document.getElementById(id)); }\n    }\n\n    function isElement(o) {\n        return typeof HTMLElement === \"object\" ? o instanceof HTMLElement : o && typeof o === \"object\" && o !== null && o.nodeType === 1 && typeof o.nodeName === \"string\";\n    }\n    function isPromise(o) { return o instanceof Promise; }\n\n    // --- Tic-Tac-Toe Game Logic ---\n\n    function calculateWinner(squares) {\n        const lines = [\n            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows\n            [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols\n            [0, 4, 8], [2, 4, 6]             // diagonals\n        ];\n        for (let i = 0; i < lines.length; i++) {\n            const [a, b, c] = lines[i];\n            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {\n                return squares[a];\n            }\n        }\n        return null;\n    }\n\n    // --- Components ---\n\n    const [getGameState, setGameState, onGameUpdate] = useState({\n        squares: Array(9).fill(null),\n        xIsNext: true\n    });\n\n    function Square(i) {\n        const value = getGameState().squares[i];\n        return DomBuilder.of('button')\n            .addClass('square')\n            .inner(value || '')\n            .event('click', () => handleClick(i));\n    }\n\n    function StatusDisplay() {\n        const state = getGameState();\n        const winner = calculateWinner(state.squares);\n\n        let status;\n        if (winner) {\n            status = `Winner: ${winner}`;\n        } else if (!state.squares.includes(null)) {\n            status = \"Draw!\";\n        } else {\n            status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;\n        }\n\n        return DomBuilder.of('div')\n            .addClass('status')\n            .inner(status);\n    }\n\n    function Board() {\n        const board = DomBuilder.of('div');\n        for (let r = 0; r < 3; r++) {\n            const row = DomBuilder.of('div').addClass('board-row');\n            for (let c = 0; c < 3; c++) {\n                row.append(Square(r * 3 + c));\n            }\n            board.append(row);\n        }\n        return board;\n    }\n\n    function ResetButton() {\n        return DomBuilder.of('button')\n            .addClass('reset-btn')\n            .inner('Reset Game')\n            .event('click', () => {\n                setGameState(() => ({\n                    squares: Array(9).fill(null),\n                    xIsNext: true\n                }));\n            });\n    }\n\n    function handleClick(i) {\n        const state = getGameState();\n        const squares = [...state.squares];\n\n        if (calculateWinner(squares) || squares[i]) {\n            return;\n        }\n\n        squares[i] = state.xIsNext ? 'X' : 'O';\n\n        setGameState(prev => ({\n            squares: squares,\n            xIsNext: !prev.xIsNext\n        }));\n    }\n\n    function render() {\n        const root = DomBuilder.ofId('example').removeChildren();\n\n        root.append(\n            StatusDisplay(),\n            Board(),\n            ResetButton()\n        );\n    }\n\n    // Initial render and subscription\n    onGameUpdate(() => render());\n    render();\n\n<\/script>\n");
+    var t = document.getElementById('nd_ct_4');
+    var s = document.getElementById('nd_sv_4');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p></div><div id="nd-ugib38s1qxd-preview"  class="nd-preview"  style="display:none;" ><style>
+    #example {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .board-row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .square {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        border: 2px solid #ddd;
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 80px;
+        margin: -1px;
+        padding: 0;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .square:hover {
+        background: #f9f9f9;
+    }
+
+    .square:focus {
+        outline: none;
+        background: #eef;
+    }
+
+    .reset-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .reset-btn:hover {
+        background-color: #0056b3;
+    }
+</style><div id="example" ></div><script type="module" >
+    // --- Framework Utilities provided by user ---
+
+    function useState(defaultState) {
+        let state = defaultState;
+        let onChangeLambda = [];
+        const onChange = lambda => {
+            onChangeLambda.push(lambda);
+        }
+        const setState = lambda => {
+            state = lambda(state);
+            onChangeLambda.forEach(func => {
+                func(state)
+            });
+        }
+        const getState = () => state;
+        return [getState, setState, onChange];
+    }
+
+    const SVG_URL = "http://www.w3.org/2000/svg";
+    const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+
+    class DomBuilder {
+        constructor(element) { this.element = element; }
+        attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+        style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+        append(...elements) {
+            elements.forEach(e => {
+                if (!e) return;
+                if (isElement(e)) {
+                    this.element.appendChild(e);
+                } else if (isPromise(e)) {
+                    e.then(actualElem => this.append(actualElem));
+                } else {
+                    this.element.appendChild(e.build());
+                }
+            })
+            return this;
+        }
+        inner(value) {
+            if (isPromise(value)) {
+                value.then(v => this.element.innerHTML = v);
+            } else {
+                this.element.innerHTML = value;
+            }
+            return this;
+        }
+        removeChildren() {
+            while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+            return this;
+        }
+        event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+        build() { return this.element; }
+        addClass(className) {
+            if (!className) return this;
+            className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+            return this;
+        }
+        static of(elem) {
+            if (isElement(elem)) return new DomBuilder(elem);
+            const isSvg = SVG_TAGS.includes(elem);
+            const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+            return new DomBuilder(element);
+        }
+        static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+    }
+
+    function isElement(o) {
+        return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+    }
+    function isPromise(o) { return o instanceof Promise; }
+
+    // --- Tic-Tac-Toe Game Logic ---
+
+    function calculateWinner(squares) {
+        const lines = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+            [0, 4, 8], [2, 4, 6]             // diagonals
+        ];
+        for (let i = 0; i < lines.length; i++) {
+            const [a, b, c] = lines[i];
+            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                return squares[a];
+            }
+        }
+        return null;
+    }
+
+    // --- Components ---
+
+    const [getGameState, setGameState, onGameUpdate] = useState({
+        squares: Array(9).fill(null),
+        xIsNext: true
+    });
+
+    function Square(i) {
+        const value = getGameState().squares[i];
+        return DomBuilder.of('button')
+            .addClass('square')
+            .inner(value || '')
+            .event('click', () => handleClick(i));
+    }
+
+    function StatusDisplay() {
+        const state = getGameState();
+        const winner = calculateWinner(state.squares);
+
+        let status;
+        if (winner) {
+            status = `Winner: ${winner}`;
+        } else if (!state.squares.includes(null)) {
+            status = "Draw!";
+        } else {
+            status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;
+        }
+
+        return DomBuilder.of('div')
+            .addClass('status')
+            .inner(status);
+    }
+
+    function Board() {
+        const board = DomBuilder.of('div');
+        for (let r = 0; r < 3; r++) {
+            const row = DomBuilder.of('div').addClass('board-row');
+            for (let c = 0; c < 3; c++) {
+                row.append(Square(r * 3 + c));
+            }
+            board.append(row);
+        }
+        return board;
+    }
+
+    function ResetButton() {
+        return DomBuilder.of('button')
+            .addClass('reset-btn')
+            .inner('Reset Game')
+            .event('click', () => {
+                setGameState(() => ({
+                    squares: Array(9).fill(null),
+                    xIsNext: true
+                }));
+            });
+    }
+
+    function handleClick(i) {
+        const state = getGameState();
+        const squares = [...state.squares];
+
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+
+        squares[i] = state.xIsNext ? 'X' : 'O';
+
+        setGameState(prev => ({
+            squares: squares,
+            xIsNext: !prev.xIsNext
+        }));
+    }
+
+    function render() {
+        const root = DomBuilder.ofId('example').removeChildren();
+
+        root.append(
+            StatusDisplay(),
+            Board(),
+            ResetButton()
+        );
+    }
+
+    // Initial render and subscription
+    onGameUpdate(() => render());
+    render();
+
+</script></div><style>
+    .nd-widget {
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #111;
+      color: #fffff;
+      margin: 14px 0;
+    }
+
+    .nd-summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #f5f5f5;
+    }
+
+    .nd-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .nd-tabs button {
+      border: 1px solid #333;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .nd-tabs button.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .nd-code {
+      background: #0d1117;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #222;
+      overflow-x: auto;
+    }
+
+    .nd-preview {
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+  </style><script>
+    function ndTab(id, mode) {
+      const code = document.getElementById(id + "-code");
+      const preview = document.getElementById(id + "-preview");
+
+      const btnCode = document.getElementById(id + "-btn-code");
+      const btnPrev = document.getElementById(id + "-btn-preview");
+
+      if (mode === "code") {
+        code.style.display = "block";
+        preview.style.display = "none";
+        btnCode.classList.add("active");
+        btnPrev.classList.remove("active");
+      } else {
+        code.style.display = "none";
+        preview.style.display = "block";
+        btnPrev.classList.add("active");
+        btnCode.classList.remove("active");
+      }
+    }
+  </script></details></span></p></p></span></p><p><h2 id="tic-tac-toe-with-time-machine" ><span><span>Tic tac toe with time machine</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>With time machine</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-qxc1dwrkrdi','code')"  class="active"  id="nd-qxc1dwrkrdi-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-qxc1dwrkrdi','preview')"  id="nd-qxc1dwrkrdi-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-qxc1dwrkrdi-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
+<span class="hljs-selector-id">#example2</span> {
+    <span class="hljs-attribute">background</span>: white;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">2rem</span>;
+    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">12px</span>;
+    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">4px</span> <span class="hljs-number">20px</span> <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.1</span>);
+    <span class="hljs-attribute">text-align</span>: center;
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">flex-direction</span>: row;
+    <span class="hljs-attribute">gap</span>: <span class="hljs-number">2rem</span>;
+    <span class="hljs-attribute">align-items</span>: flex-start;
+}
+
+<span class="hljs-selector-class">.game-board</span> {
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">flex-direction</span>: column;
+    <span class="hljs-attribute">align-items</span>: center;
+}
+
+<span class="hljs-selector-class">.game-info</span> {
+    <span class="hljs-attribute">text-align</span>: left;
+    <span class="hljs-attribute">min-width</span>: <span class="hljs-number">150px</span>;
+    <span class="hljs-attribute">color</span>: <span class="hljs-number">#333</span>;
+}
+
+<span class="hljs-selector-class">.status</span> {
+    <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5rem</span>;
+    <span class="hljs-attribute">font-weight</span>: bold;
+    <span class="hljs-attribute">color</span>: <span class="hljs-number">#333</span>;
+}
+
+<span class="hljs-selector-class">.board-row</span> {
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">justify-content</span>: center;
+}
+
+<span class="hljs-selector-class">.square</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">80px</span>;
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">80px</span>;
+    <span class="hljs-attribute">background</span>: <span class="hljs-number">#fff</span>;
+    <span class="hljs-attribute">border</span>: <span class="hljs-number">2px</span> solid <span class="hljs-number">#ddd</span>;
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2rem</span>;
+    <span class="hljs-attribute">font-weight</span>: bold;
+    <span class="hljs-attribute">line-height</span>: <span class="hljs-number">80px</span>;
+    <span class="hljs-attribute">margin</span>: -<span class="hljs-number">1px</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+    <span class="hljs-attribute">cursor</span>: pointer;
+    <span class="hljs-attribute">transition</span>: background <span class="hljs-number">0.2s</span>;
+    <span class="hljs-attribute">display</span>: flex;
+    <span class="hljs-attribute">justify-content</span>: center;
+    <span class="hljs-attribute">align-items</span>: center;
+}
+
+<span class="hljs-selector-class">.square</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">background</span>: <span class="hljs-number">#f9f9f9</span>;
+}
+
+<span class="hljs-selector-class">.square</span><span class="hljs-selector-pseudo">:focus</span> {
+    <span class="hljs-attribute">outline</span>: none;
+    <span class="hljs-attribute">background</span>: <span class="hljs-number">#eef</span>;
+}
+
+<span class="hljs-selector-class">.reset-btn</span> {
+    <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#007bff</span>;
+    <span class="hljs-attribute">color</span>: white;
+    <span class="hljs-attribute">border</span>: none;
+    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">6px</span>;
+    <span class="hljs-attribute">cursor</span>: pointer;
+    <span class="hljs-attribute">transition</span>: background <span class="hljs-number">0.3s</span>;
+}
+
+<span class="hljs-selector-class">.reset-btn</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#0056b3</span>;
+}
+
+<span class="hljs-selector-tag">ol</span> {
+    <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">30px</span>;
+}
+
+<span class="hljs-selector-tag">li</span> {
+    <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">8px</span>;
+}
+
+<span class="hljs-selector-class">.history-btn</span> {
+    <span class="hljs-attribute">background</span>: <span class="hljs-number">#f8f9fa</span>;
+    <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#ccc</span>;
+    <span class="hljs-attribute">padding</span>: <span class="hljs-number">4px</span> <span class="hljs-number">8px</span>;
+    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">4px</span>;
+    <span class="hljs-attribute">cursor</span>: pointer;
+    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">0.9rem</span>;
+}
+
+<span class="hljs-selector-class">.history-btn</span><span class="hljs-selector-pseudo">:hover</span> {
+    <span class="hljs-attribute">background</span>: <span class="hljs-number">#e2e6ea</span>;
+}
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;example2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
+<span class="hljs-comment">// --- Framework Utilities provided by user ---</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">useState</span>(<span class="hljs-params">defaultState</span>) {
+    <span class="hljs-keyword">let</span> state = defaultState;
+    <span class="hljs-keyword">let</span> onChangeLambda = [];
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">onChange</span> = lambda =&gt; {
+        onChangeLambda.<span class="hljs-title function_">push</span>(lambda);
+    }
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">setState</span> = lambda =&gt; {
+        state = <span class="hljs-title function_">lambda</span>(state);
+        onChangeLambda.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">func</span> =&gt;</span> {
+            <span class="hljs-title function_">func</span>(state)
+        });
+    }
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">getState</span> = (<span class="hljs-params"></span>) =&gt; state;
+    <span class="hljs-keyword">return</span> [getState, setState, onChange];
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_URL</span> = <span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SVG_TAGS</span> = [<span class="hljs-string">&quot;svg&quot;</span>, <span class="hljs-string">&quot;g&quot;</span>, <span class="hljs-string">&quot;circle&quot;</span>, <span class="hljs-string">&quot;ellipse&quot;</span>, <span class="hljs-string">&quot;line&quot;</span>, <span class="hljs-string">&quot;path&quot;</span>, <span class="hljs-string">&quot;polygon&quot;</span>, <span class="hljs-string">&quot;polyline&quot;</span>, <span class="hljs-string">&quot;rect&quot;</span>];
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DomBuilder</span> {
+    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">element</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = element; }
+    <span class="hljs-title function_">attr</span>(<span class="hljs-params">name, value = <span class="hljs-string">&quot;&quot;</span></span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(name, value); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">style</span>(<span class="hljs-params">styleStr</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;style&quot;</span>, styleStr); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">append</span>(<span class="hljs-params">...elements</span>) {
+        elements.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> {
+            <span class="hljs-keyword">if</span> (!e) <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(e)) {
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(e)) {
+                e.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">actualElem</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">append</span>(actualElem));
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">appendChild</span>(e.<span class="hljs-title function_">build</span>());
+            }
+        })
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">inner</span>(<span class="hljs-params">value</span>) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isPromise</span>(value)) {
+            value.<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = v);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">innerHTML</span> = value;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">removeChildren</span>(<span class="hljs-params"></span>) {
+        <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">firstChild</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">removeChild</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">lastChild</span>); }
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-title function_">event</span>(<span class="hljs-params">eventName, lambda</span>) { <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-title function_">addEventListener</span>(eventName, lambda); <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>; }
+    <span class="hljs-title function_">build</span>(<span class="hljs-params"></span>) { <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>; }
+    <span class="hljs-title function_">addClass</span>(<span class="hljs-params">className</span>) {
+        <span class="hljs-keyword">if</span> (!className) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+        className.<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot; &quot;</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> c).<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">c</span> =&gt;</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span>.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(c));
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>;
+    }
+    <span class="hljs-keyword">static</span> <span class="hljs-title function_">of</span>(<span class="hljs-params">elem</span>) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isElement</span>(elem)) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(elem);
+        <span class="hljs-keyword">const</span> isSvg = <span class="hljs-variable constant_">SVG_TAGS</span>.<span class="hljs-title function_">includes</span>(elem);
+        <span class="hljs-keyword">const</span> element = isSvg ? <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElementNS</span>(<span class="hljs-variable constant_">SVG_URL</span>, elem) : <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">createElement</span>(elem);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(element);
+    }
+    <span class="hljs-keyword">static</span> <span class="hljs-title function_">ofId</span>(<span class="hljs-params">id</span>) { <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DomBuilder</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(id)); }
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isElement</span>(<span class="hljs-params">o</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> <span class="hljs-title class_">HTMLElement</span> === <span class="hljs-string">&quot;object&quot;</span> ? o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">HTMLElement</span> : o &amp;&amp; <span class="hljs-keyword">typeof</span> o === <span class="hljs-string">&quot;object&quot;</span> &amp;&amp; o !== <span class="hljs-literal">null</span> &amp;&amp; o.<span class="hljs-property">nodeType</span> === <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-keyword">typeof</span> o.<span class="hljs-property">nodeName</span> === <span class="hljs-string">&quot;string&quot;</span>;
+}
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">isPromise</span>(<span class="hljs-params">o</span>) { <span class="hljs-keyword">return</span> o <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Promise</span>; }
+
+<span class="hljs-comment">// --- Tic-Tac-Toe Game Logic ---</span>
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">calculateWinner</span>(<span class="hljs-params">squares</span>) {
+    <span class="hljs-keyword">const</span> lines = [
+        [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>], <span class="hljs-comment">// rows</span>
+        [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">7</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>], <span class="hljs-comment">// cols</span>
+        [<span class="hljs-number">0</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>]             <span class="hljs-comment">// diagonals</span>
+    ];
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; lines.<span class="hljs-property">length</span>; i++) {
+        <span class="hljs-keyword">const</span> [a, b, c] = lines[i];
+        <span class="hljs-keyword">if</span> (squares[a] &amp;&amp; squares[a] === squares[b] &amp;&amp; squares[a] === squares[c]) {
+            <span class="hljs-keyword">return</span> squares[a];
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+
+<span class="hljs-comment">// --- Components ---</span>
+
+<span class="hljs-keyword">const</span> [getGameState, setGameState, onGameUpdate] = <span class="hljs-title function_">useState</span>({
+    <span class="hljs-attr">history</span>: [{ <span class="hljs-attr">squares</span>: <span class="hljs-title class_">Array</span>(<span class="hljs-number">9</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-literal">null</span>) }],
+    <span class="hljs-attr">currentStep</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">xIsNext</span>: <span class="hljs-literal">true</span>
+});
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Square</span>(<span class="hljs-params">i</span>) {
+    <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+    <span class="hljs-keyword">const</span> current = state.<span class="hljs-property">history</span>[state.<span class="hljs-property">currentStep</span>];
+    <span class="hljs-keyword">const</span> value = current.<span class="hljs-property">squares</span>[i];
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;button&#x27;</span>)
+        .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;square&#x27;</span>)
+        .<span class="hljs-title function_">inner</span>(value || <span class="hljs-string">&#x27;&#x27;</span>)
+        .<span class="hljs-title function_">event</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">handleClick</span>(i));
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">StatusDisplay</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+    <span class="hljs-keyword">const</span> current = state.<span class="hljs-property">history</span>[state.<span class="hljs-property">currentStep</span>];
+    <span class="hljs-keyword">const</span> winner = <span class="hljs-title function_">calculateWinner</span>(current.<span class="hljs-property">squares</span>);
+
+    <span class="hljs-keyword">let</span> status;
+    <span class="hljs-keyword">if</span> (winner) {
+        status = <span class="hljs-string">`Winner: <span class="hljs-subst">${winner}</span>`</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!current.<span class="hljs-property">squares</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-literal">null</span>)) {
+        status = <span class="hljs-string">&quot;Draw!&quot;</span>;
+    } <span class="hljs-keyword">else</span> {
+        status = <span class="hljs-string">`Next player: <span class="hljs-subst">${state.xIsNext ? <span class="hljs-string">&#x27;X&#x27;</span> : <span class="hljs-string">&#x27;O&#x27;</span>}</span>`</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>)
+        .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;status&#x27;</span>)
+        .<span class="hljs-title function_">inner</span>(status);
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">Board</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> board = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">3</span>; r++) {
+        <span class="hljs-keyword">const</span> row = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>).<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;board-row&#x27;</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">3</span>; c++) {
+            row.<span class="hljs-title function_">append</span>(<span class="hljs-title class_">Square</span>(r * <span class="hljs-number">3</span> + c));
+        }
+        board.<span class="hljs-title function_">append</span>(row);
+    }
+    <span class="hljs-keyword">return</span> board;
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MoveList</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+    <span class="hljs-keyword">const</span> moves = state.<span class="hljs-property">history</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">step, move</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> desc = move ? <span class="hljs-string">`Go to move #<span class="hljs-subst">${move}</span>`</span> : <span class="hljs-string">&#x27;Go to game start&#x27;</span>;
+
+        <span class="hljs-keyword">const</span> btn = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;button&#x27;</span>)
+            .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;history-btn&#x27;</span>)
+            .<span class="hljs-title function_">inner</span>(desc)
+            .<span class="hljs-title function_">event</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">jumpTo</span>(move));
+
+        <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;li&#x27;</span>).<span class="hljs-title function_">append</span>(btn);
+    });
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;ol&#x27;</span>).<span class="hljs-title function_">append</span>(...moves);
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ResetButton</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;button&#x27;</span>)
+        .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;reset-btn&#x27;</span>)
+        .<span class="hljs-title function_">inner</span>(<span class="hljs-string">&#x27;Reset Game&#x27;</span>)
+        .<span class="hljs-title function_">event</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
+            <span class="hljs-title function_">setGameState</span>(<span class="hljs-function">() =&gt;</span> ({
+                <span class="hljs-attr">history</span>: [{ <span class="hljs-attr">squares</span>: <span class="hljs-title class_">Array</span>(<span class="hljs-number">9</span>).<span class="hljs-title function_">fill</span>(<span class="hljs-literal">null</span>) }],
+                <span class="hljs-attr">currentStep</span>: <span class="hljs-number">0</span>,
+                <span class="hljs-attr">xIsNext</span>: <span class="hljs-literal">true</span>
+            }));
+        });
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">jumpTo</span>(<span class="hljs-params">step</span>) {
+    <span class="hljs-title function_">setGameState</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> ({
+        ...prev,
+        <span class="hljs-attr">currentStep</span>: step,
+        <span class="hljs-attr">xIsNext</span>: (step % <span class="hljs-number">2</span>) === <span class="hljs-number">0</span>
+    }));
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">handleClick</span>(<span class="hljs-params">i</span>) {
+    <span class="hljs-keyword">const</span> state = <span class="hljs-title function_">getGameState</span>();
+    <span class="hljs-keyword">const</span> history = state.<span class="hljs-property">history</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, state.<span class="hljs-property">currentStep</span> + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">const</span> current = history[history.<span class="hljs-property">length</span> - <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">const</span> squares = [...current.<span class="hljs-property">squares</span>];
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_">calculateWinner</span>(squares) || squares[i]) {
+        <span class="hljs-keyword">return</span>;
+    }
+
+    squares[i] = state.<span class="hljs-property">xIsNext</span> ? <span class="hljs-string">&#x27;X&#x27;</span> : <span class="hljs-string">&#x27;O&#x27;</span>;
+
+    <span class="hljs-title function_">setGameState</span>(<span class="hljs-function"><span class="hljs-params">prev</span> =&gt;</span> ({
+        <span class="hljs-attr">history</span>: history.<span class="hljs-title function_">concat</span>([{ <span class="hljs-attr">squares</span>: squares }]),
+        <span class="hljs-attr">currentStep</span>: history.<span class="hljs-property">length</span>,
+        <span class="hljs-attr">xIsNext</span>: !prev.<span class="hljs-property">xIsNext</span>
+    }));
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> root = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">ofId</span>(<span class="hljs-string">&#x27;example2&#x27;</span>).<span class="hljs-title function_">removeChildren</span>();
+
+    <span class="hljs-keyword">const</span> gameBoard = <span class="hljs-title class_">DomBuilder</span>.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>).<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;game-board&#x27;</span>).<span class="hljs-title function_">append</span>(
+        <span class="hljs-title class_">StatusDisplay</span>(),
+        <span class="hljs-title class_">Board</span>(),
+        <span class="hljs-title class_">ResetButton</span>()
+    );
+
+    <span class="hljs-keyword">const</span> gameInfo = <span class="hljs-title class_">DomBuilder</span>
+    	.<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>)
+     .<span class="hljs-title function_">addClass</span>(<span class="hljs-string">&#x27;game-info&#x27;</span>)
+     .<span class="hljs-title function_">append</span>(
+        <span class="hljs-title class_">DomBuilder</span>
+        .<span class="hljs-title function_">of</span>(<span class="hljs-string">&#x27;div&#x27;</span>)
+        .<span class="hljs-title function_">inner</span>(<span class="hljs-string">&quot;History&quot;</span>),
+        <span class="hljs-title class_">MoveList</span>()
+    );
+
+    root.<span class="hljs-title function_">append</span>(gameBoard, gameInfo);
+}
+
+<span class="hljs-comment">// Initial render and subscription</span>
+<span class="hljs-title function_">onGameUpdate</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">render</span>());
+<span class="hljs-title function_">render</span>();
+
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+</code></pre><div><button class="nd_copy"  id="nd_btn_5"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_5" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_5" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_5');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("<style>\n#example2 {\n    background: white;\n    padding: 2rem;\n    border-radius: 12px;\n    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\n    text-align: center;\n    display: flex;\n    flex-direction: row;\n    gap: 2rem;\n    align-items: flex-start;\n}\n\n.game-board {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.game-info {\n    text-align: left;\n    min-width: 150px;\n    color: #333;\n}\n\n.status {\n    margin-bottom: 20px;\n    font-size: 1.5rem;\n    font-weight: bold;\n    color: #333;\n}\n\n.board-row {\n    display: flex;\n    justify-content: center;\n}\n\n.square {\n    width: 80px;\n    height: 80px;\n    background: #fff;\n    border: 2px solid #ddd;\n    font-size: 2rem;\n    font-weight: bold;\n    line-height: 80px;\n    margin: -1px;\n    padding: 0;\n    cursor: pointer;\n    transition: background 0.2s;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n.square:hover {\n    background: #f9f9f9;\n}\n\n.square:focus {\n    outline: none;\n    background: #eef;\n}\n\n.reset-btn {\n    margin-top: 20px;\n    padding: 10px 20px;\n    font-size: 1rem;\n    background-color: #007bff;\n    color: white;\n    border: none;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: background 0.3s;\n}\n\n.reset-btn:hover {\n    background-color: #0056b3;\n}\n\nol {\n    padding-left: 30px;\n}\n\nli {\n    margin-bottom: 8px;\n}\n\n.history-btn {\n    background: #f8f9fa;\n    border: 1px solid #ccc;\n    padding: 4px 8px;\n    border-radius: 4px;\n    cursor: pointer;\n    font-size: 0.9rem;\n}\n\n.history-btn:hover {\n    background: #e2e6ea;\n}\n<\/style>\n<div id=\"example2\"><\/div>\n\n<script type=\"module\">\n// --- Framework Utilities provided by user ---\n\nfunction useState(defaultState) {\n    let state = defaultState;\n    let onChangeLambda = [];\n    const onChange = lambda => {\n        onChangeLambda.push(lambda);\n    }\n    const setState = lambda => {\n        state = lambda(state);\n        onChangeLambda.forEach(func => {\n            func(state)\n        });\n    }\n    const getState = () => state;\n    return [getState, setState, onChange];\n}\n\nconst SVG_URL = \"http://www.w3.org/2000/svg\";\nconst SVG_TAGS = [\"svg\", \"g\", \"circle\", \"ellipse\", \"line\", \"path\", \"polygon\", \"polyline\", \"rect\"];\n\nclass DomBuilder {\n    constructor(element) { this.element = element; }\n    attr(name, value = \"\") { this.element.setAttribute(name, value); return this; }\n    style(styleStr) { this.element.setAttribute(\"style\", styleStr); return this; }\n    append(...elements) {\n        elements.forEach(e => {\n            if (!e) return;\n            if (isElement(e)) {\n                this.element.appendChild(e);\n            } else if (isPromise(e)) {\n                e.then(actualElem => this.append(actualElem));\n            } else {\n                this.element.appendChild(e.build());\n            }\n        })\n        return this;\n    }\n    inner(value) {\n        if (isPromise(value)) {\n            value.then(v => this.element.innerHTML = v);\n        } else {\n            this.element.innerHTML = value;\n        }\n        return this;\n    }\n    removeChildren() {\n        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }\n        return this;\n    }\n    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }\n    build() { return this.element; }\n    addClass(className) {\n        if (!className) return this;\n        className.split(\" \").filter(c => c).forEach(c => this.element.classList.add(c));\n        return this;\n    }\n    static of(elem) {\n        if (isElement(elem)) return new DomBuilder(elem);\n        const isSvg = SVG_TAGS.includes(elem);\n        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);\n        return new DomBuilder(element);\n    }\n    static ofId(id) { return new DomBuilder(document.getElementById(id)); }\n}\n\nfunction isElement(o) {\n    return typeof HTMLElement === \"object\" ? o instanceof HTMLElement : o && typeof o === \"object\" && o !== null && o.nodeType === 1 && typeof o.nodeName === \"string\";\n}\nfunction isPromise(o) { return o instanceof Promise; }\n\n// --- Tic-Tac-Toe Game Logic ---\n\nfunction calculateWinner(squares) {\n    const lines = [\n        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows\n        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols\n        [0, 4, 8], [2, 4, 6]             // diagonals\n    ];\n    for (let i = 0; i < lines.length; i++) {\n        const [a, b, c] = lines[i];\n        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {\n            return squares[a];\n        }\n    }\n    return null;\n}\n\n// --- Components ---\n\nconst [getGameState, setGameState, onGameUpdate] = useState({\n    history: [{ squares: Array(9).fill(null) }],\n    currentStep: 0,\n    xIsNext: true\n});\n\nfunction Square(i) {\n    const state = getGameState();\n    const current = state.history[state.currentStep];\n    const value = current.squares[i];\n\n    return DomBuilder.of('button')\n        .addClass('square')\n        .inner(value || '')\n        .event('click', () => handleClick(i));\n}\n\nfunction StatusDisplay() {\n    const state = getGameState();\n    const current = state.history[state.currentStep];\n    const winner = calculateWinner(current.squares);\n\n    let status;\n    if (winner) {\n        status = `Winner: ${winner}`;\n    } else if (!current.squares.includes(null)) {\n        status = \"Draw!\";\n    } else {\n        status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;\n    }\n\n    return DomBuilder.of('div')\n        .addClass('status')\n        .inner(status);\n}\n\nfunction Board() {\n    const board = DomBuilder.of('div');\n    for (let r = 0; r < 3; r++) {\n        const row = DomBuilder.of('div').addClass('board-row');\n        for (let c = 0; c < 3; c++) {\n            row.append(Square(r * 3 + c));\n        }\n        board.append(row);\n    }\n    return board;\n}\n\nfunction MoveList() {\n    const state = getGameState();\n    const moves = state.history.map((step, move) => {\n        const desc = move ? `Go to move #${move}` : 'Go to game start';\n\n        const btn = DomBuilder.of('button')\n            .addClass('history-btn')\n            .inner(desc)\n            .event('click', () => jumpTo(move));\n\n        return DomBuilder.of('li').append(btn);\n    });\n\n    return DomBuilder.of('ol').append(...moves);\n}\n\nfunction ResetButton() {\n    return DomBuilder.of('button')\n        .addClass('reset-btn')\n        .inner('Reset Game')\n        .event('click', () => {\n            setGameState(() => ({\n                history: [{ squares: Array(9).fill(null) }],\n                currentStep: 0,\n                xIsNext: true\n            }));\n        });\n}\n\nfunction jumpTo(step) {\n    setGameState(prev => ({\n        ...prev,\n        currentStep: step,\n        xIsNext: (step % 2) === 0\n    }));\n}\n\nfunction handleClick(i) {\n    const state = getGameState();\n    const history = state.history.slice(0, state.currentStep + 1);\n    const current = history[history.length - 1];\n    const squares = [...current.squares];\n\n    if (calculateWinner(squares) || squares[i]) {\n        return;\n    }\n\n    squares[i] = state.xIsNext ? 'X' : 'O';\n\n    setGameState(prev => ({\n        history: history.concat([{ squares: squares }]),\n        currentStep: history.length,\n        xIsNext: !prev.xIsNext\n    }));\n}\n\nfunction render() {\n    const root = DomBuilder.ofId('example2').removeChildren();\n\n    const gameBoard = DomBuilder.of('div').addClass('game-board').append(\n        StatusDisplay(),\n        Board(),\n        ResetButton()\n    );\n\n    const gameInfo = DomBuilder\n    \t.of('div')\n     .addClass('game-info')\n     .append(\n        DomBuilder\n        .of('div')\n        .inner(\"History\"),\n        MoveList()\n    );\n\n    root.append(gameBoard, gameInfo);\n}\n\n// Initial render and subscription\nonGameUpdate(() => render());\nrender();\n\n<\/script>\n\n");
+    var t = document.getElementById('nd_ct_5');
+    var s = document.getElementById('nd_sv_5');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p></div><div id="nd-qxc1dwrkrdi-preview"  class="nd-preview"  style="display:none;" ><style>
+#example2 {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-info {
+    text-align: left;
+    min-width: 150px;
+    color: #333;
+}
+
+.status {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+}
+
+.square {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border: 2px solid #ddd;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 80px;
+    margin: -1px;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square:hover {
+    background: #f9f9f9;
+}
+
+.square:focus {
+    outline: none;
+    background: #eef;
+}
+
+.reset-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.reset-btn:hover {
+    background-color: #0056b3;
+}
+
+ol {
+    padding-left: 30px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+.history-btn {
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.history-btn:hover {
+    background: #e2e6ea;
+}
+</style><div id="example2" ></div><script type="module" >
+// --- Framework Utilities provided by user ---
+
+function useState(defaultState) {
+    let state = defaultState;
+    let onChangeLambda = [];
+    const onChange = lambda => {
+        onChangeLambda.push(lambda);
+    }
+    const setState = lambda => {
+        state = lambda(state);
+        onChangeLambda.forEach(func => {
+            func(state)
+        });
+    }
+    const getState = () => state;
+    return [getState, setState, onChange];
+}
+
+const SVG_URL = "http://www.w3.org/2000/svg";
+const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+
+class DomBuilder {
+    constructor(element) { this.element = element; }
+    attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+    style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+    append(...elements) {
+        elements.forEach(e => {
+            if (!e) return;
+            if (isElement(e)) {
+                this.element.appendChild(e);
+            } else if (isPromise(e)) {
+                e.then(actualElem => this.append(actualElem));
+            } else {
+                this.element.appendChild(e.build());
+            }
+        })
+        return this;
+    }
+    inner(value) {
+        if (isPromise(value)) {
+            value.then(v => this.element.innerHTML = v);
+        } else {
+            this.element.innerHTML = value;
+        }
+        return this;
+    }
+    removeChildren() {
+        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+        return this;
+    }
+    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+    build() { return this.element; }
+    addClass(className) {
+        if (!className) return this;
+        className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+        return this;
+    }
+    static of(elem) {
+        if (isElement(elem)) return new DomBuilder(elem);
+        const isSvg = SVG_TAGS.includes(elem);
+        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+        return new DomBuilder(element);
+    }
+    static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+}
+
+function isElement(o) {
+    return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+}
+function isPromise(o) { return o instanceof Promise; }
+
+// --- Tic-Tac-Toe Game Logic ---
+
+function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+        [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+    return null;
+}
+
+// --- Components ---
+
+const [getGameState, setGameState, onGameUpdate] = useState({
+    history: [{ squares: Array(9).fill(null) }],
+    currentStep: 0,
+    xIsNext: true
+});
+
+function Square(i) {
+    const state = getGameState();
+    const current = state.history[state.currentStep];
+    const value = current.squares[i];
+
+    return DomBuilder.of('button')
+        .addClass('square')
+        .inner(value || '')
+        .event('click', () => handleClick(i));
+}
+
+function StatusDisplay() {
+    const state = getGameState();
+    const current = state.history[state.currentStep];
+    const winner = calculateWinner(current.squares);
+
+    let status;
+    if (winner) {
+        status = `Winner: ${winner}`;
+    } else if (!current.squares.includes(null)) {
+        status = "Draw!";
+    } else {
+        status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;
+    }
+
+    return DomBuilder.of('div')
+        .addClass('status')
+        .inner(status);
+}
+
+function Board() {
+    const board = DomBuilder.of('div');
+    for (let r = 0; r < 3; r++) {
+        const row = DomBuilder.of('div').addClass('board-row');
+        for (let c = 0; c < 3; c++) {
+            row.append(Square(r * 3 + c));
+        }
+        board.append(row);
+    }
+    return board;
+}
+
+function MoveList() {
+    const state = getGameState();
+    const moves = state.history.map((step, move) => {
+        const desc = move ? `Go to move #${move}` : 'Go to game start';
+
+        const btn = DomBuilder.of('button')
+            .addClass('history-btn')
+            .inner(desc)
+            .event('click', () => jumpTo(move));
+
+        return DomBuilder.of('li').append(btn);
+    });
+
+    return DomBuilder.of('ol').append(...moves);
+}
+
+function ResetButton() {
+    return DomBuilder.of('button')
+        .addClass('reset-btn')
+        .inner('Reset Game')
+        .event('click', () => {
+            setGameState(() => ({
+                history: [{ squares: Array(9).fill(null) }],
+                currentStep: 0,
+                xIsNext: true
+            }));
+        });
+}
+
+function jumpTo(step) {
+    setGameState(prev => ({
+        ...prev,
+        currentStep: step,
+        xIsNext: (step % 2) === 0
+    }));
+}
+
+function handleClick(i) {
+    const state = getGameState();
+    const history = state.history.slice(0, state.currentStep + 1);
+    const current = history[history.length - 1];
+    const squares = [...current.squares];
+
+    if (calculateWinner(squares) || squares[i]) {
+        return;
+    }
+
+    squares[i] = state.xIsNext ? 'X' : 'O';
+
+    setGameState(prev => ({
+        history: history.concat([{ squares: squares }]),
+        currentStep: history.length,
+        xIsNext: !prev.xIsNext
+    }));
+}
+
+function render() {
+    const root = DomBuilder.ofId('example2').removeChildren();
+
+    const gameBoard = DomBuilder.of('div').addClass('game-board').append(
+        StatusDisplay(),
+        Board(),
+        ResetButton()
+    );
+
+    const gameInfo = DomBuilder
+    	.of('div')
+     .addClass('game-info')
+     .append(
+        DomBuilder
+        .of('div')
+        .inner("History"),
+        MoveList()
+    );
+
+    root.append(gameBoard, gameInfo);
+}
+
+// Initial render and subscription
+onGameUpdate(() => render());
+render();
+
+</script></div><style>
+    .nd-widget {
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #111;
+      color: #fffff;
+      margin: 14px 0;
+    }
+
+    .nd-summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #f5f5f5;
+    }
+
+    .nd-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .nd-tabs button {
+      border: 1px solid #333;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .nd-tabs button.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .nd-code {
+      background: #0d1117;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #222;
+      overflow-x: auto;
+    }
+
+    .nd-preview {
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+  </style><script>
+    function ndTab(id, mode) {
+      const code = document.getElementById(id + "-code");
+      const preview = document.getElementById(id + "-preview");
+
+      const btnCode = document.getElementById(id + "-btn-code");
+      const btnPrev = document.getElementById(id + "-btn-preview");
+
+      if (mode === "code") {
+        code.style.display = "block";
+        preview.style.display = "none";
+        btnCode.classList.add("active");
+        btnPrev.classList.remove("active");
+      } else {
+        code.style.display = "none";
+        preview.style.display = "block";
+        btnPrev.classList.add("active");
+        btnCode.classList.remove("active");
+      }
+    }
+  </script></details></span></p></p></span></p><p><h2 id="explanation" ><span><span>Explanation</span></span></h2></p></article>

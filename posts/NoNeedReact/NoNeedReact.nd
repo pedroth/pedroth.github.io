@@ -1,0 +1,818 @@
+:: import "./macros.js"; ::
+<!-- 
+title: You don't need React\: creating a minimal UI library
+creationDate: 17/05/2026
+lastUpdateDate: 17/05/2026
+tags: [
+    js,
+    ui,
+    library,
+    project
+]
+-->
+
+:: 
+
+function renderHTML(x, args) {
+	const match = x.match(/```html([\s\S]*?)```/);
+	if (!match) return x;
+
+	const htmlCode = match[1].trim();
+	const title = args?.[0] || "HTML Preview";
+
+	const id = "nd-" + Math.random().toString(36).slice(2);
+
+	return `
+<details class="nd-widget" open>
+  <summary class="nd-summary">${title}</summary>
+
+  <div class="nd-tabs">
+    <button onclick="ndTab('${id}','code')" class="active" id="${id}-btn-code">Code</button>
+    <button onclick="ndTab('${id}','preview')" id="${id}-btn-preview">Preview</button>
+  </div>
+
+  <!-- CODE TAB (raw Nabladown rendering) -->
+  <div id="${id}-code" class="nd-code">
+    ${x}
+  </div>
+
+  <!-- PREVIEW TAB (rendered HTML) -->
+  <div id="${id}-preview" class="nd-preview" style="display:none;">
+    ${htmlCode}
+  </div>
+
+  <style>
+    .nd-widget {
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #111;
+      color: #fffff;
+      margin: 14px 0;
+    }
+
+    .nd-summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #f5f5f5;
+    }
+
+    .nd-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .nd-tabs button {
+      border: 1px solid #333;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      color: #ccc;
+      cursor: pointer;
+    }
+
+    .nd-tabs button.active {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    .nd-code {
+      background: #0d1117;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #222;
+      overflow-x: auto;
+    }
+
+    .nd-preview {
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+    }
+  </style>
+
+  <script>
+    function ndTab(id, mode) {
+      const code = document.getElementById(id + "-code");
+      const preview = document.getElementById(id + "-preview");
+
+      const btnCode = document.getElementById(id + "-btn-code");
+      const btnPrev = document.getElementById(id + "-btn-preview");
+
+      if (mode === "code") {
+        code.style.display = "block";
+        preview.style.display = "none";
+        btnCode.classList.add("active");
+        btnPrev.classList.remove("active");
+      } else {
+        code.style.display = "none";
+        preview.style.display = "block";
+        btnPrev.classList.add("active");
+        btnCode.classList.remove("active");
+      }
+    }
+  </script>
+</details>
+`;
+}
+
+MACROS = { renderHTML };
+::
+
+React is an amazing library, that revolutionized the way to build UIs. It popularized the idea of immediate mode UI programming (at least to a big audience), where the UI is a function of the state.
+
+$$
+\text{UI} = f(\text{state})
+$$
+
+This enables to build complex UIs in a simple way. We can use ifs and loops to render the UI, without worrying about details.
+
+```js
+// example of immediate mode UI pseudo-code
+function renderUI(state) {
+    if(state.loading) {
+        return `<div>Loading...</div>`;
+    }
+    return `
+        <div>
+            <h1>${state.title}</h1>
+            <p>${state.description}</p>
+            ${state.items.map(item => `<li>${item}</li>`).join("")}
+        </div>
+    `;
+}
+
+```
+
+The only issue with immediate mode is maybe performance, since we need to re-render the entire UI on every state change. Still there are many technique to optimize this. The others things that made React good in my opinion are the way that it unites `html` with `js`, and the reactive programming model. But does these 3 concepts require such a big library? Can we do something similar with just a few lines of code? The answer is yes, and that’s what I want to show in this post. I will try to recreate the `React` tutorial with a minimal UI library.
+
+In summary we want three concepts in our minimal library:
+- Immediate mode UI: the UI is a function of the state.
+- Uniting `HTML` with `JS`, but we don't need new syntax, we can just use regular `JS` (it will be good).
+- A simple reactive programming model, just some publish-subscribe mechanism in to variables. From my understanding it could be something similar to *signals* in `Solid.js` or something from `RxJS`.
+
+## Our minimal UI library
+
+Creating dom nodes using a composable `JS` API.
+
+```js
+const SVG_URL = "http://www.w3.org/2000/svg";
+const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+class DomBuilder {
+    constructor(element) { this.element = element; }
+    attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+    style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+    append(...elements) {
+        elements.forEach(e => {
+            if (!e) return;
+            if (isElement(e)) {
+                this.element.appendChild(e);
+            } else if (isPromise(e)) {
+                e.then(actualElem => this.append(actualElem));
+            } else {
+                this.element.appendChild(e.build());
+            }
+        })
+        return this;
+    }
+    inner(value) {
+        if (isPromise(value)) {
+            value.then(v => this.element.innerHTML = v);
+        } else {
+            this.element.innerHTML = value;
+        }
+        return this;
+    }
+    removeChildren() {
+        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+        return this;
+    }
+    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+    build() { return this.element; }
+    addClass(className) {
+        if (!className) return this;
+        className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+        return this;
+    }
+    static of(elem) {
+        if (isElement(elem)) return new DomBuilder(elem);
+        const isSvg = SVG_TAGS.includes(elem);
+        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+        return new DomBuilder(element);
+    }
+    static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+}
+
+// some utilities
+function isElement(o) {
+    return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+}
+function isPromise(o) { return o instanceof Promise; }
+```
+
+A simple reactive state management system.
+
+```js
+function useState(defaultState) {
+    let state = defaultState;
+    let onChangeLambda = [];
+    const onChange = lambda => {
+        onChangeLambda.push(lambda);
+    }
+    const setState = lambda => {
+        state = lambda(state);
+        onChangeLambda.forEach(func => {
+            func(state)
+        });
+    }
+    const getState = () => state;
+    return [getState, setState, onChange];
+}
+```
+
+## Tic tac toe example
+
+@renderHTML("Tic tac toe example"){
+```html
+
+<style>
+    #example {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .status {
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .board-row {
+        display: flex;
+        justify-content: center;
+    }
+
+    .square {
+        width: 80px;
+        height: 80px;
+        background: #fff;
+        border: 2px solid #ddd;
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 80px;
+        margin: -1px;
+        padding: 0;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .square:hover {
+        background: #f9f9f9;
+    }
+
+    .square:focus {
+        outline: none;
+        background: #eef;
+    }
+
+    .reset-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .reset-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+<div id="example"></div>
+
+<script type="module">
+    // --- Framework Utilities provided by user ---
+
+    function useState(defaultState) {
+        let state = defaultState;
+        let onChangeLambda = [];
+        const onChange = lambda => {
+            onChangeLambda.push(lambda);
+        }
+        const setState = lambda => {
+            state = lambda(state);
+            onChangeLambda.forEach(func => {
+                func(state)
+            });
+        }
+        const getState = () => state;
+        return [getState, setState, onChange];
+    }
+
+    const SVG_URL = "http://www.w3.org/2000/svg";
+    const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+
+    class DomBuilder {
+        constructor(element) { this.element = element; }
+        attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+        style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+        append(...elements) {
+            elements.forEach(e => {
+                if (!e) return;
+                if (isElement(e)) {
+                    this.element.appendChild(e);
+                } else if (isPromise(e)) {
+                    e.then(actualElem => this.append(actualElem));
+                } else {
+                    this.element.appendChild(e.build());
+                }
+            })
+            return this;
+        }
+        inner(value) {
+            if (isPromise(value)) {
+                value.then(v => this.element.innerHTML = v);
+            } else {
+                this.element.innerHTML = value;
+            }
+            return this;
+        }
+        removeChildren() {
+            while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+            return this;
+        }
+        event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+        build() { return this.element; }
+        addClass(className) {
+            if (!className) return this;
+            className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+            return this;
+        }
+        static of(elem) {
+            if (isElement(elem)) return new DomBuilder(elem);
+            const isSvg = SVG_TAGS.includes(elem);
+            const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+            return new DomBuilder(element);
+        }
+        static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+    }
+
+    function isElement(o) {
+        return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+    }
+    function isPromise(o) { return o instanceof Promise; }
+
+    // --- Tic-Tac-Toe Game Logic ---
+
+    function calculateWinner(squares) {
+        const lines = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+            [0, 4, 8], [2, 4, 6]             // diagonals
+        ];
+        for (let i = 0; i < lines.length; i++) {
+            const [a, b, c] = lines[i];
+            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+                return squares[a];
+            }
+        }
+        return null;
+    }
+
+    // --- Components ---
+
+    const [getGameState, setGameState, onGameUpdate] = useState({
+        squares: Array(9).fill(null),
+        xIsNext: true
+    });
+
+    function Square(i) {
+        const value = getGameState().squares[i];
+        return DomBuilder.of('button')
+            .addClass('square')
+            .inner(value || '')
+            .event('click', () => handleClick(i));
+    }
+
+    function StatusDisplay() {
+        const state = getGameState();
+        const winner = calculateWinner(state.squares);
+
+        let status;
+        if (winner) {
+            status = `Winner: ${winner}`;
+        } else if (!state.squares.includes(null)) {
+            status = "Draw!";
+        } else {
+            status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;
+        }
+
+        return DomBuilder.of('div')
+            .addClass('status')
+            .inner(status);
+    }
+
+    function Board() {
+        const board = DomBuilder.of('div');
+        for (let r = 0; r < 3; r++) {
+            const row = DomBuilder.of('div').addClass('board-row');
+            for (let c = 0; c < 3; c++) {
+                row.append(Square(r * 3 + c));
+            }
+            board.append(row);
+        }
+        return board;
+    }
+
+    function ResetButton() {
+        return DomBuilder.of('button')
+            .addClass('reset-btn')
+            .inner('Reset Game')
+            .event('click', () => {
+                setGameState(() => ({
+                    squares: Array(9).fill(null),
+                    xIsNext: true
+                }));
+            });
+    }
+
+    function handleClick(i) {
+        const state = getGameState();
+        const squares = [...state.squares];
+
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
+
+        squares[i] = state.xIsNext ? 'X' : 'O';
+
+        setGameState(prev => ({
+            squares: squares,
+            xIsNext: !prev.xIsNext
+        }));
+    }
+
+    function render() {
+        const root = DomBuilder.ofId('example').removeChildren();
+
+        root.append(
+            StatusDisplay(),
+            Board(),
+            ResetButton()
+        );
+    }
+
+    // Initial render and subscription
+    onGameUpdate(() => render());
+    render();
+
+</script>
+```
+}
+
+## Tic tac toe with time machine
+@renderHTML("With time machine"){
+```html
+<style>
+#example2 {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-info {
+    text-align: left;
+    min-width: 150px;
+    color: #333;
+}
+
+.status {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+}
+
+.square {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border: 2px solid #ddd;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 80px;
+    margin: -1px;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square:hover {
+    background: #f9f9f9;
+}
+
+.square:focus {
+    outline: none;
+    background: #eef;
+}
+
+.reset-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.reset-btn:hover {
+    background-color: #0056b3;
+}
+
+ol {
+    padding-left: 30px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+.history-btn {
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.history-btn:hover {
+    background: #e2e6ea;
+}
+</style>
+<div id="example2"></div>
+
+<script type="module">
+// --- Framework Utilities provided by user ---
+
+function useState(defaultState) {
+    let state = defaultState;
+    let onChangeLambda = [];
+    const onChange = lambda => {
+        onChangeLambda.push(lambda);
+    }
+    const setState = lambda => {
+        state = lambda(state);
+        onChangeLambda.forEach(func => {
+            func(state)
+        });
+    }
+    const getState = () => state;
+    return [getState, setState, onChange];
+}
+
+const SVG_URL = "http://www.w3.org/2000/svg";
+const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+
+class DomBuilder {
+    constructor(element) { this.element = element; }
+    attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+    style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+    append(...elements) {
+        elements.forEach(e => {
+            if (!e) return;
+            if (isElement(e)) {
+                this.element.appendChild(e);
+            } else if (isPromise(e)) {
+                e.then(actualElem => this.append(actualElem));
+            } else {
+                this.element.appendChild(e.build());
+            }
+        })
+        return this;
+    }
+    inner(value) {
+        if (isPromise(value)) {
+            value.then(v => this.element.innerHTML = v);
+        } else {
+            this.element.innerHTML = value;
+        }
+        return this;
+    }
+    removeChildren() {
+        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+        return this;
+    }
+    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+    build() { return this.element; }
+    addClass(className) {
+        if (!className) return this;
+        className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+        return this;
+    }
+    static of(elem) {
+        if (isElement(elem)) return new DomBuilder(elem);
+        const isSvg = SVG_TAGS.includes(elem);
+        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+        return new DomBuilder(element);
+    }
+    static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+}
+
+function isElement(o) {
+    return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+}
+function isPromise(o) { return o instanceof Promise; }
+
+// --- Tic-Tac-Toe Game Logic ---
+
+function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+        [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+    return null;
+}
+
+// --- Components ---
+
+const [getGameState, setGameState, onGameUpdate] = useState({
+    history: [{ squares: Array(9).fill(null) }],
+    currentStep: 0,
+    xIsNext: true
+});
+
+function Square(i) {
+    const state = getGameState();
+    const current = state.history[state.currentStep];
+    const value = current.squares[i];
+
+    return DomBuilder.of('button')
+        .addClass('square')
+        .inner(value || '')
+        .event('click', () => handleClick(i));
+}
+
+function StatusDisplay() {
+    const state = getGameState();
+    const current = state.history[state.currentStep];
+    const winner = calculateWinner(current.squares);
+
+    let status;
+    if (winner) {
+        status = `Winner: ${winner}`;
+    } else if (!current.squares.includes(null)) {
+        status = "Draw!";
+    } else {
+        status = `Next player: ${state.xIsNext ? 'X' : 'O'}`;
+    }
+
+    return DomBuilder.of('div')
+        .addClass('status')
+        .inner(status);
+}
+
+function Board() {
+    const board = DomBuilder.of('div');
+    for (let r = 0; r < 3; r++) {
+        const row = DomBuilder.of('div').addClass('board-row');
+        for (let c = 0; c < 3; c++) {
+            row.append(Square(r * 3 + c));
+        }
+        board.append(row);
+    }
+    return board;
+}
+
+function MoveList() {
+    const state = getGameState();
+    const moves = state.history.map((step, move) => {
+        const desc = move ? `Go to move #${move}` : 'Go to game start';
+
+        const btn = DomBuilder.of('button')
+            .addClass('history-btn')
+            .inner(desc)
+            .event('click', () => jumpTo(move));
+
+        return DomBuilder.of('li').append(btn);
+    });
+
+    return DomBuilder.of('ol').append(...moves);
+}
+
+function ResetButton() {
+    return DomBuilder.of('button')
+        .addClass('reset-btn')
+        .inner('Reset Game')
+        .event('click', () => {
+            setGameState(() => ({
+                history: [{ squares: Array(9).fill(null) }],
+                currentStep: 0,
+                xIsNext: true
+            }));
+        });
+}
+
+function jumpTo(step) {
+    setGameState(prev => ({
+        ...prev,
+        currentStep: step,
+        xIsNext: (step % 2) === 0
+    }));
+}
+
+function handleClick(i) {
+    const state = getGameState();
+    const history = state.history.slice(0, state.currentStep + 1);
+    const current = history[history.length - 1];
+    const squares = [...current.squares];
+
+    if (calculateWinner(squares) || squares[i]) {
+        return;
+    }
+
+    squares[i] = state.xIsNext ? 'X' : 'O';
+
+    setGameState(prev => ({
+        history: history.concat([{ squares: squares }]),
+        currentStep: history.length,
+        xIsNext: !prev.xIsNext
+    }));
+}
+
+function render() {
+    const root = DomBuilder.ofId('example2').removeChildren();
+
+    const gameBoard = DomBuilder.of('div').addClass('game-board').append(
+        StatusDisplay(),
+        Board(),
+        ResetButton()
+    );
+
+    const gameInfo = DomBuilder
+    	.of('div')
+     .addClass('game-info')
+     .append(
+        DomBuilder
+        .of('div')
+        .inner("History"),
+        MoveList()
+    );
+
+    root.append(gameBoard, gameInfo);
+}
+
+// Initial render and subscription
+onGameUpdate(() => render());
+render();
+
+</script>
+
+```
+}
+
+
+## Explanation

@@ -22,20 +22,44 @@ tags: [
 ![Tela.js playground](/posts/Telajs/Telajs.webm)
 
 There are many implemented features; here are a few:
-
-- ![Shaders in pure js](/posts/Telajs/shaders_in_js.mp4)
-- ![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
-- ![Ray Tracing](/posts/Telajs/raytrace.png)
-- ![Ray Tracing II](/posts/Telajs/glass_bunny.mp4)
-- ![Ray Tracing III](/posts/Telajs/bunny_glass.mp4)
-- ![SVG parsing and rendering](/posts/Telajs/svg.mp4)
+@scaleDiv(66){
+![Shaders in pure js](/posts/Telajs/shaders_in_js.mp4)
+}
+@scaleDiv(66){
+![3D Raster engine](/posts/Telajs/spyro_raster.mp4)
+}
+@scaleDiv(66){
+![Ray Tracing](/posts/Telajs/raytrace.png)
+}
+@scaleDiv(66){
+![Ray Tracing II](/posts/Telajs/bunny_glass_II.mp4)
+}
+@scaleDiv(66){
+![Ray Tracing III](/posts/Telajs/bunny_glass_III.mp4)
+}
+@scaleDiv(66){
+![SVG parsing and rendering](/posts/Telajs/svg.mp4)
+}
 
 There are also some demos:
-- ![Signed distance function editor](/posts/Telajs/telaSDF.mp4)
-- ![Volumetric noise ](/posts/Telajs/volumetric.mp4)
-- ![Text editor in native OS window](/posts/Telajs/text_editor.mp4)
-- ![Soft-body physics](/posts/Telajs/physics4.mp4)
-- ![Turing patterns demo](/posts/Telajs/turing_patterns.mp4)
+@scaleDiv(66){
+![Signed distance function editor](/posts/Telajs/telaSDF.mp4)
+}
+@scaleDiv(66){
+![Volumetric noise ](/posts/Telajs/volumetric.mp4)
+}
+@scaleDiv(66){
+![Text editor in native OS window](/posts/Telajs/text_editor.mp4)
+}
+@scaleDiv(66){
+![Text editor exploding](/posts/Telajs/text_editor_explode.mp4)
+}
+@scaleDiv(66){
+![Soft-body physics](/posts/Telajs/physics4.mp4)
+}
+@scaleDiv(66){
+![Turing patterns demo](/posts/Telajs/turing_patterns.mp4)
+}
 
 There are many more examples, so check them out!
  

@@ -114,6 +114,17 @@ export default async function post(page) {
   const postsMap = await Database.readPostsAsMap();
   if (!(id in postsMap)) return notFound(page);
   const post = postsMap[id];
+  const htmlPath = `/posts/${id}/index.html`;
+  const htmlRes = await fetch(htmlPath);
+  if (htmlRes.ok) {
+    const html = await htmlRes.text();
+    return DOM.of("div")
+      .append(
+        renderPostHeader(post),
+        str2dom(`<div>${html}</div>`),
+        ...renderPostFooter(post),
+      );
+  }
   const filePath = `/posts/${id}/${id}.nd`;
   const content = await fetch(filePath)
     .then(data =>

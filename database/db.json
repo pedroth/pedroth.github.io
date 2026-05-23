@@ -206,6 +206,18 @@
       ]
     },
     {
+      "id": "NoNeedReact",
+      "title": "You don't need React: creating a minimal UI library",
+      "creationDate": "17/05/2026",
+      "lastUpdateDate": "17/05/2026",
+      "tags": [
+        "js",
+        "ui",
+        "library",
+        "project"
+      ]
+    },
+    {
       "id": "PDE",
       "title": "PDE",
       "creationDate": "01/08/2014",

@@ -115,6 +115,7 @@ The blog builder is a set of scripts designed to update the website. It updates 
 - Add `.webm` video about your post with its name equal to its *unique id*
 - Run `bun run build-blog` in the root.
 
+> Note: titles with `:` should escape it with `\:`.
 
 # TODO
 

@@ -40,6 +40,7 @@ function parseMeta(fileStr) {
     try {
         const auxStack = [];
         metaStr
+            .replace("\\:", "\doublecolon\;")
             .split(":")
             .flatMap(x => x.split("\n"))
             .flatMap(x => x.split(","))
@@ -52,6 +53,10 @@ function parseMeta(fileStr) {
                             if ("[" === trimmedStr) return;
                             if ("]" === trimmedStr) auxStack.pop()
                             else maybe(trimmedStr).forEach(() => postMeta[key].push(trimmedStr));
+                            return;
+                        }
+                        if(key === "title") {
+                            postMeta[key] = trimmedStr.replace("\doublecolon\;", ":");
                             return;
                         }
                         if (key in postMeta) {
