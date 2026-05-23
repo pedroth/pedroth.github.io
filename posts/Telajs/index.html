@@ -1,0 +1,126 @@
+<article><style>/* node_modules/highlight.js/styles/github-dark.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-built_in, .hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-code, .hljs-comment, .hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* src/CodeRender/CodeRender.css */
+.base_code {
+  box-sizing: border-box;
+  color: #f5f5f5;
+  background-color: #232323;
+  border: hidden;
+  border-radius: 6px;
+  font-size: 85%;
+}
+
+.line_code {
+  color: orange;
+  padding: .2em .4em;
+}
+
+.block_code {
+  overflow: auto;
+  padding: 16px;
+}
+
+.nd_copied {
+  color: #22c55e;
+}
+
+span.nd_copy {
+  margin-right: .25rem;
+}
+
+svg.nd_copy {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+button.nd_copy {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: #0000;
+  border: 0 solid #0000;
+  margin: .5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  top: 0;
+  right: 0;
+}
+</style><p><span></span></p><p><span><span> </span></span></p><p><span><span> </span><a href="https://github.com/pedroth/tela.js"  target="_blank" ><span><code class="base_code line_code" >tela.js</code></span></a><span> is an experimental graphics library, </span><strong><span><span>made from scratch</span></span></strong><span> (software-only), featuring reference implementations of computer graphics algorithms. Its purpose is to generate images computationally, with </span><strong><span><span>minimal dependencies</span></span></strong><span>, so that readable graphics algorithms can shine instead of opaque graphical APIs. With this graphics engine, users can build a wide range of graphical applications, including </span><em><span><span>user interfaces</span></span></em><span>, </span><em><span><span>advanced physical simulations</span></span></em><span>, </span><em><span><span>data visualizations</span></span></em><span>, and </span><em><span><span>video games</span></span></em><span>.</span></span></p><p><span><span> Since </span><a href="https://github.com/pedroth/tela.js"  target="_blank" ><span><span>tela.js</span></span></a><span> does not use the GPU, it is relatively slower than modern GPU-based approaches. However, by using multiple threads and working with lower-resolution images, its performance can be significantly improved.</span></span></p><p><span><div style="text-align:center;" ><video src="/posts/Telajs/Telajs.webm"  controls=""  style="max-width: 97%;"  alt="tela.js-playground" ></video><figcaption><span><span>Tela.js playground</span></span></figcaption></div></span></p><p><span><span>There are many implemented features; here are a few:</span></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/shaders_in_js.mp4"  controls=""  style="max-width: 97%;"  alt="shaders-in-pure-js" ></video><figcaption><span><span>Shaders in pure js</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/spyro_raster.mp4"  controls=""  style="max-width: 97%;"  alt="3d-raster-engine" ></video><figcaption><span><span>3D Raster engine</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><img src="/posts/Telajs/raytrace.png"  style="max-width: 97%;"  alt="ray-tracing" ></img><figcaption><span><span>Ray Tracing</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/bunny_glass_II.mp4"  controls=""  style="max-width: 97%;"  alt="ray-tracing-ii" ></video><figcaption><span><span>Ray Tracing II</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/bunny_glass_III.mp4"  controls=""  style="max-width: 97%;"  alt="ray-tracing-iii" ></video><figcaption><span><span>Ray Tracing III</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/svg.mp4"  controls=""  style="max-width: 97%;"  alt="svg-parsing-and-rendering" ></video><figcaption><span><span>SVG parsing and rendering</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><span>There are also some demos:</span></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/telaSDF.mp4"  controls=""  style="max-width: 97%;"  alt="signed-distance-function-editor" ></video><figcaption><span><span>Signed distance function editor</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/volumetric.mp4"  controls=""  style="max-width: 97%;"  alt="volumetric-noise" ></video><figcaption><span><span>Volumetric noise </span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/text_editor.mp4"  controls=""  style="max-width: 97%;"  alt="text-editor-in-native-os-window" ></video><figcaption><span><span>Text editor in native OS window</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/text_editor_explode.mp4"  controls=""  style="max-width: 97%;"  alt="text-editor-exploding" ></video><figcaption><span><span>Text editor exploding</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/physics4.mp4"  controls=""  style="max-width: 97%;"  alt="soft-body-physics" ></video><figcaption><span><span>Soft-body physics</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><p><p><span><div style="width:66%; height: 100%; margin-left: auto; margin-right: auto;" ><p><span><div style="text-align:center;" ><video src="/posts/Telajs/turing_patterns.mp4"  controls=""  style="max-width: 97%;"  alt="turing-patterns-demo" ></video><figcaption><span><span>Turing patterns demo</span></span></figcaption></div></span></p></div></span></p></p></span></p><p><span><span>There are many more examples, so check them out!</span></span></p><p><span><span> </span></span></p><p><h2 id="project" ><span><span>Project</span></span></h2></p><p><span><div style="display: flex;flex-direction: column" ><a target="_blank"  href="https://github.com/pedroth/tela.js"  style="align-self: center; margin: 20px" ><button class="button" ><p><span><span>Project Page</span></span></p></button></a><a target="_blank"  href="https://pedroth.github.io/tela.js"  style="align-self: center" ><button class="button" ><p><span><span>Tela playground</span></span></p></button></a></div></span></p><p><div></div></p></article>

@@ -1,0 +1,149 @@
+<article><style>/* node_modules/highlight.js/styles/github-dark.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-built_in, .hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-code, .hljs-comment, .hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* src/CodeRender/CodeRender.css */
+.base_code {
+  box-sizing: border-box;
+  color: #f5f5f5;
+  background-color: #232323;
+  border: hidden;
+  border-radius: 6px;
+  font-size: 85%;
+}
+
+.line_code {
+  color: orange;
+  padding: .2em .4em;
+}
+
+.block_code {
+  overflow: auto;
+  padding: 16px;
+}
+
+.nd_copied {
+  color: #22c55e;
+}
+
+span.nd_copy {
+  margin-right: .25rem;
+}
+
+svg.nd_copy {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+button.nd_copy {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: #0000;
+  border: 0 solid #0000;
+  margin: .5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  top: 0;
+  right: 0;
+}
+</style><link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css"  integrity="sha384-qCEsSYDSH0x5I45nNW4oXemORUZnYFtPy/FqB/OjqxabTMW5HVaaH9USK4fN3goV"  crossorigin="anonymous" ></link><p><span></span></p><p><span><span>I made a simple </span><a href="https://en.wikipedia.org/wiki/Cellular_automaton"  target="_blank" ><span><strong><span><span>Cellular Automaton</span></span></strong></span></a><span> application a long time ago. Here, each pixel represents a </span><a href="https://en.wikipedia.org/wiki/Cellular_automaton"  target="_blank" ><span><span>cellular automaton</span></span></a><span>, which is </span><strong><span><span>alive</span></span></strong><span> if it is green and </span><strong><span><span>dead</span></span></strong><span> if it is dark. The rules for a cellular automaton to be born and to survive are defined by the </span><span><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><span> notation:</span></span></p><ul><li><span><span><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></span><span> defines the numbers of live neighbors required for a cell to survive.</span></span></li><li><span><span><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span><span> defines the numbers of live neighbors required for a cell to be born.</span></span></li></ul><p><span><span>If a cell is not born or does not survive, then it dies or remains dead.</span></span></p><p><span><span>In this </span><em><span><span>app</span></span></em><span>, you can try several </span><a href="https://web.archive.org/web/20210512105747/http://psoup.math.wisc.edu/mcell/rullex_life.html"  target="_blank" ><span><span>cellular automata rules</span></span></a><span>:</span></span></p><ul><li><span><span>Maze: </span><code class="base_code line_code" >12345/3</code><span> </span><strong><span><span>[key 1]</span></span></strong></span></li><li><span><span>34 Life: </span><code class="base_code line_code" >34/34</code><span> </span><strong><span><span>[key 2]</span></span></strong></span></li><li><span><span>Coral: </span><code class="base_code line_code" >45678/3</code><span> </span><strong><span><span>[key 5]</span></span></strong></span></li><li><span><span>Coagulation: </span><code class="base_code line_code" >235678/378</code><span> </span><strong><span><span>[key 6]</span></span></strong></span></li><li><span><span>Replicator: </span><code class="base_code line_code" >1357/1357</code><span> </span><strong><span><span>[key 7]</span></span></strong></span></li><li><span><span>Gnarl: </span><code class="base_code line_code" >1/1</code><span> </span><strong><span><span>[key 8]</span></span></strong></span></li><li><span><span>Flakes: </span><code class="base_code line_code" >012345678/3</code><span> </span><strong><span><span>[key 9]</span></span></strong></span></li><li><span><span>Totally random rules </span><strong><span><span>[key 0]</span></span></strong></span></li></ul><p><span><div style="text-align:center;" ><iframe src="https://www.youtube-nocookie.com/embed/HO1TijJ5DFM"  frameborder="0"  height="315"  width="560"  allow="fullscreen; clipboard-write; encrypted-media; picture-in-picture"  style="max-width: 97%;"  alt="cellular-automaton-app-video" ></iframe><figcaption><span><strong><span><span>Cellular automaton</span></span></strong><span> app video</span></span></figcaption></div></span></p><p><span><span>At the beginning, you can draw the initial state of the cells, then press the </span><code class="base_code line_code" >space bar</code><span> to start the animation.</span></span></p><p><h2 id="links" ><span><span>Links</span></span></h2></p><p><span><div style="display: flex;flex-direction: column" ><a href="posts/CellularAutomaton/CellularAutomaton.zip"  target="_blank"  style="align-self: center; margin: 20px" ><button class="button" ><p><span><span>Download app</span></span></p></button></a><a target="_blank"  href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/ParallelCellularAutomaton.java"  style="align-self: center" ><button class="button" ><p><span><span>Source Code</span></span></p></button></a></div></span></p><p><h2 id="running-with-docker" ><span><span>Running with Docker</span></span></h2></p><p><span><span>Copy and paste this into a terminal:</span></span></p><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-sh" >xhost + &amp;&amp; sudo docker run --<span class="hljs-built_in">rm</span> -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=<span class="hljs-variable">$DISPLAY</span> -it pedroth/java-apps bash -c <span class="hljs-string">&quot;java -cp Learning/learning.jar apps.ParallelCellularAutomaton&quot;</span>
+</code></pre><div><button class="nd_copy"  id="nd_btn_1"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_1" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_1" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_1');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c \"java -cp Learning/learning.jar apps.ParallelCellularAutomaton\"\n");
+    var t = document.getElementById('nd_ct_1');
+    var s = document.getElementById('nd_sv_1');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p><p><h2 id="java-web-emulation" ><span><span>Java web emulation</span></span></h2></p><p><span><div style="display: flex;flex-direction: column" ><a href="posts/CellularAutomaton/java-emulation.html"  target="_blank"  style="align-self: center;" ><button class="button" ><p><span><span>Launch emulation</span></span></p></button></a></div></span></p><p><div></div></p><p><div></div></p></article>

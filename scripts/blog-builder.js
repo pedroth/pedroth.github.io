@@ -24,8 +24,8 @@ program.command('build-java')
     });
 program.command('build-posts')
     .description('Create DB from posts')
-    .action(() => {
-        const posts = buildPosts();
+    .action(async () => {
+        const posts = await buildPosts();
         let db = { posts: [] };
         try {
             db = JSON.parse(

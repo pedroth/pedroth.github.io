@@ -95,9 +95,14 @@ export function str2dom(string) {
             return wrapper;
         }
         const dom = parsed;
-        Array(...dom.getElementsByTagName("script")).forEach(async scriptEl => {
-            await evalScriptTag(scriptEl);
-        })
+        // Run scripts sequentially so src scripts finish loading before inline
+        // scripts that depend on them run, but don't block str2dom so the DOM
+        // is mounted before any script executes.
+        Array.from(dom.getElementsByTagName("script")).reduce(
+            (promise, scriptEl) => promise.then(() => evalScriptTag(scriptEl)),
+            Promise.resolve()
+        );
+        return dom;
         return dom;
 }
 
