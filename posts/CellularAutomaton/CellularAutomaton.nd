@@ -1,3 +1,4 @@
+:: import "./macros.js"; ::
 <!-- 
 title: Cellular automaton
 creationDate: 01/01/2014
@@ -16,6 +17,10 @@ I made a simple [*Cellular Automaton*][automaton] application a long time ago. H
 - $B$ defines the numbers of live neighbors required for a cell to be born.
 
 If a cell is not born or does not survive, then it dies or remains dead.
+
+@quote(){
+To give an example, the famous [*Game of Life*][automaton] is defined by the rule `23/3`, which means that a cell survives if it has 2 or 3 live neighbors, and a cell is born if it has exactly 3 live neighbors. Note that the number of neighbors is between 0 and 8, since we are considering the 8 cells around a cell in a 2D grid.
+}
 
 In this _app_, you can try several [cellular automata rules][rules]:
 

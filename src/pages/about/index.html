@@ -1,0 +1,138 @@
+<article><link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css"  integrity="sha384-qCEsSYDSH0x5I45nNW4oXemORUZnYFtPy/FqB/OjqxabTMW5HVaaH9USK4fN3goV"  crossorigin="anonymous" ></link><p><span></span></p><p><h1 id="about" ><span><span>About</span></span></h1></p><p><span><span>Hello world, I am Pedroth, Catholic, searcher of the </span><strong><span><span>Good</span></span></strong><span>, the </span><strong><span><span>Truth</span></span></strong><span> and the </span><strong><span><span>Beauty</span></span></strong><span>. </span></span></p><p><span><span>My main interest are </span><em><span><span>Mathematics</span></span></em><span>, </span><em><span><span>Computer Science</span></span></em><span>, </span><em><span><span>Philosophy</span></span></em><span> and the </span><em><span><span>Catholic Faith</span></span></em><span>. </span></span></p><p><span><span>Pedroth's Corner is my personal website. Here I will:</span></span></p><ul><li><span><span>Write about things I like</span></span></li><li><span><span>Distill knowledge</span></span></li><li><span><span>Showcase demos and software projects</span></span></li><li><span><span>I will also share my contact and places on the web</span></span></li></ul><p><span><span>Here are some places where you can find me:</span></span></p><p><span><style>
+.links-box {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    border-radius: 1rem;
+    margin: auto;
+    border: 3px solid;
+    border-color: inherit;
+}
+
+.about-icon {
+    width: 3rem;
+    margin: 0.5rem;
+}
+
+</style></span></p><p><span><div class="links-box"  id="links-box" ></div></span></p><p><span><script type="module" >
+import DOM from "/src/DomBuilder.js"
+import getSvg from "/src/Svgs.js"
+
+DOM.ofId("links-box")
+.append( ...[
+{url: "https://github.com/pedroth", title: "Github", svg: "/assets/github.svg"},
+{url: "https://www.youtube.com/@pedroth3", title: "Youtube", svg: "/assets/youtube.svg"},
+{url: "https://twitter.com/pedroth9", title: "X-Twitter", svg: "/assets/x-twitter.svg"},
+{url: "https://stackexchange.com/users/2510741/pedroth?tab=accounts", title: "Stack Exchange", svg: "/assets/stackoverflow.svg"},
+{url: "https://www.khanacademy.org/profile/pedroth/projects", title: "Khan Academy", svg: "/assets/khan-academy.svg"},
+].map(({url, title, svg}) => DOM.of("a")
+                .addClass("specialIcon")
+                .attr("href", url)
+                .attr("title", title)
+                .append(
+                    DOM.of("div")
+                    .addClass("about-icon")
+                    .inner(getSvg(svg))
+                )
+    )
+)
+</script></span></p><p><span><span>You can also contact me through mail: </span><b><span id="mail" ><span><span>cGVkcm90aWFnbzkyQGdtYWlsLmNvbQ==</span></span></span></b></span></p><p><span><script type="module" >
+import DOM from "/src/DomBuilder.js"
+
+function Vec(...coords) {
+    return {
+        coords,
+        add: vec => {
+            const ans = [];
+            for (let i = 0; i < coords.length; i++) {
+                ans[i] = coords[i] + vec.coords[i];
+            }
+            return Vec(...ans);
+        },
+        sub: vec => {
+            const ans = [];
+            for (let i = 0; i < coords.length; i++) {
+                ans[i] = coords[i] - vec.coords[i];
+            }
+            return Vec(...ans);
+        },
+        scale: r => Vec(...coords.map(x => x * r))
+    }
+}
+
+function str2vec(str) {
+    return Vec(...[...str].map(x => x.charCodeAt(0)));
+}
+
+function vec2str(vec) {
+    return vec.coords.map(x => String.fromCharCode(Math.floor(x))).join("");
+}
+
+function fillVec(vec, size, value = 0) {
+    if(vec.coords.length === size) return vec;
+    return Vec(...vec.coords.concat(Array(size-vec.coords.length).fill(value)));
+}
+
+function syncVecSizes(u,v) {
+    const spaceCharCode = " ".charCodeAt(0);
+    const n = Math.max(u.coords.length, v.coords.length);
+    if(u.coords.length < v.coords.length) {
+        return [fillVec(u, n, spaceCharCode), v];
+    }
+    return [u, fillVec(v, n, spaceCharCode)];
+}
+
+function lerp(init, end) {
+    const v = end.sub(init);
+    return t => init.add(v.scale(t));
+}
+
+function lerpStr(init, end) { 
+    const [initVec, endVec] = syncVecSizes(str2vec(init), str2vec(end));
+    const interpolation = lerp(initVec, endVec);
+    return t => vec2str(interpolation(t));
+}
+
+function quadStr(init, middle, end) {
+    const [dummyInit, dummyEnd] = syncVecSizes(str2vec(init), str2vec(end));
+    const [finalInit, dummyMiddle] = syncVecSizes(dummyInit, str2vec(middle));
+    const [finalEnd, finalMiddle] = syncVecSizes(dummyEnd, dummyMiddle);
+    const inter0 = lerp(finalInit, finalMiddle);
+    const inter1 = lerp(finalMiddle, finalEnd);
+    return t => vec2str(lerp(inter0(t), inter1(t))(t));
+}
+
+function mutateString(str, p) {
+    return vec2str(Vec(...str2vec(str).coords.map(x => Math.random() < p ? x + 1: x)));
+}
+
+function animateEmail() {
+    const mailDOM = DOM.ofId("mail");
+    const encodedMail = mailDOM.element.innerText;
+    const decodedMail = atob(encodedMail);
+
+    const middleMail = mutateString(decodedMail, 0.25);
+    const curve = quadStr(encodedMail, middleMail, decodedMail);
+
+    // t: number in seconds
+    const anime = (t,is2Trim=false) => mailDOM.inner(is2Trim ? curve(t).trim() : curve(t));
+
+    const initT = performance.now();
+    let iterations = 0;
+    const play = () => {
+        requestAnimationFrame(() => {
+            let t = (performance.now()-initT) * 1e-3;
+            iterations++;
+            const expT = 1 - Math.exp(-t);
+            t = expT < 0.9 ? expT : 0.9999999 + 1e-9 * (iterations-140); 
+            const is2Stop = Math.abs(t-1) < 1e-6;
+            if(is2Stop) anime(1.0, true);
+            else anime(t);
+            if(!is2Stop) play();
+        });
+    }
+    play();
+}
+
+animateEmail();
+</script></span></p><p><span><p><p><span><div class="quote" ><p><span><span>This website </span><strong><span><span>doesn't retrieve any information</span></span></strong><span> from the user, it is made from </span><em><span><span>scratch</span></span></em><span> and is </span><a href="https://github.com/pedroth/pedroth.github.io"  target="_blank" ><span><em><span><strong><span><span>open source</span></span></strong></span></em></span></a><span>.</span></span></p></div></span></p></p></span></p><p><span><span>Thank you for visiting!</span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.2719em;vertical-align:-0.9119em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∮</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:-0.4258em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight" style="margin-right:0.05556em;">∂</span><span class="mord mtight">Ω</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9119em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2719em;vertical-align:-0.9119em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:-0.4336em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">Ω</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9119em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span></span></span></p></article>

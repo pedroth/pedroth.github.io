@@ -106,18 +106,19 @@ export function str2dom(string) {
 }
 
 export function evalScriptTag(scriptTag) {
-    const globalEval = eval;
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    const type = scriptTag?.attributes["type"]?.textContent;
+    if (type) s.type = type;
     const srcUrl = scriptTag?.attributes["src"]?.textContent;
     if (srcUrl) {
-        return fetch(srcUrl)
-            .then(code => code.text())
-            .then(code => {
-                globalEval(code);
-            });
+      s.onload = resolve;
+      s.onerror = reject;
+      s.src = srcUrl;
     } else {
-        return new Promise((re) => {
-            globalEval(scriptTag.innerText);
-            re(true);
-        });
+      s.textContent = scriptTag.textContent;
     }
+    scriptTag.replaceWith(s);
+    if (!srcUrl) resolve();
+  });
 }

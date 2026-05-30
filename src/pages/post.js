@@ -3,6 +3,33 @@ import DOM from "../DomBuilder.js";
 import renderFromString from "../PedroDown.js";
 import { formatDate, str2dom } from "../Utils.js";
 
+function setMeta(property, content) {
+  let el = document.querySelector(`meta[property="${property}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute("property", property);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function addWhatsAppPreview(post, postContent) {
+  const { id, title, tags } = post;
+  document.title = `${title} | Pedroth's Corner`;
+  const el = postContent instanceof Element ? postContent : postContent.dom?.() ?? postContent;
+  const firstParagraph = el?.querySelector?.("p");
+  const description = firstParagraph
+    ? firstParagraph.textContent.trim().slice(0, 200)
+    : tags.join(", ");
+  const url = `${window.location.origin}/posts/${id}/index.html`;
+  const image = `${window.location.origin}/posts/${id}/${id}.webp`;
+  setMeta("og:type", "article");
+  setMeta("og:title", title);
+  setMeta("og:description", description);
+  setMeta("og:url", url);
+  setMeta("og:image", image);
+}
+
 
 function notFound(page) {
   // TODO: think of adding a small game, simulation here...
@@ -130,6 +157,8 @@ export default async function post(page) {
       );
     postContent = await renderFromString(ndFile);
   }
+
+  addWhatsAppPreview(post, postContent);
   return DOM.of("div")
     .append(
       renderPostHeader(post),

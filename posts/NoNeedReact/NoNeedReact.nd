@@ -41,7 +41,35 @@ function renderHTML(x, args) {
     ${htmlCode}
   </div>
 
-  <style>
+  <script>
+    function ndTab(id, mode) {
+      const code = document.getElementById(id + "-code");
+      const preview = document.getElementById(id + "-preview");
+
+      const btnCode = document.getElementById(id + "-btn-code");
+      const btnPrev = document.getElementById(id + "-btn-preview");
+
+      if (mode === "code") {
+        code.style.display = "block";
+        preview.style.display = "none";
+        btnCode.classList.add("active");
+        btnPrev.classList.remove("active");
+      } else {
+        code.style.display = "none";
+        preview.style.display = "block";
+        btnPrev.classList.add("active");
+        btnCode.classList.remove("active");
+      }
+    }
+  </script>
+</details>
+`;
+}
+
+MACROS = { renderHTML };
+::
+<!-- Common code used by widgets -->
+<style>
     .nd-widget {
       border: 1px solid #2a2a2a;
       border-radius: 12px;
@@ -92,43 +120,91 @@ function renderHTML(x, args) {
       border-radius: 10px;
       border: 1px solid #ddd;
     }
-  </style>
+</style>
 
-  <script>
-    function ndTab(id, mode) {
-      const code = document.getElementById(id + "-code");
-      const preview = document.getElementById(id + "-preview");
-
-      const btnCode = document.getElementById(id + "-btn-code");
-      const btnPrev = document.getElementById(id + "-btn-preview");
-
-      if (mode === "code") {
-        code.style.display = "block";
-        preview.style.display = "none";
-        btnCode.classList.add("active");
-        btnPrev.classList.remove("active");
-      } else {
-        code.style.display = "none";
-        preview.style.display = "block";
-        btnPrev.classList.add("active");
-        btnCode.classList.remove("active");
-      }
+<script>
+function useState(defaultState) {
+    let state = defaultState;
+    let onChangeLambda = [];
+    const onChange = lambda => {
+        onChangeLambda.push(lambda);
     }
-  </script>
-</details>
-`;
+    const setState = lambda => {
+        state = lambda(state);
+        onChangeLambda.forEach(func => {
+            func(state)
+        });
+    }
+    const getState = () => state;
+    return [getState, setState, onChange];
 }
 
-MACROS = { renderHTML };
-::
+const SVG_URL = "http://www.w3.org/2000/svg";
+const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
 
-React is an amazing library, that revolutionized the way to build UIs. It popularized the idea of immediate mode UI programming (at least to a big audience), where the UI is a function of the state.
+// Here it starts
+class DomBuilder {
+    constructor(element) { this.element = element; }
+    attr(name, value = "") { this.element.setAttribute(name, value); return this; }
+    style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
+    append(...elements) {
+        elements.forEach(e => {
+            if (!e) return;
+            if (isElement(e)) {
+                this.element.appendChild(e);
+            } else if (isPromise(e)) {
+                e.then(actualElem => this.append(actualElem));
+            } else {
+                this.element.appendChild(e.build());
+            }
+        })
+        return this;
+    }
+    inner(value) {
+        if (isPromise(value)) {
+            value.then(v => this.element.innerHTML = v);
+        } else {
+            this.element.innerHTML = value;
+        }
+        return this;
+    }
+    removeChildren() {
+        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
+        return this;
+    }
+    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
+    build() { return this.element; }
+    addClass(className) {
+        if (!className) return this;
+        className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
+        return this;
+    }
+    static of(elem) {
+        if (isElement(elem)) return new DomBuilder(elem);
+        const isSvg = SVG_TAGS.includes(elem);
+        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
+        return new DomBuilder(element);
+    }
+    static ofId(id) { return new DomBuilder(document.getElementById(id)); }
+}
+
+// some utilities
+function isElement(o) {
+    return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+}
+function isPromise(o) { return o instanceof Promise; }
+</script>
+
+<!-- Start post -->
+
+
+*React* is an amazing library that revolutionized the way we build UIs (at least it is very popular). It popularized the idea of immediate mode UI programming (to a big audience), where the UI is a function of the state.
 
 $$
 \text{UI} = f(\text{state})
 $$
 
-This enables to build complex UIs in a simple way. We can use ifs and loops to render the UI, without worrying about details.
+This enables us to build complex UIs in a simple way. We can use ifs and loops to render the UI, without worrying about details.
 
 ```js
 // example of immediate mode UI pseudo-code
@@ -147,20 +223,24 @@ function renderUI(state) {
 
 ```
 
-The only issue with immediate mode is maybe performance, since we need to re-render the entire UI on every state change. Still there are many technique to optimize this. The others things that made React good in my opinion are the way that it unites `html` with `js`, and the reactive programming model. But does these 3 concepts require such a big library? Can we do something similar with just a few lines of code? The answer is yes, and that’s what I want to show in this post. I will try to recreate the `React` tutorial with a minimal UI library.
+The only potential issue with immediate mode is performance, since we need to re-render the entire UI on every state change. Still, there are many techniques to optimize this. 
 
-In summary we want three concepts in our minimal library:
+Besides the immediate mode, the other things that made *React* good, in my opinion, are the way it unites `html` with `js`, and the reactive programming model. But do these 3 concepts require such a big library? Can we do something similar with just a few lines of code? The answer is yes, and that’s what I want to show in this post. I will try to recreate the `React` tutorial with a minimal UI library.
+
+In summary, we want three concepts in our minimal library:
 - Immediate mode UI: the UI is a function of the state.
-- Uniting `HTML` with `JS`, but we don't need new syntax, we can just use regular `JS` (it will be good).
-- A simple reactive programming model, just some publish-subscribe mechanism in to variables. From my understanding it could be something similar to *signals* in `Solid.js` or something from `RxJS`.
+- Uniting `HTML` with `JS`, but we don't need new syntax — we can just use regular `JS` (which works perfectly fine).
+- A simple reactive programming model, just a publish-subscribe mechanism applied to variables. From my understanding it could be something similar to *signals* in `Solid.js` or something from `RxJS`.
 
 ## Our minimal UI library
 
-Creating dom nodes using a composable `JS` API.
+First we create our unification of `HTML` with `JS`. We want to be able to create DOM nodes in a composable way, without needing to write `document.createElement` all the time. We can create a simple wrapper around the DOM API that allows us to build complex DOM structures in a more readable way. Just like an `HTML` template, but in `JS`.
 
 ```js
 const SVG_URL = "http://www.w3.org/2000/svg";
 const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
+
+// Here it starts
 class DomBuilder {
     constructor(element) { this.element = element; }
     attr(name, value = "") { this.element.setAttribute(name, value); return this; }
@@ -213,7 +293,8 @@ function isElement(o) {
 function isPromise(o) { return o instanceof Promise; }
 ```
 
-A simple reactive state management system.
+The second step is to create the simple reactive programming model. We can create a simple `useState` function that allows us to create reactive variables. This is just a publish-subscribe mechanism, where we can subscribe to changes in the state and re-render the UI when the state changes.
+
 
 ```js
 function useState(defaultState) {
@@ -233,7 +314,41 @@ function useState(defaultState) {
 }
 ```
 
-## Tic tac toe example
+The immediate mode UI comes naturally from `JS` functions and the other two concepts. We can just create a function that returns a `DomBuilder` and use the `useState` function to create reactive variables. When the state changes, we can re-render the UI by calling the function again.
+
+
+## Recreating the React tutorial
+
+### Creating nested components
+
+@renderHTML("Nested components") {
+```html 
+<div id="nested"></div>
+<script type="module">
+    function MyButton(props) {
+        return DomBuilder.of("button")
+        .inner(`I' am a button`)
+        .event("click", () => alert(`Hello, from ${props.name}!`));
+    }
+
+    function App() {
+        return DomBuilder.of("div")
+        .append(
+            DomBuilder.of("h1").inner("Welcome to our app"),
+            MyButton({ name: "button" })
+        );
+    }
+
+    console.log("Rendering app...");
+    const root = DomBuilder.ofId("nested");
+    root.append(App());
+</script>
+
+``` 
+}
+
+
+<!-- ## Tic tac toe example
 
 @renderHTML("Tic tac toe example"){
 ```html
@@ -815,4 +930,4 @@ render();
 }
 
 
-## Explanation
+## Explanation -->
