@@ -319,6 +319,8 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
 
 ## Recreating the React tutorial
 
+Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our minimal UI library. This will show how to use our library in practice.
+
 ### Creating nested components
 
 @renderHTML("Nested components") {
@@ -327,28 +329,204 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
 <script type="module">
     function MyButton(props) {
         return DomBuilder.of("button")
-        .inner(`I' am a button`)
+        .inner(`I' am a ${props.name} button`)
         .event("click", () => alert(`Hello, from ${props.name}!`));
     }
 
     function App() {
         return DomBuilder.of("div")
         .append(
-            DomBuilder.of("h1").inner("Welcome to our app"),
-            MyButton({ name: "button" })
+            DomBuilder.of("h1")
+            .style("color: black;")
+            .inner("Welcome to our app"),
+            MyButton({ name: "pedroth" })
         );
     }
 
-    console.log("Rendering app...");
     const root = DomBuilder.ofId("nested");
     root.append(App());
 </script>
 
 ``` 
+} 
+
+### Profile example
+
+@renderHTML("Profile example") {
+```html
+<div id="profile"></div>
+<script type="module">
+
+    const styles = {
+        card: "border: 1px solid #ccc; padding: 10px; margin: 10px; border-radius: 8px;",
+        cardName: "color: #333;",
+        cardImage: "width: 100px; height: 100px; border-radius: 50%;",
+    }
+
+    async function getDataFromApi() {
+        // Simulating an API call
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve([
+                    { name: "Naruto", image: "/NoNeedReact/naruto_gpt.png" },
+                    { name: "Kakashi", image: "/NoNeedReact/kakashi_gpt.png" },
+                    { name: "Minato", image: "/NoNeedReact/minato_gpt.png" }
+                ]);
+            }, 5000);
+        });
+    }
+
+    function profileCard(user) {
+        return DomBuilder.of("div")
+        .style(styles.card)
+        .append(
+            DomBuilder.of("h2")
+            .style(styles.cardName)
+            .inner(user.name),
+            DomBuilder.of("img")
+            .attr("src", user.image)
+            .attr("alt", user.name)
+            .style(styles.cardImage)
+        );
+    }
+
+    const [getData, setData, onDataChange] = useState(null);
+    getDataFromApi().then(data => setData(() => data));
+
+    function App() {
+        const data = getData();
+
+        if (!data) {
+            return DomBuilder.of("h1")
+            .style("color: #333;")
+            .inner("Loading...");
+        }
+
+        return DomBuilder.of("div")
+            .append(...data.map(user => profileCard(user)));
+    }
+
+
+    // Immediate mode implementation: re-render the entire UI on every state change 
+    const root = DomBuilder.ofId("profile");
+    function render() {
+        root.removeChildren()
+        .append(App());
+    }
+    onDataChange(() => render());
+    render();
+</script>
+
+```
+}
+
+### Task list example
+
+@renderHTML("Task list example") {
+```html
+<div id="tasks"></div>
+<script type="module">
+
+    const styles = {
+        card: "border: 1px solid #ccc; padding: 10px; margin: 10px; border-radius: 8px;",
+        taskRow: "display: flex; align-items: center; gap: 8px; margin-bottom: 6px;",
+        taskDone: "text-decoration: line-through; color: #999;",
+        taskPending: "color: #333;",
+        taskInput: "flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;",
+        addButton: "padding: 6px 12px; border: none; background: #3b82f6; color: white; border-radius: 6px; cursor: pointer; font-size: 14px;",
+    }   
+
+    const [getTasks, setTasks, onTasksChange] = useState([]);
+
+    function Checkbox(task, index, tasks) {
+        const checkbox = DomBuilder.of("input")
+            .attr("type", "checkbox")
+            .event("change", () => {
+                const newTasks = [...tasks];
+                newTasks[index].completed = !newTasks[index].completed;
+                setTasks(() => newTasks);
+            });
+        checkbox.element.checked = task.completed;
+        return checkbox;
+    }
+
+    function TaskItem(task, index, tasks) {
+        return DomBuilder.of("div")
+            .style(styles.taskRow)
+            .append(
+                Checkbox(task, index, tasks),
+                DomBuilder.of("span")
+                .inner(task.title)
+                .style(styles[task.completed ? "taskDone" : "taskPending"])
+            );
+    }
+
+    function TextInput({ placeholder, onKeydown }) {
+        return DomBuilder.of("input")
+            .attr("type", "text")
+            .attr("placeholder", placeholder)
+            .style(styles.taskInput)
+            .event("keydown", onKeydown);
+    }
+
+    function AddButton({ onClick }) {
+        return DomBuilder.of("button")
+            .inner("Add")
+            .style(styles.addButton)
+            .event("click", onClick);
+    }
+
+    function AddTaskInput() {
+        function submit() {
+            const title = input.element.value.trim();
+            if (title) {
+                setTasks(prev => [...prev, { title, completed: false }]);
+                input.element.value = "";
+            }
+        }
+        
+        const input = TextInput({
+            placeholder: "New task...",
+            onKeydown: e => { if (e.key === "Enter") submit(); }
+        });
+
+
+        return DomBuilder.of("div")
+            .style(styles.taskRow)
+            .append(
+                input, 
+                AddButton({ onClick: submit })
+            );
+    }
+
+    function TaskList() {
+        const tasks = getTasks();
+
+        return DomBuilder.of("div")
+        .append(
+            DomBuilder.of("h1")
+            .style("color: #333;")
+            .inner("Task List"),
+            ...tasks.map((task, index) => TaskItem(task, index, tasks)),
+            AddTaskInput()
+        );
+    }
+
+    // immediate mode implementation: re-render the entire UI on every state change
+    const root = DomBuilder.ofId("tasks");
+    function render() {
+        root.removeChildren()
+        .append(TaskList());
+    }
+    onTasksChange(() => render());
+    render();
+</script>
+```
 }
 
 
-<!-- ## Tic tac toe example
+
+## Tic tac toe example
 
 @renderHTML("Tic tac toe example"){
 ```html
@@ -416,80 +594,8 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
         background-color: #0056b3;
     }
 </style>
-<div id="example"></div>
-
+<div id="tic_tac_toe"></div>
 <script type="module">
-    // --- Framework Utilities provided by user ---
-
-    function useState(defaultState) {
-        let state = defaultState;
-        let onChangeLambda = [];
-        const onChange = lambda => {
-            onChangeLambda.push(lambda);
-        }
-        const setState = lambda => {
-            state = lambda(state);
-            onChangeLambda.forEach(func => {
-                func(state)
-            });
-        }
-        const getState = () => state;
-        return [getState, setState, onChange];
-    }
-
-    const SVG_URL = "http://www.w3.org/2000/svg";
-    const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
-
-    class DomBuilder {
-        constructor(element) { this.element = element; }
-        attr(name, value = "") { this.element.setAttribute(name, value); return this; }
-        style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
-        append(...elements) {
-            elements.forEach(e => {
-                if (!e) return;
-                if (isElement(e)) {
-                    this.element.appendChild(e);
-                } else if (isPromise(e)) {
-                    e.then(actualElem => this.append(actualElem));
-                } else {
-                    this.element.appendChild(e.build());
-                }
-            })
-            return this;
-        }
-        inner(value) {
-            if (isPromise(value)) {
-                value.then(v => this.element.innerHTML = v);
-            } else {
-                this.element.innerHTML = value;
-            }
-            return this;
-        }
-        removeChildren() {
-            while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
-            return this;
-        }
-        event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
-        build() { return this.element; }
-        addClass(className) {
-            if (!className) return this;
-            className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
-            return this;
-        }
-        static of(elem) {
-            if (isElement(elem)) return new DomBuilder(elem);
-            const isSvg = SVG_TAGS.includes(elem);
-            const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
-            return new DomBuilder(element);
-        }
-        static ofId(id) { return new DomBuilder(document.getElementById(id)); }
-    }
-
-    function isElement(o) {
-        return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
-    }
-    function isPromise(o) { return o instanceof Promise; }
-
     // --- Tic-Tac-Toe Game Logic ---
 
     function calculateWinner(squares) {
@@ -508,7 +614,6 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
     }
 
     // --- Components ---
-
     const [getGameState, setGameState, onGameUpdate] = useState({
         squares: Array(9).fill(null),
         xIsNext: true
@@ -580,17 +685,16 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
         }));
     }
 
-    function render() {
-        const root = DomBuilder.ofId('example').removeChildren();
 
+    // Immediate mode implementation: re-render the entire UI on every state change
+    function render() {
+        const root = DomBuilder.ofId('tic_tac_toe').removeChildren();
         root.append(
             StatusDisplay(),
             Board(),
             ResetButton()
         );
     }
-
-    // Initial render and subscription
     onGameUpdate(() => render());
     render();
 
@@ -598,7 +702,7 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
 ```
 }
 
-## Tic tac toe with time machine
+<!-- ## Tic tac toe with time machine 
 @renderHTML("With time machine"){
 ```html
 <style>
@@ -701,80 +805,8 @@ li {
     background: #e2e6ea;
 }
 </style>
-<div id="example2"></div>
-
+<div id="tic_tac_toe_time_machine"></div>
 <script type="module">
-// --- Framework Utilities provided by user ---
-
-function useState(defaultState) {
-    let state = defaultState;
-    let onChangeLambda = [];
-    const onChange = lambda => {
-        onChangeLambda.push(lambda);
-    }
-    const setState = lambda => {
-        state = lambda(state);
-        onChangeLambda.forEach(func => {
-            func(state)
-        });
-    }
-    const getState = () => state;
-    return [getState, setState, onChange];
-}
-
-const SVG_URL = "http://www.w3.org/2000/svg";
-const SVG_TAGS = ["svg", "g", "circle", "ellipse", "line", "path", "polygon", "polyline", "rect"];
-
-class DomBuilder {
-    constructor(element) { this.element = element; }
-    attr(name, value = "") { this.element.setAttribute(name, value); return this; }
-    style(styleStr) { this.element.setAttribute("style", styleStr); return this; }
-    append(...elements) {
-        elements.forEach(e => {
-            if (!e) return;
-            if (isElement(e)) {
-                this.element.appendChild(e);
-            } else if (isPromise(e)) {
-                e.then(actualElem => this.append(actualElem));
-            } else {
-                this.element.appendChild(e.build());
-            }
-        })
-        return this;
-    }
-    inner(value) {
-        if (isPromise(value)) {
-            value.then(v => this.element.innerHTML = v);
-        } else {
-            this.element.innerHTML = value;
-        }
-        return this;
-    }
-    removeChildren() {
-        while (this.element.firstChild) { this.element.removeChild(this.element.lastChild); }
-        return this;
-    }
-    event(eventName, lambda) { this.element.addEventListener(eventName, lambda); return this; }
-    build() { return this.element; }
-    addClass(className) {
-        if (!className) return this;
-        className.split(" ").filter(c => c).forEach(c => this.element.classList.add(c));
-        return this;
-    }
-    static of(elem) {
-        if (isElement(elem)) return new DomBuilder(elem);
-        const isSvg = SVG_TAGS.includes(elem);
-        const element = isSvg ? document.createElementNS(SVG_URL, elem) : document.createElement(elem);
-        return new DomBuilder(element);
-    }
-    static ofId(id) { return new DomBuilder(document.getElementById(id)); }
-}
-
-function isElement(o) {
-    return typeof HTMLElement === "object" ? o instanceof HTMLElement : o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
-}
-function isPromise(o) { return o instanceof Promise; }
-
 // --- Tic-Tac-Toe Game Logic ---
 
 function calculateWinner(squares) {
@@ -899,7 +931,7 @@ function handleClick(i) {
 }
 
 function render() {
-    const root = DomBuilder.ofId('example2').removeChildren();
+    const root = DomBuilder.ofId('tic_tac_toe_time_machine').removeChildren();
 
     const gameBoard = DomBuilder.of('div').addClass('game-board').append(
         StatusDisplay(),
@@ -916,14 +948,12 @@ function render() {
         .inner("History"),
         MoveList()
     );
-
     root.append(gameBoard, gameInfo);
 }
 
-// Initial render and subscription
+// Immediate mode implementation: re-render the entire UI on every state change
 onGameUpdate(() => render());
 render();
-
 </script>
 
 ```
