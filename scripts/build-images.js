@@ -23,12 +23,24 @@ function createImage(fromPath, toPath, scale = [1980, 1080]) {
     }
 }
 
+function createVideo(fromPath, toPath) {
+    try {
+        execSync(`ffmpeg -i ${fromPath} -an -c:v libvpx-vp9 -crf 33 -b:v 0 -deadline best ${toPath}`)
+        console.log(`Created video ${toPath} from ${fromPath}`)
+    } catch (e) {
+        console.log(`Something went wrong, when generating ${toPath} from ${fromPath}`);
+    }
+}
+
 export default function buildImages() {
     readdirSync(baseFolder, { withFileTypes: true })
         .filter(f => f.isDirectory())
         .forEach(folder => {
             const id = folder.name;
             const filePath = `./${baseFolder}${id}/${id}`;
+            if(!checkFileExists(`${filePath}.webm`) && checkFileExists(`${filePath}.mp4`)) {
+                createVideo(`${filePath}.mp4`, `${filePath}.webm`);
+            }
             try {
                 if (!checkFileExists(`${filePath}.webp`)) createImage(`${filePath}.webm`, `${filePath}.webp`, [1980, 1080])
                 if (!checkFileExists(`${filePath}_medium.webp`)) createImage(`${filePath}.webm`, `${filePath}_medium.webp`, [990, 540])

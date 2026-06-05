@@ -18,8 +18,8 @@ function renderHTML(x, args) {
 	if (!match) return x;
 
 	const htmlCode = match[1].trim();
-	const title = args?.[0] || "HTML Preview";
-
+	const title = args?.[0] ?? "HTML Preview";
+    const isLazy = args?.[1] === undefined ? true : args[1] === "true";
 	const id = "nd-" + Math.random().toString(36).slice(2);
 
 	return `
@@ -36,10 +36,9 @@ function renderHTML(x, args) {
     ${x}
   </div>
 
-  <!-- PREVIEW TAB (rendered HTML) -->
-  <div id="${id}-preview" class="nd-preview" style="display:none;">
-    ${htmlCode}
-  </div>
+  <!-- PREVIEW TAB (rendered HTML, loaded lazily on first activation) -->
+  <div id="${id}-preview" class="nd-preview" style="display:none;">${isLazy ? "" : htmlCode}</div>
+  ${isLazy ? `<template id="${id}-tpl">${htmlCode}</template>` : ""}
 
   <script>
     function ndTab(id, mode) {
@@ -55,6 +54,19 @@ function renderHTML(x, args) {
         btnCode.classList.add("active");
         btnPrev.classList.remove("active");
       } else {
+        const tpl = document.getElementById(id + "-tpl");
+        // if tpl exists and preview is not loaded yet(lazy is true), load the HTML from the template
+        if (!preview.dataset.loaded && tpl) {
+          preview.appendChild(tpl.content.cloneNode(true));
+          // cloneNode doesn't execute scripts — replace each with a live copy
+          preview.querySelectorAll("script").forEach(old => {
+            const s = document.createElement("script");
+            [...old.attributes].forEach(a => s.setAttribute(a.name, a.value));
+            s.textContent = old.textContent;
+            old.parentNode.replaceChild(s, old);
+          });
+          preview.dataset.loaded = "true";
+        }
         code.style.display = "none";
         preview.style.display = "block";
         btnPrev.classList.add("active");
@@ -197,14 +209,13 @@ function isPromise(o) { return o instanceof Promise; }
 
 <!-- Start post -->
 
-
 *React* is an amazing library that revolutionized the way we build UIs (at least it is very popular). It popularized the idea of immediate mode UI programming (to a big audience), where the UI is a function of the state.
 
 $$
 \text{UI} = f(\text{state})
 $$
 
-This enables us to build complex UIs in a simple way. We can use ifs and loops to render the UI, without worrying about details.
+This enables us to build complex UIs in a simple way. We can use regular programming constructs like `ifs` and `loops` to render the UI, without worrying about details.
 
 ```js
 // example of immediate mode UI pseudo-code
@@ -321,18 +332,20 @@ The immediate mode UI comes naturally from `JS` functions and the other two conc
 
 Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our minimal UI library. This will show how to use our library in practice.
 
-### Creating nested components
+## Creating nested components
 
-@renderHTML("Nested components") {
+@renderHTML("Nested components", false) {
 ```html 
 <div id="nested"></div>
 <script type="module">
+    // Button component
     function MyButton(props) {
         return DomBuilder.of("button")
         .inner(`I' am a ${props.name} button`)
         .event("click", () => alert(`Hello, from ${props.name}!`));
     }
 
+    // App component without state, just nested components
     function App() {
         return DomBuilder.of("div")
         .append(
@@ -343,6 +356,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
         );
     }
 
+    // Immediate mode implementation 
     const root = DomBuilder.ofId("nested");
     root.append(App());
 </script>
@@ -350,7 +364,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ``` 
 } 
 
-### Profile example
+## Profile example
 
 @renderHTML("Profile example") {
 ```html
@@ -368,13 +382,17 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve([
-                    { name: "Naruto", image: "/NoNeedReact/naruto_gpt.png" },
-                    { name: "Kakashi", image: "/NoNeedReact/kakashi_gpt.png" },
-                    { name: "Minato", image: "/NoNeedReact/minato_gpt.png" }
+                    { name: "Naruto", image: "posts/NoNeedReact/naruto_gpt.png" },
+                    { name: "Kakashi", image: "posts/NoNeedReact/kakashi_gpt.png" },
+                    { name: "Minato", image: "posts/NoNeedReact/minato_gpt.png" }
                 ]);
-            }, 5000);
+            }, 3000);
         });
     }
+
+    // Setting up state and fetching data
+    const [getData, setData, onDataChange] = useState(null);
+    getDataFromApi().then(data => setData(() => data));
 
     function profileCard(user) {
         return DomBuilder.of("div")
@@ -389,9 +407,6 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
             .style(styles.cardImage)
         );
     }
-
-    const [getData, setData, onDataChange] = useState(null);
-    getDataFromApi().then(data => setData(() => data));
 
     function App() {
         const data = getData();
@@ -420,7 +435,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ```
 }
 
-### Task list example
+## Task list example
 
 @renderHTML("Task list example") {
 ```html
@@ -436,6 +451,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
         addButton: "padding: 6px 12px; border: none; background: #3b82f6; color: white; border-radius: 6px; cursor: pointer; font-size: 14px;",
     }   
 
+    // Setting up state
     const [getTasks, setTasks, onTasksChange] = useState([]);
 
     function Checkbox(task, index, tasks) {
@@ -446,6 +462,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
                 newTasks[index].completed = !newTasks[index].completed;
                 setTasks(() => newTasks);
             });
+        // hack: accessing DOM element to change checked state.
         checkbox.element.checked = task.completed;
         return checkbox;
     }
@@ -507,8 +524,8 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
             DomBuilder.of("h1")
             .style("color: #333;")
             .inner("Task List"),
+            AddTaskInput(),
             ...tasks.map((task, index) => TaskItem(task, index, tasks)),
-            AddTaskInput()
         );
     }
 
@@ -524,7 +541,9 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ```
 }
 
-
+@quote() {
+    Don't mind about game logic or styles, that part is given in react tutorial, just focus on the UI part, and how we can do it with our minimal library.
+}
 
 ## Tic tac toe example
 
@@ -532,7 +551,7 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ```html
 
 <style>
-    #example {
+    #tic_tac_toe {
         background: white;
         padding: 2rem;
         border-radius: 12px;
@@ -702,11 +721,12 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ```
 }
 
-<!-- ## Tic tac toe with time machine 
+## Tic tac toe with time machine
+
 @renderHTML("With time machine"){
 ```html
 <style>
-#example2 {
+#tic_tac_toe_time_machine {
     background: white;
     padding: 2rem;
     border-radius: 12px;
@@ -960,4 +980,8 @@ render();
 }
 
 
-## Explanation -->
+## Conclusion
+
+The idea of this post was to show that we can create a minimal UI library, with functional components, reactive state, and a simple way to create DOM elements. This basically creates a immediate mode UI library, similar to `React`, but with a much smaller codebase.
+
+Although this is useful for many purposes (I use it in my simple projects, including this site), I would not recommend for big complex projects, still it make sense to have an alternative. Hope you enjoyed the post!
