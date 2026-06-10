@@ -78,7 +78,7 @@ function parseMeta(fileStr) {
     return maybe(postMeta);
 }
 
-export default async function buildPosts() {
+export default async function buildPosts(maybeSpecificPostId) {
     const baseFolder = "./posts/"
     const postFolders = readdirSync(
         baseFolder,
@@ -89,6 +89,7 @@ export default async function buildPosts() {
     await Promise.all(
         postFolders.map(async folder => {
             const id = folder.name;
+            if (maybeSpecificPostId && id !== maybeSpecificPostId) return;
             const filePath = `./${baseFolder}/${id}/${id}.nd`;
             console.log(`Processing post ${id}...`);
             const ndFile = readFileSync(filePath, { encoding: "utf-8" });

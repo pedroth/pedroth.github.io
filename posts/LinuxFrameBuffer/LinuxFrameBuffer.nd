@@ -1,0 +1,174 @@
+:: import "./macros.js"; ::
+<!-- 
+title: Linux framebuffer experiment
+creationDate: 03/02/2026
+lastUpdateDate: 03/02/2026
+tags: [
+    linux,
+    framebuffer,
+    graphics,
+    experiment,
+    C
+]
+ -->
+
+I started this experiment in rendering pixels to the screen because I have come to realize that we have lost some degree of digital sovereignty(the ability to own and control our digital environment).
+
+From my perspective, setting a simple color on the screen should be something easy. However, it requires a lot of effort from the developer, making it jump through many hoops of modern graphics APIs. This, in a way, makes the code more obfuscated and complex, contributing to the loss of digital sovereignty. 
+
+Fortunately, there is a countercurrent to this trend in independent projects such as [Serenum OS](https://samhsmith.com/serenum/), the famous [TempleOS](https://templeos.org/), [Pico-8](https://www.lexaloffle.com/pico-8.php), and many Linux-based operating systems.
+
+@scaleDiv(66){
+    ![Vulkan vs OpenGL meme](/posts/LinuxFrameBuffer/vulkan_meme.png)
+}
+
+To take back some control, I want to build a simple software shader capable of drawing directly to the screen without relying on any graphics API. To achieve this, I used the *Linux framebuffer*, which provides a relatively direct way to manipulate pixels. It is not perfect, but it is close enough to the level of control I wanted to explore.
+
+![Linux framebuffer demo](/posts/LinuxFrameBuffer/demo.mp4)
+
+## Software shader
+
+A shader can be defined as a function that takes pixel coordinates and returns a color.
+
+$$
+\text{shader}(i, j) \to \text{color}
+$$
+
+@quote(){
+Color in this article will be defined as a tuple from $(\text{red}, \text{green}, \text{blue}) \in [0,1]^3$ . Usually color is represented as a 32-bit integer, where each byte (8 bits) represents the intensity of red, green, blue, and alpha channels (<span style="color: red;">R</span>, <span style="color: green;">G</span>, <span style="color: blue;">B</span>, <span style="color: gray;">A</span>). But you can think of any other representation of color that you like. 
+}
+
+The screen is a grid of pixels indexed by coordinates $(i, j)$, where $i \in \{0, ..., H-1\}$ is the row, $j \in \{0, ..., W-1\}$ is the column, and the origin $(0, 0)$ is at the top-left corner.
+
+@scaleDiv(66){
+    ![Pixel grid](/posts/LinuxFrameBuffer/pixel_grid.png)
+}
+
+To apply the shader, we iterate over every pixel and evaluate the shader at each coordinate.
+
+```python
+simple_shader(i, j):
+    return (i / (H-1), j / (W-1), 0) 
+
+for i in {0, ..., H-1}:
+    for j in {0, ..., W-1}:
+        color = simple_shader(i, j)
+        set_pixel(i, j, color)
+
+```
+We would get something like this:
+
+@scaleDiv(66){
+    ![Simple shader output](/posts/LinuxFrameBuffer/simple_shader.png)
+}
+
+To make it more interesting, I suggest making a coordinate change from $(i,j) \rightarrow (x,y)$, where the coordinates start from the corner left of the screen and $x \in {0, ..., W-1}$ and $y \in {0, ..., H-1}$. These are the more natural coordinates to work and are commonly used in graphics programming. 
+
+@scaleDiv(66){
+    ![Coordinate change](/posts/LinuxFrameBuffer/coordinate_change.png)
+}
+
+@scaleDiv(66){
+    ![Simple shader with coordinate change](/posts/LinuxFrameBuffer/simple_shader_coordinate_change.png)
+}
+
+This is very cool and all but the computer does not actually store a grid of pixels, instead it stores a contiguous block of memory.
+
+@scaleDiv(66){
+    ![Memory layout](/posts/LinuxFrameBuffer/memory_layout.png)
+}
+
+So we need to change the code to render to the screen, we now iterate over the memory and calculate the corresponding pixel coordinates for each memory address. But how do we do it?
+
+@scaleDiv(66){
+    ![Memory indexation](/posts/LinuxFrameBuffer/memory_indexation.png)
+}
+
+@scaleDiv(66){
+    ![Combinatorial diagram to calculate pixel coordinates](/posts/LinuxFrameBuffer/combinatorial_diagram.png)
+}
+
+From the diagrams above, we can find the formula to calculate memory address $k$ from pixel coordinates $(i, j)$. We see that $j$ index the columns and we need to jump $W$ columns for each row $i$, so we can calculate the memory address as $k = i \cdot W + j$.
+
+Now to compute the pixel coordinates from the memory address, we must reverse the formula. It seems impossible, because we have one equation and two unknowns. But we can note the following statement from regular arithmetic:
+
+$$
+N, d, q, r \in \mathbb{N}, \quad N = q \cdot d + r, \qquad q = \left\lfloor\frac{N}{d}\right\rfloor, \quad r = N \bmod d, \quad 0 \le r < d
+$$
+
+Where $N$ is the number we want to divide, $d$ is the divisor, $q$ is the quotient, and $r$ is the remainder. By pattern matching the formula $k = i \cdot W + j$ with the statement above, we can find the solution for $i$ and $j$:
+$$
+\red{N} = \blue{q} \cdot \green{d} + \orange{r} \quad \Rightarrow \quad \red{k} = \blue{i} \cdot \green{W} + \orange{j}
+$$
+
+Hence:
+$$
+i = \left\lfloor\frac{k}{W}\right\rfloor, \quad j = k \bmod W
+$$
+
+Putting everything together, we can render the shader to the screen with the following code:
+
+```python
+simple_shader(x, y):
+    return (x / (W-1), y / (H-1), 0)
+
+for k in {0, ..., W*H-1}:
+    i = k % W
+    j = k // W
+    x = j
+    y = H - 1 - i
+    color = simple_shader(x, y)
+    screen_memory[k] = color
+```
+
+To make things even more interesting, we can add a time variable to the shader, which will allow us to create animations. The demo animation above is generated by the following shader:
+
+```python
+simple_shader(x, y, t):
+    r = ((x / (W-1)) * t) % 1
+    g = ((y / (H-1)) * t) % 1
+    return (r, g, 0)
+
+old_time = measure_time_in_seconds()
+time = 0
+while time < 10:
+    current_time = measure_time_in_seconds()
+    dt = current_time - old_time
+    old_time = current_time
+    time += dt
+    for k in {0, ..., W*H-1}:
+        i = k % W
+        j = k // W
+        x = j
+        y = H - 1 - i
+        color = simple_shader(x, y, time)
+        screen_memory[k] = color
+
+```
+
+
+## C and Bun performance comparison
+
+@split() {
+    ![`C`](/posts/LinuxFrameBuffer/c_demo.mp4)
+    ![`Bun`](/posts/LinuxFrameBuffer/bun_demo.mp4)
+}
+
+## Raspberry Pi static demo
+
+@scaleDiv(66){
+    ![Raspberry Pi demo](/posts/LinuxFrameBuffer/raspberry_pi_demo.mp4)
+}
+
+## Links
+
+@linkButtons(){
+    
+    [Source Code](https://github.com/pedroth/linux-framebuffer/)
+
+}
+
+
+[framebuffer]: https://github.com/pedroth/linux-framebuffer/
+
+

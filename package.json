@@ -25,7 +25,8 @@
     "build-java": "node ./scripts/blog-builder build-java",
     "build-posts": "bun ./scripts/blog-builder build-posts",
     "build-images": "bun ./scripts/blog-builder build-images",
-    "build-about": "bun ./scripts/blog-builder build-about"
+    "build-about": "bun ./scripts/blog-builder build-about",
+    "watch-post": "bun ./scripts/watch-post.js"
   },
   "repository": {
     "type": "git",

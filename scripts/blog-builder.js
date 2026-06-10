@@ -25,8 +25,10 @@ program.command('build-java')
     });
 program.command('build-posts')
     .description('Create DB from posts')
-    .action(async () => {
-        const posts = await buildPosts();
+    .option('-p, --post <id>', 'Specify a post ID to build')
+    .action(async (options) => {
+        const selectedPostId = options.post;
+        const posts = await buildPosts(selectedPostId);
         let db = { posts: [] };
         try {
             db = JSON.parse(

@@ -6,7 +6,6 @@ function split(input) {
 }
 
 function details(input, args) {
-    console.log("Details macro", args);
     return `
     <details style="margin-left: 1rem;">
     <summary style="font-weight: bold; cursor: pointer;">${args[0]}</summary>
@@ -15,9 +14,28 @@ function details(input, args) {
     `;
 }
 
-function scaleDiv(nablaImg, args) {
+function scaleDiv(nabla, args) {
     const [scalePercentage, heightPercentage] = args;
-    return `<div style="width:${scalePercentage}%; height: ${heightPercentage ?? 100}%; margin-left: auto; margin-right: auto;">${nablaImg}</div>`;
+    return `<div style="width:${scalePercentage}%; height: ${heightPercentage ?? 100}%; margin-left: auto; margin-right: auto;">${nabla}</div>`;
 }
 
-MACROS = { quote, split, details, scaleDiv };
+// read links in the format [title](url) and return a div with buttons for each link
+function linkButtons(links, _) {
+    const linksArray = links.split("\n");
+    const regex = /\[(.+)\]\((.+)\)/;
+    const buttonsStrings = [];
+    linksArray.map(link => {
+        const match = link.match(regex);
+        if (match) {
+            const [_, text, url] = match;
+            buttonsStrings.push(`
+                <a href="${url}" target="_blank" style="align-self: center; margin: 20px">
+                <button class="button">${text}</button>
+                </a>`
+            );
+        }
+    });
+    return `<div style="display: flex; flex-direction: column;">${buttonsStrings.join("")}</div>`;
+}
+
+MACROS = { quote, split, details, scaleDiv, linkButtons };
