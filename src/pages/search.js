@@ -36,14 +36,14 @@ function searchPosts(posts, query) {
         .filter(
             p =>
                 p.title.toLowerCase().includes(finalQuery) ||
-                finalQuery.includes(p.title.toLowerCase()) ||
-                p.tags.some(t => t.toLowerCase().includes(finalQuery) || finalQuery.includes(t.toLowerCase()) )
+                p.id.toLowerCase().includes(finalQuery) ||
+                p.tags.some(t => t.toLowerCase().includes(finalQuery) )
         )
         .map(p => Card(p));
     const paragraph = DOM.of("p").inner(`Found ${results.length} results for "${query}" :`);
     return [
         paragraph,
-        DOM.of("paragraph")
+        DOM.of("div")
             .addClass("posts-grid")
             .append(...results)
     ];
