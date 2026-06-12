@@ -30,7 +30,7 @@ function linkButtons(links, _) {
             const [_, text, url] = match;
             buttonsStrings.push(`
                 <a href="${url}" target="_blank" style="align-self: center; margin: 20px">
-                <button class="button">${text}</button>
+                <button class="button"><p>${text}</p></button>
                 </a>`
             );
         }
