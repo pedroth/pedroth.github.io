@@ -3,15 +3,15 @@ title: Clustering colors
 creationDate: 05/10/2022
 lastUpdateDate: 08/09/2023
 tags: [
+    camera,
+    clustering,
+    computer vision,
+    experiment,
+    image processing,
     js,
     machine learning,
-    clustering,
-    camera,
-    sensors,
-    image processing,
-    computer vision,
     mathematics,
-    experiment
+    sensors
 ]
  -->
 I read [here](https://davidwalsh.name/browser-camera) that I could access the camera from the browser, so I decided to build a small image-processing demo. One of the simplest projects is color clustering. This pixel classification creates a nice cartoonish effect.

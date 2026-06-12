@@ -3,14 +3,14 @@ title: Text simplex
 creationDate: 11/04/2021
 lastUpdateDate: 11/04/2021
 tags: [
-    java,
-    NLP,
-    machine learning,
     clustering,
+    experiment,
     geometry,
+    java,
+    machine learning,
     mathematics,
-    visualization,
-    experiment
+    NLP,
+    visualization
 ]
 -->
  _Text simplex_ is a simple tool for visualizing [lowbow curves](https://jmlr.csail.mit.edu/papers/volume8/lebanon07a/lebanon07a.pdf). Basically, it maps a _text signal_ to a _high-dimensional curve_. This `Java` application lets you visualize these curves using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) or [barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system).

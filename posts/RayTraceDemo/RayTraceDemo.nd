@@ -6,11 +6,11 @@ lastUpdateDate: 01/08/2024
 tags: [
 	2d,
 	3d,
-	js,
 	computer graphics,
+	experiment,
+	js,
 	simulation,
-	visualization,
-	experiment
+	visualization
 ]
 -->
 I made this demo to study ray tracing using only the `CPU`.

@@ -4,13 +4,13 @@ creationDate: 24/11/2017
 lastUpdateDate: 24/11/2017
 tags: [
     3d,
+    experiment,
     java,
     linear algebra,
+    mathematics,
     optimization,
     simulation,
-    mathematics,
-    visualization,
-    experiment
+    visualization
 ]
 -->
  _Eigen Simulation_ is a `Java` application that lets you visualize three algorithms for finding _real eigenvectors_.

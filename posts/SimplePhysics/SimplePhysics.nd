@@ -4,12 +4,12 @@ creationDate: 01/02/2014
 lastUpdateDate: 01/02/2014
 tags: [
     2d,
+    experiment,
     java,
+    mathematics,
     physics,
     simulation,
-    visualization,
-    mathematics,
-    experiment
+    visualization
 ]
  -->
 _SimplePhysics_ is a `Java` application that lets you simulate the physics of rigid squares across different landscapes. It includes some amazing landscapes to explore :D.
