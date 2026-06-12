@@ -12,6 +12,7 @@
         "sensors",
         "dynamics",
         "experiment",
+        "simulation",
         "mathematics",
         "visualization"
       ]
@@ -25,6 +26,7 @@
         "NLP",
         "docker",
         "project",
+        "clustering",
         "mathematics",
         "graph theory",
         "machine learning"
@@ -37,6 +39,7 @@
       "lastUpdateDate": "25/07/2024",
       "tags": [
         "js",
+        "binary",
         "parsing",
         "project",
         "compiler",
@@ -55,7 +58,8 @@
         "dynamics",
         "experiment",
         "simulation",
-        "mathematics"
+        "mathematics",
+        "visualization"
       ]
     },
     {
@@ -69,6 +73,7 @@
         "experiment",
         "simulation",
         "mathematics",
+        "visualization",
         "cellular automaton"
       ]
     },
@@ -79,8 +84,12 @@
       "lastUpdateDate": "08/09/2023",
       "tags": [
         "js",
+        "camera",
+        "sensors",
+        "clustering",
         "experiment",
         "mathematics",
+        "computer vision",
         "image processing",
         "machine learning"
       ]
@@ -98,7 +107,8 @@
         "dynamics",
         "experiment",
         "simulation",
-        "mathematics"
+        "mathematics",
+        "visualization"
       ]
     },
     {
@@ -110,6 +120,7 @@
         "3d",
         "java",
         "experiment",
+        "simulation",
         "mathematics",
         "optimization",
         "visualization",
@@ -141,6 +152,7 @@
         "3d",
         "js",
         "game",
+        "experiment",
         "simulation",
         "visualization",
         "computer graphics"
@@ -159,7 +171,8 @@
         "surfaces",
         "experiment",
         "mathematics",
-        "visualization"
+        "visualization",
+        "computer graphics"
       ]
     },
     {
@@ -184,11 +197,13 @@
       "creationDate": "03/02/2026",
       "lastUpdateDate": "03/02/2026",
       "tags": [
-        "C",
+        "blog",
         "linux",
-        "graphics",
+        "c lang",
+        "low-level",
         "experiment",
-        "framebuffer"
+        "framebuffer",
+        "computer graphics"
       ]
     },
     {
@@ -198,10 +213,10 @@
       "lastUpdateDate": "28/08/2024",
       "tags": [
         "js",
-        "library",
         "parsing",
         "project",
         "compiler",
+        "markdown",
         "mathematics",
         "visualization"
       ]
@@ -213,9 +228,11 @@
       "lastUpdateDate": "29/06/2024",
       "tags": [
         "js",
+        "web",
         "tool",
         "server",
-        "project"
+        "project",
+        "markdown"
       ]
     },
     {
@@ -226,8 +243,9 @@
       "tags": [
         "js",
         "ui",
-        "library",
-        "project"
+        "web",
+        "blog",
+        "react"
       ]
     },
     {
@@ -242,7 +260,8 @@
         "geometry",
         "experiment",
         "simulation",
-        "mathematics"
+        "mathematics",
+        "visualization"
       ]
     },
     {
@@ -252,8 +271,10 @@
       "lastUpdateDate": "31/05/2024",
       "tags": [
         "blog",
+        "linux",
+        "retro",
         "emulation",
-        "experiment"
+        "preservation"
       ]
     },
     {
@@ -263,9 +284,12 @@
       "lastUpdateDate": "19/04/2025",
       "tags": [
         "js",
+        "web",
+        "chat",
         "java",
         "docker",
-        "server"
+        "server",
+        "networking"
       ]
     },
     {
@@ -294,6 +318,7 @@
         "2d",
         "3d",
         "js",
+        "experiment",
         "simulation",
         "visualization",
         "computer graphics"
@@ -306,9 +331,11 @@
       "lastUpdateDate": "26/12/2025",
       "tags": [
         "js",
+        "web",
         "server",
         "robotics",
-        "automation"
+        "automation",
+        "networking"
       ]
     },
     {
@@ -321,7 +348,8 @@
         "game",
         "physics",
         "experiment",
-        "simulation"
+        "simulation",
+        "mathematics"
       ]
     },
     {
@@ -335,7 +363,8 @@
         "physics",
         "experiment",
         "simulation",
-        "mathematics"
+        "mathematics",
+        "visualization"
       ]
     },
     {
@@ -361,9 +390,9 @@
       "creationDate": "10/03/2026",
       "lastUpdateDate": "10/03/2026",
       "tags": [
-        "c",
+        "2d",
         "3d",
-        "js",
+        "c lang",
         "project",
         "simulation",
         "visualization",
@@ -379,7 +408,6 @@
         "2d",
         "3d",
         "js",
-        "library",
         "project",
         "simulation",
         "visualization",
@@ -409,6 +437,7 @@
         "NLP",
         "java",
         "geometry",
+        "clustering",
         "experiment",
         "mathematics",
         "visualization",

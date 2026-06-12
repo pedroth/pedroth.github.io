@@ -4,7 +4,7 @@
         <description><![CDATA[Pedroth's Corner: Maths. Computer Science. Philosophy]]></description>
         <link>https://pedroth.github.io</link>
         <generator>Pedroth RSS Generator</generator>
-        <lastBuildDate>Fri, 05 Jun 2026 15:15:18 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 12 Jun 2026 14:56:16 GMT</lastBuildDate>
         <atom:link href="https://pedroth.github.io/feed/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en-US]]></language>
         <item>
@@ -24,6 +24,15 @@
             <dc:creator><![CDATA[Pedroth]]></dc:creator>
             <pubDate>Tue, 10 Mar 2026 00:00:00 GMT</pubDate>
             <enclosure url="https://pedroth.github.io/posts/Telac/Telac_small.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Linux framebuffer experiment]]></title>
+            <description><![CDATA[Demo and notes about Linux framebuffer experiment.]]></description>
+            <link>https://pedroth.github.io/?p=post/LinuxFrameBuffer/LinuxFrameBuffer.nd</link>
+            <guid isPermaLink="false">https://pedroth.github.io/?p=post/LinuxFrameBuffer/LinuxFrameBuffer.nd</guid>
+            <dc:creator><![CDATA[Pedroth]]></dc:creator>
+            <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
+            <enclosure url="https://pedroth.github.io/posts/LinuxFrameBuffer/LinuxFrameBuffer_small.webp" length="0" type="image/webp"/>
         </item>
         <item>
             <title><![CDATA[Remote Control]]></title>

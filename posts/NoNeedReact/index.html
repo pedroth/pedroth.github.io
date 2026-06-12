@@ -394,7 +394,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div></span></p><p><span><span>The immediate mode UI comes naturally from </span><code class="base_code line_code" >JS</code><span> functions and the other two concepts. We can just create a function that returns a </span><code class="base_code line_code" >DomBuilder</code><span> and use the </span><code class="base_code line_code" >useState</code><span> function to create reactive variables. When the state changes, we can re-render the UI by calling the function again.</span></span></p><p><h2 id="recreating-the-react-tutorial" ><span><span>Recreating the React tutorial</span></span></h2></p><p><span><span>Lets try to recreate the </span><a href="https://react.dev/learn"  target="_blank" ><span><code class="base_code line_code" >React</code><span> tutorial</span></span></a><span> with our minimal UI library. This will show how to use our library in practice.</span></span></p><p><h2 id="creating-nested-components" ><span><span>Creating nested components</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Nested components</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-w9invhiv89','code')"  class="active"  id="nd-w9invhiv89-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-w9invhiv89','preview')"  id="nd-w9invhiv89-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-w9invhiv89-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;nested&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+})();</script></div></div></span></p><p><span><span>The immediate mode UI comes naturally from </span><code class="base_code line_code" >JS</code><span> functions and the other two concepts. We can just create a function that returns a </span><code class="base_code line_code" >DomBuilder</code><span> and use the </span><code class="base_code line_code" >useState</code><span> function to create reactive variables. When the state changes, we can re-render the UI by calling the function again.</span></span></p><p><h2 id="recreating-the-react-tutorial" ><span><span>Recreating the React tutorial</span></span></h2></p><p><span><span>Lets try to recreate the </span><a href="https://react.dev/learn"  target="_blank" ><span><code class="base_code line_code" >React</code><span> tutorial</span></span></a><span> with our minimal UI library. This will show how to use our library in practice.</span></span></p><p><h2 id="creating-nested-components" ><span><span>Creating nested components</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Nested components</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-8wgjne7ejgc','code')"  class="active"  id="nd-8wgjne7ejgc-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-8wgjne7ejgc','preview')"  id="nd-8wgjne7ejgc-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-8wgjne7ejgc-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;nested&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
     <span class="hljs-comment">// Button component</span>
     <span class="hljs-keyword">function</span> <span class="hljs-title function_">MyButton</span>(<span class="hljs-params">props</span>) {
@@ -441,7 +441,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div><span> </span></span></p></div><div id="nd-w9invhiv89-preview"  class="nd-preview"  style="display:none;" ><div id="nested" ></div><script type="module" >
+})();</script></div></div><span> </span></span></p></div><div id="nd-8wgjne7ejgc-preview"  class="nd-preview"  style="display:none;" ><div id="nested" ></div><script type="module" >
     // Button component
     function MyButton(props) {
         return DomBuilder.of("button")
@@ -496,7 +496,7 @@ function isPromise(o) { return o instanceof Promise; }
         btnCode.classList.remove("active");
       }
     }
-  </script></details></span></p></p><span> </span></span></p><p><h2 id="profile-example" ><span><span>Profile example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Profile example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-re5e9l7eee','code')"  class="active"  id="nd-re5e9l7eee-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-re5e9l7eee','preview')"  id="nd-re5e9l7eee-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-re5e9l7eee-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;profile&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </script></details></span></p></p><span> </span></span></p><p><h2 id="profile-example" ><span><span>Profile example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Profile example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-vw8h0fqs0dm','code')"  class="active"  id="nd-vw8h0fqs0dm-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-vw8h0fqs0dm','preview')"  id="nd-vw8h0fqs0dm-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-vw8h0fqs0dm-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;profile&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
 
     <span class="hljs-keyword">const</span> styles = {
@@ -582,7 +582,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div></span></p></div><div id="nd-re5e9l7eee-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-re5e9l7eee-tpl" ><div id="profile" ></div><script type="module" >
+})();</script></div></div></span></p></div><div id="nd-vw8h0fqs0dm-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-vw8h0fqs0dm-tpl" ><div id="profile" ></div><script type="module" >
 
     const styles = {
         card: "border: 1px solid #ccc; padding: 10px; margin: 10px; border-radius: 8px;",
@@ -676,7 +676,7 @@ function isPromise(o) { return o instanceof Promise; }
         btnCode.classList.remove("active");
       }
     }
-  </script></details></span></p></p></span></p><p><h2 id="task-list-example" ><span><span>Task list example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Task list example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-47gp8e3vbpg','code')"  class="active"  id="nd-47gp8e3vbpg-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-47gp8e3vbpg','preview')"  id="nd-47gp8e3vbpg-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-47gp8e3vbpg-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;tasks&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  </script></details></span></p></p></span></p><p><h2 id="task-list-example" ><span><span>Task list example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Task list example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-ian9o5ns2j','code')"  class="active"  id="nd-ian9o5ns2j-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-ian9o5ns2j','preview')"  id="nd-ian9o5ns2j-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-ian9o5ns2j-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;tasks&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
 
     <span class="hljs-keyword">const</span> styles = {
@@ -797,7 +797,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div></span></p></div><div id="nd-47gp8e3vbpg-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-47gp8e3vbpg-tpl" ><div id="tasks" ></div><script type="module" >
+})();</script></div></div></span></p></div><div id="nd-ian9o5ns2j-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-ian9o5ns2j-tpl" ><div id="tasks" ></div><script type="module" >
 
     const styles = {
         card: "border: 1px solid #ccc; padding: 10px; margin: 10px; border-radius: 8px;",
@@ -927,7 +927,7 @@ function isPromise(o) { return o instanceof Promise; }
         btnCode.classList.remove("active");
       }
     }
-  </script></details></span></p></p></span></p><p><span><p></p></span></p><p><h2 id="tic-tac-toe-example" ><span><span>Tic tac toe example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Tic tac toe example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-elixgzxby65','code')"  class="active"  id="nd-elixgzxby65-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-elixgzxby65','preview')"  id="nd-elixgzxby65-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-elixgzxby65-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" >
+  </script></details></span></p></p></span></p><p><span><p></p></span></p><p><h2 id="tic-tac-toe-example" ><span><span>Tic tac toe example</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>Tic tac toe example</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-nfdxszkc9j','code')"  class="active"  id="nd-nfdxszkc9j-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-nfdxszkc9j','preview')"  id="nd-nfdxszkc9j-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-nfdxszkc9j-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" >
 <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
     <span class="hljs-selector-id">#tic_tac_toe</span> {
         <span class="hljs-attribute">background</span>: white;
@@ -1118,7 +1118,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div></span></p></div><div id="nd-elixgzxby65-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-elixgzxby65-tpl" ><style>
+})();</script></div></div></span></p></div><div id="nd-nfdxszkc9j-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-nfdxszkc9j-tpl" ><style>
     #tic_tac_toe {
         background: white;
         padding: 2rem;
@@ -1316,7 +1316,7 @@ function isPromise(o) { return o instanceof Promise; }
         btnCode.classList.remove("active");
       }
     }
-  </script></details></span></p></p></span></p><p><h2 id="tic-tac-toe-with-time-machine" ><span><span>Tic tac toe with time machine</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>With time machine</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-zz7g34gp1mm','code')"  class="active"  id="nd-zz7g34gp1mm-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-zz7g34gp1mm','preview')"  id="nd-zz7g34gp1mm-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-zz7g34gp1mm-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
+  </script></details></span></p></p></span></p><p><h2 id="tic-tac-toe-with-time-machine" ><span><span>Tic tac toe with time machine</span></span></h2></p><p><span><p><p><span><details class="nd-widget"  open=""true"" ><summary class="nd-summary" ><span><span>With time machine</span></span></summary><div class="nd-tabs" ><button onclick="ndTab('nd-e9ess6dxqal','code')"  class="active"  id="nd-e9ess6dxqal-btn-code" ><span><span>Code</span></span></button><button onclick="ndTab('nd-e9ess6dxqal','preview')"  id="nd-e9ess6dxqal-btn-preview" ><span><span>Preview</span></span></button></div><div id="nd-e9ess6dxqal-code"  class="nd-code" ><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-html" ><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css">
 <span class="hljs-selector-id">#tic_tac_toe_time_machine</span> {
     <span class="hljs-attribute">background</span>: white;
     <span class="hljs-attribute">padding</span>: <span class="hljs-number">2rem</span>;
@@ -1589,7 +1589,7 @@ function isPromise(o) { return o instanceof Promise; }
       }
     }, 1500);
   });
-})();</script></div></div></span></p></div><div id="nd-zz7g34gp1mm-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-zz7g34gp1mm-tpl" ><style>
+})();</script></div></div></span></p></div><div id="nd-e9ess6dxqal-preview"  class="nd-preview"  style="display:none;" ></div><template id="nd-e9ess6dxqal-tpl" ><style>
 #tic_tac_toe_time_machine {
     background: white;
     padding: 2rem;
