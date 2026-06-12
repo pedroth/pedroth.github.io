@@ -3,11 +3,12 @@ title: Roulette game
 creationDate: 29/01/2022
 lastUpdateDate: 29/01/2022
 tags: [
-    js,
+    experiment,
     game,
+    js,
+    mathematics,
     physics,
-    simulation,
-    experiment
+    simulation
 ]
  -->
 I made this game a long time ago on [Khan Academy](https://www.khanacademy.org/computer-programming/simple-roulette/6350614017605632). I decided to add it here. It uses [`processing.js`](https://p5js.org/).

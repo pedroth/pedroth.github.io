@@ -62,10 +62,10 @@ function getSearchInGoogle(getQuery, onQueryChange) {
             DOM.of("button")
                 .addClass("button")
                 .append(
-                    DOM.of("h2").inner("Search in Google")
+                    DOM.of("h2").inner("Search in DuckDuckGo")
                 )
         )
-        .attr("href", `https://www.google.com/search?q=${encodeURI(`site:https://pedroth.github.io ${getQuery()}`)}`)
+        .attr("href", `https://duckduckgo.com/?q=${encodeURI(`site:https://pedroth.github.io ${getQuery()}`)}`)
         .attr("target", `_blank`)
     const container = DOM.of("div")
         .addClass("center")
@@ -75,7 +75,7 @@ function getSearchInGoogle(getQuery, onQueryChange) {
     onQueryChange(newQuery => {
         button.attr(
             "href",
-            `https://www.google.com/search?q=${encodeURI(`site:https://pedroth.github.io ${newQuery}`)}`
+            `https://duckduckgo.com/?q=${encodeURI(`site:https://pedroth.github.io ${newQuery}`)}`
         )
         button.style(getQuery() === "" ? "display:none" : "");
     })

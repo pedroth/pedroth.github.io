@@ -3,10 +3,13 @@ title: Public chat
 creationDate: 27/12/2021
 lastUpdateDate: 19/04/2025
 tags: [
-    js,
+    chat,
+    docker,
     java,
+    js,
+    networking,
     server,
-    docker
+    web
 ]
  -->
 _Public Chat_ is a web chat application that I built to learn about `HTTP server` features in `Java`.

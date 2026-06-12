@@ -3,13 +3,13 @@ title: Nabladown.js a pseudo-markdown language
 creationDate: 03/05/2021
 lastUpdateDate: 28/08/2024
 tags: [
-    js,
-    library,
-    parsing,
     compiler,
+    js,
+    markdown,
     mathematics,
-    visualization,
-    project
+    parsing,
+    project,
+    visualization
 ]
  -->
 [Nabladown.js](https://github.com/pedroth/nabladown.js) is a parser and renderer for the `nabladown.js` language, which is a pseudo/flavored *Markdown* language.

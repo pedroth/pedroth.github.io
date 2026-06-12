@@ -9,4 +9,9 @@
 #     cd ..
 # done
 
-find posts -name "*_small.webp" -type f -delete
+# Remove small images from posts
+# find posts -name "*_small.webp" -type f -delete
+
+
+# Remove index.html from posts
+# find posts -name "index.html" -type f -delete

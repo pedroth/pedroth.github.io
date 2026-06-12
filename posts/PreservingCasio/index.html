@@ -1,0 +1,126 @@
+<article><style>/* node_modules/highlight.js/styles/github-dark.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-built_in, .hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-code, .hljs-comment, .hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* src/CodeRender/CodeRender.css */
+.base_code {
+  box-sizing: border-box;
+  color: #f5f5f5;
+  background-color: #232323;
+  border: hidden;
+  border-radius: 6px;
+  font-size: 85%;
+}
+
+.line_code {
+  color: orange;
+  padding: .2em .4em;
+}
+
+.block_code {
+  overflow: auto;
+  padding: 16px;
+}
+
+.nd_copied {
+  color: #22c55e;
+}
+
+span.nd_copy {
+  margin-right: .25rem;
+}
+
+svg.nd_copy {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+button.nd_copy {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: #0000;
+  border: 0 solid #0000;
+  margin: .5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  top: 0;
+  right: 0;
+}
+</style><p><span></span></p><p><span><span>One of my first </span><a href="https://www.youtube.com/"  target="_blank" ><span><span>YouTube</span></span></a><span> videos was about a 3D engine I made on my </span><a href="https://www.casio.com/"  target="_blank" ><span><span>Casio</span></span></a><span> calculator. I was bored in some high school classes and started writing lots of programs on the calculator.</span></span></p><p><span><div style="text-align:center;" ><iframe src="https://www.youtube-nocookie.com/embed/ge2o3HtHDKA?si=I5_mUEHxS4UBpbWS"  frameborder="0"  height="315"  width="560"  allow="fullscreen; clipboard-write; encrypted-media; picture-in-picture"  style="max-width: 97%;"  alt="the-famous-youtube-video" ></iframe><figcaption><span><span>The famous YouTube video</span></span></figcaption></div></span></p><p><span><span>The problem with this kind of software is that it only runs on the Casio, but I wanted to run it on my computer in 2023. Then I found an </span><a href="https://www.intereseducation.com/resources/casio-fx-9860g-sd-graphing-calculator-emulator-full-version/"  target="_blank" ><span><span>emulator</span></span></a><span>! Emulators are amazing. They are one of the best tools for preserving software, including my Casio programs. There are many emulators, and they are very popular in the </span><a href="https://www.youtube.com/watch?v=PCTAVbWdS5o"  target="_blank" ><span><span>retro gaming</span></span></a><span> community.</span></span></p><p><h1 id="running-the-emulator-on-my-computer" ><span><span>Running the emulator on my computer</span></span></h1></p><p><span><span>First, you need to download some </span><code class="base_code line_code" >.g1m</code><span> files and upload them to the emulator SD card. You can find some programs in my </span><a href="https://github.com/pedroth/casio-fx-9860-graveyard/tree/main/casio"  target="_blank" ><span><span>casio programs graveyard</span></span></a><span>. There is one issue with the </span><a href="https://www.intereseducation.com/resources/casio-fx-9860g-sd-graphing-calculator-emulator-full-version/"  target="_blank" ><span><span>emulator</span></span></a><span>: it only runs on </span><code class="base_code line_code" >Windows</code><span>, and I use </span><code class="base_code line_code" >Linux</code><span>. The solution was to use </span><a href="https://www.winehq.org/"  target="_blank" ><span><span>Wine</span></span></a><span>, which can run Windows executables on Linux (also great for software preservation). Just run </span><code class="base_code line_code" >wine emulator_file.exe</code><span>.</span></span></p><p><hr></hr></p><p><span><div style="text-align:center;" ><video src="/posts/PreservingCasio/CasioEmulator_installG1M.webm"  controls=""  style="max-width: 97%;"  alt="loading-.g1m-files-into-the-emulator" ></video><figcaption><span><span>Loading </span><code class="base_code line_code" >.g1m</code><span> files into the emulator</span></span></figcaption></div></span></p><p><hr></hr></p><p><span><div style="text-align:center;" ><video src="/posts/PreservingCasio/Casio_emulation.webm"  controls=""  style="max-width: 97%;"  alt="demo" ></video><figcaption><span><span>Demo</span></span></figcaption></div></span></p><p><hr></hr></p><p><span><span>Hope you enjoyed my adventure through preserving old programs.</span></span></p><p><div></div></p><p><div></div></p><p><div></div></p><p><div></div></p></article>

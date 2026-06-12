@@ -5,13 +5,14 @@ creationDate: 22/12/2021
 lastUpdateDate: 22/12/2021
 tags: [
     3d,
+    dynamics,
+    experiment,
     js,
+    mathematics,
     mobile,
     sensors,
-    dynamics,
-    visualization,
-    mathematics,
-    experiment
+    simulation,
+    visualization
 ]
  -->
 After discovering that phone sensor data can be accessed from the browser[^hardware], I decided to build a project around it. This project is a way to visualize that sensor data. In this demo, you can see a wireframe abstraction of a phone moving in space, with its movement tracing a path.

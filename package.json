@@ -5,12 +5,12 @@
   "main": "src/index.js",
   "type": "module",
   "devDependencies": {
-    "archiver": "^6.0.1",
+    "archiver": "^6.0.2",
     "child_process": "^1.0.2",
     "commander": "^11.1.0",
-    "eslint": "^8.53.0",
-    "nabladown.js": "4.1.2",
-    "rimraf": "^5.0.5",
+    "eslint": "^8.57.1",
+    "nabladown.js": "4.1.7",
+    "rimraf": "^5.0.10",
     "rss": "^1.2.2",
     "textfit": "^2.4.0"
   },
@@ -21,10 +21,12 @@
     "build": "bun run build-blog;",
     "clean": "rm -r node_modules; rm -r lib;",
     "build-lib": "bun i; bun bundle.js;",
-    "build-blog": "bun run build-lib; bun run build-posts; bun run build-images; bun run build-java; bun run rss",
+    "build-blog": "bun run build-lib; bun run build-posts; bun run build-images; bun run build-java; bun run build-about; bun run rss",
     "build-java": "node ./scripts/blog-builder build-java",
     "build-posts": "bun ./scripts/blog-builder build-posts",
-    "build-images": "bun ./scripts/blog-builder build-images"
+    "build-images": "bun ./scripts/blog-builder build-images",
+    "build-about": "bun ./scripts/blog-builder build-about",
+    "watch-post": "bun ./scripts/watch-post.js"
   },
   "repository": {
     "type": "git",

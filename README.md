@@ -45,6 +45,8 @@ Pedroth's Corner is my personal website. Here I will:
 - `index.css`
 - `index.html`
 - `index.js`
+- `LICENSE`
+- `macros.js`
 - `package.json`
 - `README.md`
 
@@ -74,17 +76,11 @@ Most of the useful scripts can be found in the [package.json](./package.json), s
 
 If you really need to run the scripts you need to run it from the [root `./`](./), like this:
 
-`sh scripts/...`
-
-or 
-
 `bun scripts/...`
 
 or
 
 `node scripts/...`
-
-> The `scripts/blog-builder.js build-java` only run using `node`, there is a [bug in bun](https://github.com/oven-sh/bun/issues/6992) that blocks running this particular command.
 
 
 # Dependencies
@@ -115,6 +111,7 @@ The blog builder is a set of scripts designed to update the website. It updates 
 - Add `.webm` video about your post with its name equal to its *unique id*
 - Run `bun run build-blog` in the root.
 
+> Note: titles with `:` should escape it with `\:`.
 
 # TODO
 

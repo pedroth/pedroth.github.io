@@ -1,9 +1,18 @@
 import DOM from "./DomBuilder.js";
 
-export default async function renderFromString(str) {
-    // Lazy-load markdown parser only when needed (post pages)
-    const { parse, Render, buildDom } = await import("../lib/importsND.js");
-    
+function generateUniqueID(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let randomID = '';
+    const randomBytes = new Uint8Array(length);
+    globalThis.crypto.getRandomValues(randomBytes);
+    for (let i = 0; i < length; i++) {
+        randomID += characters[randomBytes[i] % charactersLength];
+    }
+    return randomID;
+}
+
+export function createPedrothRender(Render, buildDom) {
     class PedrothRender extends Render {
         renderBlockCode(blockCode, context) {
             const { code, language } = blockCode;
@@ -54,22 +63,29 @@ export default async function renderFromString(str) {
             return container;
         }
     }
+    return PedrothRender;
+}
 
-    function generateUniqueID(length) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const charactersLength = characters.length;
-
-        let randomID = '';
-        const randomBytes = new Uint8Array(length);
-        window.crypto.getRandomValues(randomBytes);
-
-        for (let i = 0; i < length; i++) {
-            randomID += characters[randomBytes[i] % charactersLength];
-        }
-
-        return randomID;
-    }
-
+export default async function renderFromString(str) {
+    // Lazy-load markdown parser only when needed (post pages)
+    const { parse, Render, buildDom } = await import("../lib/importsND.js");
+    const PedrothRender = createPedrothRender(Render, buildDom);
     const parsed = parse(str);
     return await (new PedrothRender().render(parsed));
+}
+
+export async function renderOfflineHTML(str) {
+    const { parse, Render, buildDom } = await import("nabladown.js/dist/node/index.js");
+    const PedrothRender = createPedrothRender(Render, buildDom);
+    class OfflineRender extends PedrothRender {
+        renderBlockCode(blockCode, context) {
+            const { code, language } = blockCode;
+            const split = language.split("*");
+            if (split.length === 1) return super.renderBlockCode(blockCode, context);
+            // Skip eval at build time — render as plain code block
+            return super.renderBlockCode({ code, language: split[0] }, context);
+        }
+    }
+    const parsed = parse(str);
+    return await new OfflineRender().abstractRender(parsed).then(doc => doc.toString());
 }

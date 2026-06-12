@@ -1,0 +1,226 @@
+<article><style>/* node_modules/highlight.js/styles/github-dark.css */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+
+code.hljs {
+  padding: 3px 5px;
+}
+
+.hljs {
+  color: #c9d1d9;
+  background: #0d1117;
+}
+
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #ff7b72;
+}
+
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #d2a8ff;
+}
+
+.hljs-attr, .hljs-attribute, .hljs-literal, .hljs-meta, .hljs-number, .hljs-operator, .hljs-selector-attr, .hljs-selector-class, .hljs-selector-id, .hljs-variable {
+  color: #79c0ff;
+}
+
+.hljs-meta .hljs-string, .hljs-regexp, .hljs-string {
+  color: #a5d6ff;
+}
+
+.hljs-built_in, .hljs-symbol {
+  color: #ffa657;
+}
+
+.hljs-code, .hljs-comment, .hljs-formula {
+  color: #8b949e;
+}
+
+.hljs-name, .hljs-quote, .hljs-selector-pseudo, .hljs-selector-tag {
+  color: #7ee787;
+}
+
+.hljs-subst {
+  color: #c9d1d9;
+}
+
+.hljs-section {
+  color: #1f6feb;
+  font-weight: 700;
+}
+
+.hljs-bullet {
+  color: #f2cc60;
+}
+
+.hljs-emphasis {
+  color: #c9d1d9;
+  font-style: italic;
+}
+
+.hljs-strong {
+  color: #c9d1d9;
+  font-weight: 700;
+}
+
+.hljs-addition {
+  color: #aff5b4;
+  background-color: #033a16;
+}
+
+.hljs-deletion {
+  color: #ffdcd7;
+  background-color: #67060c;
+}
+
+/* src/CodeRender/CodeRender.css */
+.base_code {
+  box-sizing: border-box;
+  color: #f5f5f5;
+  background-color: #232323;
+  border: hidden;
+  border-radius: 6px;
+  font-size: 85%;
+}
+
+.line_code {
+  color: orange;
+  padding: .2em .4em;
+}
+
+.block_code {
+  overflow: auto;
+  padding: 16px;
+}
+
+.nd_copied {
+  color: #22c55e;
+}
+
+span.nd_copy {
+  margin-right: .25rem;
+}
+
+svg.nd_copy {
+  fill: currentColor;
+  width: 1rem;
+  height: 1rem;
+}
+
+button.nd_copy {
+  cursor: pointer;
+  color: #fff;
+  position: absolute;
+  background-color: #0000;
+  border: 0 solid #0000;
+  margin: .5rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1rem;
+  top: 0;
+  right: 0;
+}
+</style><link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css"  integrity="sha384-qCEsSYDSH0x5I45nNW4oXemORUZnYFtPy/FqB/OjqxabTMW5HVaaH9USK4fN3goV"  crossorigin="anonymous" ></link><p><span></span></p><p><span><em><span><span>RandomCurve</span></span></em><span> is a </span><code class="base_code line_code" >Java</code><span> application that generates a </span><strong><span><span>random</span></span></strong><span> curve over time. The </span><strong><span><span>random</span></span></strong><span> curve </span><span><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span></span><span> is generated as follows:</span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Uniform</span></span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9313em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9313em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">50</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9313em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9313em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0556em;"><span class="mord">˙</span></span></span></span></span></span></span></span></span></span></span></span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8623em;vertical-align:-0.1944em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1389em;"><span class="mord">˙</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1611em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></span></span></span></p><p><span><span><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1611em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.45em;"><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop">sin</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.95em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span></span></span></span></span></span></span></p><p><span><span>Feel free to download the program below.</span></span></p><p><span><div style="text-align:center;" ><iframe src="https://www.youtube-nocookie.com/embed/gOz2MV5Z-D0"  frameborder="0"  height="315"  width="560"  allow="fullscreen; clipboard-write; encrypted-media; picture-in-picture"  style="max-width: 97%;"  alt="random-curve-app-video" ></iframe><figcaption><span><span>Random Curve app video</span></span></figcaption></div></span></p><p><h2 id="javascript-port" ><span><span>JavaScript port</span></span></h2></p><p><span><span>Below you will find a </span><code class="base_code line_code" >JavaScript</code><span> port of the </span><code class="base_code line_code" >Java</code><span> version. It is also available on </span><a href="https://www.khanacademy.org/computer-programming/hsb-random-curve/2499302706"  target="_blank" ><span><span>my Khan Academy</span></span></a><span>.</span></span></p><p><span><div style="display: flex;justify-content: center;" ><canvas id="canvas"  width="560"  height="400" ></canvas></div></span></p><p><span><script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js" ></script></span></p><p><span><script>
+    var canvas = document.getElementById("canvas"),
+    processing = new Processing(canvas, function(processing) {
+        processing.size(canvas.width, canvas.height), processing.background(4095);
+        var mouseIsPressed = !1;
+        processing.mousePressed = function() {
+            mouseIsPressed = !0
+        }, processing.mouseReleased = function() {
+            mouseIsPressed = !1
+        };
+        var keyIsPressed = !1;
+
+        function getImage(n) {
+            var o = "https://www.kasandbox.org/programming-images/" + n + ".png";
+            return processing.externals.sketch.imageCache.add(o), processing.loadImage(o)
+        }
+        processing.keyPressed = function() {
+            keyIsPressed = !0
+        }, processing.keyReleased = function() {
+            keyIsPressed = !1
+        };
+        var rotateFn = processing.rotate;
+        with(processing.rotate = function(n) {
+            rotateFn(processing.radians(n))
+        }, processing) var gamma, omega, theta, oldPoint, newPoint, time, isInit = !0,
+            currentTime, oldTime, speed, timeColor, xmin = -5,
+            xmax = 5,
+            ymin = -5,
+            ymax = 5,
+            w = canvas.width,
+            h = canvas.height,
+            computeDxdt = function() {
+                return cos(theta)
+            },
+            computeDydt = function() {
+                return sin(theta)
+            },
+            computeColor = function(n) {
+                var o = [];
+                return o[0] = round(255 * sin(3 * n) * sin(3 * n)), o[1] = round(255 * sin(6 * n) * sin(6 * n)), o[2] = round(255 * sin(12 * n) * sin(12 * n)), o
+            },
+            changeXcoord = function(n) {
+                return (n - xmin) * w / abs(xmax - xmin)
+            },
+            changeYcoord = function(n) {
+                return -(n - ymax) * h / abs(ymax - ymin)
+            },
+            drawLine = function(n, o, e, i) {
+                var t = changeXcoord(n),
+                    s = changeYcoord(o),
+                    r = changeXcoord(e),
+                    a = changeYcoord(i);
+                line(t, s, r, a)
+            },
+            euler = function() {
+                var n = (currentTime = .001 * millis()) - oldTime;
+                oldTime = currentTime, time += n, oldPoint[0] > 5 ? oldPoint[0] = -5 : oldPoint[0] < -5 ? oldPoint[0] = 5 : oldPoint[1] > 5 ? oldPoint[1] = -5 : oldPoint[1] < -5 && (oldPoint[1] = 5);
+                var o = oldPoint[0],
+                    e = oldPoint[1];
+                gamma = 100 * random(0, 1) - 50 - omega, theta += (omega += gamma * n * speed) * n * speed;
+                var i = computeDxdt(),
+                    t = computeDydt();
+                newPoint[0] = o + n * i * speed, newPoint[1] = e + n * t * speed, timeColor = computeColor(time), stroke(timeColor[0], 255, 255), drawLine(oldPoint[0], oldPoint[1], newPoint[0], newPoint[1]), oldPoint[0] = newPoint[0], oldPoint[1] = newPoint[1]
+            },
+            init = function() {
+                oldPoint = [], newPoint = [];
+                for (var n = 0; n < 2; n++) newPoint[n] = random(-5, 5), oldPoint[n] = random(-5, 5);
+                theta = random(0, 6.283184), omega = random(0, 6.283184), background(0, 0, 0), oldTime = .001 * millis(), time = 0, speed = 5, isInit = !1, colorMode(HSB)
+            },
+            mouseReleased = function() {
+                oldPoint[0] = xmin + mouseX / w * abs(xmax - xmin), oldPoint[1] = ymax - mouseY / h * abs(ymax - ymin)
+            },
+            draw = function() {
+                isInit && init(), euler()
+            };
+        void 0 !== draw && (processing.draw = draw)
+    });
+</script></span></p><p><h2 id="links" ><span><span>Links</span></span></h2></p><p><span><div style="display: flex;flex-direction: column" ><a href="posts/RandomCurve/RandomCurve.zip"  target="_blank"  style="align-self: center; margin: 20px" ><button class="button" ><p><span><span>Download app</span></span></p></button></a><a target="_blank"  href="https://github.com/pedroth/Learning/blob/master/src/main/java/apps/RandomCurve.java"  style="align-self: center" ><button class="button" ><p><span><span>Source Code</span></span></p></button></a></div></span></p><p><h2 id="running-with-docker" ><span><span>Running with Docker</span></span></h2></p><p><span><span>Copy and paste this into a terminal:</span></span></p><p><span><div style="position: relative;" ><pre class="base_code block_code" ><code class="language-sh" >xhost + &amp;&amp; sudo docker run --<span class="hljs-built_in">rm</span> -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=<span class="hljs-variable">$DISPLAY</span> -it pedroth/java-apps bash -c <span class="hljs-string">&quot;java -cp Learning/learning.jar apps.RandomCurve&quot;</span>
+</code></pre><div><button class="nd_copy"  id="nd_btn_1"  title="Copy to clipboard" ><span style="display: flex; flex-direction:row;" ><span class="nd_copy"  id="nd_ct_1" >COPY</span><svg viewBox="0 0 24 24"  class="nd_copy"  id="nd_sv_1" ><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" ></path></svg></span></button><script>(function() {
+  var b = document.getElementById('nd_btn_1');
+  if (!b) return;
+  b.addEventListener('click', function() {
+    navigator.clipboard.writeText("xhost + && sudo docker run --rm -v /tmp/.X11-unix:/tmp/.X11-unix:ro -e DISPLAY=$DISPLAY -it pedroth/java-apps bash -c \"java -cp Learning/learning.jar apps.RandomCurve\"\n");
+    var t = document.getElementById('nd_ct_1');
+    var s = document.getElementById('nd_sv_1');
+    if (t) { t.classList.add('nd_copied'); t.innerText = 'COPIED'; }
+    if (s) {
+      s.classList.add('nd_copied');
+      s.children[0].setAttribute('d', 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z');
+      s.setAttribute('viewBox', '0 0 24 24');
+    }
+    setTimeout(function() {
+      if (t) { t.classList.remove('nd_copied'); t.innerText = 'COPY'; }
+      if (s) {
+        s.classList.remove('nd_copied');
+        s.children[0].setAttribute('d', 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z');
+        s.setAttribute('viewBox', '0 0 24 24');
+      }
+    }, 1500);
+  });
+})();</script></div></div></span></p><p><h2 id="java-web-emulation" ><span><span>Java web emulation</span></span></h2></p><p><span><div style="display: flex;flex-direction: column" ><a href="posts/RandomCurve/java-emulation.html"  target="_blank"  style="align-self: center;" ><button class="button" ><p><span><span>Launch emulation</span></span></p></button></a></div></span></p></article>

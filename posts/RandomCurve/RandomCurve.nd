@@ -4,14 +4,14 @@ creationDate: 01/03/2014
 lastUpdateDate: 01/03/2014
 tags: [
     2d,
+    experiment,
+    geometry,
     java,
     js,
-    ODEs,
-    geometry,
-    simulation,
     mathematics,
-    visualization,
-    experiment
+    ODEs,
+    simulation,
+    visualization
 ]
  -->
 _RandomCurve_ is a `Java` application that generates a *random* curve over time. The *random* curve $\gamma$ is generated as follows:

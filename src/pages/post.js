@@ -3,6 +3,33 @@ import DOM from "../DomBuilder.js";
 import renderFromString from "../PedroDown.js";
 import { formatDate, str2dom } from "../Utils.js";
 
+function setMeta(property, content) {
+  let el = document.querySelector(`meta[property="${property}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute("property", property);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function addWhatsAppPreview(post, postContent) {
+  const { id, title, tags } = post;
+  document.title = `${title} | Pedroth's Corner`;
+  const el = postContent instanceof Element ? postContent : postContent.dom?.() ?? postContent;
+  const firstParagraph = el?.querySelector?.("p");
+  const description = firstParagraph
+    ? firstParagraph.textContent.trim().slice(0, 200)
+    : tags.join(", ");
+  const url = `${window.location.origin}/posts/${id}/index.html`;
+  const image = `${window.location.origin}/posts/${id}/${id}.webp`;
+  setMeta("og:type", "article");
+  setMeta("og:title", title);
+  setMeta("og:description", description);
+  setMeta("og:url", url);
+  setMeta("og:image", image);
+}
+
 
 function notFound(page) {
   // TODO: think of adding a small game, simulation here...
@@ -114,17 +141,28 @@ export default async function post(page) {
   const postsMap = await Database.readPostsAsMap();
   if (!(id in postsMap)) return notFound(page);
   const post = postsMap[id];
-  const filePath = `/posts/${id}/${id}.nd`;
-  const content = await fetch(filePath)
-    .then(data =>
-      data.ok ?
-        data.text() :
-        `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
-    );
+  const htmlPath = `/posts/${id}/index.html`;
+  const htmlRes = await fetch(htmlPath);
+  let postContent = undefined;
+  if (htmlRes.ok) {
+    const html = await htmlRes.text();
+    postContent = str2dom(`<div>${html}</div>`);
+  } else {
+    const filePath = `/posts/${id}/${id}.nd`;
+    const ndFile = await fetch(filePath)
+      .then(data =>
+        data.ok ?
+          data.text() :
+          `<div style="margin: 3em 0">File \`${filePath}\` *not* _found_!!</div>\n`
+      );
+    postContent = await renderFromString(ndFile);
+  }
+
+  addWhatsAppPreview(post, postContent);
   return DOM.of("div")
     .append(
       renderPostHeader(post),
-      await renderFromString(content),
+      postContent,
       ...renderPostFooter(post),
     );
 }

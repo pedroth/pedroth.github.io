@@ -4,6 +4,8 @@ import buildRssFeed from "./build-rss.js";
 import buildJavaPosts from "./build-java.js";
 import buildPosts from "./build-posts.js";
 import buildImages from "./build-images.js";
+import { renderOfflineHTML } from "../src/PedroDown.js";
+import { writeFile } from "fs/promises";
 
 
 const program = new Command();
@@ -11,7 +13,6 @@ program
     .name('blog-builder')
     .description('CLI to build my blog')
     .version('0.0.1');
-
 program.command('rss')
     .description('Update RSS feed')
     .action(() => {
@@ -24,8 +25,10 @@ program.command('build-java')
     });
 program.command('build-posts')
     .description('Create DB from posts')
-    .action(() => {
-        const posts = buildPosts();
+    .option('-p, --post <id>', 'Specify a post ID to build')
+    .action(async (options) => {
+        const selectedPostId = options.post;
+        const posts = await buildPosts(selectedPostId);
         let db = { posts: [] };
         try {
             db = JSON.parse(
@@ -42,5 +45,12 @@ program.command('build-images')
     .action(() => {
         buildImages();
     })
+program.command('build-about')
+    .description('Build the about page')
+    .action(async () => {
+        const ndFile = readFileSync("./src/pages/about/about.nd", { encoding: "utf-8" });
+        const content = await renderOfflineHTML(ndFile);
+        await writeFile("./src/pages/about/index.html", content);
+    });
 
 program.parse();

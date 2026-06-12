@@ -87,33 +87,38 @@ export function debounce(lambda, debounceTimeInMillis = 500) {
 }
 
 export function str2dom(string) {
-        const parsed = new DOMParser().parseFromString(string, 'text/html').body.children[0];
-        if (!parsed) {
-            // Fallback: return wrapper if no root element
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = string;
-            return wrapper;
-        }
-        const dom = parsed;
-        Array(...dom.getElementsByTagName("script")).forEach(async scriptEl => {
-            await evalScriptTag(scriptEl);
-        })
-        return dom;
+    const parsed = new DOMParser().parseFromString(string, 'text/html').body.children[0];
+    if (!parsed) {
+        // Fallback: return wrapper if no root element
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = string;
+        return wrapper;
+    }
+    const dom = parsed;
+    // Run scripts sequentially so src scripts finish loading before inline
+    // scripts that depend on them run, but don't block str2dom so the DOM
+    // is mounted before any script executes.
+    Array.from(dom.getElementsByTagName("script")).reduce(
+        (promise, scriptEl) => promise.then(() => evalScriptTag(scriptEl)),
+        Promise.resolve()
+    );
+    return dom;
 }
 
 export function evalScriptTag(scriptTag) {
-    const globalEval = eval;
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    const type = scriptTag?.attributes["type"]?.textContent;
+    if (type) s.type = type;
     const srcUrl = scriptTag?.attributes["src"]?.textContent;
     if (srcUrl) {
-      return fetch(srcUrl)
-        .then(code => code.text())
-        .then(code => {
-          globalEval(code);
-        });
+      s.onload = resolve;
+      s.onerror = reject;
+      s.src = srcUrl;
     } else {
-      return new Promise((re) => {
-        globalEval(scriptTag.innerText);
-        re(true);
-      });
+      s.textContent = scriptTag.textContent;
     }
-  }
+    scriptTag.replaceWith(s);
+    if (!srcUrl) resolve();
+  });
+}
