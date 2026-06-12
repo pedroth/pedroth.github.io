@@ -9,7 +9,8 @@ tags: [
 	js,
 	computer graphics,
 	simulation,
-	visualization
+	visualization,
+	experiment
 ]
 -->
 I made this demo to study ray tracing using only the `CPU`.
