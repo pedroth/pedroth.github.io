@@ -13,6 +13,7 @@ function setMeta(property, content) {
   el.setAttribute("content", content);
 }
 
+// doesn't work on whatsapp, but changes title and whatnots. Leave it here for now.
 function addWhatsAppPreview(post, postContent) {
   const { id, title, tags } = post;
   document.title = `${title} | Pedroth's Corner`;
