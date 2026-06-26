@@ -542,11 +542,13 @@ Lets try to recreate the [`React` tutorial](https://react.dev/learn) with our mi
 ```
 }
 
+
+## Tic tac toe example
+
 @quote() {
     Don't mind about game logic or styles, that part is given in react tutorial, just focus on the UI part, and how we can do it with our minimal library.
 }
 
-## Tic tac toe example
 
 @renderHTML("Tic tac toe example"){
 ```html
