@@ -72,9 +72,24 @@ It will be a single page application using _vanilla js_, described [here](/src)
 
 # Scripts
 
-Most of the useful scripts can be found in the [package.json](./package.json), scripts section. Therefore you should run those, by using `bun run ...` or `node run ...<name of script>`.
+Most of the useful scripts can be found in the [package.json](./package.json), scripts section. Run them with `bun run <name>` from the root `./`.
 
-If you really need to run the scripts you need to run it from the [root `./`](./), like this:
+| Script | Description |
+|---|---|
+| `build` | Alias for `build-blog`. Full build pipeline. |
+| `build-blog` | Runs the full pipeline: `build-lib` → `build-posts` → `build-images` → `build-java` → `build-about` → `rss`. |
+| `build-lib` | Installs dependencies and bundles the JS library (`bundle.js`). |
+| `build-posts` | Processes and builds all post artifacts. Accepts `-p, --post <id>` to build a single post by ID. |
+| `build-images` | Generates post images in various resolutions (requires `ffmpeg`). |
+| `build-java` | Compiles Java-related post artifacts. |
+| `build-about` | Builds the about page. |
+| `rss` | Generates the RSS feed (`feed/rss.xml`). |
+| `serve` | Starts a local HTTP server to preview the site. |
+| `watch-post` | Watches a post for changes and rebuilds it on save. |
+| `clean` | Removes `node_modules` and `lib` directories. |
+| `test` | Runs the test suite. |
+
+If you need to run a script file directly, do it from the root `./`:
 
 `bun scripts/...`
 
