@@ -5,6 +5,29 @@ function split(input) {
     return `<div style="display: flex; gap: 1rem;">${input}</div>`;
 }
 
+function grid(input) {
+    return `
+        <div class="macro-grid" style="
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        ">
+            <style>
+                /* Remove empty paragraphs completely from grid calculations */
+                .macro-grid > p:empty,
+                .macro-grid > p:has(span:empty) {
+                    display: none !important;
+                }
+                .macro-grid video {
+                    width: 100%;
+                    height: auto;
+                }
+            </style>
+            ${input}
+        </div>
+    `;
+}
+
 function details(input, args) {
     return `
     <details style="margin-left: 1rem;">
@@ -38,4 +61,4 @@ function linkButtons(links, _) {
     return `<div style="display: flex; flex-direction: column;">${buttonsStrings.join("")}</div>`;
 }
 
-MACROS = { quote, split, details, scaleDiv, linkButtons };
+MACROS = { quote, split, grid, details, scaleDiv, linkButtons };

@@ -2,7 +2,7 @@
  <!-- 
 title: Ported a JS software rendering engine to C
 creationDate: 10/03/2026
-lastUpdateDate: 10/03/2026
+lastUpdateDate: 25/07/2026
 tags: [
     2d,
     3d,
@@ -40,7 +40,7 @@ Rendering *Summer Forest* from [*Spyro 2*](https://en.wikipedia.org/wiki/Spyro_2
 
 ![`C` version](/posts/Telac/summer_forest_c.mp4)
 
-As you can see, the `C` version is almost _10x_ faster than the `js` version, and this is just the single-threaded version.
+As you can see, the `C` version is _~10x_ faster than the `js` version, and this is just the single-threaded version.
 
 Now for a parallelism comparison: rendering a path tracer with 3 samples per pixel at *320x240* resolution:
 
@@ -48,7 +48,7 @@ Now for a parallelism comparison: rendering a path tracer with 3 samples per pix
 
 ![`C` version](/posts/Telac/glass_c.mp4)
 
-We see a 5~10x performance improvement in the `C` version, and this is with a naive parallelism implementation using [`OpenMP`](https://www.openmp.org/).
+We see a ~10x performance improvement in the `C` version, and this is with a naive parallelism implementation using [`OpenMP`](https://www.openmp.org/).
 
 Here I show a few more examples of the performance improvement:
 
@@ -57,12 +57,23 @@ Here I show a few more examples of the performance improvement:
     ![`C`](/posts/Telac/parallel_shader_c.mp4)
 }
 
-And another one:
-
 @split() {
     ![`js`](/posts/Telac/sky_js.mp4)
     ![`C`](/posts/Telac/sky_c.mp4)
 }
+
+
+@split() {
+    ![`js`](/posts/Telac/bunny_sdf_js.mp4)
+    ![`C`](/posts/Telac/bunny_sdf_c.mp4)
+}
+
+@split() {
+    ![`js`](/posts/Telac/rock_sdf_js.mp4)
+    ![`C`](/posts/Telac/rock_sdf_c.mp4)
+}
+
+
 
 As you can see, the performance improvement is amazing, which makes me wonder how much we give up by using simplified languages like `js` or `python`. Maybe in the future these languages will be able to achieve this kind of performance. Or maybe it is simply not possible due to their dynamic nature.
 
@@ -71,10 +82,11 @@ In conclusion, I had a lot of fun porting this engine, and I learned a lot about
 ---
 
 Some cool offline video rendering examples:
-@split() {
+@grid() {
     ![](/posts/Telac/cornell_box_video.mp4)
     ![](/posts/Telac/cornell_box_video_wave.mp4)
     ![](/posts/Telac/cornell_box_video_wave_sky.mp4)
+    ![](/posts/Telac/cornell_box_mesh_video.mp4)
 }
 
 ## Project

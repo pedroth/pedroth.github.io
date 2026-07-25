@@ -4,9 +4,18 @@
         <description><![CDATA[Pedroth's Corner: Maths. Computer Science. Philosophy]]></description>
         <link>https://pedroth.github.io</link>
         <generator>Pedroth RSS Generator</generator>
-        <lastBuildDate>Wed, 15 Jul 2026 14:03:10 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 25 Jul 2026 09:06:01 GMT</lastBuildDate>
         <atom:link href="https://pedroth.github.io/feed/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en-US]]></language>
+        <item>
+            <title><![CDATA[Ported a JS software rendering engine to C]]></title>
+            <description><![CDATA[Demo and notes about Ported a JS software rendering engine to C.]]></description>
+            <link>https://pedroth.github.io/?p=post/Telac/Telac.nd</link>
+            <guid isPermaLink="false">https://pedroth.github.io/?p=post/Telac/Telac.nd</guid>
+            <dc:creator><![CDATA[Pedroth]]></dc:creator>
+            <pubDate>Sat, 25 Jul 2026 00:00:00 GMT</pubDate>
+            <enclosure url="https://pedroth.github.io/posts/Telac/Telac_small.webp" length="0" type="image/webp"/>
+        </item>
         <item>
             <title><![CDATA[You don't need React: creating a minimal UI library]]></title>
             <description><![CDATA[Demo and notes about You don't need React: creating a minimal UI library.]]></description>
@@ -15,15 +24,6 @@
             <dc:creator><![CDATA[Pedroth]]></dc:creator>
             <pubDate>Sun, 17 May 2026 00:00:00 GMT</pubDate>
             <enclosure url="https://pedroth.github.io/posts/NoNeedReact/NoNeedReact_small.webp" length="0" type="image/webp"/>
-        </item>
-        <item>
-            <title><![CDATA[Ported a JS software rendering engine to C]]></title>
-            <description><![CDATA[Demo and notes about Ported a JS software rendering engine to C.]]></description>
-            <link>https://pedroth.github.io/?p=post/Telac/Telac.nd</link>
-            <guid isPermaLink="false">https://pedroth.github.io/?p=post/Telac/Telac.nd</guid>
-            <dc:creator><![CDATA[Pedroth]]></dc:creator>
-            <pubDate>Tue, 10 Mar 2026 00:00:00 GMT</pubDate>
-            <enclosure url="https://pedroth.github.io/posts/Telac/Telac_small.webp" length="0" type="image/webp"/>
         </item>
         <item>
             <title><![CDATA[Linux framebuffer experiment]]></title>
