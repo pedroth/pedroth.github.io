@@ -85,7 +85,7 @@ Most of the useful scripts can be found in the [package.json](./package.json), s
 | `build-about` | Builds the about page. |
 | `rss` | Generates the RSS feed (`feed/rss.xml`). |
 | `serve` | Starts a local HTTP server to preview the site. |
-| `watch-post` | Watches a post for changes and rebuilds it on save. |
+| `watch-post` | Watches a post for changes and rebuilds it on save. | example: `bun run watch-post <post-id>` |
 | `clean` | Removes `node_modules` and `lib` directories. |
 | `test` | Runs the test suite. |
 

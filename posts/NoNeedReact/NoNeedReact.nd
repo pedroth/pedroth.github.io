@@ -2,7 +2,7 @@
 <!-- 
 title: You don't need React\: creating a minimal UI library
 creationDate: 17/05/2026
-lastUpdateDate: 17/05/2026
+lastUpdateDate: 08/08/2026
 tags: [
     blog,
     js,
@@ -988,3 +988,8 @@ render();
 The idea of this post was to show that we can create a minimal UI library, with functional components, reactive state, and a simple way to create DOM elements. This basically creates a immediate mode UI library, similar to `React`, but with a much smaller codebase.
 
 Although this is useful for many purposes (I use it in my simple projects, including this site), I would not recommend for big complex projects, still it make sense to have an alternative. Hope you enjoyed the post!
+
+@quote() {
+    There was a lot of traction for this post on [Hacker News](https://news.ycombinator.com/item?id=49165665). You can read the comments there.
+}
+

@@ -34,7 +34,7 @@ In this _app_, you can try several [cellular automata rules][rules]:
 - Flakes: `012345678/3` *[key 9]*
 - Totally random rules *[key 0]*
 
-![*Cellular automaton* app video](https://www.youtube.com/watch?v=HO1TijJ5DFM)
+![*Cellular automaton* app video](/posts/CellularAutomaton/Cellular_Automaton_yt.mp4)
 
 At the beginning, you can draw the initial state of the cells, then press the `space bar` to start the animation.
 

@@ -13,9 +13,9 @@ tags: [
  -->
 _Tetra_ is a simple application created to test my [3D engine](https://github.com/pedroth/Learning/tree/master/src/main/java/windowThreeDim), built from scratch[^1]. It lets you view some *triangular meshes*, including random *planets*, as shown in the videos below.
 
-![Showing some *meshes*](https://youtu.be/EWfagjIxd4g)
+![Showing some *meshes*](/posts/Tetra/Tetra_yt.mp4)
 
-![Showing some **planets**](https://youtu.be/SeJcezzg_ow)
+![Showing some **planets**](/posts/Tetra/Random_Planets_yt.mp4)
 
 
 Feel free to download the program below.
