@@ -16,7 +16,7 @@ import {
 } from "fs";
 import archiver from "archiver";
 import { rimraf } from "rimraf";
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 
 const HOME = `./scripts/build-java`
 
@@ -101,9 +101,19 @@ function createJarsFromDocker() {
             `/apps/Learning/learning.jar`,
             `/apps/pedroEngine/pedroEngine.jar`
         ];
+
+        // Ensure we have the latest image before creating containers (synchronous pull)
+        console.log(`Pulling latest image ${imageId}:latest`);
+        try {
+            execSync(`docker pull ${imageId}:latest`, { stdio: 'inherit' });
+        } catch (pullErr) {
+            console.log("Failed to pull docker image", pullErr);
+            return reject(pullErr);
+        }
+
         const commands = containerPaths.map(path => {
             const containerId = `dummy${Math.floor(Math.random() * 100)}`;
-            return `docker create --name ${containerId} ${imageId} && docker cp ${containerId}:${path} ${hostPath} && docker rm -f ${containerId}`
+            return `docker create --name ${containerId} ${imageId}:latest && docker cp ${containerId}:${path} ${hostPath} && docker rm -f ${containerId}`
         });
         const filesCopied = commands.map(() => false);
         commands.forEach((command, i) => {
@@ -111,7 +121,7 @@ function createJarsFromDocker() {
             exec(command, (error, stdout, stderr) => {
                 if (error) {
                     console.log("Caught error while creating jars from docker", error, stderr);
-                    reject(error);
+                    return reject(error);
                 }
                 console.log("Created jars", stdout);
                 filesCopied[i] = true;
