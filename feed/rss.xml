@@ -4,9 +4,18 @@
         <description><![CDATA[Pedroth's Corner: Maths. Computer Science. Philosophy]]></description>
         <link>https://pedroth.github.io</link>
         <generator>Pedroth RSS Generator</generator>
-        <lastBuildDate>Tue, 18 Aug 2026 17:01:07 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 02 Sep 2026 10:53:01 GMT</lastBuildDate>
         <atom:link href="https://pedroth.github.io/feed/rss.xml" rel="self" type="application/rss+xml"/>
         <language><![CDATA[en-US]]></language>
+        <item>
+            <title><![CDATA[Awesome Web Corners]]></title>
+            <description><![CDATA[Demo and notes about Awesome Web Corners.]]></description>
+            <link>https://pedroth.github.io/?p=post/AwesomeWebCorners/AwesomeWebCorners.nd</link>
+            <guid isPermaLink="false">https://pedroth.github.io/?p=post/AwesomeWebCorners/AwesomeWebCorners.nd</guid>
+            <dc:creator><![CDATA[Pedroth]]></dc:creator>
+            <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+            <enclosure url="https://pedroth.github.io/posts/AwesomeWebCorners/AwesomeWebCorners_small.webp" length="0" type="image/webp"/>
+        </item>
         <item>
             <title><![CDATA[Hyper Match 3D demo]]></title>
             <description><![CDATA[Demo and notes about Hyper Match 3D demo.]]></description>
