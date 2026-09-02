@@ -33,6 +33,17 @@
       ]
     },
     {
+      "id": "AwesomeWebCorners",
+      "title": "Awesome Web Corners",
+      "creationDate": "01/09/2026",
+      "lastUpdateDate": "01/09/2026",
+      "tags": [
+        "web",
+        "blog",
+        "awesome"
+      ]
+    },
+    {
       "id": "BitCalculator",
       "title": "Bit Calculator",
       "creationDate": "05/05/2021",
