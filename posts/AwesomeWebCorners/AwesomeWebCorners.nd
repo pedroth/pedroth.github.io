@@ -15,9 +15,6 @@ function iframe(input, args) {
     const [src] = args;
     const t1 = `<details style="margin-bottom: 1.5em; border: 1px solid rgba(52, 152, 219, 0.5); border-radius: 0.5rem; padding: 0.75em; transition: all 0.3s ease-in-out;" onmouseover="this.style.borderColor='rgba(52, 152, 219, 0.9)'; this.style.boxShadow='0 0 8px rgba(52, 152, 219, 0.3)';" onmouseout="this.style.borderColor='rgba(52, 152, 219, 0.5)'; this.style.boxShadow='none';"><summary style="cursor: pointer; color: rgb(52, 152, 219); user-select: none; display: flex; align-items: center; gap: 0.5em;"><span style="flex: 1;">${input}</span><a href="${src}" target="_blank" onclick="event.stopPropagation();" style="text-decoration: none; color: rgb(52, 152, 219); font-size: 0.85em; padding: 0.3em 0.6em; border: 1px solid rgba(52, 152, 219, 0.5); border-radius: 0.25rem; white-space: nowrap;">Open ↗</a></summary><iframe src="${src}" width="100%" height="400" style="margin-top: 0.75em; border-radius: 0.25rem;"></iframe></details>`;
 
-    const id = Math.random().toString(36).substr(2, 9);
-    const t2 = `<a href="${src}" target="_blank" id="link-${id}" style="color: rgb(52, 152, 219); text-decoration: none; cursor: pointer; user-select: none; display: block; margin-bottom: 1.75em;">${input}</a><div popover id="pop-${id}" style="background-color: rgb(24, 24, 24); border: 1px solid rgba(52, 152, 219, 0.5); border-radius: 0.5rem; padding: 1em; width: 100%; box-sizing: border-box; max-width: 600px;"><div id="header-${id}" style="display: none; justify-content: space-between; align-items: center; margin-bottom: 0.75em;"><span style="font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">Preview</span><button id="close-${id}" style="background: none; border: none; color: rgb(52, 152, 219); font-size: 1.5em; cursor: pointer; padding: 0; width: 1.5em; height: 1.5em; display: flex; align-items: center; justify-content: center;">×</button></div><a href="${src}" target="_blank" style="background-color: rgba(52, 152, 219, 0.2); color: rgb(52, 152, 219); border: 1px solid rgba(52, 152, 219, 0.5); padding: 0.4em 0.8em; border-radius: 0.25rem; text-decoration: none; font-size: 0.9em; cursor: pointer; transition: all 0.2s ease-in-out; display: block; margin-bottom: 0.75em; text-align: center;" onmouseover="this.style.backgroundColor='rgba(52, 152, 219, 0.4)'" onmouseout="this.style.backgroundColor='rgba(52, 152, 219, 0.2)'">Open ↗</a><iframe src="${src}" width="100%" height="400" style="border: none; border-radius: 0.25rem;"></iframe></div><script>setTimeout(() => { const link${id} = document.getElementById('link-${id}'); const pop${id} = document.getElementById('pop-${id}'); const header${id} = document.getElementById('header-${id}'); const close${id} = document.getElementById('close-${id}'); const isTouchDevice = () => (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)); if (isTouchDevice()) { link${id}.addEventListener('click', (e) => { e.preventDefault(); pop${id}.showPopover(); header${id}.style.display = 'flex'; }); close${id}.addEventListener('click', () => { pop${id}.hidePopover(); }); document.addEventListener('click', (e) => { if (!link${id}.contains(e.target) && !pop${id}.contains(e.target)) pop${id}.hidePopover(); }); } else { let hideTimer${id}; link${id}.addEventListener('mouseenter', () => { clearTimeout(hideTimer${id}); pop${id}.showPopover(); header${id}.style.display = 'none'; }); link${id}.addEventListener('mouseleave', () => { hideTimer${id} = setTimeout(() => pop${id}.hidePopover(), 100); }); pop${id}.addEventListener('mouseenter', () => { clearTimeout(hideTimer${id}); }); pop${id}.addEventListener('mouseleave', () => { hideTimer${id} = setTimeout(() => pop${id}.hidePopover(), 100); }); } }, 0);</script>`;
-
     return t1;
 }
 
@@ -64,8 +61,10 @@ In this post, I will share some of the most awesome web corners I visit the most
 - @iframe("https://cs.nyu.edu/~perlin/"){*Ken Perlin: Computer graphics researcher*}
 - @iframe("https://pages.saclay.inria.fr/mathieu.desbrun/"){*Mathieu Desbrun: Computer graphics and geometry processing researcher*}
 - @iframe("https://michaelmoroz.github.io/"){*Michael Moroz: Computer graphics and ML researcher*}
+- @iframe("https://nmwsharp.com/"){*Nicholas Sharp: Geometry processing, computer graphics/vision, and 3D machine learning researcher*}
 - @iframe("https://lisyarus.github.io/blog/"){*Nikita Lisitsa: CS and Graphics posts*}
 - @iframe("https://www.reedbeta.com/"){*Reed Beta: Graphics programmer and researcher*}
+- @iframe("http://rohansawhney.io/"){*Rohan Sawhney: Geometry processing, simulation, and rendering researcher*}
 - @iframe("https://www3.cs.stonybrook.edu/~gu/"){*Xianfeng David Gu: Computer graphics and geometry processing researcher*}
 
 
@@ -102,7 +101,6 @@ In this post, I will share some of the most awesome web corners I visit the most
 - @iframe("https://phoboslab.org/"){*Dominic Szablewski: Creative coding and game development projects*}
 - @iframe("https://entropicthoughts.com/index.html"){*Entropic Thoughts: Programming and Math posts*}
 - @iframe("https://bellard.org/"){*Fabrice Bellard: Top programmer projects*}
-- @iframe("https://fedemagnani.github.io/"){*Federico Magnani: Rust, Computational Mathematics, Finance and other stuff*}
 - @iframe("https://www.gingerbill.org/"){*Ginger Bill: Programming and Odin Lang*}
 - @iframe("https://glouw.com/"){*Gustav Louw: Great Programming projects*}
 - @iframe("https://ianthehenry.com/"){*Ianthe Henry: Personal blog and projects*}
@@ -112,7 +110,6 @@ In this post, I will share some of the most awesome web corners I visit the most
 - @iframe("https://mcyoung.xyz/"){*MC Young: Programming and compiler articles*}
 - @iframe("https://mzucker.github.io/"){*Michael Zucker: Programming articles and projects*}
 - @iframe("https://eieio.games/"){*Nolen Royalty: Fun programming projects*}
-- @iframe("https://owen.cafe/"){*Owen Cafe: Personal blog and projects*}
 - @iframe("https://susam.net/"){*Susam Pal: Programming and Math posts*}
 - @iframe("https://tavianator.com/index.html"){*Tavianator: Math and Programming posts*}
 - @iframe("https://tomasmiskov.com/"){*Tomas Miskov: Programming and Math posts*}
@@ -127,5 +124,4 @@ In this post, I will share some of the most awesome web corners I visit the most
 ### Design & Animation
 
 - @iframe("https://animationobsessive.substack.com/"){*Animation Obsessive: Animation and motion design posts*}
-
 
